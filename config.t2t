@@ -1,0 +1,4 @@
+% Generlaized config file for learning-android-cn project
+%!preproc: {VERSION} $rev$
+%!preproc: {BASEURL} http://dev.icybear.net/learning-android-cn/nightly
+
