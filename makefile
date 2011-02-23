@@ -5,7 +5,7 @@ T2TFILES := index.t2t
 T2TFILES += $(foreach dir,$(CHAPTERS),$(wildcard $(dir)/*.t2t))
 OUTFILES := $(patsubst %.t2t,%.$(FORMAT),$(T2TFILES))
 
-%.$(FORMAT): %.t2t
+%.$(FORMAT): %.t2t config.t2t
 	$(TXT2TAGS) -t $(FORMAT) -i $< -o $@
 
 all: $(OUTFILES) 
