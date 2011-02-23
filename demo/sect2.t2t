@@ -186,7 +186,7 @@ That's all for now.
 %%% TRANSLATOR: Uncomment and translate the next two lines
 %Translated by John Smith.
 %-------------------------------------------------------
-[img/t2tpowered.png] ([%%infile %%infile])
+[../img/t2tpowered.png] ([%%infile %%infile])
 
 % vim: tw=80
 % vim: foldmethod=syntax
