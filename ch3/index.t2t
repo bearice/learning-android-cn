@@ -1,15 +1,15 @@
 
 
 
-= Quick Start =
+= Quick Start =[ch03]
 
-{ORIG}In this chapter, you will learn how to set up your environment for Android development. I’ll go beyond just telling you where to download the software from, but will also into some of the best practices in getting set up. I’ll look at development operating system choices as well as Android tools available. You will see the good, the bad, and the ugly of various choices of tools and platforms that you’re about to make (or someone else has already made for you).
+{ORGI}In this chapter, you will learn how to set up your environment for Android development. I’ll go beyond just telling you where to download the software from, but will also into some of the best practices in getting set up. I’ll look at development operating system choices as well as Android tools available. You will see the good, the bad, and the ugly of various choices of tools and platforms that you’re about to make (or someone else has already made for you).
 
 {TRAN}在本章中，你将学会如何搭建一个 Android 开发环境。除了罗列出软件的下载地址外，还将给出搭建过程中的若干最佳实践。本章会涉及如何选择开发用操作系统和可能用到的 Android 工具等。你可以看到你将要从中选择（或者被限定使用）的各种工具的优势、缺点甚至坑爹之处。
 
 {ORGI}By the end of this chapter, you will have your entire development environment setup. You’ll be able to write a Hello World application, build it, and run it on the emulator (or physical device, if you want).
 
-{TRAN}完成本章后，你将得到一个完整的开发环境。然后你就可以开始编写第一个 Hello World 程序，构建，然后在虚拟里（或者真机上，如果你乐意的话）运行它。
+{TRAN}完成本章阅读后，你将得到一个完整的开发环境。然后你就可以开始编写第一个 Hello World 程序，构建，然后在虚拟机里（或者真机上，如果你乐意的话）运行它。
 
 {NOTE}
 {ORGI}I’m going to be using ~ to refer to your home directory. On Mac OS X, that’s typically something like /Users/marko. On Linux, it would be /home/marko and on Windows Vista and 7, C:\Users\marko (in Windows XP, it would be C:\Documents and Settings\marko). Also, I’m going to be using Unix-style forward slashes and not Windows back slashes to denote file path separators.
