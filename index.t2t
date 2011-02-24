@@ -3,9 +3,11 @@ Bearice<bearice[a]gmail.com>, Elephas<melephas[a]gmail.com>, Fleure<me.ssword[a]
 
 % 注意：如下配置必须在第四行开始
 %!includeconf: config.t2t
-last build at %%mtime(%m/%d/%Y).
-
--------------------------------------------------------------
+%% mtime only gets last modified time of THIS file! 
+%Last update: %%mtime(%Y/%m/%d %H:%M:%S). 
+Build at: %%date(%Y/%m/%d %H:%M:%S).
+%Reversion: {REV}
+============================================================
 
 %%toc 
 

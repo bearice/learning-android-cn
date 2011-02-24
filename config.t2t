@@ -2,7 +2,8 @@
 %!target: html
 %!encoding: utf-8
 %!options: --mask-email --css-sugar --style style.css --enum-title --toc --toc-level 2
-%!preproc: '{VERSION}'  '$rev$'
+%!preproc: '{REV}'      '$rev$'
+%!preproc: '{VERSION}'  '1.0.$rev$ alpha'
 %!preproc: '{BASEURL}'  'http://dev.icybear.net/learning-android-cn/'
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% colored blocks
