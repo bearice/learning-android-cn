@@ -1,13 +1,27 @@
 Learning Android CN project
 Bearice<bearice[a]gmail.com>, Elephas<melephas[a]gmail.com>, Fleure<me.ssword[a]gmail.com>
-%%mtime(%m/%d/%Y)
-%!includeconf: config.t2t
 
-= TOC =
-not yet finished!
-+ [demo1 demo/sect1.html]
-+ [demo2 demo/sect2.html]
+% 注意：如下配置必须在第四行开始
+%!target: html
+%!encoding: utf-8
+%!options: --mask-email --css-sugar --style style.css --enum-title --toc --toc-level 2
+%!preproc: {VERSION}  $rev$
+%!preproc: {BASEURL}  http://dev.icybear.net/learning-android-cn/
+%!postproc(html): '{WARNING}'   '<div class="warning"><b>warning:</b><br/>'
+%!postproc(html): '{/WARNING}'  '</div>'
+%!postproc(html): "{NOTE}"      '<div class="note"><b>note:</b><br/>'
+%!postproc(html): "{/NOTE}"     '</div>'
 
--------------------------------------------------------
+last build at %%mtime(%m/%d/%Y).
+
+-------------------------------------------------------------
+
+%%toc 
+
+%!include: preface.t2t
+%!include: ch1/index.t2t
+%!include: ch2/index.t2t
+
+------------------------------------------------------------
 [img/t2tpowered.png] SOURCE:([%%infile %%infile])
 

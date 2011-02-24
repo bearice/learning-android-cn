@@ -1,0 +1,45 @@
+%
+%
+%
+%
+
+== Android Overview ==
+
+Android is a comprehensive open source platform designed for mobile devices. It is championed by Google and owned by Open Handset Alliance. The goal of the alliance is to "accelerate innovation in mobile and offer consumers richer, less expensive, and better mobile experience". Android is the vehicle to do so.
+
+As such, Android is revolutionizing the mobile space. For the first time, it is a truly open platform that is separating hardware from software that runs on it. This allows for a much larger number of devices to run same applications and creates a much richer ecosystem for developers and consumers to enjoy.
+
+Let’s break down some of these buzz words and see what’s behind them:
+
+=== Comprehensive ===
+Android is a comprehensive platform. It is a complete software stack for a mobile device.
+
+For developers, Android provides all the tools and frameworks to allow easy and quick development of mobile apps. Android SDK is all you need to start developing for Android - you don’t even need a physical phone.
+
+For users, Android just works right out of the box. Additionally, users can substantially customize their phone experience.
+
+For manufacturers, it is the complete solution that can run their devices. Other than some hardware-specific drivers, Android provides everything else to make their devices work.
+
+=== Open Source Platform ===
+
+Android is an open source platform. The entire stack, from low-level Linux modules all the way to native libraries, and application framework, to complete applications, Android is totally open.
+
+More so, Android is licensed under business-friendly licenses (Apache/MIT) so that others can freely extend it and use it for variety of purposes. Even some 3rd party open source libraries that were brought into Android stack were re-written to be licensed under new license terms.
+
+So, as a developer, you have access to entire platform source code. This allows you to see how the guts of Android operating system work. As manufacturer, you can easily port Android OS to your specific hardware. You can also add your own proprietary secret sauce and you do not have to push it back to the development community if you don’t want to.
+
+There’s no need to license Android. You can start using it and modifying it today, and there’re no strings attached. More so, Android has many hooks at all various levels of the platform to allow anyone to extend it in unforeseen ways.
+
+{NOTE}
+There are couple of minor low-level pieces of code that are proprietary to each vendor, such as the software stack for the cellular, Wi-Fi, and Bluetooth radios. Android tries hard to abstract those components with interfaces so that vendor-specific code can be easily managed.
+{/NOTE}
+
+=== Designed for Mobile Devices === 
+
+Android is a purpose-built platform for mobile devices. When designing Android, the team looked at what constraints are likely not going to change for a foreseeable future when it comes to mobile devices. For one, mobile devices are battery powered and battery performance is likely not going to get much better any time soon. Secondly, the small size of mobile devices means that they will always be limited in terms of memory and speed.
+
+These constraints were taken into consideration from the get-go and were addressed throughout the platform. The result is an overall better user experience.
+
+Android was designed to run on all sorts of physical devices. Android doesn’t make any assumptions about a device’s screen size, resolution, chipset, and so on. Its core is designed to be portable.
+
+

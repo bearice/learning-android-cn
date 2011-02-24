@@ -1,0 +1,13 @@
+
+.note {
+    background: #F2FFBF;
+    padding: 5px 5px 5px 20px;
+}
+.note b { margin: 0 0 0 -15px; }
+
+.warning {
+    background: #FFCCBF;
+    padding: 5px 5px 5px 20px;
+}
+.warning b { margin: 0 0 0 -15px; }
+

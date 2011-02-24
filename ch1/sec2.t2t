@@ -1,0 +1,38 @@
+%
+%
+%
+%
+
+== History ==
+
+The history of Android is interesting in order to gain the perspective on what the future might hold.
+
+These are the key events of the past few years:
+
+- 2005 Google buys Android, Inc. The world thinks a "gPhone" is about to come out…
+- Everything goes quiet for a while.
+- 2007 Open Handset Alliance is announced. Android is officially open-sourced.
+- 2008 Android SDK 1.0 is released. The G1 phone, manufactured by HTC, and sold by the wireless carrier T-Mobile USA, follows shortly afterwards.
+- 2009 sees a proliferation of Android-based devices. New versions of the operating system: Cupcake (1.5), Donut (1.6), and Eclair (2.0 and 2.1) are released. 20+ devices run Android.
+- 2010 Android is 2nd only to RIM as best-selling smart phone platform. Froyo (Android 2.2) is released and so are 60+ devices that run it.
+- In 2005, when Google purchased Android, Inc., the world thought Google is about to enter the smart phone market. There were widespread speculations about device called gPhone.
+
+
+Google CEO, Eric Schmidt, made it clear right away that Android’s ambitions are much larger than a single phone. They saw it as a platform that will enable many phones and other devices out there.
+
+=== Google’s Motivation ===
+
+Google’s motivation in supporting the Android project seems to be to have Android everywhere and by doing that, to create a level playing field for the mobile. Ultimately, Google is a media company and its business model is based on selling advertising. If everyone is using Android, then Google can provide additional services on top of it, and compete fairly. This is unlike business models of other software vendors who depend on the licensing fees.
+
+While Google does license some proprietary apps, such as Gmail and Maps, and make some money off the Android market, its primary motivation is still the advertising revenue that those apps bring in.
+
+=== Open Handset Alliance ===
+
+For this to be bigger than just Google, Android is owned by Open Handset Alliance, a non-profit group formed by key mobile operators, manufacturers, carriers, and others. The alliance is committed to openness and innovation for mobile user experience.
+
+In practice, the alliance is still very young and many members are still learning to work with each other. Google happens to be putting the most muscle behind the Android project at the moment.
+
+{NOTE}
+The first version of Android SDK was released without an actual phone being on the market. The point of this is that you don’t really need a phone to do Android development. There are some exceptions to this (hardware sensors, telephony, etc.), but for the most part the Android SDK contains everything you’ll need for developing on this platform.
+{/NOTE}
+

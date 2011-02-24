@@ -1,0 +1,239 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<META NAME="generator" CONTENT="http://txt2tags.sf.net">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<LINK REL="stylesheet" TYPE="text/css" HREF="style.css">
+<TITLE>Learning Android CN project</TITLE>
+</HEAD>
+<BODY>
+
+<DIV CLASS="header" ID="header">
+<H1>Learning Android CN project</H1>
+<H2>Bearice&lt;bearice[a]gmail.com&gt;, Elephas&lt;melephas[a]gmail.com&gt;, Fleure&lt;me.ssword[a]gmail.com&gt;</H2>
+</DIV>
+
+<DIV CLASS="body" ID="body">
+<P>
+last build at 02/24/2011.
+</P>
+<HR NOSHADE SIZE=1>
+<P></P>
+<DIV CLASS="toc" ID="toc">
+  <OL>
+  <LI><A HREF="#toc1">Preface</A>
+    <UL>
+    <LI><A HREF="#toc2">1.1. What’s Inside</A>
+    <LI><A HREF="#toc3">1.2. Conventions Used in This Book</A>
+    <LI><A HREF="#toc4">1.3. Using Code Examples</A>
+    <LI><A HREF="#toc5">1.4. Safari® Books Online</A>
+    <LI><A HREF="#toc6">1.5. Acknowledgements</A>
+    </UL>
+  <LI><A HREF="#toc7">Android Overview</A>
+    <UL>
+    <LI><A HREF="#toc8">2.1. Android Overview</A>
+    <LI><A HREF="#toc9">2.2. History</A>
+    </UL>
+  </OL>
+
+</DIV>
+<P></P>
+<A NAME="toc1"></A>
+<H1>1. Preface</H1>
+<P>
+This book sprang from years of delivering Marakana Android Bootcamp training class to thousands of software developers at some of the largest mobile companies on four continents around the world. Teaching Android, over time I saw what works and what doesn’t. This book is the distilled version of Android Bootcamp training course that I developed at Marakana and fine-tuned over numerous engagements.
+</P>
+<P>
+My background is in Java from back before it was even called that. From the beginning, I was very much interested in embedded development in order to program various devices that surround us in every day life. Because Java took off mostly in the web application development, most of my previous decade went to building large enterprise system. Then Android arrived and I got once again very excited about building software for non-traditional computers. My current interests are Android on devices that may not even resemble a typical phone.
+</P>
+<P>
+This book lets anyone who knows Java (or a similar language) grow to develop a reasonably complex Android application. I hope you find this book fairly comprehensive and that you find the example-based learning reasonably motivating. The goal of Learning Android is to get you to think in Android terms.
+</P>
+<A NAME="toc2"></A>
+<H2>1.1. What’s Inside</H2>
+<P>
+Chapter 1, Android Overview, is an introduction to Android and its history. Chapter 2, The Stack, is an overview of the Android Operating System and all its parts from a very high level. Chapter 3, Quick Start, helps you set up your environment for Android application development. Chapter 4, Main Building Blocks, explains the components that Android provides to application developers to put together an app. Chapter 5, Yamba Overview, is the overview of the Yamba application that we’ll build together through the book and use as an example to learn various features of Android. Chapter 6, Android User Interface, explains how to build the user interface for your application. Chapter 7, Preferences, File System, Options Menu, and Intents, covers some of the operating system features that make an application developer’s life easier. Chapter 8, Services, covers building an Android service to process background tasks. Chapter 9, Databases, explains Android framework’s support for the built-in SQLite database and how to use it to persist the data in your own application. Chapter 10, Lists and Adapters, covers an important feature of Android that allows large data sets to be linked to relatively small screens in an efficient way. Chapter 11, Broadcast Receivers, explains how to use the publish-subscribe mechanism in Android to respond to various system and user defined messages. Chapter 12, Content Providers, shows how to design a content provider to share data between applications, using the content provider to enable our app widget to display data on the home screen. Chapter 13, System Services, goes into various system services that an app developer can tap into. Chapter 14, Android Interface Definition Language (AIDL), covers building an inter-process communication mechanism to allow for remote access to a service from another application. Chapter 15, Native Development Kit (NDK), introduces how to write native C code as part of your Android application.
+</P>
+<A NAME="toc3"></A>
+<H2>1.2. Conventions Used in This Book</H2>
+<P>
+The following typographical conventions are used in this book:
+</P>
+<P>
+<I>Italic</I>
+    Indicates new terms, URLs, email addresses, filenames, and file extensions.
+</P>
+<P>
+<CODE>Constant width</CODE>
+    Used for program listings, as well as within paragraphs to refer to program elements such as variable or function names, data types, and XML entities.
+</P>
+<P>
+<B><CODE>Constant width bold</CODE></B>
+    Shows commands or other text that should be typed literally by the user.
+</P>
+<P>
+<I><CODE>Constant width italic</CODE></I>
+    Shows text that should be replaced with user-supplied values or by values determined by context.
+</P>
+<P>
+<div class="note"><b>note:</b><br/>
+    This icon signifies a tip, suggestion, or general note.  
+</div>
+</P>
+<P>
+<div class="warning"><b>warning:</b><br/>
+    This icon indicates a warning or caution.
+</div>
+</P>
+<A NAME="toc4"></A>
+<H2>1.3. Using Code Examples</H2>
+<P>
+This book is here to help you get your job done. In general, you may use the code in this book in your programs and documentation. You do not need to contact us for permission unless you’re reproducing a significant portion of the code. For example, writing a program that uses several chunks of code from this book does not require permission. Selling or distributing a CD-ROM of examples from O’Reilly books does require permission. Answering a question by citing this book and quoting example code does not require permission. Incorporating a significant amount of example code from this book into your product’s documentation does require permission.
+</P>
+<P>
+We appreciate, but do not require, attribution. An attribution usually includes the title, author, publisher, and ISBN. For example: “Book Title by Some Author. Copyright 2008 O’Reilly Media, Inc., 978-0-596-xxxx-x.”
+</P>
+<P>
+If you feel your use of code examples falls outside fair use or the permission given above, feel free to contact us at &lt;permissions (a) oreilly com&gt;.
+</P>
+<A NAME="toc5"></A>
+<H2>1.4. Safari® Books Online</H2>
+<P>
+Note
+    Safari Books Online is an on-demand digital library that lets you easily search over 7,500 technology and creative reference books and videos to find the answers you need quickly.
+</P>
+<P>
+With a subscription, you can read any page and watch any video from our library online. Read books on your cell phone and mobile devices. Access new titles before they are available for print, and get exclusive access to manuscripts in development and post feedback for the authors. Copy and paste code samples, organize your favorites, download chapters, bookmark key sections, create notes, print out pages, and benefit from tons of other time-saving features.
+</P>
+<P>
+O’Reilly Media has uploaded this book to the Safari Books Online service. To have full digital access to this book and others on similar topics from O’Reilly and other publishers, sign up for free at [role="orm:hideurl:ital"]<A HREF="http://my.safaribooksonline.com">http://my.safaribooksonline.com</A>.
+</P>
+<A NAME="toc6"></A>
+<H2>1.5. Acknowledgements</H2>
+<P>
+This book is truly a result of an outstanding team work. First, I’d like to thank my editors at O’Reilly: Andy Oram and Brian Jepson. Andy, your comments were spot-on and constructive. Brian, thank you for persuading me to take on writing this book in the first place.
+</P>
+<P>
+I’d like to thank all my technical editors: Dan Bornstein, Hervé Guihot, Frank Maker III, and Bill Schrickel. Thank you for diligently reading my half-baked drafts and providing valuable comments.
+</P>
+<P>
+This book wouldn’t be what it is without field testing it on our numerous clients - you were the true pioneers on the cutting edge of Android and your projects are all very inspiring. Thank you for your trust.
+</P>
+<P>
+I’d like to thank my team at Marakana: Aleksandar (Saša) Gargenta, Ken Jones, and Laurent Tonon for bringing back first-hand feedback from running Android Bootcamp courses using the draft of this book. Saša, special thanks to you for sending me back to the drawing board more times than I’d like to admit. This book is probably months pass due because of your in-depth technical comments.
+</P>
+<P>
+And finally, a huge thanks to my wife Lisa and daughter Kylie. I know what a sacrifice it was for you while I was criss-crossing the world working on this material. Thank you for supporting me along the way.
+</P>
+<P>
+Marko Gargenta, San Francisco, CA
+</P>
+<A NAME="toc7"></A>
+<H1>2. Android Overview</H1>
+<P>
+In this chapter, you will learn how Android came about. We’ll take a look at its history to help us understand its future. As mobile environment is entering a make-or-break year(s), we look at the key players in this ecosystem, what motivates and what strengths and weaknesses they bring to the table.
+</P>
+<P>
+By the end of this chapter, you will have a better perception of the ecosystem from business point of view, which should help you understand the technology choices and how they relate to long-term advantages for various platforms.
+</P>
+<A NAME="toc8"></A>
+<H2>2.1. Android Overview</H2>
+<P>
+Android is a comprehensive open source platform designed for mobile devices. It is championed by Google and owned by Open Handset Alliance. The goal of the alliance is to "accelerate innovation in mobile and offer consumers richer, less expensive, and better mobile experience". Android is the vehicle to do so.
+</P>
+<P>
+As such, Android is revolutionizing the mobile space. For the first time, it is a truly open platform that is separating hardware from software that runs on it. This allows for a much larger number of devices to run same applications and creates a much richer ecosystem for developers and consumers to enjoy.
+</P>
+<P>
+Let’s break down some of these buzz words and see what’s behind them:
+</P>
+<H3>2.1.1. Comprehensive</H3>
+<P>
+Android is a comprehensive platform. It is a complete software stack for a mobile device.
+</P>
+<P>
+For developers, Android provides all the tools and frameworks to allow easy and quick development of mobile apps. Android SDK is all you need to start developing for Android - you don’t even need a physical phone.
+</P>
+<P>
+For users, Android just works right out of the box. Additionally, users can substantially customize their phone experience.
+</P>
+<P>
+For manufacturers, it is the complete solution that can run their devices. Other than some hardware-specific drivers, Android provides everything else to make their devices work.
+</P>
+<H3>2.1.2. Open Source Platform</H3>
+<P>
+Android is an open source platform. The entire stack, from low-level Linux modules all the way to native libraries, and application framework, to complete applications, Android is totally open.
+</P>
+<P>
+More so, Android is licensed under business-friendly licenses (Apache/MIT) so that others can freely extend it and use it for variety of purposes. Even some 3rd party open source libraries that were brought into Android stack were re-written to be licensed under new license terms.
+</P>
+<P>
+So, as a developer, you have access to entire platform source code. This allows you to see how the guts of Android operating system work. As manufacturer, you can easily port Android OS to your specific hardware. You can also add your own proprietary secret sauce and you do not have to push it back to the development community if you don’t want to.
+</P>
+<P>
+There’s no need to license Android. You can start using it and modifying it today, and there’re no strings attached. More so, Android has many hooks at all various levels of the platform to allow anyone to extend it in unforeseen ways.
+</P>
+<P>
+<div class="note"><b>note:</b><br/>
+There are couple of minor low-level pieces of code that are proprietary to each vendor, such as the software stack for the cellular, Wi-Fi, and Bluetooth radios. Android tries hard to abstract those components with interfaces so that vendor-specific code can be easily managed.
+</div>
+</P>
+<H3>2.1.3. Designed for Mobile Devices</H3>
+<P>
+Android is a purpose-built platform for mobile devices. When designing Android, the team looked at what constraints are likely not going to change for a foreseeable future when it comes to mobile devices. For one, mobile devices are battery powered and battery performance is likely not going to get much better any time soon. Secondly, the small size of mobile devices means that they will always be limited in terms of memory and speed.
+</P>
+<P>
+These constraints were taken into consideration from the get-go and were addressed throughout the platform. The result is an overall better user experience.
+</P>
+<P>
+Android was designed to run on all sorts of physical devices. Android doesn’t make any assumptions about a device’s screen size, resolution, chipset, and so on. Its core is designed to be portable.
+</P>
+<A NAME="toc9"></A>
+<H2>2.2. History</H2>
+<P>
+The history of Android is interesting in order to gain the perspective on what the future might hold.
+</P>
+<P>
+These are the key events of the past few years:
+</P>
+<UL>
+<LI>2005 Google buys Android, Inc. The world thinks a "gPhone" is about to come out…
+<LI>Everything goes quiet for a while.
+<LI>2007 Open Handset Alliance is announced. Android is officially open-sourced.
+<LI>2008 Android SDK 1.0 is released. The G1 phone, manufactured by HTC, and sold by the wireless carrier T-Mobile USA, follows shortly afterwards.
+<LI>2009 sees a proliferation of Android-based devices. New versions of the operating system: Cupcake (1.5), Donut (1.6), and Eclair (2.0 and 2.1) are released. 20+ devices run Android.
+<LI>2010 Android is 2nd only to RIM as best-selling smart phone platform. Froyo (Android 2.2) is released and so are 60+ devices that run it.
+<LI>In 2005, when Google purchased Android, Inc., the world thought Google is about to enter the smart phone market. There were widespread speculations about device called gPhone.
+</UL>
+
+<P>
+Google CEO, Eric Schmidt, made it clear right away that Android’s ambitions are much larger than a single phone. They saw it as a platform that will enable many phones and other devices out there.
+</P>
+<H3>2.2.1. Google’s Motivation</H3>
+<P>
+Google’s motivation in supporting the Android project seems to be to have Android everywhere and by doing that, to create a level playing field for the mobile. Ultimately, Google is a media company and its business model is based on selling advertising. If everyone is using Android, then Google can provide additional services on top of it, and compete fairly. This is unlike business models of other software vendors who depend on the licensing fees.
+</P>
+<P>
+While Google does license some proprietary apps, such as Gmail and Maps, and make some money off the Android market, its primary motivation is still the advertising revenue that those apps bring in.
+</P>
+<H3>2.2.2. Open Handset Alliance</H3>
+<P>
+For this to be bigger than just Google, Android is owned by Open Handset Alliance, a non-profit group formed by key mobile operators, manufacturers, carriers, and others. The alliance is committed to openness and innovation for mobile user experience.
+</P>
+<P>
+In practice, the alliance is still very young and many members are still learning to work with each other. Google happens to be putting the most muscle behind the Android project at the moment.
+</P>
+<P>
+<div class="note"><b>note:</b><br/>
+The first version of Android SDK was released without an actual phone being on the market. The point of this is that you don’t really need a phone to do Android development. There are some exceptions to this (hardware sensors, telephony, etc.), but for the most part the Android SDK contains everything you’ll need for developing on this platform.
+</div>
+</P>
+<HR NOSHADE SIZE=1>
+<P>
+<IMG ALIGN="left" SRC="img/t2tpowered.png" BORDER="0" ALT=""> SOURCE:(<A HREF="index.t2t">index.t2t</A>)
+</P>
+</DIV>
+
+<!-- html code generated by txt2tags 2.5 (http://txt2tags.sf.net) -->
+<!-- cmdline: txt2tags -t html -i index.t2t -o book.htm -->
+</BODY></HTML>

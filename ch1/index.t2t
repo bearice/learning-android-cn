@@ -1,0 +1,12 @@
+% 注意: txt2tags会忽略%!include中文件的前三行
+% 
+%
+
+= Android Overview =
+
+In this chapter, you will learn how Android came about. We’ll take a look at its history to help us understand its future. As mobile environment is entering a make-or-break year(s), we look at the key players in this ecosystem, what motivates and what strengths and weaknesses they bring to the table.
+
+By the end of this chapter, you will have a better perception of the ecosystem from business point of view, which should help you understand the technology choices and how they relate to long-term advantages for various platforms.
+
+%!include: ch1/sec1.t2t
+%!include: ch1/sec2.t2t
