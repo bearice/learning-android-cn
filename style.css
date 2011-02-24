@@ -1,13 +1,28 @@
-
 .note {
-    background: #F2FFBF;
-    padding: 5px 5px 5px 20px;
+  background-color: #F2F2D5;
+  border: 1px solid #C4C47C;
 }
-.note b { margin: 0 0 0 -15px; }
 
-.warning {
-    background: #FFCCBF;
-    padding: 5px 5px 5px 20px;
+.tip {
+  background-color: #D6F3D6;
+  border: 1px solid #7CC47C;
 }
-.warning b { margin: 0 0 0 -15px; }
 
+.warning, .caution {
+  background-color: #F3E3D6;
+  border: 1px solid #C8311B;
+}
+
+.note > .title, .tip > .title, .caution > .title, .warning > .title {
+  font-family: inherit;
+  margin-left: 1em;
+  margin-top: 0;
+  color: black;
+  opacity: 0.6;
+}
+
+.note, .tip, .caution, .warning {
+  /* width: 620px;/* Danger: Changes right: required for .comment_count */
+  margin: 1em auto;
+  padding: 1em;
+}

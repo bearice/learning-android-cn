@@ -1,4 +1,16 @@
 % Generlaized config file for learning-android-cn project
-%!preproc: {VERSION} $rev$
-%!preproc: {BASEURL} http://dev.icybear.net/learning-android-cn/
-%!options: --mask-email
+%!target: html
+%!encoding: utf-8
+%!options: --mask-email --css-sugar --style style.css --enum-title --toc --toc-level 2
+%!preproc: '{VERSION}'  '$rev$'
+%!preproc: '{BASEURL}'  'http://dev.icybear.net/learning-android-cn/'
+%!postproc(html): '{WARNING}'   '<div class="warning"><b class="title">Warning:</b><br/>'
+%!postproc(html): '{/WARNING}'  '</div>'
+%!postproc(html): '{NOTE}'      '<div class="note"><b class="title">Note:</b><br/>'
+%!postproc(html): '{/NOTE}'     '</div>'
+%!postproc(html): '{CATION}'    '<div class="caution"><b class="title">Caution:</b><br/>'
+%!postproc(html): '{/CAUTION}'  '</div>'
+%!postproc(html): '{TIP}'       '<div class="tip"><b class="title">Tip:</b><br/>'
+%!postproc(html): '{/TIP}'      '</div>'
+
+
