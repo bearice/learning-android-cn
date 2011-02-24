@@ -7,8 +7,12 @@ OUTFILES := $(patsubst %.t2t,%.$(FORMAT),$(T2TFILES))
 
 %.$(FORMAT): %.t2t config.t2t
 	$(TXT2TAGS) -t $(FORMAT) -i $< -o $@
-
-all: $(OUTFILES) 
+  
+book.html: $(T2TFILES)
+  $(TXT2TAGS) -t $(FORMAT) -i index.t2t -o $@
+  
+all: book.html
 
 clean: 
 	rm -rf $(OUTFILES)
+  rm -rf book.html
