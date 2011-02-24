@@ -14,5 +14,5 @@ last build at %%mtime(%m/%d/%Y).
 %!include: ch2/index.t2t
 %!include: ch3/index.t2t
 ------------------------------------------------------------
-[img/t2tpowered.png] SOURCE:([%%infile %%infile])
+[images/t2tpowered.png] SOURCE:([%%infile %%infile])
 

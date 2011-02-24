@@ -34,6 +34,7 @@ Once you download it, unzip (or on Linux, untar) it into a folder that is easy t
 : Mac OS X
   /Users/YourUserName/android-sdk-mac_86
 
+
 {TIP}
 For Windows users, I strongly recommend choosing directories without spaces in them. This is because we’ll be doing work on the command-line and spaces just complicate things. Because the Windows XP home directory is in C:\Documents and Settings, I would recommend putting android-sdk in a top-level directory that you create, such as C:\apps.
 
@@ -54,8 +55,7 @@ Eclipse is very feature-rich and has a lot of time-saving features. I’ll be po
 While you can do Android development with any favorite text editor or IDE, most developers seem to be using Eclipse, and thus I’m basing this book on its use as well.
 
 {TIP}
-If you choose not to use Eclipse, please refer to [Developing in Other IDEs
-http://developer.android.com/guide/developing/other-ide.html]
+If you choose not to use Eclipse, please refer to [Developing in Other IDEs http://developer.android.com/guide/developing/other-ide.html]
 {/TIP}
 
 Now, download Eclipse from http://www.eclipse.org/downloads/. I recommend Eclipse IDE for Java Developers (NOT the twice-as-large Eclipse for Java EE developers). You can install it in any directory you’d like.
