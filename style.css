@@ -26,3 +26,18 @@
   margin: 1em auto;
   padding: 1em;
 }
+
+pre, code, tt { 
+    font-size: 1em;
+    font-family: Consolas, 'Bitstream Vera Sans Mono', 'andale mono', 'lucida console', monaco, monospace;
+}
+
+pre {
+  background: #F2F2F2;
+  white-space: pre-wrap;
+  padding: 1em;
+  margin: 1em 0;
+  border: 1px solid #ddd; 
+  font-size: 90%;
+}
+

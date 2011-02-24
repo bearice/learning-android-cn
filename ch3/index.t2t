@@ -41,13 +41,13 @@ For Windows users, I strongly recommend choosing directories without spaces in t
 However, on Windows Vista or 7, you can simply extract android-sdk into C:\Users\YourUserName.
 {/TIP}
 
-== Setting up PATH to Tools ==
+=== Setting up PATH to Tools ===
 Android SDK has a folder with all the major tools in it. Since we’re going to be using these tools from the command line, it is very helpful to add your ~/android-sdk/tools/ directory to your system PATH variable. This will allow you easier access to your tools without having to navigate to their specific location every single time.
 
 Details for setting up PATH variable depend on the platform, and are documented
 at [Installing Android SDK http://developer.android.com/sdk/installing.html] page, Step 2.
 
-== Installing Eclipse ==
+=== Installing Eclipse ===
 Eclipse is an open-source collection of programming tools originally created by IBM for for Java. Nowadays, most developers in the Java community favor Eclipse as their Integrated Development Environment (IDE) of choice. Eclipse lives at Eclipse.org.
 
 Eclipse is very feature-rich and has a lot of time-saving features. I’ll be pointing them out as we keep on going. Keep in mind that, while powerful, Eclipse tends to be very resource-hungry and you may want to restart it once a day if it starts running very sluggishly.
@@ -60,60 +60,55 @@ If you choose not to use Eclipse, please refer to [Developing in Other IDEs http
 
 Now, download Eclipse from http://www.eclipse.org/downloads/. I recommend Eclipse IDE for Java Developers (NOT the twice-as-large Eclipse for Java EE developers). You can install it in any directory you’d like.
 
-== Eclipse Workspace ==
+=== Eclipse Workspace ===
 Eclipse organizes all your work by projects. Projects are placed in a workspace, which is a location you choose. So, where you put your workspace is significant. I recommend ~/workspace as a simple place for your code. On Windows however, I recommend storying your workspace in a directory that doesn’t have spaces it (they complicate anything you might do at the command-line). C:\workspace is a good choice for Windows users.
 
-== Setting Up Android Development Tools ==
+=== Setting Up Android Development Tools ===
 You also need to set up Android Tools for Eclipse. The instructions are:
 
 	Figure 3.1. Install New Software
 		[images/03-InstallAvailableSoftware.png]
 
 
-+Start Eclipse, then select Help → Install New Software.
-+In the Available Software dialog, click Add.
-+In the Add Site dialog that appears, enter a name for the remote site (for example, "Android Plugin") in the "Name" field.
-+In the "Location" field, enter this URL: https://dl-ssl.google.com/android/eclipse/
-+Click OK.
-+Back in the Available Software view, you should now see "Developer Tools" added to the list. Select the checkbox next to Developer Tools, which will automatically select the nested tools Android DDMS and Android Development Tools. Click Next.
-+In the resulting Install Details dialog, the Android DDMS and Android Development Tools features are listed. Click Next to read and accept the license agreement and install any dependencies, then click Finish.
-+Restart Eclipse.
++ Start Eclipse, then select Help → Install New Software.
++ In the Available Software dialog, click Add.
++ In the Add Site dialog that appears, enter a name for the remote site (for example, "Android Plugin") in the "Name" field.
++ In the "Location" field, enter this URL: https://dl-ssl.google.com/android/eclipse/
++ Click OK.
++ Back in the Available Software view, you should now see "Developer Tools" added to the list. Select the checkbox next to Developer Tools, which will automatically select the nested tools Android DDMS and Android Development Tools. Click Next.
++ In the resulting Install Details dialog, the Android DDMS and Android Development Tools features are listed. Click Next to read and accept the license agreement and install any dependencies, then click Finish.
++ Restart Eclipse.
 
 {NOTE}
 If you have trouble downloading the plugin, you can try using "http" in the URL, instead of "https" (https is preferred for security reasons).
 {/NOTE}
 
-Hello, World
 
+== Hello World ==
 To make sure everything is set up properly, we’re going to write a simple Hello World program. As a matter of fact, there’s not much for us to write, but a lot to understand. This is because Eclipse will create the project shell for us from some predefined templates.
 
-No comments yet
-Creating New Project
+=== Creating New Project ===
 In Eclipse, choose File→New→Android Project. Sometimes (especially the first time you run Eclipse) the Android tools may not be appear there right away. They should show up in the future after you’ve used them for the first time. If Android Project is not an option under File→New, choose Other and look for Android Project in there.
 
-No comments yet
 In the new project dialog window, fill out the following:
 
-No comments yet
-"Project name" is an Eclipse construct. Eclipse organizes everything into projects. A project name should be one word. I like to use CamelCase naming convention here. Go ahead and type: HelloWorld.
-Next, you need to choose the build target. The build target tells the build tools which version of Android platform you are building for. You should see a list of available platforms and add-ons you have installed as part of your SDK in here. Go ahead, pick one of the newer ones, such as Android 2.2 (but don’t choose the targets named Google APIs).
-You need to fill out your project properties next. The application name is the plain English name of your application. Go ahead, write something like Hello, World!!!.
-The package name is a Java construct. In Java, all source code is organized into packages. Packages are important because, among other things, they specify the visibility of objects between the various Java classes in your project. In Android, packages are also important for application signing purposes. Your package name should be the reverse of your domain name with optional subdomains. I might use com.example.calculator if I were building a calculator app and my domain name was example.com. I’m going to be using com.marakana for my package name here.
-You can optionally specify an activity. I haven’t covered activities yet (you’ll learn about them in Chapter 6, Android User Interface), but think of them as corresponding to the various screens in your application. An activity is going to be represented by a Java class, so as such its name should adhere to Java class naming conversion: start with upper case and use CamelCase to separate words. So, type HelloWorld for your activity name.
-The minimum SDK version is the minimum version of Android—as represented by API level—that is required on the device in order to run this application. You want this number to be as low as possible so that your app can run on as many various devices out there as possible. I’m going to put 8 here to represent Android 2.2, which I know I have installed.
-Finally, click on Finish button and Eclipse will create your project. Let’s look at the various files that this process created:
++ "Project name" is an Eclipse construct. Eclipse organizes everything into projects. A project name should be one word. I like to use [CamelCase http://en.wikipedia.org/wiki/Camel_case_(programming)] naming convention here. Go ahead and type: HelloWorld.
++ Next, you need to choose the build target. The build target tells the build tools which version of Android platform you are building for. You should see a list of available platforms and add-ons you have installed as part of your SDK in here. Go ahead, pick one of the newer ones, such as Android 2.2 (but don’t choose the targets named Google APIs).
++ You need to fill out your project properties next. The application name is the plain English name of your application. Go ahead, write something like Hello, World!!!.
++ The package name is a Java construct. In Java, all source code is organized into packages. Packages are important because, among other things, they specify the visibility of objects between the various Java classes in your project. In Android, packages are also important for application signing purposes. Your package name should be the reverse of your domain name with optional subdomains. I might use com.example.calculator if I were building a calculator app and my domain name was example.com. I’m going to be using com.marakana for my package name here.
++ You can optionally specify an activity. I haven’t covered activities yet (you’ll learn about them in [Chapter 6, Android User Interface #ch6]), but think of them as corresponding to the various screens in your application. An activity is going to be represented by a Java class, so as such its name should adhere to Java class naming conversion: start with upper case and use CamelCase to separate words. So, type HelloWorld for your activity name.
++ The minimum SDK version is the minimum version of Android—as represented by API level—that is required on the device in order to run this application. You want this number to be as low as possible so that your app can run on as many various devices out there as possible. I’m going to put 8 here to represent Android 2.2, which I know I have installed.
++ Finally, click on Finish button and Eclipse will create your project. Let’s look at the various files that this process created:
 
-1 comment
-Figure 3.2. HelloWorld New Project Window
-
+	Figure 3.2. HelloWorld New Project Window
+		[images/03-NewProject.png]
 
 
-Manifest File
+=== Manifest File ===
 Manifest file glues everything together. It is this file that explains what the application consists of, what all its main building blocks are, what permissions it requires, and so on.
 
-No comments yet
-Example 3.1. AndroidManifest.xml
-
+**Example 3.1. AndroidManifest.xml**
+{CODE}
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.marakana" android:versionCode="1" android:versionName="1.0">
@@ -129,13 +124,13 @@ Example 3.1. AndroidManifest.xml
   <uses-sdk android:minSdkVersion="8" />
 
 </manifest>
+{/CODE}
 
-Layout XML Code
+=== Layout XML Code ===
 The layout file specifies the layout of your screen. In this case, we have only one screen and its loaded by the Java code, HelloWorld activity above.
 
-No comments yet
-Example 3.2. res/layout/main.xml
-
+**Example 3.2. res/layout/main.xml**
+{CODE}
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical" android:layout_width="fill_parent"
@@ -143,28 +138,27 @@ Example 3.2. res/layout/main.xml
         <TextView android:layout_width="fill_parent"
                 android:layout_height="wrap_content" android:text="@string/hello" />
 </LinearLayout>
+{/CODE}
 
-Strings
+=== Strings ===
 This is another XML file that contains all text that your application uses. For example, names of buttons, labels, default text and all such strings go into this file. This is the best practice of separating concerns of various files, even if they are XML files. In other words, layout XML is responsible for layout out widgets, but strings XML is responsible for their textual content.
 
-No comments yet
-Example 3.3. res/values/strings.xml
-
+**Example 3.3. res/values/strings.xml**
+{CODE}
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hello">Hello World, HelloWorld!</string>
     <string name="app_name">Hello, World!!!</string>
 </resources>
+{/CODE}
 
-The R File
+=== The R File ===
 The R file is the glue between the world of Java and the world of resources. It is an automatically generated file and as such you never modify it. It is recreated every time you change anything in the res directory, for example add an image or XML file.
 
-1 comment
 You don’t need to look at this file much. We will use data it in quite a bit, but we’ll use Eclipse to help us refer to values stored in this file.
 
-No comments yet
-Example 3.4. gen/com/marakana/R.java
-
+**Example 3.4. gen/com/marakana/R.java**
+{CODE}
 /* AUTO-GENERATED FILE.  DO NOT MODIFY.
  *
  * This class was automatically generated by the
@@ -188,13 +182,13 @@ public final class R {
         public static final int hello=0x7f040000;
     }
 }
+{/CODE}
 
-Java Source Code
+=== Java Source Code ===
 The Java code is what drives everything. It is this code that ultimately gets converted to Dalvik executable and runs your application.
 
-1 comment
-Example 3.5. HelloWorld.java
-
+**Example 3.5. HelloWorld.java**
+{CODE}
 package com.marakana;
 
 import android.app.Activity;
@@ -208,47 +202,40 @@ public class HelloWorld extends Activity {
     setContentView(R.layout.main);
   }
 }
+{/CODE}
 
-The Emulator
+=== The Emulator ===
 
 Running your application on a physical device versus an emulated device is pretty much the same thing. That is because the emulator is an actual code emulator, meaning it runs the same code base as the actual device, all the way down to the machine layer.
 
-No comments yet
-Tip
-A simulator and an emulator sound very similar, but are fundamentally different. To emulate means to imitate the machine executing the binary code. So, an emulator is sort of like a virtual machine. A simulator merely simulates the behavior of the code at a higher level. Android SDK ships with a true emulator, based on QEMU.
+{TIP}
+A simulator and an emulator sound very similar, but are fundamentally different. To emulate means to imitate the machine executing the binary code. So, an emulator is sort of like a virtual machine. A simulator merely simulates the behavior of the code at a higher level. Android SDK ships with a true emulator, based on [QEMU http://wiki.qemu.org/Main_Page].
+{/TIP}
 
 To use the emulator, we’ll have to create an Android Virtual Device (AVD). The easiest way to do that is to start the android tool via Eclipse.
 
-1 comment
-To create a new AVD, start the tool called Android SDK and AVD Manager. You can start this tool from Eclipse by clicking on icon  or via command line by starting tool called android in your SDK/tools directory.
+To create a new AVD, start the tool called Android SDK and AVD Manager. You can start this tool from Eclipse by clicking on icon [images/03-icon_android.png] or via command line by starting tool called android in your SDK/tools directory.
 
-No comments yet
-Figure 3.3. Android SDK and AVD Manager
-
-
+	Figure 3.3. Android SDK and AVD Manager
+		[images/03-AndroidSDKandADVManager.png]
 
 From within Android SDK and AVD Manager, you can choose New… and a Create New AVD dialog window will pop up. In this dialog, you specify the parameters for your new AVD. The name is any name you choose. Target is what you what to have installed as version of Android on this particular AVD. The list of possible targets is based on platforms and add-ons that you have installed into your SDK. If you don’t have any targets, go back to Android SDK and AVD Manager and choose Available packages tab to install at least one platform, such as Android 2.3 - API level 9, for example.
 
-No comments yet
 Each AVD can have an SD Card. You can just specify a number here for your built-in card, in megabytes. Skin is the look and feel of your device as well as its form factor. Hardware option lets you fine tune what this AVD does or doesn’t support.
 
-No comments yet
-Figure 3.4. New AVD Dialog
-
-
+	Figure 3.4. New AVD Dialog
+		[images/03-CreateNewAVD.png]
 
 Once you are done with this dialog, you will have and AVD in your list. Go ahead and start it. An emulator will pop up.
 
-1 comment
-Figure 3.5. Emulator
+	Figure 3.5. Emulator
+		[images/03-Emulator.png]
 
-
-
-An Emulator Versus a Physical Phone
+=== An Emulator Versus a Physical Phone ===
 For the most part, running your application on the emulator is identical to running it on a physical phone. There are some notable exceptions, mostly to do with things that are just hard to virtualize, such as sensors. Other hardware-related features like telephony and location services, can be simulated in the emulator.
 
-2 comments
-Summary
+== Summary ==
 
 Setting up Android development environment breaks down to setting up Android SDK and Eclipse. Once you have set you your development environment, a good test that everything is working is to use Eclipse to create a simple Hello World project and run it in the Emulator. If that runs fine, you are almost certain that your system is setup and ready for further development.
+
 
