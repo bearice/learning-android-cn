@@ -5,49 +5,49 @@
 
 = 前言 Preface =
 
-This book sprang from years of delivering Marakana Android Bootcamp training class to thousands of software developers at some of the largest mobile companies on four continents around the world. Teaching Android, over time I saw what works and what doesn’t. This book is the distilled version of Android Bootcamp training course that I developed at Marakana and fine-tuned over numerous engagements.
+% This book sprang from years of delivering Marakana Android Bootcamp training class to thousands of software developers at some of the largest mobile companies on four continents around the world. Teaching Android, over time I saw what works and what doesn’t. This book is the distilled version of Android Bootcamp training course that I developed at Marakana and fine-tuned over numerous engagements.
 
-本书的前身是Marakana Android Bootcamp培训课程中内部连载的读物，其受众多是移动设备公司的开发者，几千人遍布四个大洲。它总结了我在几年间Android教学中的心得体会：哪些管用，哪些应该避免。经过提炼与适当的增删，最终成了本书。
+本书的前身是Marakana Android Bootcamp培训课程中内部连载的读物，其受众多是移动设备公司的开发者，几千人遍布四个大洲。它总结了我在几年间Android教学中的心得体会：哪些管用，哪些应该避免。经过提炼与适当的增删，最终成为本书。
 
-My background is in Java from back before it was even called that. From the beginning, I was very much interested in embedded development in order to program various devices that surround us in every day life. Because Java took off mostly in the web application development, most of my previous decade went to building large enterprise system. Then Android arrived and I got once again very excited about building software for non-traditional computers. My current interests are Android on devices that may not even resemble a typical phone.
+% My background is in Java from back before it was even called that. From the beginning, I was very much interested in embedded development in order to program various devices that surround us in every day life. Because Java took off mostly in the web application development, most of my previous decade went to building large enterprise system. Then Android arrived and I got once again very excited about building software for non-traditional computers. My current interests are Android on devices that may not even resemble a typical phone.
 
-自Java初出茅庐开始，我们就结下了不解之缘。当时java的定位还是在嵌入式领域，“对身边的各种设备编程“，这一想法对我触动很深。不久之后Java的主力就转向了Web应用的开发，我的工作也顺之而转型到大型企业级应用的开发，如此度过了我的上个十年。所以在Android出现时，我马上就认了出来：为非PC的设备编程！更何况Android所支持的，甚至不仅仅是手机而已。
+自Java初出茅庐开始，我们就结下了不解之缘。当时java的定位还是在嵌入式领域，“对身边的各种设备编程“，这一想法对我触动很深。不久之后Java的主力就转向了Web应用的开发，我的工作也顺之而转型到大型企业级应用的开发，并在此间度过了我的上个十年。所以在Android出现时，我马上就认了出来：为非PC的设备编程！更何况Android所支持的，甚至不仅仅是手机而已。
 
-This book lets anyone who knows Java (or a similar language) grow to develop a reasonably complex Android application. I hope you find this book fairly comprehensive and that you find the example-based learning reasonably motivating. The goal of Learning Android is to get you to think in Android terms.
+% This book lets anyone who knows Java (or a similar language) grow to develop a reasonably complex Android application. I hope you find this book fairly comprehensive and that you find the example-based learning reasonably motivating. The goal of Learning Android is to get you to think in Android terms.
 
-本书假定读者拥有java或类似语言的基础，配合实例，按照一个合适的难度，手把手地为你讲解Android应用的开发过程。Learning Android，更是感受Android的思路。
+本书假定读者拥有java或类似语言的基础，配合实例，参照一个合适的难度，手把手地为你讲解Android应用的开发过程。Learning Android，更是感受Android的思路。
 
 == What’s Inside ==
 
-Chapter 1, Android Overview, is an introduction to Android and its history. 
+% Chapter 1, Android Overview, is an introduction to Android and its history. 
 
 第一章，“概述“，简单介绍Android及其历史。
 
-Chapter 2, The Stack, is an overview of the Android Operating System and all its parts from a very high level. 
+% Chapter 2, The Stack, is an overview of the Android Operating System and all its parts from a very high level. 
 
 第二章，“架构“，简单介绍Android操作系统及其各个组件。
 
-Chapter 3, Quick Start, helps you set up your environment for Android application development. 
+% Chapter 3, Quick Start, helps you set up your environment for Android application development. 
 
 第三章，“快速入门“，设置你的开发环境。
 
-Chapter 4, Main Building Blocks, explains the components that Android provides to application developers to put together an app.
+% Chapter 4, Main Building Blocks, explains the components that Android provides to application developers to put together an app.
 
 第四章，Main Building Blocks：
 
-Chapter 5, Yamba Overview, is the overview of the Yamba application that we’ll build together through the book and use as an example to learn various features of Android. 
+% Chapter 5, Yamba Overview, is the overview of the Yamba application that we’ll build together through the book and use as an example to learn various features of Android. 
  
-第五章，Yambda概述：简单介绍了一个Andorid应用Yamba，它将作为贯穿全书的实例，展示Android的诸多特性。
+第五章，“Yambda概述“，简单介绍了一个Andorid应用Yamba，它将作为贯穿全书的实例，以展示Android的诸多特性。
  
-Chapter 6, Android User Interface, explains how to build the user interface for your application.
+% Chapter 6, Android User Interface, explains how to build the user interface for your application.
 
-第六章，Android用户接口：为你的应用设计用户接口。 
+第六章，“Android用户接口“，为你的应用设计用户接口。 
  
-Chapter 7, Preferences, File System, Options Menu, and Intents, covers some of the operating system features that make an application developer’s life easier. 
+% Chapter 7, Preferences, File System, Options Menu, and Intents, covers some of the operating system features that make an application developer’s life easier. 
 
-第七章，首选项，文件系统，Option Menu及Intent：操作系统中一些有爱的特性。
+第七章，“首选项，文件系统，Option Menu及Intent“，操作系统中的一些方便的特性。
 
-Chapter 8, Services, covers building an Android service to process background tasks. 
+% Chapter 8, Services, covers building an Android service to process background tasks. 
 
 第八章，服务。
 
@@ -67,46 +67,40 @@ Chapter 14, Android Interface Definition Language (AIDL), covers building an int
 
 == 排版约定 Conventions Used in This Book ==
 
-The following typographical conventions are used in this book:
+% The following typographical conventions are used in this book:
 
 本书使用如下排版字体约定：
 
 //斜体（Italic）//
-
-	Indicates new terms, URLs, email addresses, filenames, and file extensions.
+% Indicates new terms, URLs, email addresses, filenames, and file extensions.
 
 	用于新名词、url、email地址、文件名和文件扩展名。
 
 
 ``固定宽度（Constant width）``
-
-	Used for program listings, as well as within paragraphs to refer to program elements such as variable or function names, data types, and XML entities.
+% Used for program listings, as well as within paragraphs to refer to program elements such as variable or function names, data types, and XML entities.
 
 	用于程序代码，或者文本中用以表示函数名、数据类型或XML Entity。	
 	
 **``等宽粗体（Constant width bold）``**
-	
-	Shows commands or other text that should be typed literally by the user.
+% Shows commands or other text that should be typed literally by the user.
 	
 	用于命令或者用户输入的文本。
 
 //``等宽斜体（Constant width italic）``//
-	
-	Shows text that should be replaced with user-supplied values or by values determined by context.
+% Shows text that should be replaced with user-supplied values or by values determined by context.
 	
 	用于表示用户输入或者上下文中指明的值。
     
 {NOTE}
-
-	This icon signifies a tip, suggestion, or general note.  
+% This icon signifies a tip, suggestion, or general note.  
 	
 	用于表示一个提示、建议或者笔记。
 
 {/NOTE}
 
 {WARNING}
-
-	This icon indicates a warning or caution.
+% This icon indicates a warning or caution.
 	
 	用于强调一个警告，或者需要注意的地方。
 	
@@ -115,22 +109,22 @@ The following typographical conventions are used in this book:
 
 == 关于本书的程序 Using Code Examples ==
 
-This book is here to help you get your job done. In general, you may use the code in this book in your programs and documentation. You do not need to contact us for permission unless you’re reproducing a significant portion of the code. For example, writing a program that uses several chunks of code from this book does not require permission. Selling or distributing a CD-ROM of examples from O’Reilly books does require permission. Answering a question by citing this book and quoting example code does not require permission. Incorporating a significant amount of example code from this book into your product’s documentation does require permission.
+% This book is here to help you get your job done. In general, you may use the code in this book in your programs and documentation. You do not need to contact us for permission unless you’re reproducing a significant portion of the code. For example, writing a program that uses several chunks of code from this book does not require permission. Selling or distributing a CD-ROM of examples from O’Reilly books does require permission. Answering a question by citing this book and quoting example code does not require permission. Incorporating a significant amount of example code from this book into your product’s documentation does require permission.
 
-本书旨在为读者提供能及的帮助。除非用作特殊用途，你可以在你的程序或者文档中随意使用本书的代码，而不必向我们申请许可。比如基于本书的一些代码开发的程序无需许可，而出售或者以CD-ROM形式分发O'Reilly出版物中的例子就需要许可；在回答问题时引用本书的例子不需要许可，在产品的文档中大量引用本书的例子就需要许可。
+本书旨在为读者提供能及的帮助。除非用作特殊用途，你可以在你的程序或者文档中随意使用本书的代码，而不必向我们申请许可。比如基于本书的一些代码开发的程序无需许可，而出售或者以CD-ROM形式分发O'Reilly出版物中的例子则需要许可；在回答问题时引用本书的例子不需要许可，在产品的文档中大量引用本书的例子则需要许可。
 
-We appreciate, but do not require, attribution. An attribution usually includes the title, author, publisher, and ISBN. For example: “Book Title by Some Author. Copyright 2008 O’Reilly Media, Inc., 978-0-596-xxxx-x.”
+% We appreciate, but do not require, attribution. An attribution usually includes the title, author, publisher, and ISBN. For example: “Book Title by Some Author. Copyright 2008 O’Reilly Media, Inc., 978-0-596-xxxx-x.”
 
 我们鼓励保持署名，但不强制。通常署名可以包含书名、作者、出版商、ISBN等信息，比如“Book Title by Some Author. Copyright 2008 O'Reilly Media. Inc.”。
 
-If you feel your use of code examples falls outside fair use or the permission given above, feel free to contact us at permissions@oreilly.com.
+% If you feel your use of code examples falls outside fair use or the permission given above, feel free to contact us at permissions@oreilly.com.
 
 如果你为没有许可使用本书的代码而过意不去，联系我们就好：permission@oreilly.com。
 
 == Safari® Books Online ==
 
-Note
-    Safari Books Online is an on-demand digital library that lets you easily search over 7,500 technology and creative reference books and videos to find the answers you need quickly.
+%Note
+%    Safari Books Online is an on-demand digital library that lets you easily search over 7,500 technology and creative reference books and videos to find the answers you need quickly.
 
 {NOTE}
 	
@@ -138,11 +132,11 @@ Note
 	
 {/NOTE}
 
-With a subscription, you can read any page and watch any video from our library online. Read books on your cell phone and mobile devices. Access new titles before they are available for print, and get exclusive access to manuscripts in development and post feedback for the authors. Copy and paste code samples, organize your favorites, download chapters, bookmark key sections, create notes, print out pages, and benefit from tons of other time-saving features.
+% With a subscription, you can read any page and watch any video from our library online. Read books on your cell phone and mobile devices. Access new titles before they are available for print, and get exclusive access to manuscripts in development and post feedback for the authors. Copy and paste code samples, organize your favorites, download chapters, bookmark key sections, create notes, print out pages, and benefit from tons of other time-saving features.
 
 只要订阅，即可随意在我们的在线资料库中阅读文本、观看视频，也可以通过手机或者其它设备访问。在它上面可以在第一时间阅读未出版的新书，跟踪其写作动态，为作者提供反馈。而且还有一系列方便的功能：复制代码样例，收藏、下载章节，作笔记，打印等等。
 
-O’Reilly Media has uploaded this book to the Safari Books Online service. To have full digital access to this book and others on similar topics from O’Reilly and other publishers, sign up for free at [role="orm:hideurl:ital"]http://my.safaribooksonline.com.
+% O’Reilly Media has uploaded this book to the Safari Books Online service. To have full digital access to this book and others on similar topics from O’Reilly and other publishers, sign up for free at [role="orm:hideurl:ital"]http://my.safaribooksonline.com.
 
 O'Reilly Media已经将本书上传至Safari Books Online。欲获得关于本书或者类似出版物的更多信息，请登录 http://my.safaribooksonline.com 。
 
