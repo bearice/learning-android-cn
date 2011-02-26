@@ -5,74 +5,73 @@
 
 == 概述 Android Overview ==
 
-Android是一个为移动设备设计的、综合性的开源平台。它由Google主导，由开放手持设备联盟（Open Handset Alliance）所拥有。联盟的目标是“加速移动平台的创新，为消费者提供更丰富的功能、更低廉的价格和更好的移动体验”。Android就是实现这个目标的战车。
+% Android is a comprehensive open source platform designed for mobile devices. It is championed by Google and owned by Open Handset Alliance. The goal of the alliance is to "accelerate innovation in mobile and offer consumers richer, less expensive, and better mobile experience". Android is the vehicle to do so.
 
-Android is a comprehensive open source platform designed for mobile devices. It is championed by Google and owned by Open Handset Alliance. The goal of the alliance is to "accelerate innovation in mobile and offer consumers richer, less expensive, and better mobile experience". Android is the vehicle to do so.
+Android是一个为移动设备设计的开源系统。它由Google主导的开放手持设备联盟（Open Handset Alliance）维护，该组织的口号是：“助力移动设备的变革，以更低廉的价格，为用户提供强大的功能和更好的用户体验”，而Android正是其理念的核心。
 
-就此来说，Android正在移动平台上进行着一场革命。这是第一个真正将硬件和在此之上运行的软件分离出来的开放平台。它使得大量不同种类设备能够运行同样的应用程序，并为开发者和消费者创造出一个更加丰富生态系统。
+% As such, Android is revolutionizing the mobile space. For the first time, it is a truly open platform that is separating hardware from software that runs on it. This allows for a much larger number of devices to run same applications and creates a much richer ecosystem for developers and consumers to enjoy.
 
-As such, Android is revolutionizing the mobile space. For the first time, it is a truly open platform that is separating hardware from software that runs on it. This allows for a much larger number of devices to run same applications and creates a much richer ecosystem for developers and consumers to enjoy.
+现在，Android正主导着移动领域的一场革命。这是第一个真正硬件独立的开放系统，同一个应用得以轻松的运行于大量不同的设备之上，为用户和开发者营造了一个更有生机的生态圈。
 
-让我们撇开这些术语，看看它们的后面有些什么：
+% Let’s break down some of these buzz words and see what’s behind them:
 
-Let’s break down some of these buzz words and see what’s behind them:
+我们先撇开这些行话，直入主题：
 
-=== Comprehensive ===
+=== 完整性 Comprehensive ===
 
-Anroid是一个综合性的平台。它为移动设备提供了一个完整的软件栈。
+% Android is a comprehensive platform. It is a complete software stack for a mobile device.
 
-Android is a comprehensive platform. It is a complete software stack for a mobile device.
+Anroid是一个完整的平台，即作为移动设备的一整套完整的软件体系。
 
-对于开发者来说，Android提供了全套的工具和框架来简单快速的开发移动应用。Android SDK为你提供了所有开始着手开发的工具 —— 你甚至都不需要一台真正的手机。
+% For developers, Android provides all the tools and frameworks to allow easy and quick development of mobile apps. Android SDK is all you need to start developing for Android - you don’t even need a physical phone.
 
-For developers, Android provides all the tools and frameworks to allow easy and quick development of mobile apps. Android SDK is all you need to start developing for Android - you don’t even need a physical phone.
+面向开发者，Android提供了一套完整的工具和框架，以简化开发过程、提高开发效率。想要开发Android应用的话，Android SDK就是你所需的一切了——甚至不需要一台真正的手机。
 
-对于用户来说，Android开机即用。另外，用户可以按照自己的意愿个性化他们的手机体验。
+% For users, Android just works right out of the box. Additionally, users can substantially customize their phone experience.
 
-For users, Android just works right out of the box. Additionally, users can substantially customize their phone experience.
+面向用户，Android开机即用。而且，用户可以按照自己的喜好做出相当程度的自定义。
 
-对于制造商来说，这是一个可以在他们的设备上运作的全套解决方案。除了一些特定的硬件驱动，Android提供了所有的东西来让他们的设备工作。
+% For manufacturers, it is the complete solution that can run their devices. Other than some hardware-specific drivers, Android provides everything else to make their devices work.
 
-For manufacturers, it is the complete solution that can run their devices. Other than some hardware-specific drivers, Android provides everything else to make their devices work.
+面向生产厂商，Android是令他们的设备跑起来的完整方案。厂商只需要编写自己的硬件驱动即可，其它一切都有Android代劳。
 
-=== Open Source Platform ===
+=== 开源平台 Open Source Platform ===
 
-Android是一个开源平台。整个软件栈，从底层的Linux模块到原生库，再到应用程序框架，直到完整的应用程序，Android是完全开放的。
+% Android is an open source platform. The entire stack, from low-level Linux modules all the way to native libraries, and application framework, to complete applications, Android is totally open.
 
-Android is an open source platform. The entire stack, from low-level Linux modules all the way to native libraries, and application framework, to complete applications, Android is totally open.
+Android是一个开放源码的平台。整个架构，从底层的Linux模块、原生库，上至开发框架、完整的应用程序，Android是完全开放的。
 
-尤其是，Android使用了商业上友好的许可证（Apache/MIT），这样其他人可以自由的扩展它，并用于各种用途。甚至是Android软件栈采用一些第三方开源库，在新的许可证授权下也能被重写。
+% More so, Android is licensed under business-friendly licenses (Apache/MIT) so that others can freely extend it and use it for variety of purposes. Even some 3rd party open source libraries that were brought into Android stack were re-written to be licensed under new license terms.
 
-More so, Android is licensed under business-friendly licenses (Apache/MIT) so that others can freely extend it and use it for variety of purposes. Even some 3rd party open source libraries that were brought into Android stack were re-written to be licensed under new license terms.
+而且，Android选择了对商业行为比较友好的许可证（Apache/MIT），从而允许他人可以自由的扩展，合法地用作各种用途。即使是Android架构中使用的一些三方库也是基于这样的许可。
 
-所以，作为一个开发者，你有整个平台源代码的权限。这将允许你去探索Android操作系统的运转过程。作为一个制造商，你也可以方便地移植Android操作系统到自己的特定硬件上。如果你不愿意，你也可以加入 own proprietary secret sauce 而不用回馈到开发社区。
+% So, as a developer, you have access to entire platform source code. This allows you to see how the guts of Android operating system work. As manufacturer, you can easily port Android OS to your specific hardware. You can also add your own proprietary secret sauce and you do not have to push it back to the development community if you don’t want to.
 
-So, as a developer, you have access to entire platform source code. This allows you to see how the guts of Android operating system work. As manufacturer, you can easily port Android OS to your specific hardware. You can also add your own proprietary secret sauce and you do not have to push it back to the development community if you don’t want to.
+所以作为开发者，你有权访问整个平台的所有代码，其运行原理不是秘密；作为生产厂商，你可以轻松把Android OS移植到自己专有的硬件平台之上，也可以保留自己私有的秘方，而不必强制贡献给开发社区。
 
-这些都不用从Android得到授权，你可以现在就开始使用和修改它，没有任何附带条件。尤其是，Android拥有不同级别的hooks来让任何人用一些意想不到的办法扩展它。
+% There’s no need to license Android. You can start using it and modifying it today, and there’re no strings attached. More so, Android has many hooks at all various levels of the platform to allow anyone to extend it in unforeseen ways.
 
-There’s no need to license Android. You can start using it and modifying it today, and there’re no strings attached. More so, Android has many hooks at all various levels of the platform to allow anyone to extend it in unforeseen ways.
+这一切都不用Android的授权。你现在就可以拿来使用它、修改它，没有任何附加条件。而且Android在不同层次上都提供了丰富的hooks，在扩展上使人大有可为。
+
+%{NOTE}
+% There are couple of minor low-level pieces of code that are proprietary to each vendor, such as the software stack for the cellular, Wi-Fi, and Bluetooth radios. Android tries hard to abstract those components with interfaces so that vendor-specific code can be easily managed.
+%{/NOTE}
 
 {NOTE}
-有一些较底层的代码片段是私有的，属于不同的提供者，例如软件栈里的蜂窝电话、Wi-Fi和蓝牙无线电模块。Android试图用接口抽象出这些组件，使这些提供者相关的代码能够轻松地得到托管。
+	仍然有部分底层的代码是专有的，比如蜂窝通信、Wi-Fi、蓝牙等等。便于管理专有组件，Android尽力将这些组件抽象开，并保留接口。
 {/NOTE}
 
-{NOTE}
-There are couple of minor low-level pieces of code that are proprietary to each vendor, such as the software stack for the cellular, Wi-Fi, and Bluetooth radios. Android tries hard to abstract those components with interfaces so that vendor-specific code can be easily managed.
-{/NOTE}
 
 === Designed for Mobile Devices === 
 
-Android是一个为有意为移动设备构建的平台。当设计Android时，开发团队就着眼于那些自从出现于移动设备上就出现的、在可预见的未来里也不太可能会改善的约束。比如首先，移动设备都使用电池能源，而电池表现在近期似乎不会有很好改进。然后，移动设备的小巧意味着他们的内存和速度总是被限制着。
-
 Android is a purpose-built platform for mobile devices. When designing Android, the team looked at what constraints are likely not going to change for a foreseeable future when it comes to mobile devices. For one, mobile devices are battery powered and battery performance is likely not going to get much better any time soon. Secondly, the small size of mobile devices means that they will always be limited in terms of memory and speed.
 
-这些约束从平台的开始到整个开发过程里都得到了考虑。结果带来了全面的、更好的用户体验。
+Android是一个为有意为移动设备构建的平台。当设计Android时，开发团队就着眼于那些自从出现于移动设备上就出现的、在可预见的未来里也不太可能会改善的约束。比如首先，移动设备都使用电池能源，而电池表现在近期似乎不会有很好改进。然后，移动设备的小巧意味着他们的内存和速度总是被限制着。
 
 These constraints were taken into consideration from the get-go and were addressed throughout the platform. The result is an overall better user experience.
 
-Android被设计成在所有种类的物理设备上都能运行的平台。Android不对设备的屏幕尺寸、分辨率、芯片或别的什么做任何假设。它的核心就是要被设计成为可移植的。
+这些约束从平台的开始到整个开发过程里都得到了考虑。结果带来了全面的、更好的用户体验。
 
 Android was designed to run on all sorts of physical devices. Android doesn’t make any assumptions about a device’s screen size, resolution, chipset, and so on. Its core is designed to be portable.
 
-
+Android被设计成在所有种类的物理设备上都能运行的平台。Android不对设备的屏幕尺寸、分辨率、芯片或别的什么做任何假设。它的核心就是要被设计成为可移植的。
