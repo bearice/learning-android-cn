@@ -21,6 +21,6 @@
 %!preproc: '{/CODE}' '```'
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% following line comments translations out. change to {ORGI} when releasing.
-%!preproc: '{TRAN}' '%'
-%!preproc: '{ORGI}' ''
+%!preproc: '{TRAN}' ''
+%!preproc: '{ORGI}' '%'
 
