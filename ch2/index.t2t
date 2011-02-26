@@ -11,7 +11,7 @@
 {TRAN}在本章结束后，你将至少能够大概的了解整个系统的是如何工作的。
 
 {ORGI}== Stack Overview ==
-{TRAN}== 综述 ==
+{TRAN}== 概述 ==
 
 {ORGI}Android operating system is like a cake consisting of various layers. Each layer has its own characteristics and purpose. The layers are not cleanly separated but often seep into each other.
 {TRAN}Android 系统就像一个有很多层的蛋糕。 每一层都有自己的特性和目的。 这些层之间并没有一个明确的分割线，并且而通常是相互渗透的。
