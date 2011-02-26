@@ -33,7 +33,7 @@
 
 % Chapter 4, Main Building Blocks, explains the components that Android provides to application developers to put together an app.
 
-第四章，Main Building Blocks：
+第四章，“Main Building Blocks“：
 
 % Chapter 5, Yamba Overview, is the overview of the Yamba application that we’ll build together through the book and use as an example to learn various features of Android. 
  
@@ -140,16 +140,26 @@ Chapter 14, Android Interface Definition Language (AIDL), covers building an int
 
 O'Reilly Media已经将本书上传至Safari Books Online。欲获得关于本书或者类似出版物的更多信息，请登录 http://my.safaribooksonline.com 。
 
-== Acknowledgements ==
+== 致谢 Acknowledgements ==
 
-This book is truly a result of an outstanding team work. First, I’d like to thank my editors at O’Reilly: Andy Oram and Brian Jepson. Andy, your comments were spot-on and constructive. Brian, thank you for persuading me to take on writing this book in the first place.
+% This book is truly a result of an outstanding team work. First, I’d like to thank my editors at O’Reilly: Andy Oram and Brian Jepson. Andy, your comments were spot-on and constructive. Brian, thank you for persuading me to take on writing this book in the first place.
 
-I’d like to thank all my technical editors: Dan Bornstein, Hervé Guihot, Frank Maker III, and Bill Schrickel. Thank you for diligently reading my half-baked drafts and providing valuable comments.
+本书之付梓面世离不开大家的协作。首先要感谢O'Reilly的编辑Andy Oram和Brian Jepson。Andy，你的建议总是一针见血，让我受益良多。Brian，感谢你说服我开始本书的写作。
 
-This book wouldn’t be what it is without field testing it on our numerous clients - you were the true pioneers on the cutting edge of Android and your projects are all very inspiring. Thank you for your trust.
+% I’d like to thank all my technical editors: Dan Bornstein, Hervé Guihot, Frank Maker III, and Bill Schrickel. Thank you for diligently reading my half-baked drafts and providing valuable comments.
 
-I’d like to thank my team at Marakana: Aleksandar (Saša) Gargenta, Ken Jones, and Laurent Tonon for bringing back first-hand feedback from running Android Bootcamp courses using the draft of this book. Saša, special thanks to you for sending me back to the drawing board more times than I’d like to admit. This book is probably months pass due because of your in-depth technical comments.
+感谢我的所有技术编辑：Dan Bornstein，Hervé Guihot，Frank Maker III和Bill Schrickel。感谢你们孜孜不倦地审读我未成形的原稿，感谢你们提供的宝贵建议。
+
+% This book wouldn’t be what it is without field testing it on our numerous clients - you were the true pioneers on the cutting edge of Android and your projects are all very inspiring. Thank you for your trust.
+
+没有大家在诸多设备上所做的实际测试，本书肯定不是现在的样子 —— 你们是Android的先驱者，你们的项目。感谢你们的信任。
+
+% I’d like to thank my team at Marakana: Aleksandar (Saša) Gargenta, Ken Jones, and Laurent Tonon for bringing back first-hand feedback from running Android Bootcamp courses using the draft of this book. Saša, special thanks to you for sending me back to the drawing board more times than I’d like to admit. This book is probably months pass due because of your in-depth technical comments.
+
+感谢我在Marakana的团队：Aleksandar (Saša) Gargenta，Ken Jones和Laurent Tonon。你们使用本书的原稿作为Android Bootcamp培训课程，并给了我第一手的反馈。这里要特殊感谢一下n次督促我回到画板前的Saša：要没你深刻的技术评论，本书很可能几个月前就草草了事了。
 
 And finally, a huge thanks to my wife Lisa and daughter Kylie. I know what a sacrifice it was for you while I was criss-crossing the world working on this material. Thank you for supporting me along the way.
+
+最后的感谢留给我深爱的妻子Lisa和女儿Kylie，我深知在写作期间你们所做的牺牲。感谢你们对我一如既往的支持。
 
 Marko Gargenta, San Francisco, CA
