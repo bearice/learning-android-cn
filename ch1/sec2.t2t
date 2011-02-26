@@ -1,52 +1,65 @@
 %
 %
 %
-%
 
-== History ==
+== 历史 History ==
 
-The history of Android is interesting in order to gain the perspective on what the future might hold.
+%The history of Android is interesting in order to gain the perspective on what the future might hold.
 
-这些是过去几年来发生的一些重要事件：
+为了获得在未来需要秉持的观点，了解一下Android的历史还是很有趣的。
 
-These are the key events of the past few years:
+%These are the key events of the past few years:
 
-- 2005 Google收购Android，Inc。全世界都认为”gPhone“就要出来了……
-- 一段时间内一切似乎变得平静了下来。
-- 2007 宣布成立开放手持设备联盟。Android被官方开源。
-- 2008 Android SDK 1.0发布，HTC制造的G1手机，由无线运营商T-Mobile美国发售，很快拥有了一批追随者。
-- 2009 基于Android的设备迅速涌现。新版本的操作系统：Cupcake（1.5），Donut（1.6），和Eclair（2.0与2.1）相继发布。超过20款设备运行Android。
-- 2010 Android成为了仅次于RIM的第二大热门智能手机平台。Froyo（Android 2.2）发布，超过60款设备运行它。
+如下是过去几年来发生的一些大事件：
 
 - 2005 Google buys Android, Inc. The world thinks a "gPhone" is about to come out…
-- Everything goes quiet for a while.
-- 2007 Open Handset Alliance is announced. Android is officially open-sourced.
-- 2008 Android SDK 1.0 is released. The G1 phone, manufactured by HTC, and sold by the wireless carrier T-Mobile USA, follows shortly afterwards.
-- 2009 sees a proliferation of Android-based devices. New versions of the operating system: Cupcake (1.5), Donut (1.6), and Eclair (2.0 and 2.1) are released. 20+ devices run Android.
-- 2010 Android is 2nd only to RIM as best-selling smart phone platform. Froyo (Android 2.2) is released and so are 60+ devices that run it.
+%- Everything goes quiet for a while.
+%- 2007 Open Handset Alliance is announced. Android is officially open-sourced.
+%- 2008 Android SDK 1.0 is released. The G1 phone, manufactured by HTC, and sold by the wireless carrier T-Mobile USA, follows shortly afterwards.
+%- 2009 sees a proliferation of Android-based devices. New versions of the operating system: Cupcake (1.5), Donut (1.6), and Eclair (2.0 and 2.1) are released. 20+ devices run Android.
+%- 2010 Android is 2nd only to RIM as best-selling smart phone platform. Froyo (Android 2.2) is released and so are 60+ devices that run it.
 
+- 2005年 Google收购Android, Inc。全世界都认为”gPhone“就快要出来了……
+- 一段时间内一切似乎都变得平静了下来。
+- 2007年 开放手持设备联盟宣布成立。官方宣布Android开放源代码。
+- 2008年 Android SDK 1.0发布。HTC很快跟进，制造出G1手机，并由无线运营商T-Mobile美国发售。
+- 2009年 基于Android的设备迅速涌现。新的版本：Cupcake（1.5），Donut（1.6），和Eclair（2.0与2.1）相继发布。超过20款设备采用了Android。
+- 2010年 Android成为了第二热门的智能手机平台，仅次于RIM。Froyo（Android 2.2）发布，超过60款设备都在运行着它。
 
-In 2005, when Google purchased Android, Inc., the world thought Google is about to enter the smart phone market. There were widespread speculations about device called gPhone.
+%In 2005, when Google purchased Android, Inc., the world thought Google is about to enter the smart phone market. There were widespread speculations about device called gPhone.
 
-Google CEO, Eric Schmidt, made it clear right away that Android’s ambitions are much larger than a single phone. They saw it as a platform that will enable many phones and other devices out there.
+在2005年，当Google买下Android, Inc.时，全世界都觉得Google就要进入智能手机市场了。人们都纷纷议论一个叫做gPhone的设备。
 
-=== Google’s Motivation ===
+%Google CEO, Eric Schmidt, made it clear right away that Android’s ambitions are much larger than a single phone. They saw it as a platform that will enable many phones and other devices out there.
 
-Google支持Android项目的动机，表面上看来是为了使Android无处不在，并通过它，在移动领域扮演重要的角色。最终地，Google作为一家媒体公司，其商业模式是基于推销广告。（？）如果人人都使用Android，那么Google便能在其上提供完全公平的附加业务。这点可不同于那些依赖于许可证费用的软件供应商。
+然而Google的CEO，Eric Schmidt，却马上澄清到，Android的野心比区区电话要大的多。他们其实将此看作为一个兼顾手机和其他设备的平台。
 
-Google’s motivation in supporting the Android project seems to be to have Android everywhere and by doing that, to create a level playing field for the mobile. Ultimately, Google is a media company and its business model is based on selling advertising. If everyone is using Android, then Google can provide additional services on top of it, and compete fairly. This is unlike business models of other software vendors who depend on the licensing fees.
+=== Google的动机 Google’s Motivation ===
 
-虽然Google仍然有需要授权的一些私有应用，例如Gmail和Maps，并在Android Market上收取一些费用，但它的主要动机还是在那些应用里的广告收益。
+%Google’s motivation in supporting the Android project seems to be to have Android everywhere and by doing that, to create a level playing field for the mobile. Ultimately, Google is a media company and its business model is based on selling advertising. If everyone is using Android, then Google can provide additional services on top of it, and compete fairly. This is unlike business models of other software vendors who depend on the licensing fees.
 
-While Google does license some proprietary apps, such as Gmail and Maps, and make some money off the Android market, its primary motivation is still the advertising revenue that those apps bring in.
+Google支持Android项目的动机，表面上看来是让Android无处不在，并通过它，使自己在移动领域扮演重要的角色。实际上，Google作为一家媒体公司，推销广告是它的商业模式。如果人人都使用Android，那么Google便能在其上提供完全免费的附加业务。这点可不同于那些依赖于许可证费用的软件供应商。
 
-=== Open Handset Alliance ===
+%While Google does license some proprietary apps, such as Gmail and Maps, and make some money off the Android market, its primary motivation is still the advertising revenue that those apps bring in.
 
-For this to be bigger than just Google, Android is owned by Open Handset Alliance, a non-profit group formed by key mobile operators, manufacturers, carriers, and others. The alliance is committed to openness and innovation for mobile user experience.
+虽然Google仍然有需要授权的一些私有应用，例如Gmail和Maps，并在Android Market上收取了一些费用，但它的主要动机还是在那些内置于应用中的广告收益。
 
-In practice, the alliance is still very young and many members are still learning to work with each other. Google happens to be putting the most muscle behind the Android project at the moment.
+=== 开放手持设备联盟 Open Handset Alliance ===
+
+%For this to be bigger than just Google, Android is owned by Open Handset Alliance, a non-profit group formed by key mobile operators, manufacturers, carriers, and others. The alliance is committed to openness and innovation for mobile user experience.
+
+Android由开放手持设备联盟所拥有，这是一个由关键的移动运营商、手机制造商、网络运营商（operator == carrier??）和其他公司组成的非利益组织，比单单一家Google要大的多。这个联盟给移动用户带来了开放和革新的体验。
+
+% In practice, the alliance is still very young and many members are still learning to work with each other. Google happens to be putting the most muscle behind the Android project at the moment.
+
+在实际运作中，这个联盟仍然显得年轻，部分成员之间仍旧需要磨合。因此当前主要还是Google在背后推动着Android项目。
+
+%{NOTE}
+%The first version of Android SDK was released without an actual phone being on the market. The point of this is that you don’t really need a phone to do Android development. There are some exceptions to this (hardware sensors, telephony, etc.), but for the most part the Android SDK contains everything you’ll need for developing on this platform.
+%{/NOTE}
 
 {NOTE}
-The first version of Android SDK was released without an actual phone being on the market. The point of this is that you don’t really need a phone to do Android development. There are some exceptions to this (hardware sensors, telephony, etc.), but for the most part the Android SDK contains everything you’ll need for developing on this platform.
+	第一个Android SDK版本发布时，市面上还没有任何一款手机使用它。这点也说明，你其实不必真的需要一台手机才能做Android开发。虽然的确有一些例外的地方（如硬件传感器、电话功能等），但是你在这个平台从事开发时，所需要的大部分东西Android SDK都已涵盖。
 {/NOTE}
+
 
