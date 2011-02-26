@@ -12,6 +12,5 @@ book.html: $(T2TFILES)
   
 all: book.html
 
-clean: 
-	rm -rf $(OUTFILES)
+clean: rm -rf $(OUTFILES)
 	rm -rf book.html

@@ -7,7 +7,20 @@
 
 The history of Android is interesting in order to gain the perspective on what the future might hold.
 
+这些是过去几年来发生的一些重要事件：
+
 These are the key events of the past few years:
+
+- 2005 Google收购Android，Inc。全世界都认为”gPhone“就要出来了……
+- 一段时间内一切似乎变得平静了下来。
+- 2007 宣布成立开放手持设备联盟。Android被官方开源。
+- 2008 Android SDK 1.0发布，HTC制造的G1手机，由无线运营商T-Mobile美国发售，很快拥有了一批追随者。
+- 2009 基于Android的设备迅速涌现。新版本的操作系统：Cupcake（1.5），Donut（1.6），和Eclair（2.0与2.1）相继发布。超过20款设备运行Android。
+- 2010 Android成为了仅次于RIM的第二大热门智能手机平台。Froyo（Android 2.2）发布，超过60款设备运行它。
+
+//what‘s happend?
+
+- In 2005, when Google purchased Android, Inc., the world thought Google is about to enter the smart phone market. There were widespread speculations about device called gPhone
 
 - 2005 Google buys Android, Inc. The world thinks a "gPhone" is about to come out…
 - Everything goes quiet for a while.
@@ -16,13 +29,20 @@ These are the key events of the past few years:
 - 2009 sees a proliferation of Android-based devices. New versions of the operating system: Cupcake (1.5), Donut (1.6), and Eclair (2.0 and 2.1) are released. 20+ devices run Android.
 - 2010 Android is 2nd only to RIM as best-selling smart phone platform. Froyo (Android 2.2) is released and so are 60+ devices that run it.
 
+<<<<<<< .mine
+=======
 In 2005, when Google purchased Android, Inc., the world thought Google is about to enter the smart phone market. There were widespread speculations about device called gPhone.
 
+>>>>>>> .r22
 Google CEO, Eric Schmidt, made it clear right away that Android’s ambitions are much larger than a single phone. They saw it as a platform that will enable many phones and other devices out there.
 
 === Google’s Motivation ===
 
+Google支持Android项目的动机，表面上看来是为了使Android无处不在，并通过它，在移动领域扮演重要的角色。最终地，Google作为一家媒体公司，其商业模式是基于推销广告。（？）如果人人都使用Android，那么Google便能在其上提供完全公平的附加业务。这点可不同于那些依赖于许可证费用的软件供应商。
+
 Google’s motivation in supporting the Android project seems to be to have Android everywhere and by doing that, to create a level playing field for the mobile. Ultimately, Google is a media company and its business model is based on selling advertising. If everyone is using Android, then Google can provide additional services on top of it, and compete fairly. This is unlike business models of other software vendors who depend on the licensing fees.
+
+虽然Google仍然有需要授权的一些私有应用，例如Gmail和Maps，并在Android Market上收取一些费用，但它的主要动机还是在那些应用里的广告收益。
 
 While Google does license some proprietary apps, such as Gmail and Maps, and make some money off the Android market, its primary motivation is still the advertising revenue that those apps bring in.
 
