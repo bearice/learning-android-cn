@@ -17,7 +17,7 @@
 {TRAN}Android 系统就像一个有很多层的蛋糕。 每一层都有自己的特性和目的。 这些层之间并没有一个明确的界限，而通常是相互渗透的。
 
 {ORGI}When you read through this, keep in mind that I am only concerned with the big picture of the entire system and will get into the nitty-gritty details of particular parts of the system later on. Figure 2.1, “Android Stack” shows the parts of the Android stack.
-{TRAN}在你阅读本章时，要注意本章仅仅是整个系统的概览而已，关于各部分的细节问题我们将稍后讨论。"Figure 2.1 Android Stack" 给出了 Android 系统栈的一部分。
+{TRAN}在你阅读本章时，要注意本章仅仅是整个系统的概览而已，关于各部分的细节问题我们将稍后讨论。"Figure 2.1 Android Stack" 给出了 Android 系统架构的一部分。
 
 	Figure 2.1. Android Stack
 		[images/02-AndroidStack.png]
@@ -147,7 +147,7 @@
 {TRAN}== 应用程序 ==
 
 {ORGI}And finally there are applications that you and other developers create. Applications are what end users find valuable about Android. They can come pre-installed on the device or could be downloaded from one of many Android markets.
-{TRAN}栈的最上层是就你和其他开发人员创建的各种应用。 应用是 Andorid 呈现给用户的发光之处， 它可以被预先安装在系统中，也能从诸多的软件商店中下载。
+{TRAN}架构的最上层是就你和其他开发人员创建的各种应用。 应用即 Andorid 呈现给用户的发光之处， 它可以被预先安装在系统中，也能从诸多的软件商店中下载。
 
 {ORGI}=== The APK ===
 {TRAN}=== APK 文件 ===
