@@ -5,7 +5,7 @@
 {TRAN}= The Stack =
 
 {ORGI}This is the 9,000-foot overview of the Android platform. Although you’re concerned primarily with writing Android applications, understanding layout of the system will help shape your understanding about what you can or cannot easily do with Android.
-{TRAN}接下来的一章，我们将从9000英尺的高空俯瞰Android平台。即使你已经熟悉了如何编写Android应用，深入理解系统的结构也能使你更轻松的明白Android能干什么，不能干什么。
+{TRAN}接下来的一章，我们将从9000英尺的高空俯瞰Android平台。即使你已经熟悉了如何编写Android应用，深入理解系统的结构也能使你更清楚的明白Android能干什么，不能干什么。
 
 {ORGI}By the end of this chapter, you’ll understand how the whole system works, at least from the high level. 
 {TRAN}在本章结束后，你将至少能够大概的了解整个系统的是如何工作的。
@@ -14,10 +14,10 @@
 {TRAN}== 概述 ==
 
 {ORGI}Android operating system is like a cake consisting of various layers. Each layer has its own characteristics and purpose. The layers are not cleanly separated but often seep into each other.
-{TRAN}Android 系统就像一个有很多层的蛋糕。 每一层都有自己的特性和目的。 这些层之间并没有一个明确的分割线，并且而通常是相互渗透的。
+{TRAN}Android 系统就像一个有很多层的蛋糕。 每一层都有自己的特性和目的。 这些层之间并没有一个明确的界限，而通常是相互渗透的。
 
 {ORGI}When you read through this, keep in mind that I am only concerned with the big picture of the entire system and will get into the nitty-gritty details of particular parts of the system later on. Figure 2.1, “Android Stack” shows the parts of the Android stack.
-{TRAN}当你在阅读本章是，要注意本章仅仅介绍了整个系统的概览，关于各部分的细节问题我们将稍后讨论。"Figure 2.1 Android Stack" 给出了 Android 系统栈的一部分。
+{TRAN}在你阅读本章时，要注意本章仅仅是整个系统的概览而已，关于各部分的细节问题我们将稍后讨论。"Figure 2.1 Android Stack" 给出了 Android 系统栈的一部分。
 
 	Figure 2.1. Android Stack
 		[images/02-AndroidStack.png]
@@ -26,19 +26,19 @@
 {TRAN}== Linux ==
 
 {ORGI}Android is built on top of Linux. Linux is a great operating system and a poster child of open source. There are many good reasons for choosing Linux as the base of the Android stack. Some of the main ones are portability, security, and features.
-{TRAN}Android 是基于 Linux 系统构建的。 Linux 是一个伟大的操作系统，也是一个经典的开源项目。之所以选择 Linux 作为 Andoird 系统的基础是有很多原因的。主要的因为它具有可移植性、安全性以及丰富的特性。
+{TRAN}Android 是基于 Linux 系统构建的。 Linux 是一个伟大的操作系统，也是一个经典的开源项目。之所以选择 Linux 作为 Andoird 系统基础的原因有很多，最主要是因为它具有可移植性、安全性以及丰富的特性。
 
 {ORGI}=== Portability ===
 {TRAN}=== 可移植性 ===
 
 {ORGI}Linux is a portable platform relatively easy to compile on various hardware architectures. What Linux brings to Android is a level of hardware abstractions. By basing Android on Linux, we don’t have to worry too much about underlying hardware features. Most of low level parts of Linux have been written in fairly portable C code, which allows for third-parties to port Android to variety of devices.
-{TRAN}Linux 平台在各个硬件构架上的编译都相对简单。 Linux 为 Android 提供了硬件抽象。 多亏了 Linux 让我们可以不必为了不同硬件的不同特性的担忧。Linux 的绝大多数低级代码都是用可移植的C代码编写，因此第三发开发者可以将 Android 移植到很多不同的设备上。
+{TRAN}Linux 平台在各个硬件构架上的编译都相对简单。 多亏 Linux 为 Android 提供了硬件抽象， 使得我们不必为了不同硬件的不同特性而担忧。Linux 的绝大多数低级代码都是用可移植的C代码编写，因此第三方开发者可以将 Android 移植到很多不同的设备上。
 
 {ORGI}=== Security ===
 {TRAN}=== 安全性 ===
 
 {ORGI}Linux is a highly secure system, having been tried and tested through some very harsh environments over the decades. Android heavily relies on Linux for security. All Android applications run as separate linux processes with permissions set by the Linux system. As such, Android passes a lot of security concerns to the underlying Linux system.
-{TRAN}Linux 已经在一些苛刻的环境下使用和测试了数十年，被证明是一个非常安全的系统。Android 依靠 Linux 实现其安全特性。 所有的 Android 应用都在不同的 Linux 进程中执行，并且这些进程被 Linux 系统赋予了不同的权限。如此， Android 将大部分安全措施交由底层的 Linux 执行。
+{TRAN}Linux 已经在一些苛刻的环境下使用和测试了数十年，被证明是一个非常安全的系统。Android 依靠 Linux 实现其安全特性。 所有的 Android 应用都在不同的 Linux 进程中执行，并且这些进程被 Linux 系统赋予了不同的权限。如此， Android 将大部分安全措施交由底层的 Linux 实现。
 
 {ORGI}=== Features ===
 {TRAN}=== 丰富的特性 ===
@@ -67,7 +67,7 @@
 
 
 {ORGI}While many of these libraries are taken as-is, one notable exception is Bionic. Bionic is basically a rewritten version of Standard C Library. The reason for Bionic is two fold:
-{TRAN}这些库中的大部分都是被原封不动的拿过来的，但是 Bionic 是一个例外。 Bionic 基本上是标准 C 库的重写版。 使用 Bionic 的原因有如下两条: 
+{TRAN}这些库中的大部分都是被原封不动的拿过来的，但是 Bionic 是一个例外。 Bionic 基本上是 C 标准库的重写版。 使用 Bionic 的原因有如下两条: 
 
 {ORGI} - Technology: to make it purpose-built for tiny battery powered devices
 {TRAN} - 技术方面: 专门为使用电池的设备进行优化
@@ -112,13 +112,13 @@
 {TRAN}和 Java 相比，你似乎需要为 Android 做很多额外的事情。但是事实上这些复杂的步骤都可以被 Eclipse 或者 ant 这样的工具自动完成的，而你几乎不会感觉到这些步骤的存在。
 
 {ORGI}You may wonder why not compile straight from Java into the Dalvik byte code. There are couple of good reasons for that. Back in 2005 when work on Dalvik started, the Java language was going through frequent changes. But the Java byte code was more or less set in stone. So, the Android team chose to base Dalvik on Java byte code instead of Java source code.
-{TRAN}你也许想知道为什么不直接吧 Java 代码编译成 Dalvik 字节码呢? 这样做其实有很多优点。让我们回到2005年，当时 Dalvik 项目刚刚开始，那时的 Java 语法修改很频繁。但是 Java 字节码基本上没有什么太大的改动。于是 Android 团队决定使用 JVM 字节码而不是 Java 源码来产生 Dalvik 代码。
+{TRAN}你也许想知道为什么不直接吧 Java 代码编译成 Dalvik 字节码呢? 这样做其实有很多优点。让我们回到2005年 Dalvik 项目刚刚开始时，当时 Java 的语法修改很频繁， 但是 Java 字节码基本上没有什么太大的改动。于是 Android 团队决定使用 JVM 字节码而不是 Java 源码来产生 Dalvik 代码。
 
 {ORGI}A side effect of this is that in theory you could write Android applications in any other language that compiles down to Java byte code. For example, you could use Python or Ruby. I say in theory because in practice you’d still need appropriate libraries that are part of the SDK to be available. But it is likely that the open source community will come up with solution to that in the future.
-{TRAN}另一个副作用是你理论上可以使用其他语言可以编译成 Java 字节码的开发 Android 应用，例如 Python 或者 Ruby 。 我说“理论上”是因为你还需要向相应的 SDK 和库。不过万能的开源社区以后可能会提供这样的解决方案。
+{TRAN}这一来的副产品是， 理论上你可以使用其他语言可以编译成 Java 字节码的开发 Android 应用，例如 Python 或者 Ruby 。 我说“理论上”是因为你还需要向相应的 SDK 和库。不过万能的开源社区以后可能会提供这样的解决方案。
 
 {ORGI}Another thing to keep in mind is that Android Java is a non-standard collection of Java classes. Java typically ships in:
-{TRAN}另外需要注意的是 Android 使用的 Java 类库并非标准的 Java 类库。典型的 Java 包括: 
+{TRAN}另外需要注意的是 Android Java 并非来自标准的 Java 家族。 Java 一般分为: 
 
 {ORGI} - Java Standard Edition: used for development on basic desktop-type applications.
 {TRAN} - Java 标准版: 用于开发基本的桌面型应用。
@@ -135,7 +135,7 @@
 {TRAN}== 应用框架 ==
 
 {ORGI}The application framework is a rich environment that provides numerous services to you, the app developer, to get your job done. This is the part of the platform that is best documented and extensively covered. That is because it is this layer that enables the mass-market of developers to get creative and be empowered to create fantastic applications.
-{TRAN}应用框架是一个为开发者提供了多种服务的运行环境。这是整个 Android 平台中文档最充分最广泛的部分。这是因为它可以激发广大开发人员的创意并且支撑了他们构建优秀的应用。
+{TRAN}应用框架是一个为开发者提供了多种服务的运行环境。这是整个 Android 平台中文档化最全面也是最完善的部分。良好的文档它可以激发广大开发人员的创意，并为他们构建优秀的应用提供有力的支持。
 
 {ORGI}In application framework layer, you will find numerous Java libraries specifically built for Android. You will also find many services (or managers) that provide the ecosystem of capabilities your application can tap into, such as location, sensors, WiFi, telephony and so on.
 {TRAN}在应用框架层中，你能发现很多专门为了 Android 设计的库。你还将发现很多支持着应用程序所依赖的整个生态环境的服务（或者管理器），例如位置服务，传感器、WiFi、电话服务等等。
@@ -147,7 +147,7 @@
 {TRAN}== 应用程序 ==
 
 {ORGI}And finally there are applications that you and other developers create. Applications are what end users find valuable about Android. They can come pre-installed on the device or could be downloaded from one of many Android markets.
-{TRAN}栈的最上层是就你和其他开发人员创建的各种应用。 应用是 Android 对用户来说最有价值的部分。 应用可以是预先安装在系统中的，也能从诸多的软件商店中下载。
+{TRAN}栈的最上层是就你和其他开发人员创建的各种应用。 应用是 Andorid 呈现给用户的发光之处， 它可以被预先安装在系统中，也能从诸多的软件商店中下载。
 
 {ORGI}=== The APK ===
 {TRAN}=== APK 文件 ===
@@ -197,5 +197,5 @@
 {TRAN}在本章中，我们介绍了 Android 操作系统包括什么，以及它们是怎么形成一个有机的整体。你现在明白了是什么使得 Android 如此的完善、开放、并且对开发人员充满了吸引力。
 
 {ORGI}In the next chapter, we’ll look at how to setup your development environment so you can quickly get up to speed. We’ll also look at a simple Hello World application and dissect it so that you get the understanding of various pieces of an application.
-{TRAN}在下一章中，我们将来探讨如何搭建你的开发欢迎来让你高效的完成工作。我们还将学习怎么编写一个简单的 Hello World 应用，并且将其解剖，来帮助你了解应用的不同部分，
+{TRAN}在下一章中，我们将来探讨如何搭建你的开发欢迎来让你高效的完成工作。我们还将学习怎么编写一个简单的 Hello World 应用，并且将其解剖，来帮助你了解应用的不同部分。
 
