@@ -7,11 +7,11 @@
 
 % This book sprang from years of delivering Marakana Android Bootcamp training class to thousands of software developers at some of the largest mobile companies on four continents around the world. Teaching Android, over time I saw what works and what doesn’t. This book is the distilled version of Android Bootcamp training course that I developed at Marakana and fine-tuned over numerous engagements.
 
-本书的前身是Marakana Android Bootcamp培训课程中内部连载的读物，其受众多是移动设备公司的开发者，几千人遍布四个大洲。它总结了我在几年间Android教学中的心得体会：哪些管用，哪些应该避免。经过提炼与适当的增删，最终成为本书。
+本书的前身是Marakana Android Bootcamp培训课程中内部连载的读物，其受众多是移动设备公司的开发者，几千人遍布四个大洲。它总结了我在几年间Android教学中的心得体会：哪些管用，哪些应该避免。经过适当的增删与提炼，最终成为本书。
 
 % My background is in Java from back before it was even called that. From the beginning, I was very much interested in embedded development in order to program various devices that surround us in every day life. Because Java took off mostly in the web application development, most of my previous decade went to building large enterprise system. Then Android arrived and I got once again very excited about building software for non-traditional computers. My current interests are Android on devices that may not even resemble a typical phone.
 
-自Java初出茅庐开始，我们就结下了不解之缘。当时java的定位还是在嵌入式领域，“对身边的各种设备编程“，这一想法对我触动很深。不久之后Java的主力就转向了Web应用的开发，我的工作也顺之而转型到大型企业级应用，并在此间度过了我的上个十年。所以在Android出现时，我马上就认了出来：为非PC的设备编程！更何况Android所支持的，甚至不仅仅是手机而已。
+自Java初出茅庐开始，我们就结下了不解之缘。当时java的定位还是在嵌入式领域，“对身边的各种设备编程”，这一想法对我触动很深。不久之后Java的主力就转向了Web应用的开发，我的工作也顺之而转型到大型企业级应用，并在此间度过了我的上个十年。所以在Android出现时，我马上就认了出来：为非PC的设备编程！更何况Android所支持的，甚至不仅仅是手机而已。
 
 % This book lets anyone who knows Java (or a similar language) grow to develop a reasonably complex Android application. I hope you find this book fairly comprehensive and that you find the example-based learning reasonably motivating. The goal of Learning Android is to get you to think in Android terms.
 
@@ -21,49 +21,63 @@
 
 % Chapter 1, Android Overview, is an introduction to Android and its history. 
 
-第一章，“概述“，简单介绍Android及其历史。
+第一章，**概述**，简单介绍Android及其历史。
 
 % Chapter 2, The Stack, is an overview of the Android Operating System and all its parts from a very high level. 
 
-第二章，“架构“，简单介绍Android操作系统及其各个组件。
+第二章，**架构**，简单介绍Android操作系统及其各个组件。
 
 % Chapter 3, Quick Start, helps you set up your environment for Android application development. 
 
-第三章，“快速入门“，设置你的开发环境。
+第三章，**快速入门**，设置你的开发环境。
 
 % Chapter 4, Main Building Blocks, explains the components that Android provides to application developers to put together an app.
 
-第四章，“Main Building Blocks“：
+第四章，**Main Building Blocks**：展示了Android为应用开发者提供的组件。
 
 % Chapter 5, Yamba Overview, is the overview of the Yamba application that we’ll build together through the book and use as an example to learn various features of Android. 
  
-第五章，“Yambda概述“，简单介绍了一个Andorid应用Yamba，它将作为贯穿全书的实例，以展示Android的诸多特性。
+第五章，**Yambda概述**，简单介绍了一个Andorid应用Yamba，它将作为贯穿全书的实例，以展示Android的诸多特性。
  
 % Chapter 6, Android User Interface, explains how to build the user interface for your application.
 
-第六章，“Android用户接口“，为你的应用设计用户接口。 
+第六章，**Android用户接口**，为你的应用设计用户接口。 
  
 % Chapter 7, Preferences, File System, Options Menu, and Intents, covers some of the operating system features that make an application developer’s life easier. 
 
-第七章，“首选项，文件系统，Option Menu及Intent“，操作系统中的一些方便的特性。
+第七章，**首选项，文件系统，Option Menu及Intent**，介绍了操作系统中的一些方便特性。
 
 % Chapter 8, Services, covers building an Android service to process background tasks. 
 
-第八章，服务。
+第八章，**服务**，介绍了Android中后台任务的构建方法。
 
-Chapter 9, Databases, explains Android framework’s support for the built-in SQLite database and how to use it to persist the data in your own application.
+% Chapter 9, Databases, explains Android framework’s support for the built-in SQLite database and how to use it to persist the data in your own application.
 
-Chapter 10, Lists and Adapters, covers an important feature of Android that allows large data sets to be linked to relatively small screens in an efficient way. 
+第九章，**数据库**，介绍了Android架构中内置的SQLite支持，以及在你自己应用中使用数据库的方法。
 
-Chapter 11, Broadcast Receivers, explains how to use the publish-subscribe mechanism in Android to respond to various system and user defined messages. 
+% Chapter 10, Lists and Adapters, covers an important feature of Android that allows large data sets to be linked to relatively small screens in an efficient way. 
 
-Chapter 12, Content Providers, shows how to design a content provider to share data between applications, using the content provider to enable our app widget to display data on the home screen. 
+第十章，**List与Adapter**，介绍了Android中的一个重要特性，它允许将大量数据集高效地与小屏幕中的显示相关联。
 
-Chapter 13, System Services, goes into various system services that an app developer can tap into. 
+% Chapter 11, Broadcast Receivers, explains how to use the publish-subscribe mechanism in Android to respond to various system and user defined messages. 
 
-Chapter 14, Android Interface Definition Language (AIDL), covers building an inter-process communication mechanism to allow for remote access to a service from another application. Chapter 
+第十一章，**Broadcast Receivers**，介绍了如何在Android中应用“发布-订阅”机制以适应不同的系统。
 
-15, Native Development Kit (NDK), introduces how to write native C code as part of your Android application.
+% Chapter 12, Content Providers, shows how to design a content provider to share data between applications, using the content provider to enable our app widget to display data on the home screen. 
+
+第十二章，**Content Providers**，介绍了如何设计一个Content Provider来为不同的应用交换数据，以及将我们的app widget显示在主屏幕上的方法。
+
+% Chapter 13, System Services, goes into various system services that an app developer can tap into. 
+
+第十三章，**系统服务**，介绍了可供开发者挖掘的一些系统服务。
+
+% Chapter 14, Android Interface Definition Language (AIDL), covers building an inter-process communication mechanism to allow for remote access to a service from another application.  
+
+第十四章，**Android Interface Definition Language(AIDL)**，介绍了进程见通信机制的使用，远程访问另一个应用中服务的方法。
+
+% Chapter 15, Native Development Kit (NDK), introduces how to write native C code as part of your Android application.
+
+第十五章，**Native Development Kit(NDK)**，介绍了在应用中使用原生C代码的方法。
 
 == 排版约定 Conventions Used in This Book ==
 
@@ -115,11 +129,11 @@ Chapter 14, Android Interface Definition Language (AIDL), covers building an int
 
 % We appreciate, but do not require, attribution. An attribution usually includes the title, author, publisher, and ISBN. For example: “Book Title by Some Author. Copyright 2008 O’Reilly Media, Inc., 978-0-596-xxxx-x.”
 
-我们鼓励保持署名，但不强制。通常署名可以包含书名、作者、出版商、ISBN等信息，比如“Book Title by Some Author. Copyright 2008 O'Reilly Media. Inc.”。
+我们鼓励保留出处信息，但不强制。通常出处信息可以包含书名、作者、出版商、ISBN等，比如“Book Title by Some Author. Copyright 2008 O'Reilly Media. Inc.”。
 
 % If you feel your use of code examples falls outside fair use or the permission given above, feel free to contact us at permissions@oreilly.com.
 
-如果你为没有许可使用本书的代码而过意不去，联系我们就好：permission@oreilly.com。
+如果你为没有许可地使用本书的代码而过意不去，联系我们就好：permission@oreilly.com。
 
 == Safari® Books Online ==
 
@@ -134,7 +148,7 @@ Chapter 14, Android Interface Definition Language (AIDL), covers building an int
 
 % With a subscription, you can read any page and watch any video from our library online. Read books on your cell phone and mobile devices. Access new titles before they are available for print, and get exclusive access to manuscripts in development and post feedback for the authors. Copy and paste code samples, organize your favorites, download chapters, bookmark key sections, create notes, print out pages, and benefit from tons of other time-saving features.
 
-只要订阅，即可随意在我们的在线资料库中阅读文本、观看视频，也可以通过手机或者其它设备访问。在它上面可以第一时间阅读	未出版的新书，跟踪其写作动态，为作者提供反馈。而且还有一系列方便的功能：复制代码样例，收藏、下载章节，作笔记，打印等等。
+只要订阅，即可随意在我们的在线资料库中阅读文本、观看视频，也可以通过手机或者其它设备访问。在它上面可以第一时间阅读未出版的新书，跟踪其写作动态，为作者提供反馈。而且还有一系列方便的功能：复制代码样例，收藏、下载章节，作笔记，打印等等。
 
 % O’Reilly Media has uploaded this book to the Safari Books Online service. To have full digital access to this book and others on similar topics from O’Reilly and other publishers, sign up for free at [role="orm:hideurl:ital"]http://my.safaribooksonline.com.
 
@@ -148,7 +162,7 @@ O'Reilly Media已经将本书上传至Safari Books Online。欲获得关于本�
 
 % I’d like to thank all my technical editors: Dan Bornstein, Hervé Guihot, Frank Maker III, and Bill Schrickel. Thank you for diligently reading my half-baked drafts and providing valuable comments.
 
-感谢我的所有技术编辑：Dan Bornstein，Hervé Guihot，Frank Maker III和Bill Schrickel。感谢你们孜孜不倦地审读我未成形的原稿，感谢你们提供的宝贵建议。
+感谢我的所有技术编辑：Dan Bornstein，Hervé Guihot，Frank Maker III和Bill Schrickel。感谢你们孜孜不倦地审读我未成形的原稿，以及你们提供的宝贵建议。
 
 % This book wouldn’t be what it is without field testing it on our numerous clients - you were the true pioneers on the cutting edge of Android and your projects are all very inspiring. Thank you for your trust.
 
@@ -160,6 +174,6 @@ O'Reilly Media已经将本书上传至Safari Books Online。欲获得关于本�
 
 % And finally, a huge thanks to my wife Lisa and daughter Kylie. I know what a sacrifice it was for you while I was criss-crossing the world working on this material. Thank you for supporting me along the way.
 
-最后的感谢留给我深爱的妻子Lisa和女儿Kylie，写作期间难免忙碌，感谢你们所做的牺牲，以及对我一如既往的支持。
+最后的感谢留给我深爱的妻子Lisa和女儿Kylie，写作期间难免忙碌，感谢你们所做的牺牲以及对我一如既往的支持。
 
 Marko Gargenta, San Francisco, CA

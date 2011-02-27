@@ -53,7 +53,7 @@
 {TRAN}来自开源社区的 C/C++ 本地库为 Android 应用层提供了很多必须的服务。它们包括: 
 
 {ORGI} - WebKit: a fast web rendering engine used by Safari, Chrome, and other browsers
-{TRAN} - WebKie: 一个高速的Web渲染引擎，这个引擎已经被 Safari ， Chrome 和很多替他的浏览器所使用。
+{TRAN} - WebKit: 一个高速的Web渲染引擎，这个引擎已经被 Safari ， Chrome 和很多替他的浏览器所使用。
 {ORGI} - SQLite: a full-featured SQL database
 {TRAN} - SQLite: 一个全功能的 SQL 数据库
 {ORGI} - Apache Harmony: an open source implementation of Java
