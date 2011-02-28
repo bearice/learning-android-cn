@@ -20,7 +20,7 @@
 % - 2009 sees a proliferation of Android-based devices. New versions of the operating system: Cupcake (1.5), Donut (1.6), and Eclair (2.0 and 2.1) are released. 20+ devices run Android.
 % - 2010 Android is 2nd only to RIM as best-selling smart phone platform. Froyo (Android 2.2) is released and so are 60+ devices that run it.
 
-- 2005年 Google收购Android, Inc，全世界都以为”gPhone“就快出来了...
+- 2005年 Google收购Android, Inc，全世界都以为"gPhone"就快来了...
 - 风平浪静了一段时间。
 - 2007年 开放手持设备联盟（Open Handset Alliance)宣布成立，Android官方踏入开源阵营。
 - 2008年 Android SDK 1.0发布。G1手机随之而来，它由HTC出产，并由无线运营商T-Mobile USA发售。
@@ -29,22 +29,22 @@
 
 % In 2005, when Google purchased Android, Inc., the world thought Google is about to enter the smart phone market. There were widespread speculations about device called gPhone.
 
-在2005年Google买下Android, Inc.时， 全世界都认为这是Google进军智能手机市场的信号。 一时间人们纷纷猜测着一款叫做gPhone的设备。
+在2005年Google买下Android, Inc.时，这被认为是Google进军智能手机市场的信号，一时间人们纷纷猜测着一款叫做gPhone的设备。
 
 % Google CEO, Eric Schmidt, made it clear right away that Android’s ambitions are much larger than a single phone. They saw it as a platform that will enable many phones and other devices out there.
 
-而Google的首席执行官Eric Schmit很快就让人们意识到了，仅仅一款智能手机是远远不足Android野心的：他们要把它做成一个通用的平台，为各种手机和其它设备都提供支持。
+而Google的首席执行官Eric Schmit很快就让人们醒悟过来，仅仅一款智能手机是远远不足Android野心的：他们要把它做成一个通用的平台，为各种手机和其它设备都提供支持。
 
 % === Google’s Motivation ===
 === Google的动机 ===
 
 % Google’s motivation in supporting the Android project seems to be to have Android everywhere and by doing that, to create a level playing field for the mobile. Ultimately, Google is a media company and its business model is based on selling advertising. If everyone is using Android, then Google can provide additional services on top of it, and compete fairly. This is unlike business models of other software vendors who depend on the licensing fees.
 
-Google对Android的支持似乎仅仅是为了推广Android，使凭借的它无处不在使自己在移动领域占据一席之地。其实Google是一家传媒公司，其商业模式建基于广告营销。只要大家使用Android，就有Google免费提供的附加功能。这与传统软件商出售许可证的商业模式是不同的。
+Google对Android的支持似乎仅仅是为了推广Android，使凭借的它无处不在为自己在移动领域占据一席之地。其实Google是一家传媒公司，其商业模式建基于广告营销。这与传统软件商出售许可证的商业模式是不同的。只要大家使用Android，就可以有Google提供的附加功能，并与第三方公平竞争。
 
 % While Google does license some proprietary apps, such as Gmail and Maps, and make some money off the Android market, its primary motivation is still the advertising revenue that those apps bring in.
 
-虽说Google也保留一些专有应用的许可（比如Gmail和Maps），在Android Market之上也有一定营收，但是Google最看中的还是应用程序带来的的广告收益。
+虽说Google也保留一些专有应用的许可（比如Gmail和Maps），在Android Market之上也有一定营收，但是Google最看重的还是应用程序带来的的广告收益。
 
 % === Open Handset Alliance ===
 === 开放手持设备联盟 ===
@@ -62,7 +62,7 @@ Android的背后不只是Google，更有开放手持设备联盟（Open Handset 
 %{/NOTE}
 
 {NOTE}
-	Android SDK的第一个版本发布的时候，市面上还不存在任何一款使用它的手机。从这点可以看出，搞Android开发其实并不一定需要一台Android手机。除去少数例外（如硬件传感器、通话功能等），你需要的大部分功能在Android SDK里就都有了。
+	Android SDK的第一个版本发布的时候，市面上还不存在任何一款使用它的手机。从这里其实可以看出，搞Android开发并不一定需要一台Android手机。除去少数例外（如硬件传感器、通话功能等），你需要的大部分功能在Android SDK里就都有了。
 {/NOTE}
 
 

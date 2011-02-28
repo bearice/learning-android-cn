@@ -2,48 +2,48 @@
 %
 %
 
-== Android 版本 Android Versions ==
+% == Android Versions ==
+== Android的版本 ==
 
-%Like any software, Android gets improved over time and that is reflected in its version numbers. But what is confusing is the relationship between different version numbers. Table 1.1, “Android versions through Android 2.3” is meant to help explain that.
+% Like any software, Android gets improved over time and that is reflected in its version numbers. But what is confusing is the relationship between different version numbers. Table 1.1, “Android versions through Android 2.3” is meant to help explain that.
 
-像任何一款软件，Android会随着时间不断改进，并会在版本号上得到体现。但是不同版本号之间的联系却总让人困惑。表格1.1，“截至Android 2.3的Android各版本（= =）”将为你做出解释。
+同任何软件一样，Android也在不断的改进之中，其间的变化就在版本号上得以呈现。但是容易使人迷惑的是，不同版本号之间的关系又是什么？在表格里看会更直观些，如下：
 
 || 表格 1.1. 截至Android 2.3的Android各版本
 
-| Android 版本号 | API级别 | 代号 |
+| Android 版本号 | API Level | 代号 |
 | Android 1.0 | 1 |   |
 | Android 1.1 | 2 |   |
-| Android 1.5 | 3 | Cupcake（杯装蛋糕） |
-| Android 1.6 | 4 | Donut（甜甜圈） |
-| Android 2.0 | 5 | Eclair（泡芙） |
+| Android 1.5 | 3 | Cupcake |
+| Android 1.6 | 4 | Donut |
+| Android 2.0 | 5 | Eclair |
 | Android 2.01 | 6 | Eclair |
 | Android 2.1 | 7 | Eclair |
-| Android 2.2 | 8 | Froyo (冻酸奶) |
-| Android 2.3 | 9 | Gingerbread（姜饼） |
-| Android X.X | 10 | Honeycomb （蜂巢） |
-| Android X.X | 11 | Ice Cream Sandwich （冰淇淋三明治） |
+| Android 2.2 | 8 | Froyo(frozen yogurt) |
+| Android 2.3 | 9 | Gingerbread |
+| Android X.X | 10 | Honeycomb |
+| Android X.X | 11 | Ice Cream Sandwich |
 
-%Android version number itself sort of tells the story of major and minor release of the software platform. What is most important is the API level. Version numbers change all the time, sometimes because the APIs have changed, other times because of minor bug fixes or performance improvements.
+% Android version number itself sort of tells the story of major and minor release of the software platform. What is most important is the API level. Version numbers change all the time, sometimes because the APIs have changed, other times because of minor bug fixes or performance improvements.
 
-Android版本号本身的排序说明了软件平台主要或次要的发布顺序。其中最重要的一项是API级别。版本号更迭频繁，有的是因为API已经产生了变化，而其他情况则是一些次要的缺陷修复或者性能提升。
+Android版本号差不多就是标志了其大版本和小版本发布的轨迹，其间以API Level最为重要。版本号的更新有时是为API的改动，有时是为修补bug或是性能优化。
 
 %As application developers, you will want to make sure you know what API level your application is targeting in order to run. That API level will determine devices that can and cannot run your application.
 
-作为应用软件开发者，你需要确信你知道应用软件要运行目标平台，它的API级别是多少。API级别决定了设备能否运行你的应用程序。
+身为应用程序的开发者，你需要明确知道目标平台的API Level，这决定了你的应用能否在那上面运行。
 
-%Your objective is typically to have your application run on as many devices as possible. So, with that in mind, try to shoot for an API level that is as low as possible. Keep in mind this distribution of Android versions on real devices out there. Figure 1.1, “Historical Android version distribution through January 2011” shows a snapshot of the Android Device Dashboard from mid-2010.
+% Your objective is typically to have your application run on as many devices as possible. So, with that in mind, try to shoot for an API level that is as low as possible. Keep in mind this distribution of Android versions on real devices out there. Figure 1.1, “Historical Android version distribution through January 2011” shows a snapshot of the Android Device Dashboard from mid-2010.
 
-当然你的目标是想让你的应用程序可以在尽可能多的设备上执行。因此记住，请尽可能的降低API级别。不要忘了后面给出的这副关于Android各版本分布的图示。图示1.1，“截止2011年1月Android版本的历史分布”展示了从2010年年中以来，Android设备的演化趋势。
+通常你会希望自己的应用尽可能兼容更多的设备，因此应留意Android的版本在诸多现存设备上的分野，选择低一些的API Level。图1.1“截至2011年1月Android现存版本的分布”展示了来自[Android Device Dashboard http://developer.android.com/resources/dashboard/platform-versions.html]的一段统计信息：
 
-	图示1.1，“截止2011年1月Android版本的历史分布”
-		[images/01-AndroidVersions.png]
+|| 图1.1，“截至2011年1月Android现存版本的分布”
+[images/01-AndroidVersions.png]
 
+% You may notice that there are not a lot of users of Android 1.5 and 1.6. You may also notice that there are not a lot of users of latest and greatest Android 2.3, but the number of 2.x users is growing. This is because everyone on 1.0 and 1.1 got upgraded over the air (OTA) automatically to 1.5. On the other hand, users who still have devices with Android 1.5 and 1.6 will likely never be able to upgrade to 2.x versions because their older devices do not have relevant firmware and most manufacturers are not planning on releasing firmware upgrades as they are busy working on new models.
 
-%You may notice that there are not a lot of users of Android 1.5 and 1.6. You may also notice that there are not a lot of users of latest and greatest Android 2.3, but the number of 2.x users is growing. This is because everyone on 1.0 and 1.1 got upgraded over the air (OTA) automatically to 1.5. On the other hand, users who still have devices with Android 1.5 and 1.6 will likely never be able to upgrade to 2.x versions because their older devices do not have relevant firmware and most manufacturers are not planning on releasing firmware upgrades as they are busy working on new models.
+你可以注意到，使用Android 1.5和1.6的用户已经不是很多，最新版本2.3也还未成气候，不过2.x版本的用户数正保持增长势头。1.0和1.1的用户几乎都通过OTA自动升级到了1.5，不过1.5和1.6的用户却因为缺少相应的固件难以升级。甚至很多手机生产商并无推出新固件的计划，因为他们更专注于新机的开发。
 
-你可能注意到了，有少数的用户仍在使用着Android 1.5和1.6。你可能还发现，虽然使用最新出炉的Android 2.3的用户并不多，但是2.x版本的用户数量正持续增长。这是因为所有运行1.0和1.1的设备都通过在线升级（OTA）的方式自动升级到了1.5。另一方面，还在使用Android 1.5和1.6的那部分设备似乎将不再升级到2.x了，因为这些淘汰了的设备没有相关固件，而且大部分制造商更愿意在新型号上投入更多精力，也就并没有给这些设备提供固件升级计划。
+% With that in mind, you will probably choose 1.6 or 2.0 as your minimum development target, unless you really truly need features of the latest version.
 
-%With that in mind, you will probably choose 1.6 or 2.0 as your minimum development target, unless you really truly need features of the latest version.
-
-考虑到这点，你可能更愿意选择1.6或2.0作为最低的开发目标，除非你真的真的需要那些最新的版本才能提供的特性。
+对此有所了解之后，你可能会选择1.6或者2.0作为最低的目标平台。除非确实有必要用到最新版本中新增的特性。
 
