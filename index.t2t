@@ -15,6 +15,7 @@ Build at: %%date(%Y/%m/%d %H:%M:%S).
 %!include: ch1/index.t2t
 %!include: ch2/index.t2t
 %!include: ch3/index.t2t
+%!include: ch4/index.t2t
 ------------------------------------------------------------
 [images/t2tpowered.png] SOURCE:([%%infile %%infile])
 
