@@ -3,7 +3,8 @@
 %
 %
 
-= 前言 Preface =
+% = Preface =
+= 前言 =
 
 % This book sprang from years of delivering Marakana Android Bootcamp training class to thousands of software developers at some of the largest mobile companies on four continents around the world. Teaching Android, over time I saw what works and what doesn’t. This book is the distilled version of Android Bootcamp training course that I developed at Marakana and fine-tuned over numerous engagements.
 
@@ -79,7 +80,8 @@
 
 第十五章，**Native Development Kit(NDK)**，介绍了在应用中使用原生C代码的方法。
 
-== 排版约定 Conventions Used in This Book ==
+% == Conventions Used in This Book ==
+== 排版约定 ==
 
 % The following typographical conventions are used in this book:
 
@@ -120,8 +122,8 @@
 	
 {/WARNING}
 
-
-== 关于本书的程序 Using Code Examples ==
+% == Using Code Examples ==
+== 关于本书的程序 ==
 
 % This book is here to help you get your job done. In general, you may use the code in this book in your programs and documentation. You do not need to contact us for permission unless you’re reproducing a significant portion of the code. For example, writing a program that uses several chunks of code from this book does not require permission. Selling or distributing a CD-ROM of examples from O’Reilly books does require permission. Answering a question by citing this book and quoting example code does not require permission. Incorporating a significant amount of example code from this book into your product’s documentation does require permission.
 
@@ -154,7 +156,8 @@
 
 O'Reilly Media已经将本书上传至Safari Books Online。欲获得关于本书或者类似出版物的更多信息，请登录 http://my.safaribooksonline.com 。
 
-== 致谢 Acknowledgements ==
+% == Acknowledgements ==
+== 致谢 ==
 
 % This book is truly a result of an outstanding team work. First, I’d like to thank my editors at O’Reilly: Andy Oram and Brian Jepson. Andy, your comments were spot-on and constructive. Brian, thank you for persuading me to take on writing this book in the first place.
 

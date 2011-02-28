@@ -3,7 +3,8 @@
 %
 %
 
-== 概述 Android Overview ==
+% ==  Android Overview  ==
+== 概述 ==
 
 % Android is a comprehensive open source platform designed for mobile devices. It is championed by Google and owned by Open Handset Alliance. The goal of the alliance is to "accelerate innovation in mobile and offer consumers richer, less expensive, and better mobile experience". Android is the vehicle to do so.
 
@@ -17,7 +18,8 @@ Android是一个为移动设备设计的开源系统。它由Google主导的开�
 
 我们先撇开这些行话，直入主题：
 
-=== 完整性 Comprehensive ===
+% === Comprehensive ===
+=== 完整性 ===
 
 % Android is a comprehensive platform. It is a complete software stack for a mobile device.
 
@@ -33,9 +35,10 @@ Anroid是一个完整的平台，即作为移动设备的一整套完整的软�
 
 % For manufacturers, it is the complete solution that can run their devices. Other than some hardware-specific drivers, Android provides everything else to make their devices work.
 
-面向生产厂商，Android是令他们的设备跑起来的完整方案。厂商只需要编写自己的硬件驱动即可，其它一切都有Android代劳。
+面向生产厂商，Android就是令他们的设备跑起来的完整方案。厂商只需要编写自己的硬件驱动即可，其它一切都有Android代劳。
 
-=== 开源平台 Open Source Platform ===
+% === Open Source Platform ===
+=== 开源平台 ===
 
 % Android is an open source platform. The entire stack, from low-level Linux modules all the way to native libraries, and application framework, to complete applications, Android is totally open.
 
@@ -61,8 +64,8 @@ Android是一个开放源码的平台。整个架构，从底层的Linux模块�
 	仍然有部分底层的代码是专有的，比如蜂窝通信、Wi-Fi、蓝牙等等。便于专有组件的管理，Android尽力将这些组件抽象开，并保留接口。
 {/NOTE}
 
-
-=== 为移动设备而设计 Designed for Mobile Devices === 
+% === Designed for Mobile Devices ===
+=== 为移动设备而设计 === 
 
 % Android is a purpose-built platform for mobile devices. When designing Android, the team looked at what constraints are likely not going to change for a foreseeable future when it comes to mobile devices. For one, mobile devices are battery powered and battery performance is likely not going to get much better any time soon. Secondly, the small size of mobile devices means that they will always be limited in terms of memory and speed.
 
@@ -74,4 +77,4 @@ Android是为移动设备而设计的系统。Android的开发团队在设计时
 
 % Android was designed to run on all sorts of physical devices. Android doesn’t make any assumptions about a device’s screen size, resolution, chipset, and so on. Its core is designed to be portable.
 
-支持所有的硬件平台，也是Android的一个设计目标。Android不对屏幕尺寸、分辨率、芯片或者别的什么做任何假设。可移植性是它的原则。
+支持各种不同的硬件平台也是Android的设计目标之一。Android不对屏幕尺寸、分辨率、芯片或者别的什么做任何假设。可移植性是它的原则。
