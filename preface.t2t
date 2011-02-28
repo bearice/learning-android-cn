@@ -41,7 +41,7 @@
  
 % Chapter 6, Android User Interface, explains how to build the user interface for your application.
 
-第六章，**Android用户接口**，为你的应用设计用户接口。 
+第六章，**Android用户界面**，为你的应用设计用户界面。 
  
 % Chapter 7, Preferences, File System, Options Menu, and Intents, covers some of the operating system features that make an application developer’s life easier. 
 
@@ -57,15 +57,15 @@
 
 % Chapter 10, Lists and Adapters, covers an important feature of Android that allows large data sets to be linked to relatively small screens in an efficient way. 
 
-第十章，**List与Adapter**，介绍了Android中的一个重要特性，它允许将大量数据集高效地与小屏幕中的显示相关联。
+第十章，**List与Adapter**，介绍了Android中的一个重要特性，它允许在较小的屏幕上高效地读显大量数据。
 
 % Chapter 11, Broadcast Receivers, explains how to use the publish-subscribe mechanism in Android to respond to various system and user defined messages. 
 
-第十一章，**Broadcast Receivers**，介绍了如何在Android中应用“发布-订阅”机制以适应不同的系统。
+第十一章，**Broadcast Receivers**，介绍了如何在Android中应用“发布-订阅”机制以响应来自系统和用户的各种消息。
 
 % Chapter 12, Content Providers, shows how to design a content provider to share data between applications, using the content provider to enable our app widget to display data on the home screen. 
 
-第十二章，**Content Providers**，介绍了如何设计一个Content Provider来为不同的应用交换数据，以及将我们的app widget显示在主屏幕上的方法。
+第十二章，**Content Providers**，介绍了如何设计一个Content Provider来为不同的应用共享数据，以及使用Content Provider为主屏幕上的widget提供数据的方法。
 
 % Chapter 13, System Services, goes into various system services that an app developer can tap into. 
 
@@ -73,7 +73,7 @@
 
 % Chapter 14, Android Interface Definition Language (AIDL), covers building an inter-process communication mechanism to allow for remote access to a service from another application.  
 
-第十四章，**Android Interface Definition Language(AIDL)**，介绍了进程见通信机制的使用，远程访问另一个应用中服务的方法。
+第十四章，**Android Interface Definition Language(AIDL)**，介绍了进程间通信机制的使用，远程访问另一个应用中服务的方法。
 
 % Chapter 15, Native Development Kit (NDK), introduces how to write native C code as part of your Android application.
 
@@ -91,7 +91,7 @@
 	用于新名词、url、email地址、文件名和文件扩展名。
 
 
-``固定宽度（Constant width）``
+``等宽字体（Constant width）``
 % Used for program listings, as well as within paragraphs to refer to program elements such as variable or function names, data types, and XML entities.
 
 	用于程序代码，或者文本中用以表示函数名、数据类型或XML Entity。	
