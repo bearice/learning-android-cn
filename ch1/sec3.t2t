@@ -34,9 +34,10 @@ Android版本号差不多就是标志了其大版本和小版本发布的轨迹�
 
 % Your objective is typically to have your application run on as many devices as possible. So, with that in mind, try to shoot for an API level that is as low as possible. Keep in mind this distribution of Android versions on real devices out there. Figure 1.1, “Historical Android version distribution through January 2011” shows a snapshot of the Android Device Dashboard from mid-2010.
 
-通常你会希望自己的应用尽可能兼容更多的设备，因此应留意Android的版本在诸多现存设备上的分野，选择低一些的API Level。图1.1“截至2011年1月Android现存版本的分布”展示了来自[Android Device Dashboard http://developer.android.com/resources/dashboard/platform-versions.html]的一段统计信息：
+通常你会希望自己的应用尽可能兼容更多的设备，因此应留意Android的版本在诸多现存设备上的分野，选择低一些的API Level。图1.1“//截至2011年1月Android现存版本的分布//”展示了来自[Android Device Dashboard http://developer.android.com/resources/dashboard/platform-versions.html]的一段统计信息：
 
-|| 图1.1，“截至2011年1月Android现存版本的分布”
+//图1.1，“截至2011年1月Android现存版本的分布”//
+
 [images/01-AndroidVersions.png]
 
 % You may notice that there are not a lot of users of Android 1.5 and 1.6. You may also notice that there are not a lot of users of latest and greatest Android 2.3, but the number of 2.x users is growing. This is because everyone on 1.0 and 1.1 got upgraded over the air (OTA) automatically to 1.5. On the other hand, users who still have devices with Android 1.5 and 1.6 will likely never be able to upgrade to 2.x versions because their older devices do not have relevant firmware and most manufacturers are not planning on releasing firmware upgrades as they are busy working on new models.
