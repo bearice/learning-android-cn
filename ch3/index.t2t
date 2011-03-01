@@ -21,7 +21,8 @@
 {TRAN}所以如果你使用 Windows 的话，只需要把 ``~`` 替换成 ``C:\Users\YourUserName`` ，并把 ``/`` 换成 ``\`` 。除此以外，在 Mac 、 Linux 或者 Windows 上都是相同的。
 {/NOTE}
 
-== Installing the Android SDK ==
+% == Installing the Android SDK ==
+== 安装Android SDK ==
 
 {ORGI}Android Software Development Kit (SDK) is all you need to develop applications for Android. It comes with a set of tools as well as a platform to run it and see it all work. You can download Android SDK for your particular platform from [Android SDK Download http://developer.android.com/sdk/index.html]page.
 
@@ -29,7 +30,7 @@
 
 {ORGI}Once you download it, unzip (or on Linux, untar) it into a folder that is easy to get to. Further examples in the book will assume your SDK is in the folder ~/android-sdk. If it’s in a different location, use that location instead of ~/android-sdk. For example:
 
-{TRAN}下载之后，解压到一个方便访问的目录。在本书随后的例子中，将假定你SDK的安装目录在~/andorid-sdk。若你安装的目录在其它位置，注意替换即可。比如：
+{TRAN}下载之后，解压到一个方便访问的目录。在本书随后的例子中，将假定你SDK的安装目录在~/andorid-sdk。若你的安装目录在其它位置，注意替换即可。比如：
 
 : Windows
   C:\apps\android-sdk-windows
@@ -99,7 +100,7 @@ Eclipse通过project组织你的工作，而project放置在workspace之中，�
 
 % You also need to set up Android Tools for Eclipse. The instructions are:
 
-你也需要再安装Android Tools for Eclipse，如下：
+你还需要安装Android Tools for Eclipse，如下：
 
 	Figure 3.1. Install New Software
 		[images/03-InstallAvailableSoftware.png]
