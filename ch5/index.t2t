@@ -1,0 +1,172 @@
+%
+%
+%
+= Yamba Project Overview =
+
+The best way to learn is by an example. And that example has to meet certain criteria. After working with thousands of new Android developers and explaining some of unique concepts that this platform has to offer, using various example applications, I concluded that the best example has to be:
+
+**Comprehensive**
+	A good example app should demonstrate most of the aspects of the application framework that are unique to Android. It should also cover them in a way that there’s a good reason to use a specific feature in order to get the job done. This is important in order to create the right motivation for those new to Android.
+
+**Familiar**
+	The example application should be simple to understand. We want to focus on design and implementation and not on features and benefits.
+
+== The Yamba Application ==
+
+The application I picked for this book is a Twitter-like application. We call it Yamba which stands for //Yet Another Micro Blogging App//. Yamba lets a user connect to a service such as Twitter, pull down friends' statuses, and update user’s own status.
+
+Yamba covers most of the main Android building blocks in a natural way. As such, it’s a great sample application to illustrate how various components work individually as well as fit together. Services such as Twitter are more or less familiar to most people, so the features of the application do not require much explaining.
+
+Here’s what a finished product could look like:
+
+	**Figure 5.1. List of status messages from other people, called a timeline**
+		[images/05-TimelineActivity-final.png]
+
+
+	**Figure 5.2. Screen where the user can enter a status message**
+		[images/05-StatusActivity-final.png]
+
+
+	**Figure 5.3. User preferences**
+		[images/05-PrefsActivity-final.png]
+
+
+__Figure 5.1, “List of status messages from other people, called a timeline”__ shows how Yamba displays a list of status messages from your friends. __Figure 5.2, “Screen where the user can enter a status message”__ shows the initial Yamba screen, while __Figure 5.3, “User preferences”__ shows the user preferences.
+
+== Design Philosophy ==
+
+We’re going to adopt a certain design philosophy in tackling this project. This philosophy will help guide us in our development and serve as a north star when in doubt about what to do next. It should also help eliminate some confusion in the process we’re following.
+
+**Small Increments**
+
+	Yamba application will start out small and will constantly grow in functionality and complexity. Initially, the app will not do much, but it will organically grow one step at a time. Along the way, we’ll explain each step so that you’re expanding your skills along the way.
+
+**Always Whole and Complete**
+
+	The application must always be working. In other words, we’ll add new features in small, self-contained chunks and pull them back into the main project so that you can see how it fits together as a whole. The application must always work at each stopping point.
+
+**Refactoring Code**
+
+	Once in a while, we’ll have to take a step back and refactor the application to remove duplicate code and optimize the design. The goal is to reuse the code and not reinvent the wheel. But we are going to cross those bridges as we get to them, providing the motivation for refactoring along the way. This process will teach you about some general software development best practices as well.
+
+== Project Design ==
+
+If you remember from __Chapter 4, Main Building Blocks__, an Android application is a loose collection of Activities, Services, Content Providers, and Broadcast Receivers. These are the components from which we put together an application. __Figure 5.4, “Yamba Design Diagram”__ shows the design of the entire Yamba application, which incorporates most of the main Android building blocks.
+
+	**Figure 5.4. Yamba Design Diagram**
+		[images/05-Yamba.png]
+
+
+== Part 1: Android User Interface ==
+
+This part will focus on developing the first part of Yamba application: the Status Update screen. Our tasks are:
+
+=== Building an activity ===
+
+We are going to start by introducing the Android user interface (UI) model. In its UI, Android is quite different from some other paradigms that you may be familiar with. The unique feature is its dual approach to UI via both Java and XML.
+
+In this chapter, you will learn how to develop the user interface for __Figure 5.2, “Screen where the user can enter a status message”__, where the user updates the status. Through this process, you will use XML and Java to put together a working UI. You will learn about Layouts and Views, units in Android, how to work with images, and how to make the UI look pretty.
+
+Our approach will focus on best practices in UI development so that your application looks good and works well on any Android device, regardless of screen size and resolution.
+
+=== Networking and multithreading ===
+
+Once we have a working screen, we are going to want to post the user input to the cloud service. For that purpose, we are going to use a third-party library to help us with the Twitter API web service calls.
+
+While making the network calls, you’ll notice that the UI starts behaving sluggishly, due to the unpredictable nature of the network. The network latency may even cause our application to stop responding. At that point, we are going to introduce multithreading in Android and explain how to develop an app to work well regardless of external circumstances.
+
+=== Debugging Android Apps ===
+A few things are going to go wrong in this section. This is by design. Debugging is a normal part of application development. We’ll show you how to use the Android SDK tools to quickly find and fix problems. Debugging will become second nature to you.
+
+== Part 2: Preferences, File System, Options Menu, and Intents ==
+
+This part is all about the preferences screen. At the end of this section, your Yamba application will have two screens, one for status updates and the other for setting up the preferences. At this point, Yamba is configurable for various users and starts being a useful app. The elements we’ll create at this stage are:
+
+=== The Activity ===
+
+First, we’ll create the screen, which is an activity, a basic Android building block. You will see the steps involved and understand what it takes to create new screens.
+
+=== Menu System and Intents ===
+
+Next, we’ll need a way to get to that screen. For that purpose, we’ll introduce menu system in Android and how it works. You will also learn about Intents and how to send intents to open up a specific activity.
+
+=== File System ===
+
+Finally, we’ll learn about the file system on a typical Android device. You will get a deeper understanding how the operating system is put together. You will also learn more about Android security.
+
+== Part 3: Android Services ==
+
+This part introduces background services. By the end of this section, your Yamba application will be able to periodically connect to the cloud and pull down your friends' status updates.
+
+=== Android Services ===
+
+Android services are very useful building blocks. They allow a process to run in the background without the need for any user interface. This will be perfect for Yamba, as we’ll have an update process periodically connect to the cloud and pull the data. In this section, you will also learn about multithreading considerations as they apply to background services.
+
+=== Application object ===
+
+At this point, we’ll notice repetition in the code and recognize that our system is no longer as elegant as it could be. So we are going to introduce the Application object as a way to refactor Yamba and make it easier to grow.
+
+== Part 4: Working with Databases ==
+
+We now have the data from our updater service, but no place to store it. In this part, we’ll introduce you to Android’s support for databases. By the and of this section, our data from the cloud will be persisted in the database.
+
+=== SQLite and Android support for it ===
+
+Android ships with a built-in database called SQLite. In addition to this cool little database, the Android framework offers a rich API that makes SQLite easier for us to take advantage of it. In this section, you will learn how to use SQLite and the API for it. No, you do not have to be an SQL buff to understand what is going on, but some basic understanding of SQL always helps.
+
+=== Refactoring the code, again ===
+
+At this point, we’ll have yet another opportunity to refactor our code and make it more streamlined. There will be a good motivation for it at that moment, and the effort will further be rewarded in later chapters.
+
+== Part 5: Lists and Adapters ==
+
+It may sound like we’re back in UI-mode, but Lists and Adapters are more organizational aids that user interface elements in Android. They form a very powerful components that allows our tiny UI to connect to potentially very large datasets in an efficient and scalable manner. In other words, users will be able to use Yamba in the real world without any performance hits in the long run.
+
+Currently the data is all there in the database, but we have no way to view it. In this part, the Yamba application will get the much-needed Timeline Activity and a way for the user to see what his or her friends are chatting about online.
+
+=== Timeline Activity ===
+We’re going to develop this third and final activity in multiple stages. First, we’ll use existing knowledge of Android UI and put something together. It will work, sort of. Next, we’ll improve on that design. The app will look better, but it won’t be nearly as ready for the prime time since our design won’t be able to handle real-world usage. Finally, we’ll get it right by introducing Lists and Adapters to the mix.
+
+=== Lists and Adapters ===
+We’ll tie the data to our user interface using Lists and Adapters.
+
+=== More refactoring? ===
+We’ll have yet another opportunity to refactor our code by introducing a base activity for all our common activity needs. This will give user a more consistent feel for the app across multiple screens and will give us an easier way to manage the code going forward.
+
+== Part 6: Broadcast Receivers ==
+
+In this part, we’ll equip Yamba with receivers so it can react to events around it in an intelligent way. For that purpose, we’ll use Broadcast Receivers.
+
+=== Boot and Network Receivers ===
+For example, we want to start our updates when the device is powered up. We also want to stop pulling the data from the cloud when the network is not available, only to start it again once we’re back online. This goal will introduce us to one type of Broadcast Receivers.
+
+=== Timeline Receiver ===
+There’s another type of receiver. This one will only exist at certain times. Also, it won’t be receiving messages from the Android system, but from various other parts of our own Yamba application. This will demonstrate how we can use Receivers to put together loosely coupled components in an elegant and flexible way.
+
+=== Permissions ===
+So far you knew how to ask for system permissions, such as access to the Internet or file system. In this section we’ll learn how to define our own permissions and how to enforce them. After all, Yamba components may not want to respond to anyone else for some Yamba-specific actions.
+
+== Part 7: Content Providers ==
+
+In this part, we’ll revisit content providers and refactor our database code to use them. To demonstrate that it all works, we’ll throw in an Android App Widget.
+
+=== Status Data ===
+Our status data is okay the way it is if nobody else cares about it. But what if we want to expose some of this data to the rest of the system? After all, other applications may leverage our friends' timeline in a new and creative way. To do that, we’ll create a Content Provider and expose our status data.
+
+=== Android Widgets ===
+But who will remember to pull up our app? To demonstrate usefulness of our new Status Data, we’ll put together an App Widget. App widgets are those little components that the user can put on the home screen to see weather updates and such. We’ll create a widget that will pull the latest status update from Yamba database via Status Data Content Provider and display it on the Home screen.
+
+== Part 8: System Services ==
+
+The Android OS comes with many useful system services: processes you can easily access to ask for things like your location, sensor readings, WiFi hotspots, and much more. In this part, you will add some cool new features to Yamba, such as user’s current location.
+
+=== Compass & Location ===
+This example will illustrate how system services work in general. You will walk away understanding some common patterns for using these services. We’ll illustrate building a compass app using sensors. Later, we’ll put this knowledge to use in order to let Yamba support the user’s location when posting status updates.
+
+=== Intent Service, Alarms, Notifications ===
+It turns out that some of the cool features Android services provide can make our Updater service much simpler. So we’ll refactor our code, yet again. This time, we’ll introduce Intent Services that respond to Intents. But we’re going to need something to fire off these intents on regular basis, and for that we’ll use the Alarm service. Additionally, we’ll add a feature to notify the user of new updates by putting a notification in the notification bar. For that, we’ll use the Notification service. All this will prove to be a substantially more elegant solution to our Updater service need.
+
+== Summary ==
+
+This chapter is intended as a road map for the next eight chapters. By the end of all these iterations, you will have built a medium-size Android app from scratch. Even more, you will understand various constructs and how to put them together into a meaningful whole. The hope is that you’ll start developing a way of ``thinking`` in Android.
+
