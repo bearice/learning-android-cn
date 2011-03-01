@@ -32,6 +32,10 @@ pre, code, tt {
     font-family: Consolas, 'Bitstream Vera Sans Mono', 'andale mono', 'lucida console', monaco, monospace;
 }
 
+p code {
+    font-family: Courier;
+}
+
 pre {
   background: #F2F2F2;
   white-space: pre-wrap;

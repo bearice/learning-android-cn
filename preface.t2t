@@ -8,7 +8,7 @@
 
 % This book sprang from years of delivering Marakana Android Bootcamp training class to thousands of software developers at some of the largest mobile companies on four continents around the world. Teaching Android, over time I saw what works and what doesn’t. This book is the distilled version of Android Bootcamp training course that I developed at Marakana and fine-tuned over numerous engagements.
 
-本书的前身是Marakana Android Bootcamp培训课程中内部连载的读物，其受众多是移动设备公司的开发者，几千人遍布四个大洲。它总结了我在几年间Android教学中的心得体会：哪些管用，哪些应该避免。经过适当的增删与提炼，最终成为本书。
+本书的前身是Marakana Android Bootcamp培训课程中内部的连载读物，其受众多达几千人遍布四个大洲，大多是一些移动设备公司的开发者。它总结了我在几年间Android教学中的心得体会：哪些管用，哪些应该避免。经过适当的增删与提炼，最终成为本书。
 
 % My background is in Java from back before it was even called that. From the beginning, I was very much interested in embedded development in order to program various devices that surround us in every day life. Because Java took off mostly in the web application development, most of my previous decade went to building large enterprise system. Then Android arrived and I got once again very excited about building software for non-traditional computers. My current interests are Android on devices that may not even resemble a typical phone.
 
@@ -106,7 +106,7 @@
 //``等宽斜体（Constant width italic）``//
 % Shows text that should be replaced with user-supplied values or by values determined by context.
 	
-	用于表示用户输入或者上下文中指明的值。
+	用于表示由用户提供或者上下文中指明的值。
     
 {NOTE}
 % This icon signifies a tip, suggestion, or general note.  

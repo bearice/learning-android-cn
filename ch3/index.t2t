@@ -1,31 +1,35 @@
-
-
-
+%
+%
+%
 = Quick Start =[ch03]
 
 {ORGI}In this chapter, you will learn how to set up your environment for Android development. I’ll go beyond just telling you where to download the software from, but will also into some of the best practices in getting set up. I’ll look at development operating system choices as well as Android tools available. You will see the good, the bad, and the ugly of various choices of tools and platforms that you’re about to make (or someone else has already made for you).
 
-{TRAN}在本章中，你将学会如何搭建一个 Android 开发环境。除了罗列出软件的下载地址外，还将给出搭建过程中的若干最佳实践。本章会涉及如何选择开发用操作系统和可能用到的 Android 工具等。你可以看到你将要从中选择（或者被限定使用）的各种工具的优势、缺点甚至坑爹之处。
+{TRAN}在本章中，你将学会如何搭建一个 Android 开发环境。除了罗列出软件的下载地址外，还将给出搭建过程中的若干最佳实践。本章会涉及如何选择开发用操作系统和可能用到的 Android 工具等。你可以看到你将要从中选择（或者被规定使用）的各种工具的优势、缺点甚至坑爹之处。
 
 {ORGI}By the end of this chapter, you will have your entire development environment setup. You’ll be able to write a Hello World application, build it, and run it on the emulator (or physical device, if you want).
 
-{TRAN}完成本章阅读后，你将得到一个完整的开发环境。然后你就可以开始编写第一个 Hello World 程序，构建，然后在虚拟机里（或者真机上，如果你乐意的话）运行它。
+{TRAN}完成本章阅读后，你将得到一个完整的开发环境。然后你就可以开始编写第一个 Hello World 程序，构建，然后在虚拟机里（或者在真机上，只要你乐意）运行它。
 
 {NOTE}
 {ORGI}I’m going to be using ~ to refer to your home directory. On Mac OS X, that’s typically something like /Users/marko. On Linux, it would be /home/marko and on Windows Vista and 7, C:\Users\marko (in Windows XP, it would be C:\Documents and Settings\marko). Also, I’m going to be using Unix-style forward slashes and not Windows back slashes to denote file path separators.
 
-{TRAN}下文中将会使用 ``~`` 符号来表示你的家目录。对于 Mac OS X 来说，这个符号一般代表 ``/Users/marko/`` 这样的目录。对于 Linux 用户来说这个目录在 ``/home/marko`` ，而在 Windows Vista 和 Windows 7 中是``C:\Documents and Settings\marko``。同样的，我将使用 Unix 风格的正斜线而不是 Windows 风格的反斜线作为路径分隔符。
+{TRAN}下文中将会使用 ``~`` 符号来表示你的个人目录。对于 Mac OS X 来说，这个符号一般代表 ``/Users/marko/`` 这样的目录。对于 Linux 用户来说这个目录在 ``/home/marko`` ，而在 Windows Vista 和 Windows 7 中是``C:\Documents and Settings\marko``。同样的，我将使用 Unix 风格的正斜线而不是 Windows 风格的反斜线作为路径分隔符。
 
 {ORGI}So, if you’re on Windows, just change ~ to C:\Users\YourUserName and / to \. Other than that, everything should be pretty much the same no matter whether you are on Mac, Linux, or Windows.
 
-{TRAN}所以如果你使用 Windows 的话，只需要吧 ``~`` 替换成 ``C:\Users\YourUserName`` ，并且吧 ``/`` 换成 ``\`` 。除此以外的东西无论在 Mac 、 Linux 或者 Windows 上都是相同的。
+{TRAN}所以如果你使用 Windows 的话，只需要把 ``~`` 替换成 ``C:\Users\YourUserName`` ，并把 ``/`` 换成 ``\`` 。除此以外，在 Mac 、 Linux 或者 Windows 上都是相同的。
 {/NOTE}
 
 == Installing the Android SDK ==
 
-Android Software Development Kit (SDK) is all you need to develop applications for Android. It comes with a set of tools as well as a platform to run it and see it all work. You can download Android SDK for your particular platform from [Android SDK Download http://developer.android.com/sdk/index.html]page.
+{ORGI}Android Software Development Kit (SDK) is all you need to develop applications for Android. It comes with a set of tools as well as a platform to run it and see it all work. You can download Android SDK for your particular platform from [Android SDK Download http://developer.android.com/sdk/index.html]page.
 
-Once you download it, unzip (or on Linux, untar) it into a folder that is easy to get to. Further examples in the book will assume your SDK is in the folder ~/android-sdk. If it’s in a different location, use that location instead of ~/android-sdk. For example:
+{TRAN}Android软件开发包（SDK）即你为Android开发应用所需的一切。除了一套开发的工具集，它也提供了一个用以测试的平台。你可以在[Android SDK的下载页面 http://developer.android.com/sdk/index.html]为你的目标平台下载到对应的Android SDK。
+
+{ORGI}Once you download it, unzip (or on Linux, untar) it into a folder that is easy to get to. Further examples in the book will assume your SDK is in the folder ~/android-sdk. If it’s in a different location, use that location instead of ~/android-sdk. For example:
+
+{TRAN}下载之后，解压到一个方便访问的目录。在本书随后的例子中，将假定你SDK的安装目录在~/andorid-sdk。若你安装的目录在其它位置，注意替换即可。比如：
 
 : Windows
   C:\apps\android-sdk-windows
@@ -36,51 +40,94 @@ Once you download it, unzip (or on Linux, untar) it into a folder that is easy t
 
 
 {TIP}
-For Windows users, I strongly recommend choosing directories without spaces in them. This is because we’ll be doing work on the command-line and spaces just complicate things. Because the Windows XP home directory is in C:\Documents and Settings, I would recommend putting android-sdk in a top-level directory that you create, such as C:\apps.
+% For Windows users, I strongly recommend choosing directories without spaces in them. This is because we’ll be doing work on the command-line and spaces just complicate things. Because the Windows XP home directory is in C:\Documents and Settings, I would recommend putting android-sdk in a top-level directory that you create, such as C:\apps.
 
-However, on Windows Vista or 7, you can simply extract android-sdk into C:\Users\YourUserName.
+我强烈建议Windows用户避免选择带空格的目录名，因为我们会经常用到命令行，而夹带空格的目录名只会增加无谓的复杂性。Windows XP的个人目录又恰恰是C:\Document and Settings，因此我建议不如把android-sdk放在一个新建的顶级目录之下，比如C:\apps。
+
+% However, on Windows Vista or 7, you can simply extract android-sdk into C:\Users\YourUserName.
+
+不过，Windows Vista或Windows 7的话，直接放在C:\Users\**YourUserName**之下就好。
+
 {/TIP}
 
-=== Setting up PATH to Tools ===
-Android SDK has a folder with all the major tools in it. Since we’re going to be using these tools from the command line, it is very helpful to add your ~/android-sdk/tools/ directory to your system PATH variable. This will allow you easier access to your tools without having to navigate to their specific location every single time.
+% === Setting up PATH to Tools ===
+=== 设置PATH ===
 
-Details for setting up PATH variable depend on the platform, and are documented
+% Android SDK has a folder with all the major tools in it. Since we’re going to be using these tools from the command line, it is very helpful to add your ~/android-sdk/tools/ directory to your system PATH variable. This will allow you easier access to your tools without having to navigate to their specific location every single time.
+
+Android SDK里有个目录，其主要工具都在里面。我们会经常在命令行中使用这些工具，所以把你的~/android-sdk/tools/目录加入系统的环境变量PATH之中会是个好办法，这一来就不用每次使用它们都切换目录了。
+
+% Details for setting up PATH variable depend on the platform, and are documented
 at [Installing Android SDK http://developer.android.com/sdk/installing.html] page, Step 2.
 
-=== Installing Eclipse ===
-Eclipse is an open-source collection of programming tools originally created by IBM for for Java. Nowadays, most developers in the Java community favor Eclipse as their Integrated Development Environment (IDE) of choice. Eclipse lives at Eclipse.org.
+不同系统中设置PATH的方式各有不同，详见 [Installing Android SDK http://developer.android.com/sdk/installing.html] 页面中的第二步。
 
-Eclipse is very feature-rich and has a lot of time-saving features. I’ll be pointing them out as we keep on going. Keep in mind that, while powerful, Eclipse tends to be very resource-hungry and you may want to restart it once a day if it starts running very sluggishly.
+%=== Installing Eclipse ===
+=== 安装 Eclipse ===
 
-While you can do Android development with any favorite text editor or IDE, most developers seem to be using Eclipse, and thus I’m basing this book on its use as well.
+% Eclipse is an open-source collection of programming tools originally created by IBM for for Java. Nowadays, most developers in the Java community favor Eclipse as their Integrated Development Environment (IDE) of choice. Eclipse lives at Eclipse.org.
+
+Eclipse是一个开源的编程工具集，其前身是IBM为Java开发的IDE，如今已是Java社区大部分开发者的首选。Eclipse的首页在[http://eclipse.org/ Eclipse.org]。
+
+% Eclipse is very feature-rich and has a lot of time-saving features. I’ll be pointing them out as we keep on going. Keep in mind that, while powerful, Eclipse tends to be very resource-hungry and you may want to restart it once a day if it starts running very sluggishly.
+
+% Eclipse有着强大的功能与丰富的实用特性，我会在行进的途中将其一一带出。不过需要上心的一点就是，Eclipse强大归强大，但会非常吃资源，有时会让你巴不得一天重启一次。
+
+% While you can do Android development with any favorite text editor or IDE, most developers seem to be using Eclipse, and thus I’m basing this book on its use as well.
+
+Andorid开发并不限制开发者选择任何自己喜欢的编辑器或者IDE。不过Eclipse的使用者既占多数，本书也就选择了它。
 
 {TIP}
-If you choose not to use Eclipse, please refer to [Developing in Other IDEs http://developer.android.com/guide/developing/other-ide.html]
+% If you choose not to use Eclipse, please refer to [Developing in Other IDEs http://developer.android.com/guide/developing/other-ide.html]
+
+如果你不想用Eclipse，可以参考 [Developing in Other IDEs http://developer.android.com/guide/developing/other-ide.html]。
 {/TIP}
 
-Now, download Eclipse from http://www.eclipse.org/downloads/. I recommend Eclipse IDE for Java Developers (NOT the twice-as-large Eclipse for Java EE developers). You can install it in any directory you’d like.
+% Now, download Eclipse from http://www.eclipse.org/downloads/. I recommend Eclipse IDE for Java Developers (NOT the twice-as-large Eclipse for Java EE developers). You can install it in any directory you’d like.
 
+好，去 http://www.eclipse.org/downloads/ 可以下载到Eclipse。建议选择Eclipse IDE for Java Developers（注意不是Eclipse for Java EE developers，这个要大两倍）。安装至任何目录都可以。
+
+% === Eclipse Workspace ===
 === Eclipse Workspace ===
-Eclipse organizes all your work by projects. Projects are placed in a workspace, which is a location you choose. So, where you put your workspace is significant. I recommend ~/workspace as a simple place for your code. On Windows however, I recommend storying your workspace in a directory that doesn’t have spaces it (they complicate anything you might do at the command-line). C:\workspace is a good choice for Windows users.
 
-=== Setting Up Android Development Tools ===
-You also need to set up Android Tools for Eclipse. The instructions are:
+% Eclipse organizes all your work by projects. Projects are placed in a workspace, which is a location you choose. So, where you put your workspace is significant. I recommend ~/workspace as a simple place for your code. On Windows however, I recommend storying your workspace in a directory that doesn’t have spaces it (they complicate anything you might do at the command-line). C:\workspace is a good choice for Windows users.
+
+Eclipse通过project组织你的工作，而project放置在workspace之中，其位置由你决定。因此workspace的位置需要明确下来，我建议使用 ``~/workspace`` 这样一个简单的位置来存放自己的代码。Windows的话，我依然建议避免在workspace目录中存在空格（使用命令行的时候会添麻烦），``C:\workspace``该是个好地方。
+
+% === Setting Up Android Development Tools ===
+=== 安装Android Development Tools ===
+
+% You also need to set up Android Tools for Eclipse. The instructions are:
+
+你也需要再安装Android Tools for Eclipse，如下：
 
 	Figure 3.1. Install New Software
 		[images/03-InstallAvailableSoftware.png]
 
 
-+ Start Eclipse, then select Help → Install New Software.
-+ In the Available Software dialog, click Add.
-+ In the Add Site dialog that appears, enter a name for the remote site (for example, "Android Plugin") in the "Name" field.
-+ In the "Location" field, enter this URL: https://dl-ssl.google.com/android/eclipse/
-+ Click OK.
-+ Back in the Available Software view, you should now see "Developer Tools" added to the list. Select the checkbox next to Developer Tools, which will automatically select the nested tools Android DDMS and Android Development Tools. Click Next.
-+ In the resulting Install Details dialog, the Android DDMS and Android Development Tools features are listed. Click Next to read and accept the license agreement and install any dependencies, then click Finish.
-+ Restart Eclipse.
+% + Start Eclipse, then select Help → Install New Software.
+% + In the Available Software dialog, click Add.
+% + In the Add Site dialog that appears, enter a name for the remote site (for example, "Android Plugin") in the "Name" field.
+% + In the "Location" field, enter this URL: https://dl-ssl.google.com/android/eclipse/
+% + Click OK.
+% + Back in the Available Software view, you should now see "Developer Tools" added to the list. Select the checkbox next to Developer Tools, which will automatically select the nested tools Android DDMS and Android Development Tools. Click Next.
+% + In the resulting Install Details dialog, the Android DDMS and Android Development Tools features are listed. Click Next to read and accept the license agreement and install any dependencies, then click Finish.
+% + Restart Eclipse.
+
++ 打开Eclipse，选择 ``Help`` → ``Install New Software``。
++ 进入``Available Software``对话框，单击Add。
++ 进入``Add Site``对话框，在``"Name"``栏输入一个远程站点的名字（比如，“Android Plugin”）。
++ 在``"Location"``栏，输入这个URL：https://dl-ssl.google.com/android/eclipse/。
++ 单击``OK``。
++ 回到``Available Software``对话框，这时你可以在这个列表中发现多了一个``"Developer Tools"``。选择它也就自动嵌套选择了Android DDMS和Android Development Tools，单击``Next``。
++ 在出现的``Install Details``对话框中，Android DDMS和Android Development Tools都列了出来。单击``Next``，阅读并确认许可条款，安装依赖，单击``Finish``。
++ 重启Eclipse。
 
 {NOTE}
-If you have trouble downloading the plugin, you can try using "http" in the URL, instead of "https" (https is preferred for security reasons).
+% If you have trouble downloading the plugin, you can try using "http" in the URL, instead of "https" (https is preferred for security reasons).
+
+如果在下载插件时遇到问题，你可以尝试将URL中的``"https"``替换为``"http"``（``https``往往是出于安全目的）。
+
 {/NOTE}
 
 

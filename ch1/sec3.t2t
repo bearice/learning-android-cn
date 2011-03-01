@@ -7,7 +7,7 @@
 
 % Like any software, Android gets improved over time and that is reflected in its version numbers. But what is confusing is the relationship between different version numbers. Table 1.1, “Android versions through Android 2.3” is meant to help explain that.
 
-同任何软件一样，Android也在不断的改进之中，其间的变化就在版本号上得以呈现。但是容易使人迷惑的是，不同版本号之间的关系又是什么？在表格里看会更直观些，如下：
+同任何软件一样，Android也在不断的改进之中，其间的变化就在版本号上得以呈现。但是容易使人迷惑的是，不同版本号之间又是什么关系？在表格里看会更直观些，如下：
 
 || 表格 1.1. 截至Android 2.3的Android各版本
 
@@ -26,7 +26,7 @@
 
 % Android version number itself sort of tells the story of major and minor release of the software platform. What is most important is the API level. Version numbers change all the time, sometimes because the APIs have changed, other times because of minor bug fixes or performance improvements.
 
-Android版本号差不多就是标志了其大版本和小版本发布的轨迹，其间以API Level最为重要。版本号的更新有时是为API的改动，有时是为修补bug或是性能优化。
+Android版本号差不多就是标志了其大版本和小版本发布的轨迹，其间以API Level最为重要。版本号的更新有时是为API的改动，有时是为修补bug或者性能优化。
 
 %As application developers, you will want to make sure you know what API level your application is targeting in order to run. That API level will determine devices that can and cannot run your application.
 
