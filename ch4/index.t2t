@@ -31,13 +31,13 @@ I usually use a website as an analogy for activities. Just like a website consis
 
 On the web, you can jump from a page on one website to a page on another. Similarly, in Android, you could be looking at an activity of one application, but shortly after you could start another activity in a completely separate application. For example, if you are in your Contacts app, and you choose to text a friend, you’d be launching the activity to compose a text message in the Messaging application.
 
-Activity Lifecycle
+=== Activity Lifecycle ===
 Launching an activity may be quite expensive. It may involve creating a new linux process, allocating memory for all the UI objects, inflating all the objects from XML layouts, and setting the whole screen up. Since we’re doing a lot of work to launch an activity, it’s be a waste to just toss it out once user leaves that screen. To avoid this waste, activity lifecycle is managed via Activity Manager.
 
 Activity Manager is responsible for creating, destroying, and overall managing activities. For example, when the user starts an application for the first time, the activity manager will create its activity and put it onto the screen. Later, when the user switches screens, the activity manger will move that previous activity to a holding place. This way, if the user wants to go back to an older activity, it can be started more quickly. Older activities that user hasn’t used in a while will be destroyed in order to free more space for the currently active one. This mechanism is designed to help improve the speed of user interface and thus improve the overall user experience.
 
-Figure 4.1. Activity Lifecycle
-
+	Figure 4.1. Activity Lifecycle
+		[images/04-ActivityLifecycle.png]
 
 
 Programming for Android is conceptually different than programming for some other environments. In Android, you find yourself more responding to certain changes in the state of your application rather than driving that change yourself. It is a managed, container-based environment similar to programming for Java applets or servlets. So, when it comes to activity lifecycle, you don’t get to say what state the activity is in but you have plenty of opportunity to say what happens on transitions from state to state.
@@ -73,8 +73,8 @@ A destroyed activity is no longer in memory. The Activity Manager decided that t
 
 == Intents ==
 
-Figure 4.2. Intents
-
+	Figure 4.2. Intents
+		[images/04-Intents.png]
 
 
 Intents are messages that are sent among major building blocks. They trigger an activity to start up, a service to start or stop, or are simply broadcasts. Intents are asynchronous, meaning the code that is sending them doesn’t have to wait for them to be completed.
@@ -93,7 +93,8 @@ Services run in the background and don’t have any user interface components. T
 	Don’t confuse Android Services that are part of an Android app with native linux services, servers or daemons that a much lower level component of the operating system.
 {/NOTE}
 
-Figure 4.3. Service Lifecycle
+	Figure 4.3. Service Lifecycle
+		[images/05-ServiceLifeCycle.png]
 
 Services have a much simpler lifecycle than activities. You start a service, or stop it. Also, the service lifecycle is more or less controlled by the developer, and not so much by the system. So, we as developers have to be mindful to run our services so that they don’t unnecessarily consume shared resources, such as CPU and battery.
 
@@ -103,8 +104,8 @@ The fact that a service runs in the background doesn’t mean it runs on a separ
 
 == Content Providers ==
 
-Figure 4.4. Content Provider
-
+	Figure 4.4. Content Provider
+		[images/04-ContentProvider.png]
 
 
 Content Providers are interfaces for sharing data between applications. Android by default runs each application in its own sandbox so that all data that belongs to an application is totally isolated from other applications on the system. While small amounts of data can be passed between applications via Intents, Content Providers are much better suited for sharing persistent data between possibly large datasets. As such, Content Provider API nicely adheres to CRUD principle.
@@ -117,8 +118,8 @@ Content Providers are a relatively simple interface with the standard insert(), 
 
 == Broadcast Receivers ==
 
-Figure 4.5. Broadcast Receiver
-
+	Figure 4.5. Broadcast Receiver
+		[images/04-BroadcastReceiver.png]
 
 
 Broadcast Receivers is an Android implementation of system-wide publish/subscribe mechanism (more precisely, this is an Observer pattern). The receiver is simply a dormant code that gets activated once an event it is subscribed to happens.
