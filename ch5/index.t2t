@@ -1,23 +1,35 @@
 %
 %
 %
-= Yamba Project Overview =
+{ORGI}= Yamba Project Overview =
+{TRAN}= Yamba 项目简介 =
 
-The best way to learn is by an example. And that example has to meet certain criteria. After working with thousands of new Android developers and explaining some of unique concepts that this platform has to offer, using various example applications, I concluded that the best example has to be:
+{ORGI}The best way to learn is by an example. And that example has to meet certain criteria. After working with thousands of new Android developers and explaining some of unique concepts that this platform has to offer, using various example applications, I concluded that the best example has to be:
+{TRAN}学习的最佳方式是通过实例学习，而这些实例应该满足一些特定条件。我曾经通过一些实例应用向数千名新手展示Android平台提供的一些独特的功能。从这些实例应用中我总结出一个好的实例应该是：
 
-**Comprehensive**
-	A good example app should demonstrate most of the aspects of the application framework that are unique to Android. It should also cover them in a way that there’s a good reason to use a specific feature in order to get the job done. This is important in order to create the right motivation for those new to Android.
+{ORGI}**Comprehensive**
+{TRAN}**全面**
+{ORGI}	A good example app should demonstrate most of the aspects of the application framework that are unique to Android. It should also cover them in a way that there’s a good reason to use a specific feature in order to get the job done. This is important in order to create the right motivation for those new to Android.
+{TRAN}	一个好的实例应该能够涵盖Android的应用框架中大多数具有特色的功能。并且它应当能为使用某项特性来完成任务提供一个正当的理由。这样才能更加吸引那些刚刚学习Android的人们。
+%TALK: 上面一句话需要仔细斟酌
 
-**Familiar**
-	The example application should be simple to understand. We want to focus on design and implementation and not on features and benefits.
+{ORGI}**Familiar**
+{TRAN}**大众化**
 
-== The Yamba Application ==
+{ORGI}	The example application should be simple to understand. We want to focus on design and implementation and not on features and benefits.
+{TRAN}	实例应用应当是简单易懂的。我们注重的是设计和实现，而不是功能与易用性。
 
-The application I picked for this book is a Twitter-like application. We call it Yamba which stands for //Yet Another Micro Blogging App//. Yamba lets a user connect to a service such as Twitter, pull down friends' statuses, and update user’s own status.
+{ORGI}== The Yamba Application ==
+{TRAN}== Yamba 项目 ==
 
-Yamba covers most of the main Android building blocks in a natural way. As such, it’s a great sample application to illustrate how various components work individually as well as fit together. Services such as Twitter are more or less familiar to most people, so the features of the application do not require much explaining.
+{ORGI}The application I picked for this book is a Twitter-like application. We call it Yamba which stands for //Yet Another Micro Blogging App//. Yamba lets a user connect to a service such as Twitter, pull down friends' statuses, and update user’s own status.
+{TRAN}我为这本书挑选了一个类似于推特的应用程序。我们给他命名为 Yamba ,意思是 //Yet Another Micro Blogging App//。Yamba 为用户提供了一个类似于推特的微博服务：可以获取友邻的状态，也能够更新自己的状态。
 
-Here’s what a finished product could look like:
+{ORGI}Yamba covers most of the main Android building blocks in a natural way. As such, it’s a great sample application to illustrate how various components work individually as well as fit together. Services such as Twitter are more or less familiar to most people, so the features of the application do not require much explaining.
+{TRAN}Yamba 涵盖了构建Android应用过程中的大多数方面。同时，它也极好的展示了不同的组件是怎样组合在一起工作的。 推特这样的微博服务对于大多数人来说都不陌生，所以程序的功能也就不需要更多的解释了。
+
+{ORGI}Here’s what a finished product could look like:
+{TRAN}我们的应用完成后应该是这个样子的：
 
 	**Figure 5.1. List of status messages from other people, called a timeline**
 		[images/05-TimelineActivity-final.png]
@@ -31,142 +43,231 @@ Here’s what a finished product could look like:
 		[images/05-PrefsActivity-final.png]
 
 
-__Figure 5.1, “List of status messages from other people, called a timeline”__ shows how Yamba displays a list of status messages from your friends. __Figure 5.2, “Screen where the user can enter a status message”__ shows the initial Yamba screen, while __Figure 5.3, “User preferences”__ shows the user preferences.
+{ORGI}__Figure 5.1, “List of status messages from other people, called a timeline”__ shows how Yamba displays a list of status messages from your friends. __Figure 5.2, “Screen where the user can enter a status message”__ shows the initial Yamba screen, while __Figure 5.3, “User preferences”__ shows the user preferences.
+{TRAN}**图5.1** 展示了Yamba是如何显示你友邻个状态列表的。 **图5.2** 是Yamba的启动画面，而**图5.3**是配置界面的样子。
 
-== Design Philosophy ==
+{ORGI}== Design Philosophy ==
+{TRAN}== 设计哲学 ==
 
-We’re going to adopt a certain design philosophy in tackling this project. This philosophy will help guide us in our development and serve as a north star when in doubt about what to do next. It should also help eliminate some confusion in the process we’re following.
+{ORGI}We’re going to adopt a certain design philosophy in tackling this project. This philosophy will help guide us in our development and serve as a north star when in doubt about what to do next. It should also help eliminate some confusion in the process we’re following.
+{TRAN}我们会在完成这个项目的过程中引入一种思想，这种思想会像北极星那样在我们迷惑时为我们指明方向，而且消除在以后的开发中可能遇到的困惑。
 
-**Small Increments**
+{ORGI}**Small Increments**
+{TRAN}**小增量开发**
 
-	Yamba application will start out small and will constantly grow in functionality and complexity. Initially, the app will not do much, but it will organically grow one step at a time. Along the way, we’ll explain each step so that you’re expanding your skills along the way.
+{ORGI}	Yamba application will start out small and will constantly grow in functionality and complexity. Initially, the app will not do much, but it will organically grow one step at a time. Along the way, we’ll explain each step so that you’re expanding your skills along the way.
+{TRAN}	Yamba 在开始的时候只是一个很简单的小程序，然后逐渐增加功能与复杂度。最开始，程序能做的事很少，但是每一步都能让它有所增长。我们会解释他的每一次成长并让你有所收获。
 
-**Always Whole and Complete**
+{ORGI}**Always Whole and Complete**
+{TRAN}**随时发布**
+%TALK: 此处的意译是否合适？
 
-	The application must always be working. In other words, we’ll add new features in small, self-contained chunks and pull them back into the main project so that you can see how it fits together as a whole. The application must always work at each stopping point.
+{ORGI}	The application must always be working. In other words, we’ll add new features in small, self-contained chunks and pull them back into the main project so that you can see how it fits together as a whole. The application must always work at each stopping point.
+{TRAN}	我们的程序在任何时间都是能正常工作的。换句话说，每次的功能添加都是微小的、自足的，并且能够与现有的程序形成一个整体。程序必须在每个暂停点都能正常的工作。
 
-**Refactoring Code**
+{ORGI}**Refactoring Code**
+{TRAN}**代码重构**
 
-	Once in a while, we’ll have to take a step back and refactor the application to remove duplicate code and optimize the design. The goal is to reuse the code and not reinvent the wheel. But we are going to cross those bridges as we get to them, providing the motivation for refactoring along the way. This process will teach you about some general software development best practices as well.
+{ORGI}	Once in a while, we’ll have to take a step back and refactor the application to remove duplicate code and optimize the design. The goal is to reuse the code and not reinvent the wheel. But we are going to cross those bridges as we get to them, providing the motivation for refactoring along the way. This process will teach you about some general software development best practices as well.
+{TRAN}	每过一段时间，我们就应该停止开发然后回头重构我们的程序以移除重复代码并且优化设计。 这样做的目标是尽量的重用代码，减少重复制造轮子的机会。 但是当我们遇到问题时不会停下，从而为重构留下动机。同时在此过程中我们会想你展示一些软件开发过程中的最佳实践。
+%TALK:上段中 “But we are going to cross those bridges as we get to them, providing the motivation for refactoring along the way” 的译法仍然存有疑问。
 
-== Project Design ==
+{ORGI}== Project Design ==
+{TRAN}== 项目设计 ==
 
-If you remember from __Chapter 4, Main Building Blocks__, an Android application is a loose collection of Activities, Services, Content Providers, and Broadcast Receivers. These are the components from which we put together an application. __Figure 5.4, “Yamba Design Diagram”__ shows the design of the entire Yamba application, which incorporates most of the main Android building blocks.
+{ORGI}If you remember from __Chapter 4, Main Building Blocks__, an Android application is a loose collection of Activities, Services, Content Providers, and Broadcast Receivers. These are the components from which we put together an application. __Figure 5.4, “Yamba Design Diagram”__ shows the design of the entire Yamba application, which incorporates most of the main Android building blocks.
+{TRAN}如果你记得 第4章 的内容的话，应该知道一个 Android 应用就是很多 Activity、 Service、 Content Provider 和 Broadcast Receiver 的松散组合。 Android应用正是由这些部分组成的。 图5.4 给出了 Yamba 的设计构架，他们将与大部分的Android 基类交互，以完成工作。
 
 	**Figure 5.4. Yamba Design Diagram**
 		[images/05-Yamba.png]
 
 
-== Part 1: Android User Interface ==
+{ORGI}== Part 1: Android User Interface ==
+{TRAN}== 第一部分: Android 用户界面 ==
 
-This part will focus on developing the first part of Yamba application: the Status Update screen. Our tasks are:
+{ORGI}This part will focus on developing the first part of Yamba application: the Status Update screen. Our tasks are:
+{TRAN}在这部分中，我们将着重介绍如何开发 Yamba 的第一个组成：状态更新界面。 我们的主要任务有：
 
-=== Building an activity ===
+{ORGI}=== Building an activity ===
+{TRAN}=== 构建一个 Activity ===
+% 这里的Activity是Android中的一个类，因此不翻译为活动，下同。
 
-We are going to start by introducing the Android user interface (UI) model. In its UI, Android is quite different from some other paradigms that you may be familiar with. The unique feature is its dual approach to UI via both Java and XML.
+{ORGI}We are going to start by introducing the Android user interface (UI) model. In its UI, Android is quite different from some other paradigms that you may be familiar with. The unique feature is its dual approach to UI via both Java and XML.
+{TRAN}在最开始我们来熟悉一下 Android 的用户界面（ UI ）模型。 Android 的 UI 系统可能和大部分你接触过的系统都不太一样。其最大的特点可能是它的 UI既可以在 Java 中描述，也可以在 XML 中描述。
 
-In this chapter, you will learn how to develop the user interface for __Figure 5.2, “Screen where the user can enter a status message”__, where the user updates the status. Through this process, you will use XML and Java to put together a working UI. You will learn about Layouts and Views, units in Android, how to work with images, and how to make the UI look pretty.
+{ORGI}In this chapter, you will learn how to develop the user interface for __Figure 5.2, “Screen where the user can enter a status message”__, where the user updates the status. Through this process, you will use XML and Java to put together a working UI. You will learn about Layouts and Views, units in Android, how to work with images, and how to make the UI look pretty.
+{TRAN}在这一章中，我们将学习如何开发一个像 图5.2 那样的能让用户更新其状态的界面。在此过程中我们将使用 Java 和 XML 来共同完成 UI 的设计。 你将学习有关布局（Layout） 和视图（View）的有关知识，Android的单位系统，如何使用图片，并且还有一些能让你的界面变得更漂亮的小窍门。
 
-Our approach will focus on best practices in UI development so that your application looks good and works well on any Android device, regardless of screen size and resolution.
+{ORGI}Our approach will focus on best practices in UI development so that your application looks good and works well on any Android device, regardless of screen size and resolution.
+{TRAN}我们的目标是通过一些 UI 设计上的最佳实践，让你的程序在任何尺寸和分辨率的Android上都不失美观和实用性。
 
-=== Networking and multithreading ===
+{ORGI}=== Networking and multithreading ===
+{TRAN}=== 网络和多线程 ===
 
-Once we have a working screen, we are going to want to post the user input to the cloud service. For that purpose, we are going to use a third-party library to help us with the Twitter API web service calls.
+{ORGI}Once we have a working screen, we are going to want to post the user input to the cloud service. For that purpose, we are going to use a third-party library to help us with the Twitter API web service calls.
+{TRAN}我们有了用户界面之后，就应该知道怎么吧用户的输入交给云端服务处理了。为了达成这个目的，我们引入了一个第三方的库来帮助我们访问 Twitter 的 API 服务。
 
-While making the network calls, you’ll notice that the UI starts behaving sluggishly, due to the unpredictable nature of the network. The network latency may even cause our application to stop responding. At that point, we are going to introduce multithreading in Android and explain how to develop an app to work well regardless of external circumstances.
+{ORGI}While making the network calls, you’ll notice that the UI starts behaving sluggishly, due to the unpredictable nature of the network. The network latency may even cause our application to stop responding. At that point, we are going to introduce multithreading in Android and explain how to develop an app to work well regardless of external circumstances.
+{TRAN}在进行网络调用的过程中，我们会发现界面的相应速度变得极其缓慢，这是因为网络操作是不可预知的。网络上的延迟甚至可能使我们的程序停止响应。因此我们会在此时介绍Android的多线程系统，并且教你如何开发一个不会被外部条件所阻塞的应用程序。
 
-=== Debugging Android Apps ===
-A few things are going to go wrong in this section. This is by design. Debugging is a normal part of application development. We’ll show you how to use the Android SDK tools to quickly find and fix problems. Debugging will become second nature to you.
+{ORGI}=== Debugging Android Apps ===
+{TRAN}=== Android 程序的调试 ===
 
-== Part 2: Preferences, File System, Options Menu, and Intents ==
+{ORGI}A few things are going to go wrong in this section. This is by design. Debugging is a normal part of application development. We’ll show you how to use the Android SDK tools to quickly find and fix problems. Debugging will become second nature to you.
+{TRAN}哦，糟糕，我们的程序不能正常工作了。 不过不要担心，这是故意的。 调试是任何程序开发中都不能缺少的组成部分。 我们会在本章教你如何使用 Android SDK 中提供的工具快速的定位并且解决问题。 调试会变成你的第二本能的！
 
-This part is all about the preferences screen. At the end of this section, your Yamba application will have two screens, one for status updates and the other for setting up the preferences. At this point, Yamba is configurable for various users and starts being a useful app. The elements we’ll create at this stage are:
+{ORGI}== Part 2: Preferences, File System, Options Menu, and Intents ==
+{TRAN}== 第二部分: 首选项，文件系统，选项菜单和Intents ==
+% 关于 Intents 这个词是否需要翻译还需要讨论，我的建议是不翻译 理由同样是它属于一个类名。
 
-=== The Activity ===
+{ORGI}This part is all about the preferences screen. At the end of this section, your Yamba application will have two screens, one for status updates and the other for setting up the preferences. At this point, Yamba is configurable for various users and starts being a useful app. The elements we’ll create at this stage are:
+{TRAN}这部分着重讨论配置页的开发。 在本节结束后，Yamba 将会拥有它的第二个界面， 一个界面用来更新用户状态，另一个用于配置首选项。 此时 Yamba 已经可以被不同的用户所配置，成为一个有用的 App 了。本阶段我们要创建的东西有：
 
-First, we’ll create the screen, which is an activity, a basic Android building block. You will see the steps involved and understand what it takes to create new screens.
+{ORGI}=== The Activity ===
+{TRAN}=== Activity ===
 
-=== Menu System and Intents ===
+{ORGI}First, we’ll create the screen, which is an activity, a basic Android building block. You will see the steps involved and understand what it takes to create new screens.
+{TRAN}首先，我们需要把界面做好。界面对应一个Activity，它是 Android 的基本组成之一。 我们将学习创建新界面的基本步骤和必备条件。
 
-Next, we’ll need a way to get to that screen. For that purpose, we’ll introduce menu system in Android and how it works. You will also learn about Intents and how to send intents to open up a specific activity.
+{ORGI}=== Menu System and Intents ===
+{TRAN}=== 菜单系统与 Intents ===
 
-=== File System ===
+{ORGI}Next, we’ll need a way to get to that screen. For that purpose, we’ll introduce menu system in Android and how it works. You will also learn about Intents and how to send intents to open up a specific activity.
+{TRAN}接下来，我们需要一个可以切换界面的方法。 所以在这里开始介绍 Android 的菜单系统是怎么工作的。同时你也将学习 Intents 的相关知识并且了解如何发送一个 Intent 来切换 Activity。
 
-Finally, we’ll learn about the file system on a typical Android device. You will get a deeper understanding how the operating system is put together. You will also learn more about Android security.
+{ORGI}=== File System ===
+{TRAN}=== 文件系统 ===
 
-== Part 3: Android Services ==
+{ORGI}Finally, we’ll learn about the file system on a typical Android device. You will get a deeper understanding how the operating system is put together. You will also learn more about Android security.
+{TRAN}最后，我们来学习典型 Android 设备上的文件系统。阅读本章，你将深入了解操作系统是怎么组合在一起的。同时你还将学习 Android 的安全知识。
 
-This part introduces background services. By the end of this section, your Yamba application will be able to periodically connect to the cloud and pull down your friends' status updates.
+{ORGI}== Part 3: Android Services ==
+{TRAN}== 第三部分: Android 系统服务 ==
 
-=== Android Services ===
+{ORGI}This part introduces background services. By the end of this section, your Yamba application will be able to periodically connect to the cloud and pull down your friends' status updates.
+{TRAN}这部分介绍了后台服务的相关知识。 本章结束时， Yamba 将能够在后台周期性的连接云端服务并且下载友邻们的状态数据。
 
-Android services are very useful building blocks. They allow a process to run in the background without the need for any user interface. This will be perfect for Yamba, as we’ll have an update process periodically connect to the cloud and pull the data. In this section, you will also learn about multithreading considerations as they apply to background services.
+{ORGI}=== Android Services ===
+{TRAN}=== Android 系统服务 ===
 
-=== Application object ===
+{ORGI}Android services are very useful building blocks. They allow a process to run in the background without the need for any user interface. This will be perfect for Yamba, as we’ll have an update process periodically connect to the cloud and pull the data. In this section, you will also learn about multithreading considerations as they apply to background services.
+{TRAN}Android 的服务系统是一个非常有用的模块。它允许进程在后台运行而不显示任何用户界面。 这对 Yamba 来说是非常有用的，我们可以定期从云端上传或者下载数据。在本节中，你将学习在后台服务中如何使用多线程。
 
-At this point, we’ll notice repetition in the code and recognize that our system is no longer as elegant as it could be. So we are going to introduce the Application object as a way to refactor Yamba and make it easier to grow.
+{ORGI}=== Application object ===
+{TRAN}=== Application 对象 ===
 
-== Part 4: Working with Databases ==
+{ORGI}At this point, we’ll notice repetition in the code and recognize that our system is no longer as elegant as it could be. So we are going to introduce the Application object as a way to refactor Yamba and make it easier to grow.
+{TRAN}在本章，我们会发现代码中的重复变多并且程序不像刚开始时那样优雅了。为了重构 Yamba 使它变得更容易扩展，所以我们决定介绍 Application 对象。
 
-We now have the data from our updater service, but no place to store it. In this part, we’ll introduce you to Android’s support for databases. By the and of this section, our data from the cloud will be persisted in the database.
+{ORGI}== Part 4: Working with Databases ==
+{TRAN}== 第四部分: 使用数据库 ==
 
-=== SQLite and Android support for it ===
+{ORGI}We now have the data from our updater service, but no place to store it. In this part, we’ll introduce you to Android’s support for databases. By the and of this section, our data from the cloud will be persisted in the database.
+{TRAN}现在我们已经可以从云端获取数据了，但是却没有一个可以存储它们的地方。所以在本章中，我们将会介绍 Android 的数据库支持。 在本章结束后， 我们从云端获取的数据将可以在数据库中持久地保存了。
 
-Android ships with a built-in database called SQLite. In addition to this cool little database, the Android framework offers a rich API that makes SQLite easier for us to take advantage of it. In this section, you will learn how to use SQLite and the API for it. No, you do not have to be an SQL buff to understand what is going on, but some basic understanding of SQL always helps.
+{ORGI}=== SQLite and Android support for it ===
+{TRAN}=== SQLite 和 Android 的数据库系统===
 
-=== Refactoring the code, again ===
+{ORGI}Android ships with a built-in database called SQLite. In addition to this cool little database, the Android framework offers a rich API that makes SQLite easier for us to take advantage of it. In this section, you will learn how to use SQLite and the API for it. No, you do not have to be an SQL buff to understand what is going on, but some basic understanding of SQL always helps.
+{TRAN}Android 包括一个内建的叫做 SQLite 的数据库。 同时 Android 框架为这个小巧但是酷毙了的数据库提供了丰富的API，这使得 SQLite 更加易用。在本节中， 你将学习如何使用 SQLite 和它的配套 API。 不过虽然你不必深刻了解 SQL ，但是对 SQL 有一个大概的了解总不是坏事。
 
-At this point, we’ll have yet another opportunity to refactor our code and make it more streamlined. There will be a good motivation for it at that moment, and the effort will further be rewarded in later chapters.
+{ORGI}=== Refactoring the code, again ===
+{TRAN}=== 再次重构代码 ===
 
-== Part 5: Lists and Adapters ==
+{ORGI}At this point, we’ll have yet another opportunity to refactor our code and make it more streamlined. There will be a good motivation for it at that moment, and the effort will further be rewarded in later chapters.
+{TRAN}此时，我们有了一个再次重构代码的契机，我们需要 Yamba 变得更加精简。因为此时我们拥有足够的理由来做这件事，并且这样做的效果会在以后的章节里更加明显。
+%TALK: 上段需要仔细斟酌
 
-It may sound like we’re back in UI-mode, but Lists and Adapters are more organizational aids that user interface elements in Android. They form a very powerful components that allows our tiny UI to connect to potentially very large datasets in an efficient and scalable manner. In other words, users will be able to use Yamba in the real world without any performance hits in the long run.
+{ORGI}== Part 5: Lists and Adapters ==
+{TRAN}== 第五部分: 列表与适配器 ==
 
-Currently the data is all there in the database, but we have no way to view it. In this part, the Yamba application will get the much-needed Timeline Activity and a way for the user to see what his or her friends are chatting about online.
+{ORGI}It may sound like we’re back in UI-mode, but Lists and Adapters are more organizational aids that user interface elements in Android. They form a very powerful components that allows our tiny UI to connect to potentially very large datasets in an efficient and scalable manner. In other words, users will be able to use Yamba in the real world without any performance hits in the long run.
+{TRAN}似乎我们应该回头看看 UI 了，不过列表（List）和适配器（Adapter）的却在 Android 的UI设计中十分有用。它们可以构成一种能够在小型UI中高效地显示大量数据的控件。换句话说，用户将能够长时间运行 Yamba 而不使影响性能。
 
-=== Timeline Activity ===
-We’re going to develop this third and final activity in multiple stages. First, we’ll use existing knowledge of Android UI and put something together. It will work, sort of. Next, we’ll improve on that design. The app will look better, but it won’t be nearly as ready for the prime time since our design won’t be able to handle real-world usage. Finally, we’ll get it right by introducing Lists and Adapters to the mix.
+{ORGI}Currently the data is all there in the database, but we have no way to view it. In this part, the Yamba application will get the much-needed Timeline Activity and a way for the user to see what his or her friends are chatting about online.
+{TRAN}目前数据都是在数据库中保存的，但是我们没办法把它们显示出来。 在这个部分中，我们要为 Yamba 设计一个用于显示时间线的界面，好让用户可以看到他的朋友们都在讨论什么。
 
-=== Lists and Adapters ===
-We’ll tie the data to our user interface using Lists and Adapters.
+{ORGI}=== Timeline Activity ===
+{TRAN}=== 时间线界面 ===
 
-=== More refactoring? ===
-We’ll have yet another opportunity to refactor our code by introducing a base activity for all our common activity needs. This will give user a more consistent feel for the app across multiple screens and will give us an easier way to manage the code going forward.
+{ORGI}We’re going to develop this third and final activity in multiple stages. First, we’ll use existing knowledge of Android UI and put something together. It will work, sort of. Next, we’ll improve on that design. The app will look better, but it won’t be nearly as ready for the prime time since our design won’t be able to handle real-world usage. Finally, we’ll get it right by introducing Lists and Adapters to the mix.
+{TRAN}在接下来的几章中。我们终于要开始编写第三个，也是最后一个界面了。 首先我们使用已有的关于 Android UI 的知识吧需要的东西组合起来，得到一个基本上能正常工作的界面。 接下来我们将要改进以前设计。 我们的程序会变得更漂亮，但是它仍然不能满足现实世界的需求。最后我们会使用 List 和 Adapter 让它正常工作。
 
-== Part 6: Broadcast Receivers ==
+{ORGI}=== Lists and Adapters ===
+{TRAN}=== List 与 Adapter ===
 
-In this part, we’ll equip Yamba with receivers so it can react to events around it in an intelligent way. For that purpose, we’ll use Broadcast Receivers.
+{ORGI}We’ll tie the data to our user interface using Lists and Adapters.
+{TRAN}我们使用 List 和 Adapter 来吧数据绑定到用户界面上。
 
-=== Boot and Network Receivers ===
-For example, we want to start our updates when the device is powered up. We also want to stop pulling the data from the cloud when the network is not available, only to start it again once we’re back online. This goal will introduce us to one type of Broadcast Receivers.
+{ORGI}=== More refactoring? ===
+{TRAN}=== 再重构一次？ ===
 
-=== Timeline Receiver ===
-There’s another type of receiver. This one will only exist at certain times. Also, it won’t be receiving messages from the Android system, but from various other parts of our own Yamba application. This will demonstrate how we can use Receivers to put together loosely coupled components in an elegant and flexible way.
+{ORGI}We’ll have yet another opportunity to refactor our code by introducing a base activity for all our common activity needs. This will give user a more consistent feel for the app across multiple screens and will give us an easier way to manage the code going forward.
+{TRAN}现在我们已经完成了所有的基础界面，于是可以再次重构我们的代码了。我们应当让用户在不同的界面中拥有相同的用户体验，并且让后续的编码变得更加轻松。
 
-=== Permissions ===
-So far you knew how to ask for system permissions, such as access to the Internet or file system. In this section we’ll learn how to define our own permissions and how to enforce them. After all, Yamba components may not want to respond to anyone else for some Yamba-specific actions.
+{ORGI}== Part 6: Broadcast Receivers ==
+{TRAN}== 第六部分: Broadcast Receivers ==
 
-== Part 7: Content Providers ==
+{ORGI}In this part, we’ll equip Yamba with receivers so it can react to events around it in an intelligent way. For that purpose, we’ll use Broadcast Receivers.
+{TRAN}在本部分中，我们会让Yamba能够聪明的相应来自外部的事件。为了达到这个目的，我们将会使用 Broadcast Receiver。
 
-In this part, we’ll revisit content providers and refactor our database code to use them. To demonstrate that it all works, we’ll throw in an Android App Widget.
+{ORGI}=== Boot and Network Receivers ===
+{TRAN}=== 启动和网络侦听器 ===
+% 这里的 Receivers 翻译成侦听器是否合适?
 
-=== Status Data ===
-Our status data is okay the way it is if nobody else cares about it. But what if we want to expose some of this data to the rest of the system? After all, other applications may leverage our friends' timeline in a new and creative way. To do that, we’ll create a Content Provider and expose our status data.
+{ORGI}For example, we want to start our updates when the device is powered up. We also want to stop pulling the data from the cloud when the network is not available, only to start it again once we’re back online. This goal will introduce us to one type of Broadcast Receivers.
+{TRAN}假如我们希望在设备启动后能够自动的开始刷新时间线，我们还希望当网络不可用时停止更新时间线，并且在网络可用后恢复更新。我们就需要用到一种 Broadcast Receiver。
 
-=== Android Widgets ===
-But who will remember to pull up our app? To demonstrate usefulness of our new Status Data, we’ll put together an App Widget. App widgets are those little components that the user can put on the home screen to see weather updates and such. We’ll create a widget that will pull the latest status update from Yamba database via Status Data Content Provider and display it on the Home screen.
+{ORGI}=== Timeline Receiver ===
+{TRAN}=== 时间线侦听器 ===
 
-== Part 8: System Services ==
+{ORGI}There’s another type of receiver. This one will only exist at certain times. Also, it won’t be receiving messages from the Android system, but from various other parts of our own Yamba application. This will demonstrate how we can use Receivers to put together loosely coupled components in an elegant and flexible way.
+{TRAN}还有另一种侦听器，他们只在某个特定的时间存在。并且他们不是用来收听来自 Android 的系统广播，而是来自 Yamba 中的自定义消息的。使用这种侦听器可以让我们拥有的松散的组件优雅且灵活的组合在一起。
 
-The Android OS comes with many useful system services: processes you can easily access to ask for things like your location, sensor readings, WiFi hotspots, and much more. In this part, you will add some cool new features to Yamba, such as user’s current location.
+{ORGI}=== Permissions ===
+{TRAN}=== 权限 ===
 
-=== Compass & Location ===
-This example will illustrate how system services work in general. You will walk away understanding some common patterns for using these services. We’ll illustrate building a compass app using sensors. Later, we’ll put this knowledge to use in order to let Yamba support the user’s location when posting status updates.
+{ORGI}So far you knew how to ask for system permissions, such as access to the Internet or file system. In this section we’ll learn how to define our own permissions and how to enforce them. After all, Yamba components may not want to respond to anyone else for some Yamba-specific actions.
+{TRAN}现在你应该已经知道怎么向系统申请权限，比如访问网络或者文件系统。 在本节中，我们会学习如何定义我们自己的权限并且应用他们。毕竟我们不希望其他人能够访问 Yamba 内部的操作。
 
-=== Intent Service, Alarms, Notifications ===
-It turns out that some of the cool features Android services provide can make our Updater service much simpler. So we’ll refactor our code, yet again. This time, we’ll introduce Intent Services that respond to Intents. But we’re going to need something to fire off these intents on regular basis, and for that we’ll use the Alarm service. Additionally, we’ll add a feature to notify the user of new updates by putting a notification in the notification bar. For that, we’ll use the Notification service. All this will prove to be a substantially more elegant solution to our Updater service need.
+{ORGI}== Part 7: Content Providers ==
+{TRAN}== 第七部分: Content Provider ==
 
-== Summary ==
+{ORGI}In this part, we’ll revisit content providers and refactor our database code to use them. To demonstrate that it all works, we’ll throw in an Android App Widget.
+{TRAN}在本部分中，我们来回头看看 Content Provider  然后重构数据库代码。为了展示他们是怎么工作的，我们会把他们扔在一个 Android App Widget 中。
 
-This chapter is intended as a road map for the next eight chapters. By the end of all these iterations, you will have built a medium-size Android app from scratch. Even more, you will understand various constructs and how to put them together into a meaningful whole. The hope is that you’ll start developing a way of ``thinking`` in Android.
+{ORGI}=== Status Data ===
+{TRAN}=== 状态数据 ===
 
+{ORGI}Our status data is okay the way it is if nobody else cares about it. But what if we want to expose some of this data to the rest of the system? After all, other applications may leverage our friends' timeline in a new and creative way. To do that, we’ll create a Content Provider and expose our status data.
+{TRAN}我们的状态数据如果没人关心它的话就无所谓了。但是如果我们希望吧这个数据暴露给系统的其他部分该怎么办? 毕竟其他的程序有可能希望用其他的方式来显示时间线。 为了达成这个目的，我们需要创建一个 Content Provider 来向外部暴露数据。
+
+{ORGI}=== Android Widgets ===
+{TRAN}=== Android Widgets ===
+
+{ORGI}But who will remember to pull up our app? To demonstrate usefulness of our new Status Data, we’ll put together an App Widget. App widgets are those little components that the user can put on the home screen to see weather updates and such. We’ll create a widget that will pull the latest status update from Yamba database via Status Data Content Provider and display it on the Home screen.
+{TRAN}但是有谁会关心我们的数据呢？ 为了展示刚刚暴露出来的数据，我们会把它显示在一个 Widget 中。 Android 的 Widget 是可以在主屏幕上放置并显示更新的小控件。 我们会创建一个用于显示 Yamba 中最近更新的状态的 Widget， 数据会通过状态数据的 Content Provider 来获取。
+
+{ORGI}== Part 8: System Services ==
+{TRAN}== 第八部分: 系统服务 ==
+
+{ORGI}The Android OS comes with many useful system services: processes you can easily access to ask for things like your location, sensor readings, WiFi hotspots, and much more. In this part, you will add some cool new features to Yamba, such as user’s current location.
+{TRAN}Android 系统包括很多很有用的服务: 你可以很简单的获取诸如 当前位置、传感器数据、 WiFi热点 等等数据。在这个部分中， 我们会为 Yamba 添加若干新功能，例如提交用户当前的位置。
+
+{ORGI}=== Compass & Location ===
+{TRAN}=== 指南针和定位 ===
+
+{ORGI}This example will illustrate how system services work in general. You will walk away understanding some common patterns for using these services. We’ll illustrate building a compass app using sensors. Later, we’ll put this knowledge to use in order to let Yamba support the user’s location when posting status updates.
+{TRAN}本例会演示系统服务是通过什么样的方式工作的。 你将学习这些服务的一些共同特性。 我们将会使用传感器来开发一个罗盘应用，然后，使用类似的方式来为 Yamba 添加提交用户位置的功能。
+
+{ORGI}=== Intent Service, Alarms, Notifications ===
+{TRAN}=== Intent Service, Alarms, Notifications ===
+
+{ORGI}It turns out that some of the cool features Android services provide can make our Updater service much simpler. So we’ll refactor our code, yet again. This time, we’ll introduce Intent Services that respond to Intents. But we’re going to need something to fire off these intents on regular basis, and for that we’ll use the Alarm service. Additionally, we’ll add a feature to notify the user of new updates by putting a notification in the notification bar. For that, we’ll use the Notification service. All this will prove to be a substantially more elegant solution to our Updater service need.
+{TRAN}Android 提供了一些很酷的功能可以让我们的更新服务更加简单。 所以我们会再次重构已有代码。 这次我们会引入 Intent Services 来处理 Intent 请求。但是我们还需要一些东西来触发 Intent 请求，所以还需要引入 Alarms 服务。 另外，我们还会使用 Notification 服务来增加一个用于同时在通知栏显示用户更新的功能。
+
+{ORGI}== Summary ==
+{TRAN}== 总结 ==
+
+{ORGI}This chapter is intended as a road map for the next eight chapters. By the end of all these iterations, you will have built a medium-size Android app from scratch. Even more, you will understand various constructs and how to put them together into a meaningful whole. The hope is that you’ll start developing a way of ``thinking`` in Android.
+{TRAN}本章的目的是为了接下来的八章做铺垫。 在这些章节结束后，我们会完成一个中等规模的 Android 应用。 并且你将学会若干基础建设的使用，并且怎么吧他们有机的结合起来。所有这些努力都是为了让你能够学会按照 Android 的思想来思考。
