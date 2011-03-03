@@ -1,6 +1,7 @@
 %
 %
 %
+% vim: fdm=manual
 {ORGI}= Yamba Project Overview =
 {TRAN}= Yamba 项目简介 =
 
@@ -23,10 +24,10 @@
 {TRAN}== Yamba 项目 ==
 
 {ORGI}The application I picked for this book is a Twitter-like application. We call it Yamba which stands for //Yet Another Micro Blogging App//. Yamba lets a user connect to a service such as Twitter, pull down friends' statuses, and update user’s own status.
-{TRAN}我为这本书挑选了一个类似于推特的应用程序。我们给他命名为 Yamba ,意思是 //Yet Another Micro Blogging App//。Yamba 为用户提供了一个类似于推特的微博服务：可以获取友邻的状态，也能够更新自己的状态。
+{TRAN}我为这本书挑选了一个类似于 Twitter 的应用程序。我们给他命名为 Yamba ,意思是 //Yet Another Micro Blogging App//。Yamba 为用户提供了一个类似于 Twitter 的微博服务：可以获取友邻的状态，也能够更新自己的状态。
 
 {ORGI}Yamba covers most of the main Android building blocks in a natural way. As such, it’s a great sample application to illustrate how various components work individually as well as fit together. Services such as Twitter are more or less familiar to most people, so the features of the application do not require much explaining.
-{TRAN}Yamba 涵盖了构建Android应用过程中的大多数方面。同时，它也极好的展示了不同的组件是怎样组合在一起工作的。 推特这样的微博服务对于大多数人来说都不陌生，所以程序的功能也就不需要更多的解释了。
+{TRAN}Yamba 涵盖了构建Android应用过程中的大多数方面。同时，它也极好的展示了不同的组件是怎样组合在一起工作的。  Twitter 这样的微博服务对于大多数人来说都不陌生，所以程序的功能也就不需要更多的解释了。
 
 {ORGI}Here’s what a finished product could look like:
 {TRAN}我们的应用完成后应该是这个样子的：
@@ -44,7 +45,7 @@
 
 
 {ORGI}__Figure 5.1, “List of status messages from other people, called a timeline”__ shows how Yamba displays a list of status messages from your friends. __Figure 5.2, “Screen where the user can enter a status message”__ shows the initial Yamba screen, while __Figure 5.3, “User preferences”__ shows the user preferences.
-{TRAN}**图5.1** 展示了Yamba是如何显示你友邻个状态列表的。 **图5.2** 是Yamba的启动画面，而**图5.3**是配置界面的样子。
+{TRAN}**图5.1** 展示了Yamba是如何显示你友邻个状态列表的。 **图5.2** 是Yamba的初始界面，而**图5.3**是配置界面的样子。
 
 {ORGI}== Design Philosophy ==
 {TRAN}== 设计哲学 ==
