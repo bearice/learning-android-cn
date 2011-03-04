@@ -58,8 +58,7 @@
 
 Android SDK里有个目录，其主要工具都在里面。我们会经常在命令行中使用这些工具，所以把你的~/android-sdk/tools/目录加入系统的环境变量PATH之中会是个好办法，这一来就不用每次使用它们都切换目录了。
 
-% Details for setting up PATH variable depend on the platform, and are documented
-at [Installing Android SDK http://developer.android.com/sdk/installing.html] page, Step 2.
+% Details for setting up PATH variable depend on the platform, and are documented at [Installing Android SDK http://developer.android.com/sdk/installing.html] page, Step 2.
 
 不同系统中设置PATH的方式各有不同，详见 [Installing Android SDK http://developer.android.com/sdk/installing.html] 页面中的第二步。
 
@@ -171,8 +170,12 @@ Eclipse通过project组织你的工作，而project放置在workspace之中，�
 		[images/03-NewProject.png]
 
 
-=== Manifest File ===
-Manifest file glues everything together. It is this file that explains what the application consists of, what all its main building blocks are, what permissions it requires, and so on.
+%=== Manifest File ===
+===Manifest 文件===
+
+% Manifest file glues everything together. It is this file that explains what the application consists of, what all its main building blocks are, what permissions it requires, and so on.
+
+Manifest文件是应用各部分之间的牵线人。它申明了应用中所包含的构件(Building Blocks)，所需的权限，等等。
 
 **Example 3.1. AndroidManifest.xml**
 {CODE}
@@ -193,8 +196,12 @@ Manifest file glues everything together. It is this file that explains what the 
 </manifest>
 {/CODE}
 
-=== Layout XML Code ===
-The layout file specifies the layout of your screen. In this case, we have only one screen and its loaded by the Java code, HelloWorld activity above.
+%=== Layout XML Code ===
+=== Layout文件 ===
+
+% The layout file specifies the layout of your screen. In this case, we have only one screen and its loaded by the Java code, HelloWorld activity above.
+
+Layout文件表示应用在屏幕上的布局。在这里我们只使用了一个屏幕，即通过Java代码显示的Activity：HelloWorld。
 
 **Example 3.2. res/layout/main.xml**
 {CODE}
@@ -207,8 +214,12 @@ The layout file specifies the layout of your screen. In this case, we have only 
 </LinearLayout>
 {/CODE}
 
-=== Strings ===
-This is another XML file that contains all text that your application uses. For example, names of buttons, labels, default text and all such strings go into this file. This is the best practice of separating concerns of various files, even if they are XML files. In other words, layout XML is responsible for layout out widgets, but strings XML is responsible for their textual content.
+% === Strings ===
+=== Strings文件 ===
+
+% This is another XML file that contains all text that your application uses. For example, names of buttons, labels, default text and all such strings go into this file. This is the best practice of separating concerns of various files, even if they are XML files. In other words, layout XML is responsible for layout out widgets, but strings XML is responsible for their textual content.
+
+这也是个XML文件，包含应用中出现的所有文本。比如按钮的名字、Label、默认的文本等等，都统一在这一文件之下。把问题分解，令不同文件各司其职，这是个很好的做法——哪怕是XML文件。由此，Layout文件负责Widget的布局，Strings文件负责文本内容。
 
 **Example 3.3. res/values/strings.xml**
 {CODE}
@@ -219,10 +230,16 @@ This is another XML file that contains all text that your application uses. For 
 </resources>
 {/CODE}
 
-=== The R File ===
-The R file is the glue between the world of Java and the world of resources. It is an automatically generated file and as such you never modify it. It is recreated every time you change anything in the res directory, for example add an image or XML file.
+% === The R File ===
+=== R文件 ===
 
-You don’t need to look at this file much. We will use data it in quite a bit, but we’ll use Eclipse to help us refer to values stored in this file.
+% The R file is the glue between the world of Java and the world of resources. It is an automatically generated file and as such you never modify it. It is recreated every time you change anything in the res directory, for example add an image or XML file.
+
+R文件则是Java与外部资源之间的牵线人。它在res目录中的内容发生改变时(比如添加一个图片或者xml文件)，由IDE自动生成，不必手工修改。
+
+% You don’t need to look at this file much. We will use data it in quite a bit, but we’ll use Eclipse to help us refer to values stored in this file.
+
+对这个文件本身我们不必关注太多，毕竟有Eclipse代劳。不过它里面的数据是非常有用的。
 
 **Example 3.4. gen/com/marakana/R.java**
 {CODE}
@@ -251,8 +268,12 @@ public final class R {
 }
 {/CODE}
 
-=== Java Source Code ===
-The Java code is what drives everything. It is this code that ultimately gets converted to Dalvik executable and runs your application.
+% === Java Source Code ===
+=== Java源码文件 ===
+
+% The Java code is what drives everything. It is this code that ultimately gets converted to Dalvik executable and runs your application.
+
+Java代码才是整个应用的心脏。它会被编译为可执行格式，在Dalvik之上执行。
 
 **Example 3.5. HelloWorld.java**
 {CODE}
