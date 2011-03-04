@@ -165,7 +165,7 @@ Eclipse通过project组织你的工作，而project放置在workspace之中，�
 + "package name"是个Java中的概念。在Java中所有源码都是组织为package，用以表示Java对象在不同类中的可见性，是个很重要的概念。在Android开发中package作为应用注册的单位，也是很重要的。其命名规范为逆序的域名，后跟可选的子域名(译者：这里译法有存疑)。比如我有个域名是example.com，要编写一个计算器（caculator）的应用，那package的名字就可以是com.example.caculator。
 + "activity"一项是可选的。目前我们还没讲到Activity（参见[第六章，Android用户界面 #ch6]），先把它看作是应用中的不同屏幕即可。Activity通过Java的类来表示，因此其名字也就遵守Java中类的命名规范：首字母大写，对多个单词使用CamelCase命名规范。在此输入``HelloWorld``作为Activity的名字。
 + "minimum SDK version"是这一应用所支持目标平台的最低版本，以API Level为单位。若想要得到较高的兼容性，就选择一个较低的版本。在这里我只要支持本机即可，因此选择8，对应Android 2.2。
-+ 最后单击Finish按钮，Eclipse就会新建出一个项目。接下来，我们依次观察下在这一环节新建出来的文件。
++ 最后单击Finish按钮，Eclipse就会新建出一个项目。接下来，我们依次观察下在这一环节中新建出来的文件。
 
 	Figure 3.2. HelloWorld New Project Window
 		[images/03-NewProject.png]
