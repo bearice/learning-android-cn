@@ -67,11 +67,11 @@ Android SDK里有个目录，其主要工具都在里面。我们会经常在命
 
 % Eclipse is an open-source collection of programming tools originally created by IBM for for Java. Nowadays, most developers in the Java community favor Eclipse as their Integrated Development Environment (IDE) of choice. Eclipse lives at Eclipse.org.
 
-Eclipse是一个开源的编程工具集，其前身是IBM为Java开发的IDE，如今已是Java社区大部分开发者的首选。Eclipse的首页在[http://eclipse.org/ Eclipse.org]。
+Eclipse是一个开源的编程工具集，其前身是IBM为Java开发的IDE，如今已成为Java社区大部分开发者的首选。Eclipse的首页在[http://eclipse.org/ Eclipse.org]。
 
 % Eclipse is very feature-rich and has a lot of time-saving features. I’ll be pointing them out as we keep on going. Keep in mind that, while powerful, Eclipse tends to be very resource-hungry and you may want to restart it once a day if it starts running very sluggishly.
 
-Eclipse有着强大的功能与丰富的实用特性，我会在行进的途中将其一一带出。不过需要上心的一点就是，Eclipse强大归强大，但会非常吃资源，有时会让你巴不得一天重启一次。
+Eclipse有着强大的功能与丰富的实用特性，我会在行进的途中将其一一带出。不过需要上心的一点就是，Eclipse强大归强大，同时也非常的吃资源，有时你会巴不得一天重启一次。
 
 % While you can do Android development with any favorite text editor or IDE, most developers seem to be using Eclipse, and thus I’m basing this book on its use as well.
 
