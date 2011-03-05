@@ -92,7 +92,7 @@ Andorid开发并不限制开发者选择任何自己喜欢的编辑器或者IDE�
 
 % Eclipse organizes all your work by projects. Projects are placed in a workspace, which is a location you choose. So, where you put your workspace is significant. I recommend ~/workspace as a simple place for your code. On Windows however, I recommend storying your workspace in a directory that doesn’t have spaces it (they complicate anything you might do at the command-line). C:\workspace is a good choice for Windows users.
 
-Eclipse通过project组织你的工作，而project放置在workspace之中，其位置由你决定。因此workspace的位置需要明确下来，我建议使用 ``~/workspace`` 这样一个简单的位置来存放自己的代码。Windows的话，我依然建议避免在workspace目录中存在空格（使用命令行的时候会添麻烦），``C:\workspace``该是个好地方。
+Eclipse通过project组织你的工作，而所有的project皆放置在workspace之中，其位置由用户决定。因此workspace的位置需要明确下来，我建议使用 ``~/workspace`` 这样相对简单的位置来存放自己的代码。Windows的话，我依然建议避免在workspace目录中存在空格（使用命令行的时候会添麻烦），``C:\workspace``该是个好地方。
 
 % === Setting Up Android Development Tools ===
 === 安装Android Development Tools ===
@@ -120,13 +120,13 @@ Eclipse通过project组织你的工作，而project放置在workspace之中，�
 + 在``"Location"``栏，输入这个URL：https://dl-ssl.google.com/android/eclipse/。
 + 单击``OK``。
 + 回到``Available Software``对话框，这时你可以在这个列表中发现多了一个``"Developer Tools"``。选择它也就自动嵌套选择了Android DDMS和Android Development Tools，单击``Next``。
-+ 在出现的``Install Details``对话框中，Android DDMS和Android Development Tools都列了出来。单击``Next``，阅读并确认许可条款，安装依赖，单击``Finish``。
++ 在出现的``Install Details``对话框中，前面选择的Android DDMS和Android Development Tools都列了出来。单击``Next``，阅读并确认许可条款，安装依赖，单击``Finish``。
 + 重启Eclipse。
 
 {NOTE}
 % If you have trouble downloading the plugin, you can try using "http" in the URL, instead of "https" (https is preferred for security reasons).
 
-如果在下载插件时遇到问题，你可以尝试将URL中的``"https"``替换为``"http"``（``https``往往是出于安全目的）。
+如果在下载插件时遇到问题，你可以尝试将URL中的``"https"``替换为``"http"``（使用``https``往往是出于安全目的）。
 
 {/NOTE}
 
@@ -143,7 +143,7 @@ Eclipse通过project组织你的工作，而project放置在workspace之中，�
 
 % In Eclipse, choose File→New→Android Project. Sometimes (especially the first time you run Eclipse) the Android tools may not be appear there right away. They should show up in the future after you’ve used them for the first time. If Android Project is not an option under File→New, choose Other and look for Android Project in there.
 
-进入Eclipse，选择 File→New→Android Project 。有时菜单里可能会没有Android Project一项（尤其是在第一次启动Eclipse），选择Other找到Android Project即可。经第一次选择之后，它就会一直显示在菜单里。
+进入Eclipse，选择 File→New→Android Project 。有时菜单里可能会没有Android Project一项（尤其是第一次启动Eclipse时），选择Other找到Android Project即可。第一次选择之后，它就会一直显示在菜单里。
 
 % In the new project dialog window, fill out the following:
 
@@ -159,12 +159,12 @@ Eclipse通过project组织你的工作，而project放置在workspace之中，�
 % + Finally, click on Finish button and Eclipse will create your project. Let’s look at the various files that this process created:
 
 + 填写"Project name"。这是个Eclipse概念：Eclipse把一切皆组织为项目(project)，而项目名只能是一个单词。在命名上，我个人比较喜欢[CamelCase http://en.wikipedia.org/wiki/Camel_case]方式。在此输入：``HelloWorld``。
-+ 接下来选择"build target"，它为构建工具指明了目标平台的版本。其中列出了所有可用的目标平台，以及你的SDK中附带的扩展。在这里可以选择一个较新的版本，比如Android 2.2（但不要选择名为Google APIs的目标平台）。
++ 接下来选择"build target"，它为构建工具指明了目标平台的版本。其中列出了所有可用的目标平台，以及你的SDK中附带的扩展。在这里可以选择一个较新的版本，比如Android 2.2（但不要选择Google APIs）。
 + 接下来设置你的project属性。其中的application name也就是你应用的英文名字，随便写上就好，比如"Hello, World!!!"。
 + "package name"是个Java中的概念。在Java中所有源码都是组织为package，用以表示Java对象在不同类中的可见性，是个很重要的概念。在Android开发中package作为应用注册的单位，也是很重要的。其命名规范为逆序的域名，后跟可选的子域名(译者：这里译法有存疑)。比如我有个域名是example.com，要编写一个计算器（caculator）的应用，那package的名字就可以是com.example.caculator。
-+ "activity"一项是可选的。目前我们还没讲到Activity（参见[第六章，Android用户界面 #ch6]），先把它看作是应用中的不同屏幕即可。Activity通过Java的类来表示，因此其名字也就遵守Java中类的命名规范：首字母大写，对多个单词使用CamelCase命名规范。在此输入``HelloWorld``作为Activity的名字。
-+ "minimum SDK version"是这一应用所支持目标平台的最低版本，以API Level为单位。若想要得到较高的兼容性，就选择一个较低的版本。在这里我只要支持本机即可，因此选择8，对应Android 2.2。
-+ 最后单击Finish按钮，Eclipse就会新建出一个项目。接下来，我们依次观察下在这一环节中新建出来的文件。
++ "activity"一项是可选的。目前我们还没讲到Activity（参见[第六章，Android用户界面 #ch6]），姑且把它看作是应用中的不同屏幕即可。Activity通过Java的类来表示，因此其名字也就遵守Java中类的命名规范：首字母大写，对多个单词使用CamelCase命名规范。在此输入``HelloWorld``作为Activity的名字。
++ "minimum SDK version"是这一应用所支持目标平台的最低版本，以API Level为单位。若想要得到较高的兼容性，就选择一个较低的版本。在这里我们只要支持本机即可，因此选择8，对应Android 2.2。
++ 最后单击Finish按钮，Eclipse就会新建出一个项目。接下来，我们依次观察一下在这一环节中新建出来的文件。
 
 	Figure 3.2. HelloWorld New Project Window
 		[images/03-NewProject.png]
@@ -175,7 +175,7 @@ Eclipse通过project组织你的工作，而project放置在workspace之中，�
 
 % Manifest file glues everything together. It is this file that explains what the application consists of, what all its main building blocks are, what permissions it requires, and so on.
 
-Manifest文件是应用各部分之间的牵线人。它申明了应用中所包含的构件(Building Blocks)，所需的权限，等等。
+Manifest文件是应用各部分之间的牵线人。它申明了应用中包含的构件(Building Blocks)、所需的权限等等信息。
 
 **Example 3.1. AndroidManifest.xml**
 {CODE}
@@ -201,7 +201,7 @@ Manifest文件是应用各部分之间的牵线人。它申明了应用中所包
 
 % The layout file specifies the layout of your screen. In this case, we have only one screen and its loaded by the Java code, HelloWorld activity above.
 
-Layout文件表示应用在屏幕上的布局。在这里我们只使用了一个屏幕，即通过Java代码显示的Activity：HelloWorld。
+Layout文件表示应用在屏幕上的布局。在这里我们只使用了一个屏幕，即通过Java代码显示的Activity：``HelloWorld``。
 
 **Example 3.2. res/layout/main.xml**
 {CODE}
@@ -235,7 +235,7 @@ Layout文件表示应用在屏幕上的布局。在这里我们只使用了一�
 
 % The R file is the glue between the world of Java and the world of resources. It is an automatically generated file and as such you never modify it. It is recreated every time you change anything in the res directory, for example add an image or XML file.
 
-R文件则是Java与外部资源之间的牵线人。它在res目录中的内容发生改变时(比如添加一个图片或者xml文件)，由IDE自动生成，不必手工修改。
+R文件则是Java与外部资源之间的牵线人。它在res目录中的内容发生改变时(比如添加一个图片或者xml文件)由IDE自动生成，不必手工修改。
 
 % You don’t need to look at this file much. We will use data it in quite a bit, but we’ll use Eclipse to help us refer to values stored in this file.
 
@@ -273,7 +273,7 @@ public final class R {
 
 % The Java code is what drives everything. It is this code that ultimately gets converted to Dalvik executable and runs your application.
 
-Java代码才是整个应用的心脏。它会被编译为可执行格式，在Dalvik之上执行。
+Java代码是整个应用的驱动者。它会被编译为可执行格式，在Dalvik之上执行。
 
 **Example 3.5. HelloWorld.java**
 {CODE}
@@ -292,38 +292,59 @@ public class HelloWorld extends Activity {
 }
 {/CODE}
 
-== The Emulator ==
+%== The Emulator ==
+== 仿真器 ==
 
-Running your application on a physical device versus an emulated device is pretty much the same thing. That is because the emulator is an actual code emulator, meaning it runs the same code base as the actual device, all the way down to the machine layer.
+% Running your application on a physical device versus an emulated device is pretty much the same thing. That is because the emulator is an actual code emulator, meaning it runs the same code base as the actual device, all the way down to the machine layer.
+
+应用在仿真器（Emulator）上执行，与在真机上执行的效果是一样的。这是因为仿真器是机器码级别的仿真，其机器码与真机相同。
 
 {TIP}
-A simulator and an emulator sound very similar, but are fundamentally different. To emulate means to imitate the machine executing the binary code. So, an emulator is sort of like a virtual machine. A simulator merely simulates the behavior of the code at a higher level. Android SDK ships with a true emulator, based on [QEMU http://wiki.qemu.org/Main_Page].
+% A simulator and an emulator sound very similar, but are fundamentally different. To emulate means to imitate the machine executing the binary code. So, an emulator is sort of like a virtual machine. A simulator merely simulates the behavior of the code at a higher level. Android SDK ships with a true emulator, based on [QEMU http://wiki.qemu.org/Main_Page].
+
+模拟器(Simulator)与仿真器(Emulator)名字很像，但有着本质的不同。“仿真器”的意思是模仿真机执行机器码的过程，接近于“虚拟机”。而“模拟器”是在相对较高的层次上模拟代码的行为。Android SDK附带了一个基于[QEMU http://wiki.qemu.org/Main_Page]的仿真器。
 {/TIP}
 
-To use the emulator, we’ll have to create an Android Virtual Device (AVD). The easiest way to do that is to start the android tool via Eclipse.
+% To use the emulator, we’ll have to create an Android Virtual Device (AVD). The easiest way to do that is to start the android tool via Eclipse.
 
-To create a new AVD, start the tool called Android SDK and AVD Manager. You can start this tool from Eclipse by clicking on icon [images/03-icon_android.png] or via command line by starting tool called android in your SDK/tools directory.
+使用仿真器之前，我们需要创建一个Android Virtual Device(AVD)。最简单的方法是在Eclipse中使用Android Tool。(译者：这里存疑，这是Eclipse中的工具，还是通过Eclipse执行这个工具？)
+
+% To create a new AVD, start the tool called Android SDK and AVD Manager. You can start this tool from Eclipse by clicking on icon [images/03-icon_android.png] or via command line by starting tool called android in your SDK/tools directory.
+
+打开Android SDK and AVD Manager：可以在Eclipse中单击[images/03-icon_android.png]，也可以在SDK的tools目录中执行``android``命令。
 
 	Figure 3.3. Android SDK and AVD Manager
 		[images/03-AndroidSDKandADVManager.png]
 
-From within Android SDK and AVD Manager, you can choose New… and a Create New AVD dialog window will pop up. In this dialog, you specify the parameters for your new AVD. The name is any name you choose. Target is what you what to have installed as version of Android on this particular AVD. The list of possible targets is based on platforms and add-ons that you have installed into your SDK. If you don’t have any targets, go back to Android SDK and AVD Manager and choose Available packages tab to install at least one platform, such as Android 2.3 - API level 9, for example.
+% From within Android SDK and AVD Manager, you can choose New… and a Create New AVD dialog window will pop up. In this dialog, you specify the parameters for your new AVD. The name is any name you choose. Target is what you what to have installed as version of Android on this particular AVD. The list of possible targets is based on platforms and add-ons that you have installed into your SDK. If you don’t have any targets, go back to Android SDK and AVD Manager and choose Available packages tab to install at least one platform, such as Android 2.3 - API level 9, for example.
 
-Each AVD can have an SD Card. You can just specify a number here for your built-in card, in megabytes. Skin is the look and feel of your device as well as its form factor. Hardware option lets you fine tune what this AVD does or doesn’t support.
+进入Android SDK and AVD Manager，单击New…，出现Create New AVD对话框。你需要在这个对话框里对新的AVD做一些设置。Name可以随便起一个。Target是目标平台的版本，其中的选项会因为SDK的平台及其安装的扩展而有所不同。如果里面没有任何选项，就返回Android SDK and AVD Manager，在Available packages中选择安装一个目标平台，比如Android 2.3 - API level 9。
+
+% Each AVD can have an SD Card. You can just specify a number here for your built-in card, in megabytes. Skin is the look and feel of your device as well as its form factor. Hardware option lets you fine tune what this AVD does or doesn’t support.
+
+AVD中也有一个SD卡，你能以MB为单位指明其大小。Skin指明其位置由你决定虚拟设备中的观感。通过Hardware选项可以详细设置AVD的硬件参数，选择其支持的特性。
 
 	Figure 3.4. New AVD Dialog
 		[images/03-CreateNewAVD.png]
 
-Once you are done with this dialog, you will have and AVD in your list. Go ahead and start it. An emulator will pop up.
+% Once you are done with this dialog, you will have and AVD in your list. Go ahead and start it. An emulator will pop up.
+
+配置完毕，就可以在列表中见到一个新的AVD。好的，运行它仿真器就出来了。
 
 	Figure 3.5. Emulator
 		[images/03-Emulator.png]
 
-=== An Emulator Versus a Physical Phone ===
-For the most part, running your application on the emulator is identical to running it on a physical phone. There are some notable exceptions, mostly to do with things that are just hard to virtualize, such as sensors. Other hardware-related features like telephony and location services, can be simulated in the emulator.
+% === An Emulator Versus a Physical Phone ===
+=== 仿真器 vs 真机 ===
 
-== Summary ==
+% For the most part, running your application on the emulator is identical to running it on a physical phone. There are some notable exceptions, mostly to do with things that are just hard to virtualize, such as sensors. Other hardware-related features like telephony and location services, can be simulated in the emulator.
 
-Setting up Android development environment breaks down to setting up Android SDK and Eclipse. Once you have set you your development environment, a good test that everything is working is to use Eclipse to create a simple Hello World project and run it in the Emulator. If that runs fine, you are almost certain that your system is setup and ready for further development.
+在大多数情况下，应用在仿真器上执行，与在真机上是没有区别的。少数的例外情况则往往是因为难以模拟，比如传感器。一般的硬件相关特性比如电话呼叫、地理定位等等，都可以由仿真器模拟。
 
+% == Summary ==
+== 总结 ==
+
+% Setting up Android development environment breaks down to setting up Android SDK and Eclipse. Once you have set you your development environment, a good test that everything is working is to use Eclipse to create a simple Hello World project and run it in the Emulator. If that runs fine, you are almost certain that your system is setup and ready for further development.
+
+Android开发环境的构建，几乎就是对付Android SDK和Eclipse了。 开发环境设置完毕，不妨动手搞个简单的Hello World实验一下。运行良好的话，也就证明环境已经配好，为往后正式的开发做好了准备。
 
