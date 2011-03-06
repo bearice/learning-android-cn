@@ -6,52 +6,53 @@
 {TRAN}= Yamba 项目简介 =
 
 {ORGI}The best way to learn is by an example. And that example has to meet certain criteria. After working with thousands of new Android developers and explaining some of unique concepts that this platform has to offer, using various example applications, I concluded that the best example has to be:
-{TRAN}学习的最佳方式是通过实例学习，而这些实例应该满足一些特定条件。我曾经通过一些实例应用向数千名新手展示Android平台提供的一些独特的功能。从这些实例应用中我总结出一个好的实例应该是：
+{TRAN}有一个合适的实例可供参考，这是学习的最佳方式。在平日的教学中，我曾尝试使用不同的实例，对数千名新手讲解Android平台的一些特殊功能。经过总结，一个好的实例该有如下特征：
 
 {ORGI}**Comprehensive**
 {TRAN}**全面**
 {ORGI}	A good example app should demonstrate most of the aspects of the application framework that are unique to Android. It should also cover them in a way that there’s a good reason to use a specific feature in order to get the job done. This is important in order to create the right motivation for those new to Android.
-{TRAN}	一个好的实例应该能够涵盖Android的应用框架中大多数具有特色的功能。并且它应当能为使用某项特性来完成任务提供一个正当的理由。这样才能更加吸引那些刚刚学习Android的人们。
-%TALK: 上面一句话需要仔细斟酌
+
+{TRAN}一个好的实例应该足以涵盖Android应用框架中的诸多特性，同时也把相应的特性用在点子上，而不仅仅是为了展示特性而使用特性。这对新接触Android的同学来说，可以端正学习的方向，是很重要的。
 
 {ORGI}**Familiar**
 {TRAN}**大众化**
 
-{ORGI}	The example application should be simple to understand. We want to focus on design and implementation and not on features and benefits.
-{TRAN}	实例应用应当是简单易懂的。我们注重的是设计和实现，而不是功能与易用性。
+{ORGI} The example application should be simple to understand. We want to focus on design and implementation and not on features and benefits.
+{TRAN}一个好的实例应当是简单易懂的。对我们而言，重要的该是理解它的设计与实现，而非平铺直叙它的特性与好处。
 
 {ORGI}== The Yamba Application ==
 {TRAN}== Yamba 项目 ==
 
 {ORGI}The application I picked for this book is a Twitter-like application. We call it Yamba which stands for //Yet Another Micro Blogging App//. Yamba lets a user connect to a service such as Twitter, pull down friends' statuses, and update user’s own status.
-{TRAN}我为这本书挑选了一个类似于 Twitter 的应用程序。我们给他命名为 Yamba ,意思是 //Yet Another Micro Blogging App//。Yamba 为用户提供了一个类似于 Twitter 的微博服务：可以获取友邻的状态，也能够更新自己的状态。
+{TRAN}我为这本书选择了一个类Twitter的应用程序作为实例，它的名字是Yamba，即 //Yet Another Micro Blogging App//。 使用Yamba，你可以连接到twitter之类的微博服务以跟踪朋友的消息，也可以更新自己的消息。
 
 {ORGI}Yamba covers most of the main Android building blocks in a natural way. As such, it’s a great sample application to illustrate how various components work individually as well as fit together. Services such as Twitter are more or less familiar to most people, so the features of the application do not require much explaining.
-{TRAN}Yamba 涵盖了构建Android应用过程中的大多数方面。同时，它也极好的展示了不同的组件是怎样组合在一起工作的。  Twitter 这样的微博服务对于大多数人来说都不陌生，所以程序的功能也就不需要更多的解释了。
+{TRAN}Yamba用上了Android的所有构件(Building Blocks)，完整又不失简单。我们可以留意观察下它是如何将各个部分组合在一起的。关于Twitter这样的微博服务大家肯定不会陌生，因此有关程序的功能也就不多做解释了。
 
 {ORGI}Here’s what a finished product could look like:
-{TRAN}我们的应用完成后应该是这个样子的：
+{TRAN}成品图大约如下：
 
-	**Figure 5.1. List of status messages from other people, called a timeline**
+{ORGI}**Figure 5.1. List of status messages from other people, called a timeline**
+{TRAN}**图5.1. 来自友邻的消息列表，也就是Timeline**
+
 		[images/05-TimelineActivity-final.png]
 
 
-	**Figure 5.2. Screen where the user can enter a status message**
+{ORGI}**Figure 5.2. Screen where the user can enter a status message**
+{TRAN}**图5.2. 用户输入消息时屏幕的样子**
 		[images/05-StatusActivity-final.png]
 
 
-	**Figure 5.3. User preferences**
+{ORGI}**Figure 5.3. User preferences**
+{TRAN}**Figure 5.3. 用户选项**
 		[images/05-PrefsActivity-final.png]
 
 
-{ORGI}__Figure 5.1, “List of status messages from other people, called a timeline”__ shows how Yamba displays a list of status messages from your friends. __Figure 5.2, “Screen where the user can enter a status message”__ shows the initial Yamba screen, while __Figure 5.3, “User preferences”__ shows the user preferences.
-{TRAN}**图5.1** 展示了Yamba是如何显示你友邻个状态列表的。 **图5.2** 是Yamba的初始界面，而**图5.3**是配置界面的样子。
-
 {ORGI}== Design Philosophy ==
-{TRAN}== 设计哲学 ==
+{TRAN}== 设计原则 ==
 
 {ORGI}We’re going to adopt a certain design philosophy in tackling this project. This philosophy will help guide us in our development and serve as a north star when in doubt about what to do next. It should also help eliminate some confusion in the process we’re following.
-{TRAN}我们会在完成这个项目的过程中引入一种思想，这种思想会像北极星那样在我们迷惑时为我们指明方向，而且消除在以后的开发中可能遇到的困惑。
+{TRAN}我们需要引入一个设计原则，作为指导项目行进的指南针，并贯彻项目的始终。在遇到问题时，它也可以给予我们一定的帮助。
 
 {ORGI}**Small Increments**
 {TRAN}**小增量开发**
