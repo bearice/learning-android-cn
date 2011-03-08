@@ -6,10 +6,10 @@
 = 主要构件 =
 
 {ORGI}In this chapter, you will learn about the big blocks in Android. We’ll give you a high-level overview of what Activities are, how Intents work, why Services are cool, how to use Broadcast Receivers and Content Providers to make your app scale, and much more.
-{TRAN}在本章里，你将会学到Android中的一些重要构件。我们会带你从高处俯瞰，什么是Activity，Intent如何工作，Service为什么很酷，怎么让Broadcast Receiver和Content Provider使你的程序变得易于扩展，和更多的知识。
+{TRAN}在本章里，你将会学到Android中的一些重要构件。我们会带你从高处俯瞰，什么是Activity，Intent如何工作，Service为什么很酷，怎么让Broadcast Receiver和Content Provider使你的程序变得易于扩展，以及更多的知识。
 
 {ORGI}By the end of this chapter, you will understand the main Android components for building applications. You should conceptually know when you’d use what component. You will also see how these components relate to a real world application.
-{TRAN}读完本章，你将了解到用于构建应用程序的Android基本组件。你会大体明白何时需要哪种组件。同时你也会看到这些组件和实际情况的关联。
+{TRAN}读完本章，你将了解到用于构建应用程序的Android基本组件。你会大体明白何时需要采用哪种组件。同时你也会看到这些组件和实际情形间的关联。
 
 
 %== Main Building Blocks ==
@@ -17,13 +17,13 @@
 
 {ORGI}Main building blocks are components that you use as an application developer to build Android apps. They are the conceptual items that you put together to create a bigger whole. When you start thinking about your application, it is good to approach it top down. You design your application in terms of screens, features, and interactions between them. You start with conceptual drawing, something that you can represent in terms of "lines and circles". This approach to application development helps you see the big picture - how the components fit together and it all makes sense.
 
-{TRAN}Main building blocks是开发Android应用时组件。它们是一些使你构建大家伙时的砖块。当你开始策划你的应用程序时，至顶向下的考虑会比较好。你从屏幕与功能和它们之间的交互去设计你的应用程序。你开始打草稿，用一些线条和圆圈表达你的思路。这种方法用于应用程序开发有助于你构想出一幅巨大的蓝图————这些组件是如何配合在一起，变得有意义的。
+{TRAN}Main building blocks是开发Android应用时组件。它们是一些构建大家伙的砖块。当你开始策划你的应用程序时，自顶向下地考虑会比较好。你从屏幕与功能和它们之间的交互去设计你的应用程序。于是你开始打草稿，用一些线条和圆圈表达你的思路。开发应用程序时采用这种方法有助于你构想出一幅巨大的蓝图————这些组件是如何配合在一起，变得有意义的。
 
 %== A Real World Example ==
 == 真实世界的例子==
 
 {ORGI}Let’s say that we want to build a Twitter app. We know that the user should be able to post status updates. We also know the user should be able to see what her friends are up to. Those are basic features. Beyond that, the user should also be able to set her username and password in order to login to her Twitter account. So, now we know we should have these three screens.
-{TRAN}让我们来讨论下如何构建出一个Twitter应用。我们知道用户要能发布状态更新。我们也明白用户想要看到她的朋友们都在做些什么。这都是些基本功能。而在此之前，为了登陆到用户自己的Twitter账号，她要能够设置用户名和密码。所以现在我们知道我们需要有这三个屏幕。
+{TRAN}让我们来讨论下如何构建出一个Twitter应用。我们知道用户要能发布状态更新。我们也明白用户想要看到她的朋友们都在做些什么。这都是些基本功能。而在此之前，为了登陆到用户自己的Twitter账号，她要能够设置用户名和密码。所以现在我们知道需要有三个屏幕。
 
 {ORGI}Next, we would like my app to work fast regardless of network connection, or lack of. To achieve that, the app has to pull the data from Twitter when it’s online, and cache it locally. That will require a service that runs in the background as well as a database.
 {TRAN}下一步，我们更乐意让我们的应用能在无论有没有网络连接的情况下，都可以顺畅工作。为了实现这个设计，应用需要在设备在线时，从Twitter上主动获取数据，缓存到本地。而这需要一个在后台运行的服务和数据库。
@@ -46,15 +46,15 @@
 {TRAN}我通常会用网站来类比Activity。就像一个网站拥有许多页面，Android应用程序也包含多个Activity。网站都会有主页，Android应用也有一个主Activity——就是当你启动应用程序时第一个显示的那个。网站需要在众多页面间提供某些导航机制，而Android应用也得做同样的事情。
 
 {ORGI}On the web, you can jump from a page on one website to a page on another. Similarly, in Android, you could be looking at an activity of one application, but shortly after you could start another activity in a completely separate application. For example, if you are in your Contacts app, and you choose to text a friend, you’d be launching the activity to compose a text message in the Messaging application.
-{TRAN}在网站上，你能从一个页面跳转到其他站点的某个页面。类似地在Android中，你可以在某个应用程序上的用着某个Activity，但很快又开启了一个与之前完全无关的应用程序中的Activity。例如，当你在使用联系人应用时，选中发送短信给某个朋友，你就会启动短信应用程序里的Activity来编写短消息。
+{TRAN}在网站上，你能从一个页面跳转到其他站点的某个页面。类似地在Android中，你可以在某个应用程序上的用着某个Activity，但很快又启动其他应用程序的Activity。例如，当你在使用联系人应用时，选中发送短信给某个朋友，你就会启动短信应用程序里的Activity来编写短消息。
 
 %=== Activity Lifecycle ===
 === Activity 生命周期 ===
 {ORGI}Launching an activity may be quite expensive. It may involve creating a new linux process, allocating memory for all the UI objects, inflating all the objects from XML layouts, and setting the whole screen up. Since we’re doing a lot of work to launch an activity, it’s be a waste to just toss it out once user leaves that screen. To avoid this waste, activity lifecycle is managed via Activity Manager.
-{TRAN}启动Activity的代价可能相当高昂。这将会创建一个新的Linux进程，给所有的用户界面对象分配内存，从XML layout里展开所有的对象，并配置整个屏幕。我们要在启动Activity上做大量工作，而一但用户离开了这个屏幕工作就白费了。为了避免浪费，Activity Manager掌管了所有Activity的生命周期。
+{TRAN}启动Activity的代价可能相当高昂。这将会创建一个新的Linux进程，给所有的用户界面对象分配内存，从XML layout里展开所有的对象，并配置整个屏幕。我们要在启动Activity上做大量工作，而一但用户离开这个屏幕，工作就白费了。为了避免浪费，Activity Manager掌管了所有Activity的生命周期。
 
 {ORGI}Activity Manager is responsible for creating, destroying, and overall managing activities. For example, when the user starts an application for the first time, the activity manager will create its activity and put it onto the screen. Later, when the user switches screens, the activity manger will move that previous activity to a holding place. This way, if the user wants to go back to an older activity, it can be started more quickly. Older activities that user hasn’t used in a while will be destroyed in order to free more space for the currently active one. This mechanism is designed to help improve the speed of user interface and thus improve the overall user experience.
-{TRAN}Activity Manager将响应创建、销毁和覆盖被托管Activity的要求。例如，当用户第一次启动应用程序，Activity Manager将创建并在屏幕上显示一个Activity。然后当用户切换屏幕时，Activity Manager将先前的Activity移动到保存区域。这样当用户想要回到之前的Activity时，它就能更快地启动。为了给活跃的Activity腾出更多内存空间，有一段时间未被使用的Activity会被销毁。这种机制有助于提高用户界面速度，从整体上提升了用户体验。
+{TRAN}Activity Manager用于响应创建、销毁和覆盖被托管Activity。例如，当用户第一次启动应用程序，Activity Manager将创建并在屏幕上显示一个Activity。然后当用户切换屏幕时，Activity Manager将先前的Activity移动到保存区域。这样当用户想要回到之前的Activity时，它就能更快地启动。为了给活跃的Activity腾出更多内存空间，有一段时间未被使用的Activity会被销毁。这种机制有助于提高用户界面速度，从整体上提升了用户体验。
 
 %	Figure 4.1. Activity Lifecycle
 	Figure 4.1. Activity生命周期
@@ -66,7 +66,7 @@
 
 === Starting State ===
 {ORGI}When an activity doesn’t exist in memory, it is in Starting State. While it’s starting up, the activity will go through a whole set of callback methods that you as a developer have an opportunity to fill out. Eventually, the activity will be in Running State.
-{TRAN}当Activity还不在内存中时，就正处于Starting State。它启动后, Activity会按顺序依次调用整组的回调方法，而这些方法可以由作为开发者的你来给出。最终，Activity将会处于Running State。
+{TRAN}当Activity还不在内存中时，就正处于Starting State。它启动后, Activity会按顺序依次调用整个回调方法，而这些方法可以由作为开发者的你来给出。最终，Activity将会处于Running State。
 
 {ORGI}Keep in mind that this transition from Starting State to Running State is one of the most expensive operations in terms of computing time needed. The computing time directly effects the battery life of the device as well. This is the exact reason why we don’t automatically destroy activities that are no longer shown. User may want to come back to them, so we keep them around for a while.
 {TRAN}请记住，Starting State到Running State的转换是最为耗费机器时间的操作之一。机器时间也直接影响了设备的续航时间。这也就是我们不自动销毁那些不再显示的Activity的确切原因。用户可能会返回到它们，所以我们仍然需要将它们保留一段时间。
@@ -83,7 +83,7 @@
 {TRAN}当Activity未处于焦点时（即没有和用户交互），但是仍可在屏幕上看到，我们就说它在Paused State。这不是一个很典型的场景，因为屏幕通常很小，往往一个Activity要不是占据整个屏幕，要不就更本不出现。我们一般会在这个情况下看到此状态：Activity上方出现了一个对话框，使得它暂停。所有的Activity都会在将要停止前处于Paused State。
 
 {ORGI}Paused activities still have high priority in terms of getting memory and other resources. This is because they are visible and cannot be removed from the screen without making it look very strange to the user.
-{TRAN}暂停了的Activity仍然拥有获得内存和其他资源的高优先级。这是因为它们仍然可见，还没有从屏幕上移除，因此不能让用户觉得它们看起来很奇怪。
+{TRAN}暂停了的Activity仍然拥有获得内存和其他资源的高优先级。这是因为它们仍然可见，还没有从屏幕上移除，不能使用户觉得它们很奇怪。
 
 === Stopped State ===
 {ORGI}When an activity is not visible, but still in memory, we say it’s in Stopped State. Stopped activity could be brought back to front to become a Running activity again. Or, it could be destroyed and removed from memory.
@@ -114,7 +114,7 @@
 {TRAN}Intent是主要构件间传递的消息。每当Activity启动，服务启动或停止，或者只是简单的广播，都会触发Intent。它是异步的，也就是说发送它们的代码不需要等到它们完成才能继续执行。
 
 {ORGI}An intent could be explicit or implicit. In an explicit intent the sender clearly spells out which specific component should be on the receiving end. In an implicit intent, the sender specifies the type of receiver. For example, your activity could send an intent saying it simply wants someone to open up a web page. In that case, any application that is capable of opening a web page could "compete" to complete this action.
-{TRAN}Intent可以是显性或隐性的。显性的Intent需要由发送方清晰地宣称自己需要传递到的特定组件。而对于隐性的Intent，发送方只需要指明接收者的类型。例如，Activity可以发送一个宣称自己需要打开网页的Intent。在这个情况下，任何能够打开网页的应用程序都会争着完成这个动作。
+{TRAN}Intent可以是显性（explicit）或隐性（implicit）的。显性的Intent需要由发送方清晰地宣称自己需要传递到的特定组件。而对于隐性的Intent，发送方只需要指明接收者的类型。例如，Activity可以发送一个宣称自己需要打开网页的Intent。在这个情况下，任何能够打开网页的应用程序都会争着完成这个动作。
 
 {ORGI}When you have competing applications, the system will ask you which one you’d like to use to complete a given action. You can also set an app as the default one. This mechanism works very similarly to your desktop environment, when you downloaded Firefox or Chrome to replace your default Internet Explorer or Safari web browsers.
 {TRAN}当应用程序正在争抢你的意图时，系统会询问你希望由哪一个程序来完成你的给定动作。你也可以指定一个默认的应用。这个机制工作起来和桌面环境类似，比如当你下载了Firefox或Chrome浏览器来替换之前默认的Internet Explorer或Safari。
@@ -199,4 +199,4 @@
 {TRAN}在本章里，你已经学习到部分关于Android应用程序重要组件的知识。我们通过组合这些组件创建各种各样的应用程序，不管是从简简单单的Hello World，还是那些相当复杂的作品。
 
 {ORGI}In the next chapter, we’ll outline Yamba application as an example of how all these bits and pieces come together to form a working Android app.
-{TRAN}在下一章里，我们将用Yamba应用程序作为提纲，来说明如何将这些零件组装成为运作正常的Android应用。
+{TRAN}在下一章里，我们将用Yamba应用程序作为提纲，来说明如何将这些零件组装成为运转良好的Android应用。
