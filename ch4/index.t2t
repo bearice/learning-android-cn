@@ -2,7 +2,8 @@
 %
 %
 
-= Main Building Blocks =
+%= Main Building Blocks =
+= 主要构件 =
 
 {ORGI}In this chapter, you will learn about the big blocks in Android. We’ll give you a high-level overview of what Activities are, how Intents work, why Services are cool, how to use Broadcast Receivers and Content Providers to make your app scale, and much more.
 {TRAN}在本章里，你将会学到Android中的一些重要构件。我们会带你从高处俯瞰，什么是Activity，Intent如何工作，Service为什么很酷，怎么让Broadcast Receiver和Content Provider使你的程序变得易于扩展，和更多的知识。
@@ -11,7 +12,8 @@
 {TRAN}读完本章，你将了解到用于构建应用程序的Android基本组件。你会大体明白何时需要哪种组件。同时你也会看到这些组件和实际情况的关联。
 
 
-== Main Building Blocks ==
+%== Main Building Blocks ==
+== 主要构件 ==
 
 {ORGI}Main building blocks are components that you use as an application developer to build Android apps. They are the conceptual items that you put together to create a bigger whole. When you start thinking about your application, it is good to approach it top down. You design your application in terms of screens, features, and interactions between them. You start with conceptual drawing, something that you can represent in terms of "lines and circles". This approach to application development helps you see the big picture - how the components fit together and it all makes sense.
 
@@ -190,7 +192,8 @@
 {ORGI}Application Context gets created whenever the first component of this application is started up, regardless whether that component is an activity, service, or something else. Application context lives as long as your application is alive. As such, it is independent of the activities life cycle. You can easily obtain reference to the context by calling Context.getApplicationContext() or Activity.getApplication(). Keep in mind that activities and services are already subclasses of context, and as such inherit all its methods.
 {TRAN}Application Context创建于应用程序中首次出现有组件启动之时，而不管这个组件是Activity，Service或是别的什么。Application context贯穿于应用程序的生存周期。你可以通过调用Context.getApplicationContext()或Activity.getApplication来方便地获取Context。记住Activity和Service已经是Context类的子类，因此也因此继承了所有的方法。
 
-== Summary ==
+%== Summary ==
+== 总结 ==
 
 {ORGI}In this chapter, you have learned about some of the most important Android application components. We put together these components to create various applications, from a simple Hello World to much more complex creations.
 {TRAN}在本章里，你已经学习到部分关于Android应用程序重要组件的知识。我们通过组合这些组件创建各种各样的应用程序，不管是从简简单单的Hello World，还是那些相当复杂的作品。
