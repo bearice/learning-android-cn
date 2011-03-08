@@ -4,71 +4,102 @@
 
 = Main Building Blocks =
 
-If you're new to the Android mobile operating system, Learning Android is the perfect way to master the fundamentals. This gentle introduction shows you how to use Android's basic building blocks to develop user interfaces, store data, and more. Buy the print book or ebook.
-In this chapter, you will learn about the big blocks in Android. We’ll give you a high-level overview of what Activities are, how Intents work, why Services are cool, how to use Broadcast Receivers and Content Providers to make your app scale, and much more.
+{ORGI}In this chapter, you will learn about the big blocks in Android. We’ll give you a high-level overview of what Activities are, how Intents work, why Services are cool, how to use Broadcast Receivers and Content Providers to make your app scale, and much more.
+{TRAN}在本章里，你将会学到Android中的一些重要构件。我们会带你从高处俯瞰，什么是Activity，Intent如何工作，Service为什么很酷，怎么让Broadcast Receiver和Content Provider使你的程序变得易于扩展，和更多的知识。
 
-By the end of this chapter, you will understand the main Android components for building applications. You should conceptually know when you’d use what component. You will also see how these components relate to a real world application.
+{ORGI}By the end of this chapter, you will understand the main Android components for building applications. You should conceptually know when you’d use what component. You will also see how these components relate to a real world application.
+{TRAN}读完本章，你将了解到用于构建应用程序的Android基本组件。你会大体明白何时需要哪种组件。同时你也会看到这些组件和实际情况的关联。
+
 
 == Main Building Blocks ==
 
-Main building blocks are components that you use as an application developer to build Android apps. They are the conceptual items that you put together to create a bigger whole. When you start thinking about your application, it is good to approach it top down. You design your application in terms of screens, features, and interactions between them. You start with conceptual drawing, something that you can represent in terms of "lines and circles". This approach to application development helps you see the big picture - how the components fit together and it all makes sense.
+{ORGI}Main building blocks are components that you use as an application developer to build Android apps. They are the conceptual items that you put together to create a bigger whole. When you start thinking about your application, it is good to approach it top down. You design your application in terms of screens, features, and interactions between them. You start with conceptual drawing, something that you can represent in terms of "lines and circles". This approach to application development helps you see the big picture - how the components fit together and it all makes sense.
 
-== A Real World Example ==
+{TRAN}Main building blocks是开发Android应用时组件。它们是一些使你构建大家伙时的砖块。当你开始策划你的应用程序时，至顶向下的考虑会比较好。你从屏幕与功能和它们之间的交互去设计你的应用程序。你开始打草稿，用一些线条和圆圈表达你的思路。这种方法用于应用程序开发有助于你构想出一幅巨大的蓝图————这些组件是如何配合在一起，变得有意义的。
 
-Let’s say that we want to build a Twitter app. We know that the user should be able to post status updates. We also know the user should be able to see what her friends are up to. Those are basic features. Beyond that, the user should also be able to set her username and password in order to login to her Twitter account. So, now we know we should have these three screens.
+%== A Real World Example ==
+== 真实世界的例子==
 
-Next, we would like my app to work fast regardless of network connection, or lack of. To achieve that, the app has to pull the data from Twitter when it’s online, and cache it locally. That will require a service that runs in the background as well as a database.
+{ORGI}Let’s say that we want to build a Twitter app. We know that the user should be able to post status updates. We also know the user should be able to see what her friends are up to. Those are basic features. Beyond that, the user should also be able to set her username and password in order to login to her Twitter account. So, now we know we should have these three screens.
+{TRAN}让我们来讨论下如何构建出一个Twitter应用。我们知道用户要能发布状态更新。我们也明白用户想要看到她的朋友们都在做些什么。这都是些基本功能。而在此之前，为了登陆到用户自己的Twitter账号，她要能够设置用户名和密码。所以现在我们知道我们需要有这三个屏幕。
 
-We also know that we’d like this background service to be started when the device is initially turned on, so by the user first uses the app, there’s already up-to-date information on her friends.
+{ORGI}Next, we would like my app to work fast regardless of network connection, or lack of. To achieve that, the app has to pull the data from Twitter when it’s online, and cache it locally. That will require a service that runs in the background as well as a database.
+{TRAN}下一步，我们更乐意让我们的应用能在无论有没有网络连接的情况下，都可以顺畅工作。为了实现这个设计，应用需要在设备在线时，从Twitter上主动获取数据，缓存到本地。而这需要一个在后台运行的服务和数据库。
 
-So, these are some straightforward requirements. Android building blocks make it easy to break them down into conceptual units so that you can work on them independently, and can also easily put them together into a complete package.
+{ORGI}We also know that we’d like this background service to be started when the device is initially turned on, so by the user first uses the app, there’s already up-to-date information on her friends.
+{TRAN}我们还知道，这个后台服务最好在设备初始化时就启用，这样用户第一次用这个应用时，就已经有她和朋友们的实时信息了。
 
-== Activities ==
 
-An activity is usually a single screen that the user sees on the device at one time. An application typically has multiple activities and the user flips back and forth among them. As such, activities are the most visible part of your application.
+{ORGI}So, these are some straightforward requirements. Android building blocks make it easy to break them down into conceptual units so that you can work on them independently, and can also easily put them together into a complete package.
+{TRAN}所以，这都是很直接的需求。Android开发构件让这些轻松地变成概念单元，这样你能分开进行，最后简简单单地把它们组合为完整的软件包。
 
-I usually use a website as an analogy for activities. Just like a website consists of multiple pages, so does an Android application consists of multiple activities. Just like a website has a "home page", an Android app has a "main" activity. It is usually the one that is shown first when you launch the application. And just like a website has to provide some sort of navigation among various pages, an Android app should do the same.
 
-On the web, you can jump from a page on one website to a page on another. Similarly, in Android, you could be looking at an activity of one application, but shortly after you could start another activity in a completely separate application. For example, if you are in your Contacts app, and you choose to text a friend, you’d be launching the activity to compose a text message in the Messaging application.
+%== Activities ==
+== Activity ==
 
-=== Activity Lifecycle ===
-Launching an activity may be quite expensive. It may involve creating a new linux process, allocating memory for all the UI objects, inflating all the objects from XML layouts, and setting the whole screen up. Since we’re doing a lot of work to launch an activity, it’s be a waste to just toss it out once user leaves that screen. To avoid this waste, activity lifecycle is managed via Activity Manager.
+{ORGI}An activity is usually a single screen that the user sees on the device at one time. An application typically has multiple activities and the user flips back and forth among them. As such, activities are the most visible part of your application.
+{TRAN}Activity通常是指某一时刻用户在设备上看到的那个单个屏幕。应用程序一般会有多个Activity，用户在其间不断切换。因此，Activity组成了你应用程序中大多数可见部分。
 
-Activity Manager is responsible for creating, destroying, and overall managing activities. For example, when the user starts an application for the first time, the activity manager will create its activity and put it onto the screen. Later, when the user switches screens, the activity manger will move that previous activity to a holding place. This way, if the user wants to go back to an older activity, it can be started more quickly. Older activities that user hasn’t used in a while will be destroyed in order to free more space for the currently active one. This mechanism is designed to help improve the speed of user interface and thus improve the overall user experience.
+{ORGI}I usually use a website as an analogy for activities. Just like a website consists of multiple pages, so does an Android application consists of multiple activities. Just like a website has a "home page", an Android app has a "main" activity. It is usually the one that is shown first when you launch the application. And just like a website has to provide some sort of navigation among various pages, an Android app should do the same.
+{TRAN}我通常会用网站来类比Activity。就像一个网站拥有许多页面，Android应用程序也包含多个Activity。网站都会有主页，Android应用也有一个主Activity——就是当你启动应用程序时第一个显示的那个。网站需要在众多页面间提供某些导航机制，而Android应用也得做同样的事情。
 
-	Figure 4.1. Activity Lifecycle
+{ORGI}On the web, you can jump from a page on one website to a page on another. Similarly, in Android, you could be looking at an activity of one application, but shortly after you could start another activity in a completely separate application. For example, if you are in your Contacts app, and you choose to text a friend, you’d be launching the activity to compose a text message in the Messaging application.
+{TRAN}在网站上，你能从一个页面跳转到其他站点的某个页面。类似地在Android中，你可以在某个应用程序上的用着某个Activity，但很快又开启了一个与之前完全无关的应用程序中的Activity。例如，当你在使用联系人应用时，选中发送短信给某个朋友，你就会启动短信应用程序里的Activity来编写短消息。
+
+%=== Activity Lifecycle ===
+=== Activity 生命周期 ===
+{ORGI}Launching an activity may be quite expensive. It may involve creating a new linux process, allocating memory for all the UI objects, inflating all the objects from XML layouts, and setting the whole screen up. Since we’re doing a lot of work to launch an activity, it’s be a waste to just toss it out once user leaves that screen. To avoid this waste, activity lifecycle is managed via Activity Manager.
+{TRAN}启动Activity的代价可能相当高昂。这将会创建一个新的Linux进程，给所有的用户界面对象分配内存，从XML layout里展开所有的对象，并配置整个屏幕。我们要在启动Activity上做大量工作，而一但用户离开了这个屏幕工作就白费了。为了避免浪费，Activity Manager掌管了所有Activity的生命周期。
+
+{ORGI}Activity Manager is responsible for creating, destroying, and overall managing activities. For example, when the user starts an application for the first time, the activity manager will create its activity and put it onto the screen. Later, when the user switches screens, the activity manger will move that previous activity to a holding place. This way, if the user wants to go back to an older activity, it can be started more quickly. Older activities that user hasn’t used in a while will be destroyed in order to free more space for the currently active one. This mechanism is designed to help improve the speed of user interface and thus improve the overall user experience.
+{TRAN}Activity Manager将响应创建、销毁和覆盖被托管Activity的要求。例如，当用户第一次启动应用程序，Activity Manager将创建并在屏幕上显示一个Activity。然后当用户切换屏幕时，Activity Manager将先前的Activity移动到保存区域。这样当用户想要回到之前的Activity时，它就能更快地启动。为了给活跃的Activity腾出更多内存空间，有一段时间未被使用的Activity会被销毁。这种机制有助于提高用户界面速度，从整体上提升了用户体验。
+
+%	Figure 4.1. Activity Lifecycle
+	Figure 4.1. Activity生命周期
 		[images/04-ActivityLifecycle.png]
 
+{ORGI}Programming for Android is conceptually different than programming for some other environments. In Android, you find yourself more responding to certain changes in the state of your application rather than driving that change yourself. It is a managed, container-based environment similar to programming for Java applets or servlets. So, when it comes to activity lifecycle, you don’t get to say what state the activity is in but you have plenty of opportunity to say what happens on transitions from state to state.
+{TRAN}给Android环境编写程序和别的环境相比有概念上的差异。在Android中你会发现，你更多地需要响应应用程序里确定的状态改变，而不是自己去主动改变状态。这是一个被托管的，基于容器的环境，类似于给Java Applet或Servlet编程。所以对于Activity生命周期来说，你不能说当前Activity处在什么状态，但却可以说在一个状态转向另一个状态时发生了什么事情。
 
-Programming for Android is conceptually different than programming for some other environments. In Android, you find yourself more responding to certain changes in the state of your application rather than driving that change yourself. It is a managed, container-based environment similar to programming for Java applets or servlets. So, when it comes to activity lifecycle, you don’t get to say what state the activity is in but you have plenty of opportunity to say what happens on transitions from state to state.
 
 === Starting State ===
-When an activity doesn’t exist in memory, it is in Starting State. While it’s starting up, the activity will go through a whole set of callback methods that you as a developer have an opportunity to fill out. Eventually, the activity will be in Running State.
+{ORGI}When an activity doesn’t exist in memory, it is in Starting State. While it’s starting up, the activity will go through a whole set of callback methods that you as a developer have an opportunity to fill out. Eventually, the activity will be in Running State.
+{TRAN}当Activity还不在内存中时，就正处于Starting State。它启动后, Activity会按顺序依次调用整组的回调方法，而这些方法可以由作为开发者的你来给出。最终，Activity将会处于Running State。
 
-Keep in mind that this transition from Starting State to Running State is one of the most expensive operations in terms of computing time needed. The computing time directly effects the battery life of the device as well. This is the exact reason why we don’t automatically destroy activities that are no longer shown. User may want to come back to them, so we keep them around for awhile.
+{ORGI}Keep in mind that this transition from Starting State to Running State is one of the most expensive operations in terms of computing time needed. The computing time directly effects the battery life of the device as well. This is the exact reason why we don’t automatically destroy activities that are no longer shown. User may want to come back to them, so we keep them around for a while.
+{TRAN}请记住，Starting State到Running State的转换是最为耗费机器时间的操作之一。机器时间也直接影响了设备的续航时间。这也就是我们不自动销毁那些不再显示的Activity的确切原因。用户可能会返回到它们，所以我们仍然需要将它们保留一段时间。
 
 === Running State ===
-Activity in a Running State is the one that is currently on the screen interacting with the user. We also say this activity is in focus, meaning that all user interactions, such as typing, touching screen, clicking buttons, are handled by this one activity. As such, there is only one running activity at any one time.
+{ORGI}Activity in a Running State is the one that is currently on the screen interacting with the user. We also say this activity is in focus, meaning that all user interactions, such as typing, touching screen, clicking buttons, are handled by this one activity. As such, there is only one running activity at any one time.
+{TRAN}当Activity处于Running State时，它会在屏幕上与用户交互。我们也可以称Activity正处于焦点，即指所有的用户交互，如敲击文字、触摸屏幕、点击按钮，都由这个Activity处理。因此，某个时间只能有唯一的Activity在运行。
 
-The running activity is the one that has all the priorities in terms of getting memory and resources needed to run as fast as possible. This is because Android wants to make sure the running activity is zippy and responsive to user.
+{ORGI}The running activity is the one that has all the priorities in terms of getting memory and resources needed to run as fast as possible. This is because Android wants to make sure the running activity is zippy and responsive to user.
+{TRAN}正处于Running State的Activity拥有尽可能快地调用内存与资源的特权。 这是因为Android需要保证正在运行的Activity能够敏捷响应用户。
 
 === Paused State ===
-When an activity is not in focus (i.e. not interacting with the user) but still visible on the screen, we say it’s in Paused State. This is not a very typical scenario since the screen is usually small and an activity is either taking the whole screen or not at all. We often see this case with dialog boxes that come up in front an activity causing it to become Paused. Paused State is a state that all activities go through it en route to being stopped.
+{ORGI}When an activity is not in focus (i.e. not interacting with the user) but still visible on the screen, we say it’s in Paused State. This is not a very typical scenario since the screen is usually small and an activity is either taking the whole screen or not at all. We often see this case with dialog boxes that come up in front an activity causing it to become Paused. Paused State is a state that all activities go through it enroute to being stopped.
+{TRAN}当Activity未处于焦点时（即没有和用户交互），但是仍可在屏幕上看到，我们就说它在Paused State。这不是一个很典型的场景，因为屏幕通常很小，往往一个Activity要不是占据整个屏幕，要不就更本不出现。我们一般会在这个情况下看到此状态：Activity上方出现了一个对话框，使得它暂停。所有的Activity都会在将要停止前处于Paused State。
 
-Paused activities still have high priority in terms of getting memory and other resources. This is because they are visible and cannot be removed from the screen without making it look very strange to the user.
+{ORGI}Paused activities still have high priority in terms of getting memory and other resources. This is because they are visible and cannot be removed from the screen without making it look very strange to the user.
+{TRAN}暂停了的Activity仍然拥有获得内存和其他资源的高优先级。这是因为它们仍然可见，还没有从屏幕上移除，因此不能让用户觉得它们看起来很奇怪。
 
 === Stopped State ===
-When an activity is not visible, but still in memory, we say it’s in Stopped State. Stopped activity could be brought back to front to become a Running activity again. Or, it could be destroyed and removed from memory.
+{ORGI}When an activity is not visible, but still in memory, we say it’s in Stopped State. Stopped activity could be brought back to front to become a Running activity again. Or, it could be destroyed and removed from memory.
+{TRAN}当Activity不可见，但是仍处于内存里时，我们称其为Stopped State。停止的Activity可以回到前台，再次变为正在运行的Activity。否则，它会被销毁，从内存中移除。
 
-System keeps activities around in Stopped State because it is likely that the user will still want to get back to those activities some time soon. And restarting a stopped activity is far cheaper than starting an activity from scratch. That is because we already have all the objects loaded in memory and just simply have to bring it all up to foreground.
+{ORGI}System keeps activities around in Stopped State because it is likely that the user will still want to get back to those activities some time soon. And restarting a stopped activity is far cheaper than starting an activity from scratch. That is because we already have all the objects loaded in memory and just simply have to bring it all up to foreground.
+{TRAN}系统保留了处于Stopped State的Activity，因为用户可能想回到之前的某些Activity。而且重新启动一个停止的Activity比从头开始生成Activity要轻便的多。那是因为我们已经在内存中加载了所有的对象，只是简单的带到前台罢了。
 
-Stopped activities can also, an any point, be removed from memory.
+{ORGI}Stopped activities can also, an any point, be removed from memory.
+{TRAN}Stopped Activity也可以在任何情况下，从内存移除。
 
 === Destroyed State ===
-A destroyed activity is no longer in memory. The Activity Manager decided that this activity is no longer needed, and as such has removed it. Before the activity is destroyed, you, the developer, have an opportunity to perform certain actions, such as save any unsaved information. However, there’s no guarantee that your activity will be Stopped prior to being Destroyed. It is possible that a Paused activity gets destroyed as well. For that reason, it is better to do important work, such as saving unsaved data, en route to being Paused rather than Destroyed.
+{ORGI}A destroyed activity is no longer in memory. The Activity Manager decided that this activity is no longer needed, and as such has removed it. Before the activity is destroyed, you, the developer, have an opportunity to perform certain actions, such as save any unsaved information. However, there’s no guarantee that your activity will be Stopped prior to being Destroyed. It is possible that a Paused activity gets destroyed as well. For that reason, it is better to do important work, such as saving unsaved data, en route to being Paused rather than Destroyed.
+{TRAN}被销毁的Activity不再出现于内存里。Activity Manager决定某个Activity不再会需要了，于是就移除掉。Activity被销毁前，作为开发者的你，有机会做出些指定的操作，如保存所有未保存的数据。然而，这里不保证你的Activity会在被销毁前处于停止状态。一个暂停的Activity有直接被销毁的可能。由于这个原因，在暂停时提前做些保存未保存数据这样重要的工作，比拖到停止时再做要更好。
 
 {NOTE}
-	The fact that an activity is in Running State doesn’t mean it’s doing much. It could be just sitting there and waiting for user input. Similarly, an activity in Stopped State is not necessarily doing nothing. The state names mostly refer to how active the activity is with respect to user input. In other words, weather an activity is in visible, in focus, or not visible at all.
+{ORGI}	The fact that an activity is in Running State doesn’t mean it’s doing much. It could be just sitting there and waiting for user input. Similarly, an activity in Stopped State is not necessarily doing nothing. The state names mostly refer to how active the activity is with respect to user input. In other words, weather an activity is in visible, in focus, or not visible at all.
+{TRAN}事实上处于Running State的Activity并不意味着它就一定要做的很多。它也可以只是在那儿等待用户输入。类似地，处于Stopped State的Activity什么都不做也没有关系。状态名大部分时候指Activity是如何在响应用户输入的。换句话说，指一个Activity是否可见，处于焦点或完全不可见。
 {/NOTE}
 
 == Intents ==
@@ -77,29 +108,36 @@ A destroyed activity is no longer in memory. The Activity Manager decided that t
 		[images/04-Intents.png]
 
 
-Intents are messages that are sent among major building blocks. They trigger an activity to start up, a service to start or stop, or are simply broadcasts. Intents are asynchronous, meaning the code that is sending them doesn’t have to wait for them to be completed.
+{ORGI}Intents are messages that are sent among major building blocks. They trigger an activity to start up, a service to start or stop, or are simply broadcasts. Intents are asynchronous, meaning the code that is sending them doesn’t have to wait for them to be completed.
+{TRAN}Intent是主要构件间传递的消息。每当Activity启动，服务启动或停止，或者只是简单的广播，都会触发Intent。它是异步的，也就是说发送它们的代码不需要等到它们完成才能继续执行。
 
-An intent could be explicit or implicit. In an explicit intent the sender clearly spells out which specific component should be on the receiving end. In an implicit intent, the sender specifies the type of receiver. For example, your activity could send an intent saying it simply wants someone to open up a web page. In that case, any application that is capable of opening a web page could "compete" to complete this action.
+{ORGI}An intent could be explicit or implicit. In an explicit intent the sender clearly spells out which specific component should be on the receiving end. In an implicit intent, the sender specifies the type of receiver. For example, your activity could send an intent saying it simply wants someone to open up a web page. In that case, any application that is capable of opening a web page could "compete" to complete this action.
+{TRAN}Intent可以是显性或隐性的。显性的Intent需要由发送方清晰地宣称自己需要传递到的特定组件。而对于隐性的Intent，发送方只需要指明接收者的类型。例如，Activity可以发送一个宣称自己需要打开网页的Intent。在这个情况下，任何能够打开网页的应用程序都会争着完成这个动作。
 
-When you have competing applications, the system will ask you which one you’d like to use to complete a given action. You can also set an app as the default one. This mechanism works very similarly to your desktop environment, when you downloaded Firefox or Chrome to replace your default Internet Explorer or Safari web browsers.
+{ORGI}When you have competing applications, the system will ask you which one you’d like to use to complete a given action. You can also set an app as the default one. This mechanism works very similarly to your desktop environment, when you downloaded Firefox or Chrome to replace your default Internet Explorer or Safari web browsers.
+{TRAN}当应用程序正在争抢你的意图时，系统会询问你希望由哪一个程序来完成你的给定动作。你也可以指定一个默认的应用。这个机制工作起来和桌面环境类似，比如当你下载了Firefox或Chrome浏览器来替换之前默认的Internet Explorer或Safari。
 
-What this type of messaging allows for is to allow the user to replace any app on the system with a custom one. For example, you may want to download a different SMS application, or another browser to replace your existing ones.
+{ORGI}What this type of messaging allows for is to allow the user to replace any app on the system with a custom one. For example, you may want to download a different SMS application, or another browser to replace your existing ones.
+{TRAN}允许哪个程序回应消息的机制使得用户可以将任何系统应用定制为自己的应用。例如你可以下载第三方短信应用程序或者全新的浏览器来代替原先的程序。
 
 == Services ==
 
-Services run in the background and don’t have any user interface components. They can perform the same actions as Activities without any user interface. Services are useful for actions that we want to make sure performs for a while, regardless of what is on the screen. For example, you may want to have your music player play music even as you are flipping between other applications.
-
+{ORGI}Services run in the background and don’t have any user interface components. They can perform the same actions as Activities without any user interface. Services are useful for actions that we want to make sure performs for a while, regardless of what is on the screen. For example, you may want to have your music player play music even as you are flipping between other applications.
+{TRAN}Service运行于后台，没有任何用户界面组件。他们的行为如同没有用户界面的Activity一般。Service适合于那些需要执行一段时间，且无需考虑显示的动作。比如当你使用音乐播放器播放歌曲时，你还能在其他应用程序间不断切换。
 {NOTE}
-	Don’t confuse Android Services that are part of an Android app with native linux services, servers or daemons that a much lower level component of the operating system.
+{ORGI}	Don’t confuse Android Services that are part of an Android app with native linux services, servers or daemons that a much lower level component of the operating system.
+{TRAN}	不要混淆了作为Android应用一部分的Service和原生的Linux服务，服务器进程和守护进程是Android操作系统中底层得多的组件。
 {/NOTE}
 
 	Figure 4.3. Service Lifecycle
 		[images/05-ServiceLifeCycle.png]
 
-Services have a much simpler lifecycle than activities. You start a service, or stop it. Also, the service lifecycle is more or less controlled by the developer, and not so much by the system. So, we as developers have to be mindful to run our services so that they don’t unnecessarily consume shared resources, such as CPU and battery.
+{ORGI}Services have a much simpler lifecycle than activities. You start a service, or stop it. Also, the service lifecycle is more or less controlled by the developer, and not so much by the system. So, we as developers have to be mindful to run our services so that they don’t unnecessarily consume shared resources, such as CPU and battery.
+{TRAN}Service的生命周期比Activity简单的多。你只需要启动或者停止它。另外，Service的生命周期可以或多或少地由开发者掌控，而不被系统操纵太多。所以作为开发者，我们需要牢记Service不可以毫无必要的占据共享资源，例如CPU和电池。
 
 {NOTE}
-The fact that a service runs in the background doesn’t mean it runs on a separate thread. If a service is doing some processing that takes a while to complete (such as perform network calls), you would typically run it on a separate thread. Otherwise, your user interface will run noticeably slower. In other words, Services and Activities run on the same main application thread, often called UI thread.
+{ORGI}The fact that a service runs in the background doesn’t mean it runs on a separate thread. If a service is doing some processing that takes a while to complete (such as perform network calls), you would typically run it on a separate thread. Otherwise, your user interface will run noticeably slower. In other words, Services and Activities run on the same main application thread, often called UI thread.
+{TRAN}事实上虽然Service运行于后台，但是并不能就此认为它是线程独立的。如果一个服务正进行需要耗费时间的动作（如网络通话），那么你通常需要在单独的线程里处理。否则，你的用户界面会显著迟缓。换句话说，Service和Activity是在主线程内执行的，而这个线程也被称为UI线程。
 {/NOTE}
 
 == Content Providers ==
@@ -108,13 +146,17 @@ The fact that a service runs in the background doesn’t mean it runs on a separ
 		[images/04-ContentProvider.png]
 
 
-Content Providers are interfaces for sharing data between applications. Android by default runs each application in its own sandbox so that all data that belongs to an application is totally isolated from other applications on the system. While small amounts of data can be passed between applications via Intents, Content Providers are much better suited for sharing persistent data between possibly large datasets. As such, Content Provider API nicely adheres to CRUD principle.
+{ORGI}Content Providers are interfaces for sharing data between applications. Android by default runs each application in its own sandbox so that all data that belongs to an application is totally isolated from other applications on the system. While small amounts of data can be passed between applications via Intents, Content Providers are much better suited for sharing persistent data between possibly large datasets. As such, Content Provider API nicely adheres to CRUD principle.
+{TRAN}Content Provider是在应用程序间共享数据的接口。Android默认每个应用程序运行在自己的沙盒内，这样所有属于某个应用程序内的数据将完全与系统中其他的应用程序相隔绝。少量数据可以通过Intent在应用程序间传递，而Content Provider则更适合于共享大量的持久数据。因此，Content Provider API会很好地遵循CRUD原则。
 
-Android system uses this mechanism all the time. For example, Contacts Provider is a content provider that exposes all users contacts data to various applications. Settings Provider exposes system settings to various applications including the built-in Settings application. Media Store is responsible for storing and sharing all various media, such as photos, and music across various applications.
+{ORGI}Android system uses this mechanism all the time. For example, Contacts Provider is a content provider that exposes all users contacts data to various applications. Settings Provider exposes system settings to various applications including the built-in Settings application. Media Store is responsible for storing and sharing all various media, such as photos, and music across various applications.
+{TRAN}Android系统常常使用这种机制。例如，Contact Provider是一个为各种应用程序存储联系人数据的Content Provider。而Setting Provider则给包括内建于系统的众多应用程序提供系统设置。Media Stroe能够存储与共享所有的媒体类型，例如众多应用程序间分享着的照片与音乐。
 
-This separation of data storage and the actual user interface application offers greater flexibility to mash up various parts of the system. For example, a user could install an alternative Address Book application that uses the same data as the default Contacts app. Or, install widgets on the Home Screen that allow for easy changes in the System Settings, such as turning on or off the Wifi, Bluetooth or GPS features. Many phone manufactures take advantage of Content Providers to add their own applications on top of standard Android to improve overall user experience, such as HTC Sense.
+{ORGI}This separation of data storage and the actual user interface application offers greater flexibility to mash up various parts of the system. For example, a user could install an alternative Address Book application that uses the same data as the default Contacts app. Or, install widgets on the Home Screen that allow for easy changes in the System Settings, such as turning on or off the Wifi, Bluetooth or GPS features. Many phone manufactures take advantage of Content Providers to add their own applications on top of standard Android to improve overall user experience, such as HTC Sense.
+{TRAN}将数据存储和用户界面程序分开，带来系统各部分间高伸缩性地整合。举例来说，用户会安装第三方通讯录应用程序，而该程序还能和默认联系人应用共享数据。或者通过在Home Screen安装Widget来方便修改系统设置，比如开关Wifi、蓝牙或蓝牙功能。同时，许多手机制造商利用Content Provider在标准Android之上加入自己的应用程序来提升用户体验。比如HTC Sence。
 
-Content Providers are a relatively simple interface with the standard insert(), update(), delete() and query() methods. These methods look a lot like standard database methods, so it is relatively easy to implement a content provider as a proxy to the database. Having said that, you are much more likely to use content providers than write your own.
+{ORGI}Content Providers are a relatively simple interface with the standard insert(), update(), delete() and query() methods. These methods look a lot like standard database methods, so it is relatively easy to implement a content provider as a proxy to the database. Having said that, you are much more likely to use content providers than write your own.
+{TRAN}Content Provider是一种包含了插入、更新、删除和查询方法的简单接口。这些方法看起来很像标准的数据库方法，因此将数据库连接代理实现为Content Provider是相当容易的。就像之前说过的，你会十分乐意使用Content Provider，而不是自己再写一个。
 
 == Broadcast Receivers ==
 
@@ -122,27 +164,36 @@ Content Providers are a relatively simple interface with the standard insert(), 
 		[images/04-BroadcastReceiver.png]
 
 
-Broadcast Receivers is an Android implementation of system-wide publish/subscribe mechanism (more precisely, this is an Observer pattern). The receiver is simply a dormant code that gets activated once an event it is subscribed to happens.
+{ORGI}Broadcast Receivers is an Android implementation of system-wide publish/subscribe mechanism (more precisely, this is an Observer pattern). The receiver is simply a dormant code that gets activated once an event it is subscribed to happens.
+{TRAN}Broadcast Receiver是Android系统级广播/订阅机制的实现（更准确地说，这是个观察者模式）。Receiver只是当订阅的事件发生后，被激活并做出处理的代码。
 
-The system itself broadcasts events all the time. For example, when an SMS arrives, or call comes in, or battery runs low, or system gets booted, all those events are broadcasted and any number of receivers could be triggered by them.
+{ORGI}The system itself broadcasts events all the time. For example, when an SMS arrives, or call comes in, or battery runs low, or system gets booted, all those events are broadcasted and any number of receivers could be triggered by them.
+{TRAN}系统自身时刻广播事件。例如，当收到短信时，或电话接入时，或电池电量低时，再或者系统启动时，所有的这些事件都会被广播，任何接收者都可以被他们触发。
 
-In our Twitter app example, we want to start the update service once the system starts up. To do that, we can subscribe to the broadcast that tells us the system has completed booting up.
+{ORGI}In our Twitter app example, we want to start the update service once the system starts up. To do that, we can subscribe to the broadcast that tells us the system has completed booting up.
+{TRAN}在我们的Twitter应用案例里，我们要在进入系统时启动Update Service。为了实现这个目的，我们可以订阅能告知系统已完整启动的Broadcast。
 
-You can also send your own broadcasts from one part of your application to another, or a totally different application.
+{ORGI}You can also send your own broadcasts from one part of your application to another, or a totally different application.
+{TRAN}你还可以从你自己的应用程序内发送Broadcast到另一个部分，或者是完全无关的应用程序。
 
-Broadcast receivers themselves do not have any visual representation nor are they actively running in memory. But when triggered, they get to execute some code, such as start an activity, a service, or something else.
+{ORGI}Broadcast receivers themselves do not have any visual representation nor are they actively running in memory. But when triggered, they get to execute some code, such as start an activity, a service, or something else.
+{TRAN}Broadcast Receriver自身没有形象化的呈现，而且在内存中也并不活跃。但是一旦被激活，他们就会执行代码，如启动Activity，Service或别的什么。
 
 == Application Context ==
 
-So far you have seen Activities, Services, Content Providers and Broadcast Receiver. Together, they make up an application. Another way of saying that is that they live inside the same Application Context.
+{ORGI}So far you have seen Activities, Services, Content Providers and Broadcast Receiver. Together, they make up an application. Another way of saying that is that they live inside the same Application Context.
+{TRAN}目前为之你已经了解到了Activity，Service，Content Provider和Broadcast Receiver。它们组合在一起形成了应用程序。而换用其他的说法也就是它们生存于相同的Application Context里。
 
-Application Context refers to the application environment and process within all its components are running. It allows to sharing of the data and resources between various Building Blocks.
+{ORGI}Application Context refers to the application environment and process within all its components are running. It allows to sharing of the data and resources between various Building Blocks.
+{TRAN}Application Context是指应用程序内运行着的组件正处在的环境和进程。它允许在不同构件间共享数据和资源。
 
-Application Context gets created whenever the first component of this application is started up, regardless whether that component is an activity, service, or something else. Application context lives as long as your application is alive. As such, it is independent of the activities life cycle. You can easily obtain reference to the context by calling Context.getApplicationContext() or Activity.getApplication(). Keep in mind that activities and services are already subclasses of context, and as such inherit all its methods.
+{ORGI}Application Context gets created whenever the first component of this application is started up, regardless whether that component is an activity, service, or something else. Application context lives as long as your application is alive. As such, it is independent of the activities life cycle. You can easily obtain reference to the context by calling Context.getApplicationContext() or Activity.getApplication(). Keep in mind that activities and services are already subclasses of context, and as such inherit all its methods.
+{TRAN}Application Context创建于应用程序中首次出现有组件启动之时，而不管这个组件是Activity，Service或是别的什么。Application context贯穿于应用程序的生存周期。你可以通过调用Context.getApplicationContext()或Activity.getApplication来方便地获取Context。记住Activity和Service已经是Context类的子类，因此也因此继承了所有的方法。
 
 == Summary ==
 
-In this chapter, you have learned about some of the most important Android application components. We put together these components to create various applications, from a simple Hello World to much more complex creations.
+{ORGI}In this chapter, you have learned about some of the most important Android application components. We put together these components to create various applications, from a simple Hello World to much more complex creations.
+{TRAN}在本章里，你已经学习到部分关于Android应用程序重要组件的知识。我们通过组合这些组件创建各种各样的应用程序，不管是从简简单单的Hello World，还是那些相当复杂的作品。
 
-In the next chapter, we’ll outline Yamba application as an example of how all these bits and pieces come together to form a working Android app.
-
+{ORGI}In the next chapter, we’ll outline Yamba application as an example of how all these bits and pieces come together to form a working Android app.
+{TRAN}在下一章里，我们将用Yamba应用程序作为提纲，来说明如何将这些零件组装成为运作正常的Android应用。
