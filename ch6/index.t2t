@@ -1,0 +1,824 @@
+%
+%
+%
+
+= Android User Interface =
+If you're new to the Android mobile operating system, Learning Android is the perfect way to master the fundamentals. This gentle introduction shows you how to use Android's basic building blocks to develop user interfaces, store data, and more. Buy the print book or ebook.
+
+In this chapter, you will learn how to build user interface in Android. You will create your first Activity. You will learn how to create an XML layout for it, and how to connect it to Java. You will learn about Views (a.k.a. widgets) and Layouts. You will learn how to handle events in Java, such as a button click. Additionally, you’ll add the support for twitter-like API into your project as an external jar so your app can make web service calls to the cloud.  
+
+By the end of this chapter, you will have written your own Twitter-like Android app. The app will feature a single screen that will prompt user for current status update, and post that update online.
+
+== Two Ways to Create User Interface ==
+
+There are two ways to create user interface (UI) in Android. One is declarative and the other one is programmatic. They are quite different but often used together to get the job done.
+
+=== Declarative User Interface ===
+Declarative approach involves using XML to declare what the UI will look like. It is similar to creating a web page using HTML. You write tags and specify elements to appear on your screen. If you ever hand-coded an HTML page, you did pretty much the same work as creating an Android screen.
+
+The advantages of declarative user interface are that you can use what-you-see-is-what-you-get (WYSIWYG) tools. Some of these tools ship with Eclipse Android Development Tools (ADT) extension, others come from third parties. Additionally, XML is fairly human readable and event people unfamiliar with the Android platform and framework can readily determine what the intent of the user interface is.
+
+The disadvantages of declarative UI approach are that you can only get so far with XML. XML is great for declaring the look and feel of your user interface, but that doesn’t provide a good way of handling user input. That’s where programmatic approach comes in.
+
+=== Programmatic User Interface ===
+Programmatic user interface involves writing Java code to develop UI. For anyone who ever did any Java AWT or Java Swing development, Android is pretty much the same in that respect. It is also similar to many other UI toolkits in other languages as well.
+
+Basically, if you want to create a button programmatically, you have to declare the button variable, create an instance of it, add it to a container that is to contain this button, and set any button properties that may make sense, such as color, text, text size, background, and so on. You would probably also want to declare what the button does once the button is clicked, so that’s another piece of code. All in all, you end up writing quite a few lines of Java.
+
+Everything you can do declaratively, you can also do programmatically. But additionally, Java also allows you to specify what happens when that button is actually clicked. This is the main advantage of programmatic approach to user interface.
+
+=== The Best of Both Worlds ===
+So which approach to use? The best practice is to use both. You would use declarative (XML) approach to declare everything about the user interface that is static, such as the layout of the screen, all the widgets, etc. You would then switch to programmatic (Java) approach to define what goes on when user interacts with various widgets of the user interface. In other words, you’d use XML to declare what the "button" looks like, and Java to specify what it does.
+
+{NOTE}
+	Note that there are two approaches to developing the actual user interface, but at the end of the day, all the XML is actually "inflated" into Java memory space as if you actually wrote Java code. So, it’s only Java code that runs.
+{/NOTE}
+
+== Views and Layouts ==
+
+Android organizes its UI elements into layouts and views. Everything you see, such as a button, label, or text box, is a view. Layouts organize views, such as grouping together a button and label or a group of them.
+
+Figure 6.1. Layouts and Views relationship
+
+{NOTE}
+Don’t confuse widgets in Android UI with App Widgets - miniature application views that can be embedded in other applications (such as the Home screen application). Here, we are referring to widgets as views in our activities.
+{/NOTE}
+
+So, a layout can contain other children. Those children can furthermore be layouts themselves allowing for complex user interface structure.
+
+A layout is responsible for allocating space for each child. Different layouts use different approach to laying out their child widgets.
+
+There are couple of main layouts that we use more frequently than others, such as Linear Layout, Table Layout, Frame Layout, Relative Layout, and Absolute Layout.
+
+=== LinearLayout ===
+LinearLayout is one of the simplest and most common layouts. It simply lays out its children next to each other, either horizontally or vertically. The order of children matters. As LinearLayout asks its children for how much space they need, it allocates desired space to each child in the order they are added. So, if an "older" child comes along and asks for all the space on the screen, there won’t be much left for the subsequent widgets in this layout.
+
+An important property for LinearLayout are layout_orientation and valid options are vertical or horizontal.
+
+{TIP}
+While Linear Layout is probably the simplest and most commonly used layout, it is not always the best choice. A good rule of thumb is that if you start to nest multiple Linear Layouts, you should probably be using another layout, such as Relative Layout. Too many nested layouts can have big consequences on the time to inflate the UI and overall CPU and battery consumption.
+{/TIP}
+
+=== TableLayout===
+TableLayout lays out its children in a table. TableLayout consists of only other TableRow widgets. TableRow represents a row in a table and can contain other UI widgets. TableRow widgets are laid out next to each other horizontally, sort of like LinearLayout with horizontal orientation.
+
+For those familiar with HTML, Table Layout is similar to <table> element, while Table Row is similar to the <tr> element. Where as in HTML we also have <td> to represent each cell in the table, in Android the columns are determined dynamically based on the number of views we add to a table row.
+
+An important property for TableLayout is stretch_columns indicating index of column to stretch to fill out available space. You can also use * to stretch all columns.
+
+=== FrameLayout ===
+FrameLayout places its children on top of each other so that latest child is covering the previous, like a deck of cards. This layout policy is useful for tabs, for example. FrameLayout is also used as placeholder for other widgets to be added to it programmatically at some later point in time.
+
+=== RelativeLayout ===
+RelativeLayout lays out its children relative to each other. As such, it is very powerful as it doesn’t require you to nest unnecessary layouts in order to achieve certain look. At the same time, using RelativeLayout can minimize total number of widgets that need to be drawn thus improving the overall performance of you application. Having said that, RelativeLayout requires each of its child views to have an ID set so that we can position it relatively to other children.
+
+=== AbsoluteLayout ===
+AbsoluteLayout positions its children at absolute coordinates on the screen. It is the favorite layout for WYSIWYG tools that automatically generate your UI. While very simple, it is not very flexible. Your user interface would look good on one particular screen but as soon as the screen size, orientation, or density changes, AbsoluteLayout would not be able to adjust.
+
+== Starting Yamba Project ==
+
+We are about to start our Yamba project. So, fire up your Eclipse and click on File→New→Android Project.
+
+You will get a dialog window asking you about your new Android project. Let’s explain again all the different fields that are significant.
+
+**Project Name**
+The name under which Eclipse organizes our project. Is is a good idea if the project name doesn’t have any spaces in it - makes it easier to access from the command line later. Enter Yamba here.
+
+**Contents**
+Leave this as is, set to creating a new project since that’s what we’re intending to do.
+
+**Build Target**
+The type of Android system we are intending to run this application on. This could be any Android platform, either standard or proprietary. I’m assuming we’re working with Android 2.3 (API level 9) and thus will choose Android 2.3.
+
+**Application name**
+Simply a plain text name of your application. It can be any text. For our app, feel free to enter Yamba.
+
+**Package name**
+A Java package, and as such it needs to adhere to Java package naming convention. In a nutshell, you want to use the reverse of your domain name for your package. I’m going to use com.marakana.yamba here.
+
+**Create Activity**
+An option to create an activity as part of this project. You can leave it checked. For the activity name, we must adhere to Java class naming convention. That simply means use upper CamelCase convention. I’m going to enter StatusActivity here
+
+**Min SDK Version**
+Represents the minimum version of Android SDK that is installed on the device in order to be able to run this particular application. Typically, this number will correspond to the API level that you picked for your target, in our case Android 9. However, if the app doesn’t depend on latest-greatest API or is capable of scaling gracefully to lower API, you should rethink this number. In our case, the app will be able to work on API level 4 (Android 1.6). So, enter 4 here. This is good because we can distribute our app to way more people than if minimum was Android 2.3.
+Click on Finish. You should have Yamba project now appear in your Package Explorer in Eclipse.
+
+Figure 6.2. New Project Dialog
+
+== StatusActivity Layout ==
+Let’s start by designing the user interface for our screen where we’ll enter the new status and click a button to update it.
+
+By default, Eclipse created a file called main.xml under res/layout folder. For consistency purposes, we should rename this file to status.xml to match our StatusActivity. To rename a file in Eclipse, right-click on it, choose Refactor→Rename… and enter new name. Eclipse is somewhat smart about renaming files and does more than just change the name. It also offers to lookup all the places where this file is referred from and update those references as well. While this feature works well when renaming a Java file, it is not fully automatic with XML files. So, renaming this file requires us to change the line in Java where we refer to it via the R class. To do that, in your StatusActivity’s onCreate(), change setContentView(R.layout.main); to setContentView(R.layout.status);.
+
+This screen will have four components:
+
+- Title at the top of the screen. This will be a TextView widget.
+- Big text area to type our 140-character status update. We’ll use EditText widget for this purpose.
+- Button to click to update the status. This will be a Button widget.
+- A layout to contain all these widgets and lay them out one after another in vertical fashion. For this screen, we’ll use LinearLayout, one of the more common ones.
+
+The source code for our StatusActivity layout looks like this:
+
+Example 6.1. res/layout/status.xml
+
+{CODE}
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Main Layout of Status Activity -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical" android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+
+  <!-- Title TextView-->
+  <TextView android:layout_width="fill_parent"
+    android:layout_height="wrap_content" android:gravity="center"
+    android:textSize="30sp"
+    android:layout_margin="10dp" android:text="@string/titleStatus"/>
+
+  <!-- Status EditText  -->
+  <EditText android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:layout_weight="1"
+    android:hint="@string/hintText" android:id="@+id/editText"
+    android:gravity="top|center_horizontal"></EditText>
+
+  <!-- Update Button -->
+  <Button android:layout_width="fill_parent"
+    android:layout_height="wrap_content" android:text="@string/buttonUpdate"
+    android:textSize="20sp" android:id="@+id/buttonUpdate"></Button>
+
+</LinearLayout>
+{/CODE}
+
+This code was generated by Eclipse Graphical Layout. This is the part of Android Development Tools (ADT) for Eclipse plugin that helps you work with Android-specific XML files. Since ADT knows that you are working on a UI layout, it opens status.xml in Graphical Layout mode. You can also view the raw XML by choosing status.xml tab at the bottom of this window. That will give you the XML source code for this screen, as displayed above.
+
+Figure 6.3. Graphical Layout mode for status.xml
+
+Although we discussed the basic meaning of these XML resources in a previous chapter, there are some details in the code that you should know more about, which we’ll examine in the following section.
+
+=== Important Widget Properties ===
+The properties you are most likely to use regularly are:
+
+Important Widget Properties
+**layout_height and layout_width**
+Defines how much space this widget is asking from its parent layout to display itself. While you could enter a value in pixels, inches, or similar, that is not a good practice. Since your application could run on many different devices with various screen sizes, you want to use relative size for your components, not absolute. So, best practice would be to use either fill_parent or wrap_content for the value. fill_parent means that your widget wants all the available space from its parent. wrap_content means that it only requires as much space as it needs to display its own content. Note that in API Level 8 and higher, fill_parent has been renamed to match_parent.
+
+**layout_weight**
+Layout weight is a number between 0 and 1. It implies the weight of our layout requirements. For example, if our Status EditText had default layout weight of 0, and required layout height of fill_parent, then the Update button would have been pushed out of the screen since Status, and its request for space came before the button. However, when we set Status widget’s layout weight to 1, we are saying we want all available space height-wise, but are yielding to any other widget that also may need space, such as the Update button.
+**layout_gravity**
+Specifies how this particular widget is positioned within its layout, both horizontally and vertically. Values could be top, center, left, and so on. Notice the difference between this property and gravity below. For example, if you have a widget that has width set to fill_parent, trying to center it wouldn’t do much since it’s already taking all available space. However, if our title TextView had width set to wrap_content, centering it with layout_gravity would generate desired results.
+**gravity**
+Specifies how the content of this widget is positioned within the widget itself. It is commonly confused with layout_gravity. Which one to use will depend on size of your widget and desired look. For example, if our title TextView had width fill_parent, then centering it with gravity would work but centering it with layout_gravity wouldn’t do anything.
+**text**
+Not all widgets have this property, but many do, such as Button, EditText, and TextView. It simply specifies the text for the widget. Now, it is not a good practice to just enter the text because than your layout will only work in one locale/language. Best practice is to define all text in strings.xml resource and refer to particular string via this notation: @string/titleStatusUpdate.
+**id**
+id is simply the unique identifier for this particular widget in particular layout resource file. Not every widget needs an id and I recommend removing id’s if not needed to minimize clutter. But widgets that we’ll later need to manipulate from Java do need id’s. Id has the following format: @+id/someName where someName is whatever you want to call your widget. My naming convention is to use type followed by name, so @+id/buttonUpdateStatus for example.
+
+=== Strings Resource ===
+Android tries hard to keep data in separate files. So, layouts are defined in their own resources, and all text values (such as button text, title text, etc.) should be defined in their own file called strings.xml. This later allows you to provide multiple versions of strings resources to be used for various languages, such as English, Japanese, or Russian.
+
+Here’s what our strings.xml file looks like at this point:
+
+Example 6.2. res/values/strings.xml
+
+{CODE}
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">Yamba 1</string>
+
+  <string name="titleYamba">Yamba</string>
+  <string name="titleStatus">Status Update</string>
+
+  <string name="hintText">Please enter your 140-character status</string>
+  <string name="buttonUpdate">Update</string>
+</resources>
+{/CODE}
+
+That this is simply a set of name/value pairs.
+
+{TIP}
+I use a certain naming convention for my resource names. Let’s look at titleYamba, for example. First, I prefix the resource with the name of what it is, in this case a title of the activity. Secondly, I give it a name, Yamba. This naming convention helps later on keep many different resources sorted in a easy to find way. Finally, I use CamelCase for my names while some may prefer to use underscores to separate words.
+{/TIP}
+
+== StatusActivity Java Class ==
+
+Now that we have our UI designed in XML, we are ready to switch over to Java. Remember from earlier in this chapter that Android provides two ways to building user interface. One is by declaring it in XML, which is what we just did. And we got as far as we could (for now). The other one is to programmatically build it in Java. We also said earlier that the best practice is to get as far as possible in XML, and then switch over to Java.
+
+Our Java class for this is StatusActivity.java and the Eclipse New Project Dialog has already created the stub for this class for us. The class is part of com.marakana.yamba1 Java package, and as such is part of that directory.
+
+=== Creating your application-specific object and initialization code ===
+As with all Main Building Blocks in Android, such as Activities, Services, BroadcastReceivers and ContentProviders, you usually start by subclassing a base class provided by the Android framework, and overriding certain inherited methods. In this case, we subclass Android’s Activity class and override its onCreate() method. As you recall, activities have a certain lifecycle the section called “Activity Lifecycle”, or state machine through which they go. We as developers do not control what state the activity is in, but we do get to say what happens at a transition to a particular state. In this case, the transition we want to override is onCreate() method that is invoked by the system’s ActivityManager when the activity is first created (i.e. it goes from Starting the section called “Starting State” to Running the section called “Running State” state). This sort of programming when we subclass a system class and fill out the blanks is also known as Template pattern.
+
+Our onCreate(), in addition to doing some standard housekeeping, will carry out two major tasks that the application needs done just once, and done at the beginning. We’ll set up our button so it responds to clicks, and connect to the cloud.
+
+Notice that onCreate() take a Bundle as a parameter. This is a small amount of data that can be passed into the activity via the Intent that started it. The data provided in a Bundle is typically limited to basic data types and more complex ones need to be specially encoded. For the most part, we’re not going to be using Bundle in Yamba example as there’s no real need for us.
+
+Keep in mind that whenever you override a method, you first want to make a call to the original method provided by the parent. That’s why we have super.onCreate() call here.
+
+So, once you subclass the framework’s class, override the appropriate method, and call super’s method in it, you are still back at status quo - your code does the same thing the original class did. But now we have a placeholder where we can add our own code.
+
+The very first thing we typically do in activity’s onCreate() is to load the UI from the XML file and inflate it into the Java memory space. In other words, we write some Java code that opens up our XML layout file, parses it, and for each element in XML it creates a corresponding Java object in our memory space. For each attribute of a particular XML element, this code will set that attribute on our Java object. This process is called inflating from XML and the line of code that does all this is setContentView(R.layout.status);.
+Remember that R class is the automatically generated set of pointers that helps connect the world of Java to our world of XML and other resources in /res folder. Similarly, R.layout.status points to our /res/layout/status.xml file.
+
+This method setContentView() does a lot of work, in other words. It reads the XML file, parses it, creates all the appropriate Java objects to correspond to XML elements, sets object properties to correspond to XML attributes, sets up parent/child relationships between objects and overall inflates the entire view. At the end of this one line, our screen is ready for drawing.
+
+Your objects are not the only ones that define methods and respond to external stimuli. Android’s user interface objects do that too. Thus, you can tell your Button to execute certain code when its clicked. To do that, you need to define a method named onClick() and put the code there that you want executed. You also have to run the setOnClickListener method on the Button. You pass this as an argument to setOnClickListener because your object is where you define onClick().
+
+Example 6.3. StatusActivity.java, version 1
+
+{CODE}
+package com.marakana.yamba1;
+
+import winterwell.jtwitter.Twitter;
+import android.app.Activity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+
+public class StatusActivity1 extends Activity implements OnClickListener { // 
+  private static final String TAG = "StatusActivity";
+  EditText editText;
+  Button updateButton;
+  Twitter twitter;
+
+  /** Called when the activity is first created. */
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.status);
+
+    // Find views
+    editText = (EditText) findViewById(R.id.editText); // 
+    updateButton = (Button) findViewById(R.id.buttonUpdate);
+
+    updateButton.setOnClickListener(this); // 
+
+    twitter = new Twitter("student", "password"); // 
+    twitter.setAPIRootUrl("http://yamba.marakana.com/api");
+  }
+
+  // Called when button is clicked // 
+  public void onClick(View v) {
+    twitter.setStatus(editText.getText().toString()); // 
+    Log.d(TAG, "onClicked");
+  }
+}
+{/CODE}
+
+
+- To make StatusActivity capable of being a button listener, it needs to implement OnClickListener interface.
+- Find views inflated from the XML layout and assign them to Java variables.
+- Register the button to notify this i.e. StatusActivity when it gets clicked on.
+- Connect to the online service that supports Twitter API. At this point, we hard code the username and password.
+- The method that is called when button is clicked, as part of OnClickListener interface.
+- Make the web service API call to the cloud to update our status.
+
+=== Compiling Code and Building Your Projects: Saving Files ===
+Once you make changes to your files, Java or XML, make sure you save them before moving on. Eclipse builds your project automagically every time you choose File→Save or press Ctrl-S. So, it is important to save files and make sure you do not move to another file until the current file is fine. You will know your file is fine if there are no little red x symbols in your code and the project builds successfully. Since Java depends on XML and vice versa, moving to another file while the current one is broken just makes it even more difficult to find errors.
+
+Java errors are typically easy to find since the little red x in the code navigates you straight down to the line number where the error occurred. By putting your mouse right on that error, Eclipse will tell you what the error is and it will also offer you some possible fixes. This feature of Eclipse is very useful and is analogous to spell checker in a word processor.
+
+Figure 6.4. Tracing Java Errors
+
+=== Adding jtwitter.jar Library ===
+We are connecting to the the online service that implements Twitter-compatible API in our application. This connection is done via a series of web service calls. Since Android uses standard Java networking capabilities, there’s not much new in Android with respect to web services than we already have in Java. So, as such, there’s little value in reinventing the wheel.
+
+To make our life with web services and Twitter API easier, we’re going to use a third-party library, jtwitter.jar, provided by Winterwell Associates. This library provides a simple Java class to interact with the online service and abstracts all the intricacies of making network calls and passing the data back and forth. If no one has been kind enough to provide a high-level library like jtwitter for what we want to do, we could always use standard Java networking libraries to get the job done. It would just have been more work.
+
+{NOTE}
+	The jtwitter.jar library provided with this code has been slightly modified from the official Winterwell version to make it work in Yamba project.
+{/NOTE}
+
+Once you download this library, you can put it inside your project in Eclipse. You can simply drag the jtwitter.jar file and drop it in the root of your Eclipse project in Package Manager window. This makes the file part of the project, but our Java code is still unable to locate it.
+
+Java searches for all the classes in its classpath. To add it to the classpath, right-click on your project, select Properties and you will get a Properties for Yamba dialog window. Select Java Build Path and choose Libraries tab. In there, click on Add JARs… and locate your jtwitter.jar file. This will add this JAR file to your projects classpath.
+
+Figure 6.5. Properties for Yamba project in Eclipse where we add the jtwitter.jar file.
+
+=== Updating Manifest File for Internet Permission ===
+Before this application can work, we must ask user to grant us right to use the internet. The way Android manages security is by specifying permissions needed for certain dangerous operations. User then must explicitly grant those permissions to each application when he/she installs the application first time around. User must grant all or no permissions that the application asks for - there’s no middle ground. Also, user is not prompted about permissions upon upgrading an existing app.
+
+{NOTE}
+	Since we are running this application in debug mode and installing it via USB cable, Android doesn’t prompt us for permissions like it would the end user. However, we still must specify that the application requires certain permissions.
+{/NOTE}
+
+In this case, we want to ask user to grant this application the use of INTERNET permission. We need internet in order to connect to the online service. So, open up AndroidManifest.xml file by double-clicking on it. Note that Eclipse typically opens this file in a WYSIWYG editor with many tabs on the bottom. As always, you can make most of the changes to this file via this interface, but since Eclipse tools are limited and sometimes buggy, we prefer to go straight into the XML view of this file. So, choose the right-most tab in the bottom that says AnddroidManifest.xml and add <uses-permission android:name="android.permission.INTERNET" /> element within the <manifest> block.
+
+Example 6.4. AndroidManifest.xml
+
+{CODE}
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  android:versionCode="1" android:versionName="1.0" package="com.marakana.yamba1">
+  <application android:icon="@drawable/icon" android:label="@string/app_name">
+
+    <activity android:name=".StatusActivity" android:label="@string/titleStatus">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+
+  </application>
+  <uses-sdk android:minSdkVersion="4" />
+
+  <uses-permission android:name="android.permission.INTERNET" /> <!--  -->
+</manifest>
+{/CODE}
+
+- Defines the <uses-permission> element for INTERNET permission.
+
+== Logging in Android ==
+
+Android offers a system-wide logging capability. You can log from anywhere in your code by calling Log.d(TAG, message), where TAG and message are some strings. TAG should be a tag that is meaningful to you given your code. Typically, tag would be the name of your app, your class or some module. Good practice is to define TAG as a Java constant for your entire class, such as:
+
+{CODE}
+private static final String TAG = "StatusActivity";
+{/CODE}
+
+{TIP}
+Before your code will compile, you need to import Log class. Eclipse has a useful feature under Source→Organize Imports, or Ctrl+O for short. Usually, this feature will automatically organize your import statements. However, in case of Log, there is usually a conflict because there are multiple classes with name Log. This is where you have to use your common sense and figure it out. In this case, the ambiguity is between Android Log and Apache Log classes, so choice should be easy.
+{/TIP}
+
+{WARNING}
+Eclipse’s Organize Imports tool can sometimes lead to hard-to-find problems. For example, if your project doesn’t have R.java generated (which could easily happen because there’s an earlier problem with one of XML resources) then Organize Imports will import android.R class. This other R class is part of Android framework and has the same name as your local R class, making it hard to notice. So, if you have many compilation errors around your references to R resources, check that android.R is not imported.
+{/WARNING}
+
+Note that Log takes different severity levels. .d() is for debug level. You can also specify .e() for Error, .w() for warning, .i() for info. There’s also .wtf() severity level for errors that should never happen. It stands for What a Terrible Failure, in case your wondered. Eclipse color-codes log messages based on their severity level.
+
+=== LogCat ===
+The Android system log is outputted to LogCat. LogCat is a standardized system-wide logging mechanism. LogCat is readily available to all Java and C/C++ code. The developer can easily view the logs and filter their output based on severity, such as debug, info, warning, or error, or based on custom-defined tags. As with most things in Android development, there are two ways to view the LogCat: via Eclipse or via the command line.
+
+=== LogCat from Eclipse DDMS Perspective ===
+To view logcat in Eclipse, you need to open the LogCat View. It is typically available in DDMS perspective to which you can switch by clicking on DDMS in top-right corner of Eclipse  or by going to Window→Open Perspective→DDMS in the Eclipse menu.
+
+DDMS stands for Dalvik Debug Monitor Server. DDMS is the connection between your application running on the device and your development environment, such as Eclipse.
+
+Figure 6.6. LogCat in Eclipse
+
+You can define filters for LogCat as well. Click on the little green plus button and LogCat Filter dialog will come up. You can define a filter based on TAG, severity, or process id. This will create another window within LogCat showing you only the log entries that match your filter.
+
+Figure 6.7. LogCat Filter
+
+{Note}
+DDMS may not show up for in the top right corner right away if you haven’t used it before. If that’s the case, go to Window→Open Perspective and choose DDMS there. From there on, it should show in your window tab as well.
+{/NOTE}
+
+=== LogCat from command line ===
+Just like all the tools, anything you can do in Eclipse, you can do from command line as well. To view logcat, open up your terminal window and type:
+
+{CODE}
+[user:~]> adb logcat
+{/CODE}
+
+This will give you the tail of current logcat and will be updated as your device keeps generating log entries. You can also filter log entries on command line, but the syntax is not the most intuitive. To only see StatusActivity-tagged entries, you specify StatusActivity:*, meaning you want all severity levels for this tag. However, you also have to specify what you don’t want to see. To do that, you add *:S, meaning silence all other tags. The following command line illustrates that:
+
+{CODE}
+[user:~]> adb logcat StatusActivity:* *:S
+{/CODE}
+
+{TIP}
+I find it useful to keep a command line window open with adb logcat running in it at all times. This makes it easy for me to quickly see what’s going on with my app and is certainly much faster than switching to DDMS perspective in Eclipse.
+{/TIP}
+
+== Threading in Android ==
+A thread is a sequence of instructions executed in order. Although each CPU can only process one instruction at a time, most operating systems are capable of handling multiple threads on multiple CPUs, or interleaving them on a single CPU. Different threads need different priorities, so the operating system determines how much time to give each one if they have to share a CPU.
+
+Android operating system is based on Linux and as such is fully capable of running multiple threads at the same time. However, you as application developer need to be aware how applications use threads in order to design your application properly.
+
+=== Single Thread ===
+By default, an Android application runs on a single thread. Single threaded application run all commands in serially, meaning the next command is not completed until the previous one is done. Another way of saying the same thing is that each call is blocking.
+
+Figure 6.8. Single Threaded Execution
+
+
+
+This single thread is also known as the UI (as in User Interface) thread since that’s the thread that processes all the user interface commands as well. The UI thread is responsible for drawing all the elements on the screen as well as processing all the user events, such as touches of the screen, clicks on the button, and so on.
+
+The problem with running StatusActivity on the single thread is our network call to update the our status. As with all network calls, the time it takes to execute is outside of our control. Our call to twitter.updateStatus() is subject to all the network availability and latency issues. We don’t know if the user is on the super fast WiFi connection, or is using a much slower protocol to connect to the cloud. In other words, our application cannot respond until the network call is completed.
+
+{NOTE}
+Android system will offer to kill any application that is not responding within a certain time period, typically around five seconds for activities. This is known as Application Not Responding dialog, or ANR for short.
+{/NOTE}
+
+Figure 6.9. Application Not Responding
+
+=== Multithreaded Execution ===
+A much better solution is to have the potentially long operations run on a separate thread. When multiple tasks run on multiple threads at the same time, the operating system slices the available CPU so that no one task dominates the execution. The result is that appears that multiple tasks are running in parallel at the same time.
+
+Figure 6.10. Multithreaded Execution
+
+In our example, we could put the actual network call of updating our status in the cloud in a separate thread. That way our main UI thread will not block while we’re waiting for the network and the application will appear much more responsive. We tend to talk of the main thread as running in the foreground and the additional threads as running in the background. They’re really all equal in status, alternating execution on the device’s CPU, but from the point of view of the user, the main thread is in the foreground because it deals with the UI.
+
+There are multiple ways of accomplishing multithreading. Java has a class Thread that allows for many of these operations. We could certainly use any of the regular Java features to handle putting the network call in the background.
+
+However, one of the problems that we’d run into by using standard Java Thread class is that another thread is not allowed to update the elements in the main UI thread. This make sense since to update the UI thread we would need to synchronize with the current state of its objects and that would be a job on its own.
+
+In addition to standard Java threading support, Android provides a utility class AsyncTask specifically designed for this purpose.
+
+=== AsyncTask === 
+AsyncTask is an Android mechanism created to aid in handling long operations that need to report to UI thread. To take advantage of this class, we need to crate a new subclass of AsyncTask and implement doInBackground(), onProgressUpdate(), and onPostExecute() methods. In other words, we are to fill out the blanks for what to do in the background, what to do when there’s some progress and what to do when done with this task.
+
+We’ll extend our earlier example with an asynchronous posting to the cloud. The first part of the example is very similar to the code in Example 6.3, “StatusActivity.java, version 1” but it hands off the posting to the asynchronous thread. A new AsyncTask does the posting in the background.
+
+Example 6.5. StatusActivity.java, version 2
+
+{CODE}
+package com.marakana.yamba1;
+
+import winterwell.jtwitter.Twitter;
+import winterwell.jtwitter.TwitterException;
+import android.app.Activity;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+public class StatusActivity2 extends Activity implements OnClickListener {
+  private static final String TAG = "StatusActivity";
+  EditText editText;
+  Button updateButton;
+  Twitter twitter;
+
+  /** Called when the activity is first created. */
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.status);
+
+    // Find views
+    editText = (EditText) findViewById(R.id.editText);
+    updateButton = (Button) findViewById(R.id.buttonUpdate);
+    updateButton.setOnClickListener(this);
+
+    twitter = new Twitter("student", "password");
+    twitter.setAPIRootUrl("http://yamba.marakana.com/api");
+  }
+
+  // Asynchronously posts to twitter
+  class PostToTwitter extends AsyncTask<String, Integer, String> { // 
+    // Called to initiate the background activity
+    @Override
+    protected String doInBackground(String... statuses) { // 
+      try {
+        Twitter.Status status = twitter.updateStatus(statuses[0]);
+        return status.text;
+      } catch (TwitterException e) {
+        Log.e(TAG, e.toString());
+        e.printStackTrace();
+        return "Failed to post";
+      }
+    }
+
+    // Called when there's a status to be updated
+    @Override
+    protected void onProgressUpdate(Integer... values) { // 
+      super.onProgressUpdate(values);
+      // Not used in this case
+    }
+
+    // Called once the background activity has completed
+    @Override
+    protected void onPostExecute(String result) { // 
+      Toast.makeText(StatusActivity2.this, result, Toast.LENGTH_LONG).show();
+    }
+  }
+
+  // Called when button is clicked
+  public void onClick(View v) {
+    String status = editText.getText().toString();
+    new PostToTwitter().execute(status); // 
+    Log.d(TAG, "onClicked");
+  }
+
+}
+{/CODE}
+
+
+- The PostToTwitter class in this case is an inner class of StatusActivity. It also subclasses AsyncTask. Notice the use of Java generics to describe the data types that this AsyncTask will use in its methods. We’ll refer to these three types below. The first data type is used by doInBackground, the second by onProgressUpdate, and the third by onPostExecute
+
+- doInBackground() is the callback that specifies the actual work to be done on the separate thread, as if it’s executing in the background. The argument String... is the first of the three data types that we defined in the list of generics for this inner class above. The fact that it’s followed by three dots indicates that this is an array of Strings and you have to declare it that way even though you want to pass only a single status.
+
+- onProgressUpdate() is called whenever there’s progress in the task execution. The progress should be reported from the doInBackground() call. In this case, we do not have a meaningful progress to report. In another example, such as file download for instance, this could report the percentage of completion or amount of data downloaded thus far. The actual data type, in this case Integer refers to the second argument in the generics definition of this class.
+
+- onPostExecute() is called when our task is completed. This is our callback method to update the user interface and tell the user that task is done. In this particular case, we are using Toast feature of Android UI to show a quick message on the screen. Notice that Toast uses makeText() static method to make the actual toast message. Also, do not forget the call show() on the toast, otherwise your message will never be displayed and there won’t even be any errors - a hard bug to find. The argument that this method gets is the value that doInBackground() returns, in this case a String. This also corresponds to the third generics datatype in the class definition.
+
+-Once we have out AsyncTask setup, we can use it. To use it, we simply instantiate it and call execute() on it. The argument that we pass in is what goes into doInBackground() call. Note that in this case we are passing a single String that is being converted into a String array in the actual method later on. This is the use of Java’s variable number of arguments feature.
+
+At this point, when user clicks on Update Status button, our activity will create a separate thread using AsyncTask and place the actual network operation on that thread. When done, the AsyncTask will update the main UI thread by popping up a Toast message to tell the user that operation either succeeded or failed. This approach makes our application much more responsive and user should never get "Application Not Responding: Force Close or Wait" message again, as shown in Figure 6.9, “Application Not Responding”.
+
+Figure 6.11. StatusActivity, Part 1
+
+== Other UI Events ==
+
+So far, you have seen how to handle the click events by implementing OnClickListener and providing the onClick() method so that when the button is clicked this method is invoked. Imagine that we want to provide a little counter telling user how many characters are still available on the input from the maximum of 140. To do that, we need another type of listener.
+
+Android provids many different listeners for various events, such as touch, click, and so on. In this case, we’re going to use TextWatcher to watch for text changes on the edit text field. Steps for this listener are similar to the steps for OnClickListener and are similar to many other listeners.
+
+From users stand point, we’ll add another TextView to our layout to indicate the number of characters still available to type. This text will change color, from green to yellow and red as user approaches the limit.
+
+From Java point of view, we’ll implement TextWatcher and attach it to our text field where the user is typing the actual text. The TextWatcher methods will be invoked as user changes the text and based on the amount of text entered we’ll update the counter.
+
+Example 6.6. res/layout/status2.xml
+
+{CODE}
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Main Layout of Status Activity -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical" android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+
+  <!-- Title TextView-->
+  <TextView android:layout_width="fill_parent"
+    android:layout_height="wrap_content" android:gravity="center"
+    android:text="@string/titleStatus" android:textSize="30sp"
+    android:layout_margin="10dp" />
+
+  <!-- Text Counter TextView  -->
+  <TextView android:layout_width="wrap_content"
+    android:layout_height="wrap_content" android:layout_gravity="right"
+    android:id="@+id/textCount" android:text="000"
+    android:layout_marginRight="10dp" />
+
+  <!-- Status EditText  -->
+  <EditText android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:layout_weight="1"
+    android:hint="@string/hintText" android:id="@+id/editText"
+    android:gravity="top|center_horizontal"></EditText>
+
+  <!-- Update Button -->
+  <Button android:layout_width="fill_parent"
+    android:layout_height="wrap_content" android:text="@string/buttonUpdate"
+    android:textSize="20sp" android:id="@+id/buttonUpdate"></Button>
+
+</LinearLayout>
+{/CODE}
+
+
+New TextView that represents the count of how many characters are still available for user to type. We start at 140 and then go down as user enters text.
+The following version of Status Activity implements the TextWatcher interface, and the new methods in this example appear at the end of the class. Initially the text of the counter is in green color to indicate we can keep on typing. As we approach the maximum, the text turns yellow and eventually becomes red to indicate we are beyond the maximum message size.
+
+Example 6.7. StatusActivity.java, final version
+
+{CODE}
+package com.marakana.yamba1;
+
+import winterwell.jtwitter.Twitter;
+import winterwell.jtwitter.TwitterException;
+import android.app.Activity;
+import android.graphics.Color;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class StatusActivity extends Activity implements OnClickListener,
+    TextWatcher { // 
+  private static final String TAG = "StatusActivity";
+  EditText editText;
+  Button updateButton;
+  Twitter twitter;
+  TextView textCount; // 
+
+  /** Called when the activity is first created. */
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.status);
+
+    // Find views
+    editText = (EditText) findViewById(R.id.editText);
+    updateButton = (Button) findViewById(R.id.buttonUpdate);
+    updateButton.setOnClickListener(this);
+
+    textCount = (TextView) findViewById(R.id.textCount); // 
+    textCount.setText(Integer.toString(140)); // 
+    textCount.setTextColor(Color.GREEN); // 
+    editText.addTextChangedListener(this); // 
+
+    twitter = new Twitter("student", "password");
+    twitter.setAPIRootUrl("http://yamba.marakana.com/api");
+  }
+
+  // Called when button is clicked
+  public void onClick(View v) {
+    String status = editText.getText().toString();
+    new PostToTwitter().execute(status);
+    Log.d(TAG, "onClicked");
+  }
+
+  // Asynchronously posts to twitter
+  class PostToTwitter extends AsyncTask<String, Integer, String> {
+    // Called to initiate the background activity
+    @Override
+    protected String doInBackground(String... statuses) {
+      try {
+        Twitter.Status status = twitter.updateStatus(statuses[0]);
+        return status.text;
+      } catch (TwitterException e) {
+        Log.e(TAG, e.toString());
+        e.printStackTrace();
+        return "Failed to post";
+      }
+    }
+
+    // Called when there's a status to be updated
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+      super.onProgressUpdate(values);
+      // Not used in this case
+    }
+
+    // Called once the background activity has completed
+    @Override
+    protected void onPostExecute(String result) {
+      Toast.makeText(StatusActivity.this, result, Toast.LENGTH_LONG).show();
+    }
+  }
+
+  // TextWatcher methods
+  public void afterTextChanged(Editable statusText) { // 
+    int count = 140 - statusText.length(); // 
+    textCount.setText(Integer.toString(count));
+    textCount.setTextColor(Color.GREEN); // 
+    if (count < 10)
+      textCount.setTextColor(Color.YELLOW);
+    if (count < 0)
+      textCount.setTextColor(Color.RED);
+  }
+
+  public void beforeTextChanged(CharSequence s, int start, int count, int after) { // 
+  }
+
+  public void onTextChanged(CharSequence s, int start, int before, int count) { // 
+  }
+
+}
+{/CODE}
+
+
+- We declare that StatusActivity now implements TextWatcher. This means we need to actually provide the implementation for this interface, which we do later on in this class.
+
+- textCount is our text view that we defined in the layout above.
+
+- First, we need to find the textCount in the inflated layout.
+
+- We set the initial text to 140 since that’s the maximum length of a status message in our app. Note that TextView takes text as value, so we convert a number to text here.
+
+- The textCount field will dynamically change color based on how much text is left to type. In this case, we start with green. Notice that Color class is part of Android framework and not Java. In other words, we’re using android.graphics.Color and not java.awt.Color. Color.GREEN is one of the few colors defined as a constant in this class. More on colors in the next section.
+
+- Here we attach the TextWatcher to our editText field. In other words, editText will call TextWatcher instance, in this case this which refers to this object itself.
+
+- afterTextChanged() is one of the methods provided by the TextWatcher interface. This method is called whenever the text changes in the view that this TextWatcher is watching. In our case, whenever user changes the underlying text in editText, this method is invoked with the current text.
+
+- Here we do some math to figure out how many characters are left given the 140 character limit.
+
+- Next, based on the availability of the text, we update the color of the counter. So, if more than 10 characters are available, we are still in the green. Fewer than 10 means we are approaching the limit, thus yellow color. If we are pass the limit of 140 characters, the counter turns red.
+
+- This method is called just before the actual text replacement is completed. In this case, we don’t need this method, but as part of implementing the TextWatcher interface, we must provide its implementation, event though its empty.
+
+- Similarly, we are not using onTextChanged() in this case, but must provide its blank implementation.
+
+Figure 6.12. StatusActivity, Part 1
+
+== Adding Color & Graphics ==
+
+Our application works well, but it’s a bit dull looking. A little bit of color and graphics could go along way. Android offers a lot of support to make your application snazzy. We’re going to see some basics here.
+
+=== Adding Images ===
+For starters, we want to add a background to our screen. This background is going to be some kind of graphics file. In Android, most images go to a resource folder called drawable. You may notice that you already have three folders with such name:
+
+- /res/drawable-hdpi for devices with high density screens
+- /res/drawable-mdpi for devices with medium density screens
+- /res/drawable-ldpi for devices with low density screens
+
+We are going to create another drawable folder called just /res/drawable. To do that, right-click on the res folder and choose New→Folder. For name, enter drawable. You can now put your graphics that are independent of screen density in this folder. We’re going to assume you found some cool background graphics and that you saved it in there under the name background.png. While Android supports many different file formats, PNG is preferred since to the once-controversial GIF standard because PNG is lossless and doesn’t require any patent licenses.
+
+{TIP}
+While PNG officially stands for Portable Network Graphics, it is also commonly known as PNG’s Not Gif to reflect its departure from controversial GIF standard.
+{/TIP}
+
+Remember that all resources are being "watched" by Eclipse, and the moment we put something in there, Eclipse will use Android SDK tools to update the R class automatically. That means that at this point, we’ll have a reference R.drawable.background available to us if we wanted to use this resource from Java. But we’re not.
+
+We are going to update our status activity layout file res/layout/status.xml next. Our goal is to have this background be the background of the entire screen. To do that, we’ll update the top layout in our file and set it’s background to point to this new background PNG file. To do that, we have to open the status.xml layout. Now we have two ways of adding the background to the top layout.
+
+=== Using WYSIWYG Editor In Eclipse ===
+One way is to do it using the WYSIWYG tool that Eclipse provides. In this tool, we need to first select the main layout. We may have hard time selecting it since many other components are in front of it. The red border tells you what view or layout is selected at a time.
+
+Another way of selecting it is to open up your Outline view in Eclipse and selecting the top element there. This view may or may not be currently visible in your Eclipse, depending on how you arranged many windows that are available. One sure way to get Outline view is to go to Window→Show View→Outline and open it up that way. Once you get this view opened, you can select the top layout, in this case our LinearLayout. You will know it’s selected if a red border is around your entire activity.
+
+Next, you want to open up the Properties view in Eclipse. Again, this view may already be opened or may not be. If it’s not visible as a window in Eclipse, go to Window→Show View→Other and under General section pick Properties. This will open up a view in which you can change various properties for this particular view.
+
+The property we want to modify is background. You can now click on the little … button which will bring up Reference Chooser dialog. In this dialog, choose Drawable→background.
+
+Figure 6.13. Reference Chooser
+
+This will set the background of your top layout to @drawable/background. As you recall, this is the way that one XML resource refers to another resource. In this case, our status.xml layout is referring to the background.png drawable. Notice that we do not use extensions when referring to other file resources. Android figures out best file format automatically, in case there are files with same name but of different extension.
+
+Figure 6.14. Eclipse Graphical Layout Editor
+
+=== Updating Directly in XML Code ===
+Another approach is always to go straight into the XML code and make changes there. Remember that everything you can do with Eclipse tools, you can also do in plain text editor. To switch to XML code view, select the tab status.xml in the bottom of the window, next to Layout tab. This will open up your file with standard XML editor.
+
+In this case, to add background resource to our entire activity we simply add android:background="@drawable/background" to our to `<LinearLayout> element.
+
+From now on, we’re going to be making changes in XML code directly since it’s much simpler to explain. Also, the WYSIWYG Editor can only do so much and often you run into its limitations.
+
+=== Adding Color ===
+We now have the background for the entire screen, but what about the actual text box that user types the text to? The current design is stock. We could improve on it by adding some color and transparency to it.
+
+Android uses the standard RGB color set but it also optionally expands it with an Alpha channel. So, you can express color as RGB or ARGB where A is the amount of transparency, R is the amount of red, G is for green and B stands for blue color. The combination of these three colors and optional transparency gives you every conceivable color from white to black, and from opaque to fully transparent! That’s the whole point of ARGB. Of course, the granularity isn’t exactly what Monet would be happy with; each value has only 256 possibilities.
+
+Amounts of each can be represented either as values between 0 and 255, or using Hexadecimal system as values between 0 and FF. So, the actual values values can be AARRGGBB where each letter can be replaced with a value between 0 and F. There’s also a shorter version ARGB where for each value, it is repeated so that each two digits are the same. For example, #3A9F is the same as #33AA99FF and corresponds to #33 for alpha, #AA for red, #99 for green and #FF for blue. Notice that we use # symbol in front of hexadecimal values to distinguish them from decimal values.
+
+So, we could update the background of our EditText element to be #cfff, which is somewhat transparent white color.
+
+Next, we can also update the color of the title text by changing the textColor property for that TextView. A good color would be white, for example. One way to specify white would be #fff but another way would be to enter @android:color/white. The android: part of that statement refers to Android operating system set of resources, in this case a predefined color white.
+
+Example 6.8. res/layout/status.xml
+
+{CODE}
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Main Layout of Status Activity -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical" android:layout_width="fill_parent"
+  android:layout_height="fill_parent" android:background="@drawable/background"><!---->
+
+  <!-- Title TextView-->
+  <TextView android:layout_width="fill_parent"
+    android:layout_height="wrap_content" android:gravity="center"
+    android:text="@string/titleStatus" android:textSize="30sp"
+    android:layout_margin="10dp" android:textColor="@android:color/white" /><!---->
+
+  <!-- Text Counter TextView -->
+  <TextView android:layout_width="wrap_content"
+    android:layout_height="wrap_content" android:layout_gravity="right"
+    android:id="@+id/textCount" android:text="000"
+    android:layout_marginRight="10dp" />
+
+  <!-- Status EditText  -->
+  <EditText android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:layout_weight="1"
+    android:hint="@string/hintText" android:id="@+id/editText"
+    android:gravity="top|center_horizontal" android:background="#cfff" /><!---->
+
+  <!-- Update Button -->
+  <Button android:layout_width="fill_parent"
+    android:layout_height="wrap_content" android:text="@string/buttonUpdate"
+    android:textSize="20sp" android:id="@+id/buttonUpdate" />
+
+</LinearLayout>
+{/CODE}
+
+- We set the background of the main layout to point to background.png file in /res/drawable/ directory.
+- We set the color of the title text to point to color defined in system color resource white.
+- We set the background of the edit text area to be a transparent white by specifying #cfff for color using hexadecimal ARGB value.
+
+At this point you’ve seen multiple ways to specify color of couple of different properties of various views in your activity. There are many properties and many different widgets that Android offers. You should be able to extrapolate from this how to set other properties and make your application UI look exactly the way you want.
+
+== Alternative Resources ==
+
+Android supports multiple competing sets of resources. For example, you could have multiple versions of strings.xml file or status.xml layout, or background.png image. The reason why you would want multiple versions of same resource is to have best version be used in given circumstances. We have discussed this in the section called “Adding Images”.
+
+Imagine that your application is used in another country with different language. In that case, you could provide strings.xml version specifically for that language. Or imagine that user runs your application on a different device, with different screen that has more pixels. In that case, you’d want versions of your images specific for this screen pixel density. Similarly, user may simply rotate the device from portrait to landscape mode. While our application will redraw properly, there are further enhancements we could do to the layout of the UI given orientation of the screen.
+
+Android provides for all these cases in an elegant way. Basically, you simply need to create alternative folders for specific constraints. For example, our standard layout files go into /res/layout folder. Well, if we wanted to provide an alternative layout to be used specifically in landscape mode, we’d simply create a new file /res/layout-land/status.xml. And if you wanted to provide translated version of your strings.xml file to be used for users that are in French part of Canada, you’d put it in file called res/values-fr-rCA/strings.xml.
+
+As you see from these couple of examples, the way alternative resources work is by specifying the qualifiers in the name of the resource folder. In case of French Canadian strings, Android knows that the first qualifier -fr refers to language and second qualifier -rCA specifies that the region is Canada. In both cases, we use Two-letter ISO codes to specify the country. So in this case, if the user is in Quebec for instance, and her device is configured to favor French language, Android will look for string resources in /res/values-fr-rCA/strings.xml file. If it doesn’t find a specific resource, it will fall back to default /res/values/strings.xml file. Also, if the user in France, Android in this case will use default resource since our French Canadian qualifiers do not match French for France.
+
+Using qualifiers you can create alternative resources for languages and regions, screen sizes and orientations, device input modes (touch screen, stylus), keyboard or no keyboard, and so on. But how do you know what this naming convention for resource folder names is? The easiest tool is to use the New Android XML File dialog in Eclipse. To open New Android File dialog, choose File→New…→Android XML File from the Eclipse menu.
+
+Figure 6.15. Alternative Resources with New Android XML File Dialog
+
+== Optimizing User Interface ==
+
+User interface is one of the most expensive parts of a typical Android application. To create a simple screen, your application has to inflate the XML from resources. For each element, it has to create a new Java object and assign its properties to it. Then it needs to draw each widget on the screen. All this takes many computing cycles.
+
+Given all this, it is worth keeping in mind few optimization points. You may want to try to limit number of widgets you have on the screen. This is specially true when you are using nested layouts to achieve desired look. This can sometimes get out of control and if you are nesting unnecessary objects in a loop (say, displaying rows of data on the screen), then the number of widgets quickly explodes and your user interface becomes sluggish.
+
+Generally, you want your structure to be flat instead of deep. You can accomplish this by replacing nested layouts with relative layouts.
+
+=== Hierarchy Viewer ===
+There’s a very useful tool that ships with Android SDK called Hierarchy Viewer. Go ahead and start it - it is in your SDK/tools directory.
+
+Hierarchy Viewer allows you to attach to any Android device, emulator or physical phone. You can then introspect the structure of the current view. It shows you all the widgets currently loaded in memory, their relationship to each other, and all their properties. You can introspect not just your screens but screens of any application on your device. This is also a good way to see how some other applications are structured.
+
+Figure 6.16. Hierarchy Viewer
+
+== Summary ==
+By the end of this section, you should have your application run and look like Figure 6.17, “StatusActivity”. It should also successfully post your tweets to your twitter account. You can verify it is working by logging into the online service of your choice that supports Twitter API, such as yamba.marakana.com using the same username/password as hard coded in the application.
+
