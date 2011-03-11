@@ -117,6 +117,7 @@ This screen will have four components:
 - Button to click to update the status. This will be a Button widget.
 - A layout to contain all these widgets and lay them out one after another in vertical fashion. For this screen, we’ll use LinearLayout, one of the more common ones.
 
+
 The source code for our StatusActivity layout looks like this:
 
 Example 6.1. res/layout/status.xml
@@ -275,6 +276,7 @@ public class StatusActivity1 extends Activity implements OnClickListener { //
 - The method that is called when button is clicked, as part of OnClickListener interface.
 - Make the web service API call to the cloud to update our status.
 
+
 === Compiling Code and Building Your Projects: Saving Files ===
 Once you make changes to your files, Java or XML, make sure you save them before moving on. Eclipse builds your project automagically every time you choose File→Save or press Ctrl-S. So, it is important to save files and make sure you do not move to another file until the current file is fine. You will know your file is fine if there are no little red x symbols in your code and the project builds successfully. Since Java depends on XML and vice versa, moving to another file while the current one is broken just makes it even more difficult to find errors.
 
@@ -329,6 +331,7 @@ Example 6.4. AndroidManifest.xml
 {/CODE}
 
 - Defines the <uses-permission> element for INTERNET permission.
+
 
 == Logging in Android ==
 
@@ -692,6 +695,7 @@ public class StatusActivity extends Activity implements OnClickListener,
 
 - Similarly, we are not using onTextChanged() in this case, but must provide its blank implementation.
 
+
 Figure 6.12. StatusActivity, Part 1
 
 == Adding Color & Graphics ==
@@ -704,6 +708,7 @@ For starters, we want to add a background to our screen. This background is goin
 - /res/drawable-hdpi for devices with high density screens
 - /res/drawable-mdpi for devices with medium density screens
 - /res/drawable-ldpi for devices with low density screens
+
 
 We are going to create another drawable folder called just /res/drawable. To do that, right-click on the res folder and choose New→Folder. For name, enter drawable. You can now put your graphics that are independent of screen density in this folder. We’re going to assume you found some cool background graphics and that you saved it in there under the name background.png. While Android supports many different file formats, PNG is preferred since to the once-controversial GIF standard because PNG is lossless and doesn’t require any patent licenses.
 
@@ -787,6 +792,7 @@ Example 6.8. res/layout/status.xml
 - We set the background of the main layout to point to background.png file in /res/drawable/ directory.
 - We set the color of the title text to point to color defined in system color resource white.
 - We set the background of the edit text area to be a transparent white by specifying #cfff for color using hexadecimal ARGB value.
+
 
 At this point you’ve seen multiple ways to specify color of couple of different properties of various views in your activity. There are many properties and many different widgets that Android offers. You should be able to extrapolate from this how to set other properties and make your application UI look exactly the way you want.
 

@@ -1,22 +1,38 @@
-%
-%
-%
+% 官方文档：
+%       Bound-Service: http://developer.android.com/guide/topics/fundamentals/bound-services.html
+%       Toast: http://developer.android.com/reference/android/widget/Toast.html
+%       
 
-= Services =
+%= Services =
+=服务=
 
-Services are among the main building blocks in Android. Unlike an activity, a service doesn’t have any user interface. It is simply a piece of code that runs in the background of your application.
+% Services are among the main building blocks in Android. Unlike an activity, a service doesn’t have any user interface. It is simply a piece of code that runs in the background of your application.
 
-Services are used for processes that should be running independently of activities, which may come and go. Our Yamba application, for example needs to create a service to periodically connect to the cloud and check if the user has new statuses from her friends. This service will be always on, always running regardless of whether the user ever started the activity.
+Service与Activity一样，同为Android的基本构件。不同在于Service只是应用在后台执行的一段代码，而不需要提供用户界面。
 
-Just like an activity, service has a well-defined life cycle. You as the developer get to define what happens on transitions between states. Whereas an activity’s state is managed by the runtime’s ActivityManager, service state is more controlled by intents. Essentially, whenever an Activity needs your service, it will invoke it through an intent that starts the service. An already running service can receive the start message repeatedly and at unanticipated times. You can also stop a service, which is also called destroying it.
+% Services are used for processes that should be running independently of activities, which may come and go. Our Yamba application, for example needs to create a service to periodically connect to the cloud and check if the user has new statuses from her friends. This service will be always on, always running regardless of whether the user ever started the activity.
 
-A service can be bound or unbound. Bound services can provide more specific APIs to other applications via an interface called AIDL (Android Interface Definition Language). For now, we’ll focus on unbound services, where the lifecycle of a service is not tied to the lifecycle of the activities that started them. The only states for a bound services are started and stopped (destroyed).
+Service独立于Activity执行，无需理会Activity的状态如何。比如我们的Yamba需要一个Service定时访问服务端检查朋友的新消息，它会一直处于运行状态，而不管用户是否开着Activity。
 
-In this chapter, you will create a service. The purpose of this service is to run in the background and update your app with latest timeline from the user’s Twitter account. Initially, the service will just print your friends' timeline to the log file. The service will create a separate thread, so you will learn about concurrency in this chapter as well. You will also learn about Toasts and get to understand the context in which services and activities run.
+%TALK: 第一句中"process"的译法存疑，Service和Activity默认都是在同一个进程之下，在此似乎不是特指“进程”。
 
-By the end of this chapter, you will have a working app that can both post to Twitter and periodically check what friends are up to. 
+% Just like an activity, service has a well-defined life cycle. You as the developer get to define what happens on transitions between states. Whereas an activity’s state is managed by the runtime’s ActivityManager, service state is more controlled by intents. Essentially, whenever an Activity needs your service, it will invoke it through an intent that starts the service. An already running service can receive the start message repeatedly and at unanticipated times. You can also stop a service, which is also called destroying it.
 
-== Yamba Application Object ==
+同Activity一样，Service也有一个精心设计的生存周期，开发者可以定义其状态转换时的行为。Activity的状态由ActivityManager控制，而Service的状态受Intent影响。假如有个Activity需要用到你的Service了，它就会发送一个Intent通知打开这个Service。该Service若正在执行中，则不受影响。通过Intent也可以人为停止(即销毁)一个Service。
+
+% A service can be bound or unbound. Bound services can provide more specific APIs to other applications via an interface called AIDL (Android Interface Definition Language). For now, we’ll focus on unbound services, where the lifecycle of a service is not tied to the lifecycle of the activities that started them. The only states for a bound services are started and stopped (destroyed).
+
+Service分为Bound Service和Unbound Service两种。Bound Service有着更专用的API，允许通过AIDL(Android Interface Definition Language)与不同的应用进行交互。目前我们先研究Unbound Service，它只有两种状态：执行(Started)或停止(Stopped，或Destoyed)。而且它的生存周期与启动它的Activity无关。
+
+% In this chapter, you will create a service. The purpose of this service is to run in the background and update your app with latest timeline from the user’s Twitter account. Initially, the service will just print your friends' timeline to the log file. The service will create a separate thread, so you will learn about concurrency in this chapter as well. You will also learn about Toasts and get to understand the context in which services and 
+
+在本章你将动手创建一个Service。它在后台执行，更新用户在Twitter上最新的Timeline，并暂时输出至log文件。我们让这个Service在一个独立的线程中执行，因此也会顺便讲些并行的相关知识。除此，还有Toast的用法，以及对Service和Activity所共有的上下文也有所讲解。
+
+% By the end of this chapter, you will have a working app that can both post to Twitter and periodically check what friends are up to. 
+
+在本章结束，你将拥有一个可以发消息、定时更新Timeline的可用程序。
+
+==Yamba Application Object==
 
 We now have support for preferences in our StatusActivity. We also have a utility method getTwitter() to help us get the actual Twitter object that we use to connect to the online service.
 No comments yet
@@ -28,6 +44,7 @@ We are going to create our own instance of the application object and will call 
 
 - Create the Java class representing YambaApplication.
 - Register the new Application with the AndroidManifest.xml file.
+
 
 === YambaApplication Class ===
 
@@ -101,6 +118,7 @@ public class YambaApplication1 extends Application implements
 + We also moved ``getTwitter()`` from StatusActivity to YambaApplication since it’s going to be used by other parts of our application as well and we want to maximize the code reuse. Notice the use of synchronized keyword here. Synchronized method in Java means that only one thread can be inside of such method at one time. This is now important since this method could be used by different threads that our application may have.
 + ``onSharedPreferenceChanged()`` is now also part of YambaApplication stead of StatusActivity.
 
+
 Now that we have YambaApplication and that we have moved some responsibilities from StatusActivity to it, we can simplify StatusActivity even further:
 
 **Example 8.2. StatusActivity using YambaApplication**
@@ -114,10 +132,12 @@ Twitter.Status status = ((YambaApplication) getApplication())
 
 + We now use getTwitter() method from the YambaApplication instead of keeping it locally. This way the same method can be reused by other parts of the application that need access to the cloud service.
 
+
 === Updating Manifest File ===
 
 The final step is to tell our application to use YambaApplication class instead of the default Application class. To do that, we need to update the Android Manifest file and add an attribute to <application> element:
 
+{CODE}
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   android:versionCode="1" android:versionName="1.0" package="com.marakana.yamba2">
@@ -127,8 +147,10 @@ The final step is to tell our application to use YambaApplication class instead 
   </application>
   ...
 </manifest>
+{/CODE}
 
 + The attribute android:name=".YambaApplication" in <application> element tells the Android system to instantiate our YambaApplication object as the application.
+
 
 So, at this point we have successfully moved common functionality from StatusActivity to YambaApplication. This process is also known as [code refactoring http://en.wikipedia.org/wiki/Code_refactoring] and is a good practice as we keep on adding new features to our application.
 
@@ -158,6 +180,7 @@ class PostToTwitter extends AsyncTask<String, Integer, String> {
 + We the the reference to the Application object via ``getApplication()`` call in the current context. Since we have a custom YambaApplication object, we need to cast the generic Application into Yamba application.
 + Once we have the reference to our application object, we can call its methods, such as ``getTwitter()`` method.
 
+
 You have seen how we have refactored our Status activity to move some of the common functionality in a shared Application object. Now that we have done that, we can create our Updater service that will use some of this common functionality.
 
 == UpdaterService ==
@@ -169,6 +192,7 @@ Steps to creating a service are:
 - Create the Java class representing your service.
 - Register the service in Android manifest file.
 - Have the service started.
+
 
 === Creating UpdaterService Java Class ===
 
@@ -186,6 +210,7 @@ Next, we want to override some of the main lifecycle methods:
 + ``onCreate()`` Called when the service is created first time.
 + ``onStartCommand()`` Called when the service is started.
 + ``onDestroy()`` Called when the service is terminated.
+
 
 To do that, you can use Eclipse tool Source→Override/Implement Methods and select those three methods.
 
