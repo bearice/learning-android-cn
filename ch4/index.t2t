@@ -2,11 +2,11 @@
 %
 %
 
-%= Main Building Blocks =
-= 主要构件 =
+%= Main Building Blocks = 
+= 主要构件 =[ch4]
 
 {ORGI}In this chapter, you will learn about the big blocks in Android. We’ll give you a high-level overview of what Activities are, how Intents work, why Services are cool, how to use Broadcast Receivers and Content Providers to make your app scale, and much more.
-{TRAN}在本章里，你将会学到Android中的一些重要构件。我们会带你从高处俯瞰，什么是Activity，Intent如何工作，Service为什么很酷，怎么通过Broadcast Receiver和Content Provide让程序易于扩展等。
+{TRAN}在本章里，你将会学到Android中的一些重要构件(Building Blocks)。我们会带你从高处俯瞰，什么是Activity，Intent如何工作，Service为什么很酷，怎么让Broadcast Receiver和Content Provider使你的程序变得易于扩展，和更多的知识。
 
 {ORGI}By the end of this chapter, you will understand the main Android components for building applications. You should conceptually know when you’d use what component. You will also see how these components relate to a real world application.
 {TRAN}读完本章，你将了解到用于构建应用程序的Android基本组件。你会大体明白何时需要采用哪种组件。同时你也将看到这些组件和实际情形间的关联。

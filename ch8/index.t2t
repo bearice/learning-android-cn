@@ -1,0 +1,200 @@
+%
+%
+%
+
+= Services =
+
+Services are among the main building blocks in Android. Unlike an activity, a service doesn’t have any user interface. It is simply a piece of code that runs in the background of your application.
+
+Services are used for processes that should be running independently of activities, which may come and go. Our Yamba application, for example needs to create a service to periodically connect to the cloud and check if the user has new statuses from her friends. This service will be always on, always running regardless of whether the user ever started the activity.
+
+Just like an activity, service has a well-defined life cycle. You as the developer get to define what happens on transitions between states. Whereas an activity’s state is managed by the runtime’s ActivityManager, service state is more controlled by intents. Essentially, whenever an Activity needs your service, it will invoke it through an intent that starts the service. An already running service can receive the start message repeatedly and at unanticipated times. You can also stop a service, which is also called destroying it.
+
+A service can be bound or unbound. Bound services can provide more specific APIs to other applications via an interface called AIDL (Android Interface Definition Language). For now, we’ll focus on unbound services, where the lifecycle of a service is not tied to the lifecycle of the activities that started them. The only states for a bound services are started and stopped (destroyed).
+
+In this chapter, you will create a service. The purpose of this service is to run in the background and update your app with latest timeline from the user’s Twitter account. Initially, the service will just print your friends' timeline to the log file. The service will create a separate thread, so you will learn about concurrency in this chapter as well. You will also learn about Toasts and get to understand the context in which services and activities run.
+
+By the end of this chapter, you will have a working app that can both post to Twitter and periodically check what friends are up to. 
+
+== Yamba Application Object ==
+
+We now have support for preferences in our StatusActivity. We also have a utility method getTwitter() to help us get the actual Twitter object that we use to connect to the online service.
+No comments yet
+It is likely that that we’ll need some of these features in other parts of our application. Instead of copying it from file to file, it would be useful if we could put this code in a separate place that is accessible to most parts of our app. Android provides just a place for that in form of Application object.
+
+Application object represents the common state of your entire application. As long as any part of your application is running, the application object will be created. Most applications use the default android.app.Application class that the framework provides. However, you can implement your own instance of this object and add the common app features to it.
+
+We are going to create our own instance of the application object and will call it YambaApplication. The steps for creating the YambaApplication class are:
+
+- Create the Java class representing YambaApplication.
+- Register the new Application with the AndroidManifest.xml file.
+
+=== YambaApplication Class ===
+
+First, we are going to create a new Java class in the same package as the rest of our classes. We’ll call this class YambaApplication and it will extend Application base class from the framework.
+
+Next, we’re going to move common tasks into this base object. The common tasks that we anticipate more parts of our application are going to need are getting the connection to the online service as well as reading the preference data.
+
+Notice that Application object has the usual onCreate() method but it also provides the onTerimante() callback as place to implement any cleanup that we may want to do. At this point we don’t have anything to cleanup, but this is a good opportunity to put some logging information so we can see when the application actually shuts down. We later may expand on this.
+
+**Example 8.1. YambaApplication.java**
+
+{CODE}
+package com.marakana.yamba3;
+
+import winterwell.jtwitter.Twitter;
+import android.app.Application;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.preference.PreferenceManager;
+import android.text.TextUtils;
+import android.util.Log;
+
+public class YambaApplication1 extends Application implements
+    OnSharedPreferenceChangeListener { //{#1}
+  private static final String TAG = YambaApplication1.class.getSimpleName();
+  public Twitter twitter; //{2}
+  private SharedPreferences prefs;
+
+  @Override
+  public void onCreate() { //{#3}
+    super.onCreate();
+    this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
+    this.prefs.registerOnSharedPreferenceChangeListener(this);
+    Log.i(TAG, "onCreated");
+  }
+
+  @Override
+  public void onTerminate() { //{#4}
+    super.onTerminate();
+    Log.i(TAG, "onTerminated");
+  }
+
+  public synchronized Twitter getTwitter() { //{#5}
+    if (this.twitter == null) {
+      String username = this.prefs.getString("username", "");
+      String password = this.prefs.getString("password", "");
+      String apiRoot = prefs.getString("apiRoot",
+          "http://yamba.marakana.com/api");
+      if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)
+          && !TextUtils.isEmpty(apiRoot)) {
+        this.twitter = new Twitter(username, password);
+        this.twitter.setAPIRootUrl(apiRoot);
+      }
+    }
+    return this.twitter;
+  }
+
+  public synchronized void onSharedPreferenceChanged(
+      SharedPreferences sharedPreferences, String key) { //{#6}
+    this.twitter = null;
+  }
+
+}
+{/CODE}
+
+
++ For YambaApplication to be a valid application object, it must subclass framework-provided Application class. Notice that we also moved responsibility for being OnSharedPreferenceChangeListener from StatusActivity to YambaApplication.
++ Twitter and SharedPreferences are now part of this common object and not part of StatusActivity any more.
++ ``onCreate()`` is called when the application is first created. Application is created whenever any of its parts is first needed, such as an activity or a service.
++ ``onTerminate()`` is a placeholder for us to do some cleanup when the application is about to be shut down. At this point we just use it for logging purposes.
++ We also moved ``getTwitter()`` from StatusActivity to YambaApplication since it’s going to be used by other parts of our application as well and we want to maximize the code reuse. Notice the use of synchronized keyword here. Synchronized method in Java means that only one thread can be inside of such method at one time. This is now important since this method could be used by different threads that our application may have.
++ ``onSharedPreferenceChanged()`` is now also part of YambaApplication stead of StatusActivity.
+
+Now that we have YambaApplication and that we have moved some responsibilities from StatusActivity to it, we can simplify StatusActivity even further:
+
+**Example 8.2. StatusActivity using YambaApplication**
+
+{CODE}
+...
+Twitter.Status status = ((YambaApplication) getApplication())
+    .getTwitter().updateStatus(statuses[0]);  //{#1}
+...
+{/CODE}
+
++ We now use getTwitter() method from the YambaApplication instead of keeping it locally. This way the same method can be reused by other parts of the application that need access to the cloud service.
+
+=== Updating Manifest File ===
+
+The final step is to tell our application to use YambaApplication class instead of the default Application class. To do that, we need to update the Android Manifest file and add an attribute to <application> element:
+
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  android:versionCode="1" android:versionName="1.0" package="com.marakana.yamba2">
+  <application android:icon="@drawable/icon" android:label="@string/app_name"
+    android:name=".YambaApplication"> <!--{#1}-->
+    ...
+  </application>
+  ...
+</manifest>
+
++ The attribute android:name=".YambaApplication" in <application> element tells the Android system to instantiate our YambaApplication object as the application.
+
+So, at this point we have successfully moved common functionality from StatusActivity to YambaApplication. This process is also known as [code refactoring http://en.wikipedia.org/wiki/Code_refactoring] and is a good practice as we keep on adding new features to our application.
+
+=== Simplifying Status Activity ===
+
+Now that the functionality for getting the Twitter object has been moved to Yamba Application, we can simplify Status activity to refer to that functionality there. Here’s what our new PostToTwitter Async task would look like:
+
+{CODE}
+class PostToTwitter extends AsyncTask<String, Integer, String> {
+  // Called to initiate the background activity
+  @Override
+  protected String doInBackground(String... statuses) {
+    try {
+    YambaApplication yamba = ((YambaApplication) getApplication()); //{#1}
+    Twitter.Status status = yamba.getTwitter().updateStatus(statuses[0]); //{#2}
+      return status.text;
+    } catch (TwitterException e) {
+      Log.e(TAG, "Failed to connect to twitter service", e);
+      return "Failed to post";
+    }
+  }
+  ...
+}
+{/CODE}
+
+
++ We the the reference to the Application object via ``getApplication()`` call in the current context. Since we have a custom YambaApplication object, we need to cast the generic Application into Yamba application.
++ Once we have the reference to our application object, we can call its methods, such as ``getTwitter()`` method.
+
+You have seen how we have refactored our Status activity to move some of the common functionality in a shared Application object. Now that we have done that, we can create our Updater service that will use some of this common functionality.
+
+== UpdaterService ==
+
+As mentioned in the introduction to this chapter, we need a service to run as an always-on, background process pulling latest Twitter statuses into a local database. The purpose of this pull mechanism is to cache updates locally in order for our app to have data even when it’s offline. We’ll call this service UpdaterService.
+
+Steps to creating a service are:
+
+- Create the Java class representing your service.
+- Register the service in Android manifest file.
+- Have the service started.
+
+=== Creating UpdaterService Java Class ===
+
+The basic procedure for creating a service, as with Activities and other main building blocks, is to subclass a Service class provided by the Android framework.
+
+To create the new service, we need to create a new Java file. Go ahead and select your Java package in the src folder, right-click and choose New→Class, and type in UpdaterService as the class name. This will create a new UpdaterService.java file as part of your package.
+
+You may recall from the section called "Services" that a typical service goes through this lifecycle:
+
+** Figure 8.1. Service Lifecycle **
+        [images/ServiceLifeCycle.png]
+
+Next, we want to override some of the main lifecycle methods:
+
++ ``onCreate()`` Called when the service is created first time.
++ ``onStartCommand()`` Called when the service is started.
++ ``onDestroy()`` Called when the service is terminated.
+
+To do that, you can use Eclipse tool Source→Override/Implement Methods and select those three methods.
+
+At this point, in spirit of producing a minimally working app at each stage of learning, we’ll write just a little code that logs a note in each of the overridden methods. So the shell of our service looks like this:
+
+**Example 8.3. UpdaterService.java, version 1**
+
+
+....
+
+
+

@@ -3,14 +3,14 @@
 %
 % vim: fdm=manual
 {ORGI}= Yamba Project Overview =
-{TRAN}= Yamba 项目简介 =
+{TRAN}= Yamba 项目简介 =[ch5]
 
 {ORGI}The best way to learn is by an example. And that example has to meet certain criteria. After working with thousands of new Android developers and explaining some of unique concepts that this platform has to offer, using various example applications, I concluded that the best example has to be:
-{TRAN}有一个合适的实例可供参考，这是学习的最佳方式。在平日的教学中，我曾尝试使用不同的实例，对数千名新手讲解Android平台的一些特殊功能。经过总结，一个好的实例该有如下特征：
+{TRAN}学习的最好方法就是参照一个合适的实例，并动手实践。在平日的教学中，我曾尝试使用过许多的实例，对数千名初学者讲解Android平台的一些特性。经过总结，一个好的实例该有如下特征：
 
 {ORGI}**Comprehensive**
 {TRAN}**全面**
-{ORGI}	A good example app should demonstrate most of the aspects of the application framework that are unique to Android. It should also cover them in a way that there’s a good reason to use a specific feature in order to get the job done. This is important in order to create the right motivation for those new to Android.
+{ORGI}A good example app should demonstrate most of the aspects of the application framework that are unique to Android. It should also cover them in a way that there’s a good reason to use a specific feature in order to get the job done. This is important in order to create the right motivation for those new to Android.
 
 {TRAN}一个好的实例应该足以涵盖Android应用框架中的诸多特性，同时也把相应的特性用在点子上，而不仅仅是为了展示特性而使用特性。这对新接触Android的同学来说，可以端正学习的方向，是很重要的。
 
@@ -27,7 +27,7 @@
 {TRAN}我为这本书选择了一个类Twitter的应用程序作为实例，它的名字是Yamba，即 //Yet Another Micro Blogging App//。 使用Yamba，你可以连接到twitter之类的微博服务以跟踪朋友的消息，也可以更新自己的消息。
 
 {ORGI}Yamba covers most of the main Android building blocks in a natural way. As such, it’s a great sample application to illustrate how various components work individually as well as fit together. Services such as Twitter are more or less familiar to most people, so the features of the application do not require much explaining.
-{TRAN}Yamba用上了Android的所有构件(Building Blocks)，完整又不失简单。我们可以留意观察下它是如何将各个部分组合在一起的。关于Twitter这样的微博服务大家肯定不会陌生，因此有关程序的功能也就不多做解释了。
+{TRAN}Yamba作为一个实例，完整又不失简单。它用上了Android的所有构件(Building Blocks)，我们可以留意下它是如何将各个独立工作的部分合而为一的。至于Twitter这样的微博服务大家肯定不会陌生，因此有关程序的功能也就不多做解释了。
 
 {ORGI}Here’s what a finished product could look like:
 {TRAN}成品图大约如下：
@@ -55,30 +55,28 @@
 {TRAN}我们需要引入一个设计原则，作为指导项目行进的指南针，并贯彻项目的始终。在遇到问题时，它也可以给予我们一定的帮助。
 
 {ORGI}**Small Increments**
-{TRAN}**小增量开发**
+{TRAN}**渐进式开发**
 
 {ORGI}	Yamba application will start out small and will constantly grow in functionality and complexity. Initially, the app will not do much, but it will organically grow one step at a time. Along the way, we’ll explain each step so that you’re expanding your skills along the way.
-{TRAN}	Yamba 在开始的时候只是一个很简单的小程序，然后逐渐增加功能与复杂度。最开始，程序能做的事很少，但是每一步都能让它有所增长。我们会解释他的每一次成长并让你有所收获。
+{TRAN}先从一个小程序做起，随后慢慢给它添加功能。一开始程序的结构会很简单，但是我们会在更新中不断为它添血加肉，让它慢慢成长。在行进途中我们会及时讲解这些变化，读者可以留意。
 
 {ORGI}**Always Whole and Complete**
-{TRAN}**随时发布**
-%TALK: 此处的意译是否合适？
+{TRAN}**保持完整，保持可用**
 
 {ORGI}	The application must always be working. In other words, we’ll add new features in small, self-contained chunks and pull them back into the main project so that you can see how it fits together as a whole. The application must always work at each stopping point.
-{TRAN}	我们的程序在任何时间都是能正常工作的。换句话说，每次的功能添加都是微小的、自足的，并且能够与现有的程序形成一个整体。程序必须在每个暂停点都能正常的工作。
+{TRAN}程序必须保证一直都是可用的。或者说，在每次修改中所添加的功能应尽量的小并且完备，一旦将其加入原先的代码即构成一个整体。并且保证在每一轮更新之后，程序都可以正常运行。
 
 {ORGI}**Refactoring Code**
 {TRAN}**代码重构**
 
 {ORGI}	Once in a while, we’ll have to take a step back and refactor the application to remove duplicate code and optimize the design. The goal is to reuse the code and not reinvent the wheel. But we are going to cross those bridges as we get to them, providing the motivation for refactoring along the way. This process will teach you about some general software development best practices as well.
-{TRAN}	每过一段时间，我们就应该停止开发然后回头重构我们的程序以移除重复代码并且优化设计。 这样做的目标是尽量的重用代码，减少重复制造轮子的机会。 但是当我们遇到问题时不会停下，从而为重构留下动机。同时在此过程中我们会想你展示一些软件开发过程中的最佳实践。
-%TALK:上段中 “But we are going to cross those bridges as we get to them, providing the motivation for refactoring along the way” 的译法仍然存有疑问。
+{TRAN}每过一段时间就回头重构下我们的程序，及时消除重复代码，优化设计，增加代码重用，避免重复造轮子。 不过没有必要纠结于一次性解决所有的问题，毕竟还有未来的重构。在这一流程中，读者也可以体会下软件开发过程中的最佳实践。
 
 {ORGI}== Project Design ==
 {TRAN}== 项目设计 ==
 
 {ORGI}If you remember from __Chapter 4, Main Building Blocks__, an Android application is a loose collection of Activities, Services, Content Providers, and Broadcast Receivers. These are the components from which we put together an application. __Figure 5.4, “Yamba Design Diagram”__ shows the design of the entire Yamba application, which incorporates most of the main Android building blocks.
-{TRAN}如果你记得 第4章 的内容的话，应该知道一个 Android 应用就是很多 Activity、 Service、 Content Provider 和 Broadcast Receiver 的松散组合。 Android应用正是由这些部分组成的。 图5.4 给出了 Yamba 的设计构架，他们将与大部分的Android 基类交互，以完成工作。
+{TRAN}在[第4章 #ch4]中有提及，一个Android应用即Activity、Service、Content Provider、Broadcast Receiver的松散组合。它们作为Android的基本构件(Building Block)，在开发中扮演着不可或缺的角色。 //图5.4// 给出了Yamba的设计架构，可以留意其中基本构件与应用之间的关系。
 
 	**Figure 5.4. Yamba Design Diagram**
 		[images/05-Yamba.png]
@@ -88,20 +86,20 @@
 {TRAN}== 第一部分: Android 用户界面 ==
 
 {ORGI}This part will focus on developing the first part of Yamba application: the Status Update screen. Our tasks are:
-{TRAN}在这部分中，我们将着重介绍如何开发 Yamba 的第一个组成：状态更新界面。 我们的主要任务有：
+{TRAN}在这部分中，我们将着重介绍 Yamba 的第一个部分：消息列表界面。 我们的主要任务有：
 
 {ORGI}=== Building an activity ===
 {TRAN}=== 构建一个 Activity ===
 % 这里的Activity是Android中的一个类，因此不翻译为活动，下同。
 
 {ORGI}We are going to start by introducing the Android user interface (UI) model. In its UI, Android is quite different from some other paradigms that you may be familiar with. The unique feature is its dual approach to UI via both Java and XML.
-{TRAN}在最开始我们来熟悉一下 Android 的用户界面（ UI ）模型。 Android 的 UI 系统可能和大部分你接触过的系统都不太一样。其最大的特点可能是它的 UI既可以在 Java 中描述，也可以在 XML 中描述。
+{TRAN}我们先来熟悉一下 Android 的用户界面(UI)模型。Android的UI模型可能与你接触过的其它UI模型有所不同，其最大特点即它的 UI既可以通过Java描述，也可以通过XML描述。
 
 {ORGI}In this chapter, you will learn how to develop the user interface for __Figure 5.2, “Screen where the user can enter a status message”__, where the user updates the status. Through this process, you will use XML and Java to put together a working UI. You will learn about Layouts and Views, units in Android, how to work with images, and how to make the UI look pretty.
-{TRAN}在这一章中，我们将学习如何开发一个像 图5.2 那样的能让用户更新其状态的界面。在此过程中我们将使用 Java 和 XML 来共同完成 UI 的设计。 你将学习有关布局（Layout） 和视图（View）的有关知识，Android的单位系统，如何使用图片，并且还有一些能让你的界面变得更漂亮的小窍门。
+{TRAN}在这一章中，我们将学习开发一个如//图5.2//那样允许用户发布消息的界面。在此过程中，我们选择配合使用Java和XML来完成UI 的设计。在此读者将了解到Android中布局（Layout） 和视图（View）的概念，图片的使用方法，以及美化UI的窍门。
 
 {ORGI}Our approach will focus on best practices in UI development so that your application looks good and works well on any Android device, regardless of screen size and resolution.
-{TRAN}我们的目标是通过一些 UI 设计上的最佳实践，让你的程序在任何尺寸和分辨率的Android上都不失美观和实用性。
+{TRAN}我们的目标是通过一些 UI 设计上的最佳实践，让你的程序在任何尺寸和分辨率的Android上都不失美观和实用。
 
 {ORGI}=== Networking and multithreading ===
 {TRAN}=== 网络和多线程 ===

@@ -143,7 +143,7 @@ Eclipse通过project组织你的工作，而所有的project皆放置在workspac
 
 % In Eclipse, choose File→New→Android Project. Sometimes (especially the first time you run Eclipse) the Android tools may not be appear there right away. They should show up in the future after you’ve used them for the first time. If Android Project is not an option under File→New, choose Other and look for Android Project in there.
 
-进入Eclipse，选择 File→New→Android Project 。有时菜单里可能会没有Android Project一项（尤其是第一次启动Eclipse时），选择Other找到Android Project即可。第一次选择之后，它就会一直显示在菜单里。
+进入Eclipse，选择 File→New→Android Project 。有时菜单里可能会没有Android Project一项（尤其是第一次启动Eclipse时），选择Other找到Android Project即可。只要选择过一次，它就会一直显示在菜单里。
 
 % In the new project dialog window, fill out the following:
 
@@ -201,7 +201,7 @@ Manifest文件是应用各部分之间的牵线人。它申明了应用中包含
 
 % The layout file specifies the layout of your screen. In this case, we have only one screen and its loaded by the Java code, HelloWorld activity above.
 
-Layout文件表示应用在屏幕上的布局。在这里我们只使用了一个屏幕，即通过Java代码显示的Activity：``HelloWorld``。
+Layout文件用于表示屏幕的布局。在这里我们只用到了一个屏幕，即上面定义的Activity：``HelloWorld``。
 
 **Example 3.2. res/layout/main.xml**
 {CODE}
@@ -235,7 +235,7 @@ Layout文件表示应用在屏幕上的布局。在这里我们只使用了一�
 
 % The R file is the glue between the world of Java and the world of resources. It is an automatically generated file and as such you never modify it. It is recreated every time you change anything in the res directory, for example add an image or XML file.
 
-R文件则是Java与外部资源之间的牵线人。它在res目录中的内容发生改变时(比如添加一个图片或者xml文件)由IDE自动生成，不必手工修改。
+R文件用来关联Java与外部资源。它在res目录中的内容发生改变时(比如添加一个图片或者xml文件)由SDK自动生成，不必手工修改。
 
 % You don’t need to look at this file much. We will use data it in quite a bit, but we’ll use Eclipse to help us refer to values stored in this file.
 
@@ -307,7 +307,7 @@ public class HelloWorld extends Activity {
 
 % To use the emulator, we’ll have to create an Android Virtual Device (AVD). The easiest way to do that is to start the android tool via Eclipse.
 
-使用仿真器之前，我们需要创建一个Android Virtual Device(AVD)。最简单的方法是在Eclipse中使用Android Tool。(译者：这里存疑，这是Eclipse中的工具，还是通过Eclipse执行这个工具？)
+使用仿真器之前，我们需要创建一个Android Virtual Device(AVD)。最简单的方法是在Eclipse中打开Android Tool。
 
 % To create a new AVD, start the tool called Android SDK and AVD Manager. You can start this tool from Eclipse by clicking on icon [images/03-icon_android.png] or via command line by starting tool called android in your SDK/tools directory.
 
