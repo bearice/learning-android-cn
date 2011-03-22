@@ -461,26 +461,40 @@ In this example, we are using explicit intents to specify exactly what class the
 
 % To verify that your service is working, open up your Logcat and look for appropriate log messages that you generated in your service code. Remember from the section called “Logging in Android” that you can view the logcat both in Eclipse and via the command line.
 
-检验程序是否正常执行，
+检验Service是否正常执行的话，打开Logcat查看程序生成的日志信息。在//"Logging in Android"//一节中我们曾提到，查看Log既可以通过Eclipse，也可以通过命令行。
 
 % Another way to verify that the service is running is to go to the Android Settings app and see it listed. To do that, go to Home screen, press Menu, and choose Settings. Then go to Applications→Running services. You should see your service listed, as shown in Figure 8.2, “Running Services”.
+
+检验Service正常执行的另一个方法是，在应用//Android Settings//中，查看它是否列出在里面：回到主屏幕，点击``Menu``，选择``Setting``，然后进入``Applications``→``Running services``。正常的话，你的Service会在里边显示出来。如图8.2,//Running Services//。
 
 **Figure 8.2. Running Services**
 [image/RunningServices.png]
 
 Your service is now working, although it’s not doing much at this point.
 
+好，你的Service已经能够正常运行了，只是一时还做不了多少事情。
 
 
-==Looping In The Service==
+% ==Looping In The Service==
+==在Service中循环==
 
-By design, our service is supposed to wake up every so often, check the online service for new status updates, then go back to "sleep" for some time. And this work needs to keep on happening forever, until the service is stopped. A good way to implement this is to have our service run in a loop and to pause execution between iterations. Java provides a Thread.sleep() method that we can use to make the currently running thread pause and relinquish CPU for some number of milliseconds.
+% By design, our service is supposed to wake up every so often, check the online service for new status updates, then go back to "sleep" for some time. And this work needs to keep on happening forever, until the service is stopped. A good way to implement this is to have our service run in a loop and to pause execution between iterations. Java provides a Thread.sleep() method that we can use to make the currently running thread pause and relinquish CPU for some number of milliseconds.
 
-Another consideration to keep in mind is that the service could require a good deal of time to make its connection to Twitter and pull in friends' status data. The behavior of networking calls depends on the type of network connection we have have at the moment, the responsiveness of the server, and all other sorts of factors that collectively make up the network latency.
+按照设计，我们的Service需要被频繁地唤醒，检查消息更新，然后再次“睡眠”一段时间。这一过程会持续进行下去，直到Service停止。实现时可以将这一过程放在一个循环中，每迭代一次就暂停一段时间。在这里可以利用Java提供的``Thread.sleep()``方法，可以让当前进程以毫秒为单位暂停一段时间，并让出CPU。
+
+% Another consideration to keep in mind is that the service could require a good deal of time to make its connection to Twitter and pull in friends' status data. The behavior of networking calls depends on the type of network connection we have have at the moment, the responsiveness of the server, and all other sorts of factors that collectively make up the network latency.
+
+在这里还有一点需要考虑，那就是Service连接到服务端获取朋友消息这一行为本身，需要花费相当长的时间。网络操作的执行效率直接受网络接入方式、服务端的响应速度以及一些不可预知的因素影响，延时是很常见的。
 
 If we run our update operation on the default thread, any delay caused by the network update will cause our user interface to block. This in turn will make our application appear sluggish to the user and may even lead to Android system offering to kill our application by bringing up the "Force Close or Wait" dialog window, as discussed in the section called “Threading in Android”.
 
-The best solution to this problem is to put the actual work of the network update in a separate thread. To do this, we can use standard Java threading support. The work a service should often be in a separate thread from the main UI thread, regardless of how little time you expect the service to take. You always need to separate the non-interactive processing from user interaction. When you have network activity, as in Yamba, it’s even more important to keep it separate, but the principle applies to any service.
+我们要把检查更新的操作放在主线程的话，网络操作中的任何延时都会导致用户界面僵死，这会给用户留下一个很不好的印象。甚至很可能会让用户不耐烦，直接调出"Force Close or Wait"对话框(参见//‘Threading in Android’//一节)把我们的应用杀死。
+
+%TODO: Threading in Android待修改。
+
+% The best solution to this problem is to put the actual work of the network update in a separate thread. To do this, we can use standard Java threading support. The work a service should often be in a separate thread from the main UI thread, regardless of how little time you expect the service to take. You always need to separate the non-interactive processing from user interaction. When you have network activity, as in Yamba, it’s even more important to keep it separate, but the principle applies to any service.
+
+解决这一问题的最好办法，就是利用Java内置的线程支持，把网络相关的操作放到另一个线程里。Service在控制UI的主线程之外执行，这使得它们与用户交互的代码总是分离的。这点对Yamba这样与网络交互的界面而言尤为重要，而且对其它场景也同样适用，哪怕它花费的时间不长。
 
 **Example 8.5. UpdaterService.java, version 2**
 {CODE}
@@ -494,12 +508,12 @@ import android.util.Log;
 public class UpdaterService2 extends Service {
   private static final String TAG = "UpdaterService";
 
-  static final int DELAY = 60000; // a minute 
-  private boolean runFlag = false;  // 
+  static final int DELAY = 60000; // a minute #{1}
+  private boolean runFlag = false;  // #{2}
   private Updater updater;
 
   @Override
-  public IBinder onBind(Intent intent) {
+  public IBinder onBind(Intent intent) {#{3}
     return null;
   }
 
@@ -507,7 +521,7 @@ public class UpdaterService2 extends Service {
   public void onCreate() {
     super.onCreate();
 
-    this.updater = new Updater(); // 
+    this.updater = new Updater(); // #{4}
 
     Log.d(TAG, "onCreated");
   }
@@ -516,7 +530,7 @@ public class UpdaterService2 extends Service {
   public int onStartCommand(Intent intent, int flags, int startId) {
     super.onStartCommand(intent, flags, startId);
 
-    this.runFlag = true; // 
+    this.runFlag = true; // #{5}
     this.updater.start();
 
     Log.d(TAG, "onStarted");
@@ -527,8 +541,8 @@ public class UpdaterService2 extends Service {
   public void onDestroy() {
     super.onDestroy();
 
-    this.runFlag = false; // 
-    this.updater.interrupt(); // 
+    this.runFlag = false; // #{6}
+    this.updater.interrupt(); // #{7}
     this.updater = null;
 
     Log.d(TAG, "onDestroyed");
@@ -537,22 +551,22 @@ public class UpdaterService2 extends Service {
   /**
    * Thread that performs the actual update from the online service
    */
-  private class Updater extends Thread {  // 
+  private class Updater extends Thread {  // #{8}
 
     public Updater() {
-      super("UpdaterService-Updater");  // 
+      super("UpdaterService-Updater");  // #{9}
     }
 
     @Override
-    public void run() { // 
-      UpdaterService2 updaterService = UpdaterService2.this;  // 
-      while (updaterService.runFlag) {  // 
+    public void run() { // #{10}
+      UpdaterService2 updaterService = UpdaterService2.this;  // #{11}
+      while (updaterService.runFlag) {  // #{12}
         Log.d(TAG, "Updater running");
         try {
           // Some work goes here...
           Log.d(TAG, "Updater ran");
-          Thread.sleep(DELAY);  // 
-        } catch (InterruptedException e) {  // 
+          Thread.sleep(DELAY);  // #{13}
+        } catch (InterruptedException e) {  // #{14}
           updaterService.runFlag = false;
         }
       }
@@ -562,26 +576,48 @@ public class UpdaterService2 extends Service {
 {/CODE}
 
 
-+ Specifies the constant for the delay between network updates. We could make this configurable via preferences as well.  
-+ This flag helps us know whether the service is currently running or not.  
-+ Updater is the separate thread that is performing the actual network update. Because the thread needs to be created only once, we do so in the service’s onCreate() method.
-+ When the service is to start, it’s onStartCommand() method is called. This is a good place to also start our Updater thread and update the flag identifying it as running.
-+ Similarly, onDestroy() is a good place to stop our network update thread and update the flag to show that it is no longer running.
-+ To stop the actual thread from running, we invoke interrupt() on it. We also set it to null to aid the garbage collection process in cleaning it up.
-+ This is where we define the Updater class. It is a thread, so it extends Java’s Thread class.
-+ The purpose of this is to simply give our thread a name. Having a name helps when we are debugging to identify various running threads.
-+ A Java thread must provide a run() method. This is where the actual work is done.
-+ This simply creates a reference to our service, of which this thread is an inner class.
-+ This is the loop that keeps this network update going as long as the service is not stopped. Remember that runFlag is set in service’s onStartCommand() and onDestroy() methods.
-+ The call to Thread.sleep() pauses the execution of this particular Updater thread for some number of milliseconds. We earlier set our DELAY constant to one minute.
+% + Specifies the constant for the delay between network updates. We could make this configurable via preferences as well.  
+% + This flag helps us know whether the service is currently running or not.  
+% + Updater is the separate thread that is performing the actual network update. Because the thread needs to be created only once, we do so in the service’s onCreate() method.
+% + When the service is to start, it’s onStartCommand() method is called. This is a good place to also start our Updater thread and update the flag identifying it as running.
+% + Similarly, onDestroy() is a good place to stop our network update thread and update the flag to show that it is no longer running.
+% + To stop the actual thread from running, we invoke interrupt() on it. We also set it to null to aid the garbage collection process in cleaning it up.
+% + This is where we define the Updater class. It is a thread, so it extends Java’s Thread class.
+% + The purpose of this is to simply give our thread a name. Having a name helps when we are debugging to identify various running threads.
+% + A Java thread must provide a run() method. This is where the actual work is done.
+% + This simply creates a reference to our service, of which this thread is an inner class.
+% + This is the loop that keeps this network update going as long as the service is not stopped. Remember that runFlag is set in service’s onStartCommand() and onDestroy() methods.
+% + The call to Thread.sleep() pauses the execution of this particular Updater thread for some number of milliseconds. We earlier set our DELAY constant to one minute.
 
-When we signal interrupt() to the thread, if the thread is running it will cause an InterruptedException in the run() method. We handle the exceptionsimply by setting the runFlag to false so the thread doesn’t keep on trying to run again until it is restarted.
++ 声明一个常量，用以表示网络更新的时间间隔。我们也可以把它做在选项里，使之可以配置。
++ 这个标志变量用以方便查看Service的执行状态。
++ Updater在另一个线程中进行网络更新。这个线程只需创建一次，因此我们在``onCreate()``中创建它。
++ 在Service将启动时，它会调用``onStartCommand()``方法，我们就在这里启动Updater线程再合适不过。同时设置上标志变量，表示Service已经开始执行了。
++ 与之对应，我们可以在``onDestroy()``中停止Updater线程。再修改标志变量表示Service已经停止。
++ 我们通过调用``interrupt()``来停止一个线程执行，随后设置变量的引用为null，以便于垃圾收集器清理。
++ 在这里定义Updater类。它是个线程，因此以Java的Thread类为基类。
++ 给我们的线程取一个名字。这样便于在调试中辨认不同的线程。
++ Java的线程必须提供一个``run()``方法。
++ 简单得到对Service的引用。Updater是我们Service的内部类。
++ 这个循环会一直执行下去，直到Service停止为止。记着runFlag变量是由``onStartCommand()``与``onDestroy()``修改的。
++ 调用``Thread.sleep()``暂停Updater线程一段时间，前面我们将DELAY设置为1分钟。
 
-=== Testing it all works ===
 
-At this point, you can run the application and start the service. If you observe the log file, you’ll notice that every minute or so the service logs that it ran our job. Also, stopping the service will stop the further execution of the job.
+% When we signal interrupt() to the thread, if the thread is running it will cause an InterruptedException in the run() method. We handle the exceptionsimply by setting the runFlag to false so the thread doesn’t keep on trying to run again until it is restarted.
 
-Here’s the LogCat output of what is going on with our service:
+对运行中的线程调用``interrupt()``，会在``run()``中触发一个``InterruptException``异常。 我们捕获这个异常，并设置runFlag为False，从而避免它不断重试。
+
+
+% === Testing it all works ===
+===测试正常运行===
+
+% At this point, you can run the application and start the service. If you observe the log file, you’ll notice that every minute or so the service logs that it ran our job. Also, stopping the service will stop the further execution of the job.
+
+到这里，已经可以运行程序并启动Service了。只要观察log文件你就可以发现，我们的Service会每隔两分钟记录一次任务的执行情况。而Service一旦停止，人物就不再执行了。
+
+% Here’s the LogCat output of what is going on with our service:
+
+如下为LogCat的输出结果，从中可以看出我们Service的执行情况：
 
 {CODE}
 D/UpdaterService( 3494): onCreated
@@ -594,23 +630,25 @@ D/UpdaterService( 3494): Updater ran
 D/UpdaterService( 3494): onDestroyed
 {/CODE}
 
-As you can see, the service got created and started. It also ran couple of times before it finally got destroyed.
+% As you can see, the service got created and started. It also ran couple of times before it finally got destroyed.
+
+可见，我们的Service在最终销毁之前，循环了两次，其创建与启动皆正常。
 
 
-==Pulling Data From Twitter==
+% ==Pulling Data From Twitter==
 ==从Twitter读取数据==
 
-We now have a framework and are ready to make the actual connection to the online twitter-like service, pull the status data, and display that data in our application. Twitter and Twitter-like services offer many different APIs to retrieve what is going on with our friends. The jtwitter.jar library exposes most of them to us via the Twitter class. Perhaps one of the most appropriate methods is getFriendsTimeline(), which returns the twenty most recent posts made over the past 24 hours from the user and her friends.
+% We now have a framework and are ready to make the actual connection to the online twitter-like service, pull the status data, and display that data in our application. Twitter and Twitter-like services offer many different APIs to retrieve what is going on with our friends. The jtwitter.jar library exposes most of them to us via the Twitter class. Perhaps one of the most appropriate methods is getFriendsTimeline(), which returns the twenty most recent posts made over the past 24 hours from the user and her friends.
 
 我们已经有了个大体的框架，接下来就连接到微博服务，读取数据并且在程序中显示出来。在读取朋友消息上，Twitter与不同的微博服务提供的API都各不相同。这时可以使用三方库``jtwitter.jar``，它提供了一个``Twitter``类作为封装。里边最常用的功能之一就是``getFriendsTimeline()``，它可以返回24小时以内最新的20条消息。
 
 %TALK: 把twitter-like译为“微博”是否合适呢，感觉似乎比“类twitter”顺口一些。
 
-To use this feature of the Twitter API, we need to connect to the online service. And to do that, we need the username, password, and root API for our online service. As you recall from previous chapter, we have already refactored most of this functionality into the Yamba Application object in the section called “Yamba Application Object”. We can reuse all those features here, because our service is part of the same application and as such has access to the same Application object.
+% To use this feature of the Twitter API, we need to connect to the online service. And to do that, we need the username, password, and root API for our online service. As you recall from previous chapter, we have already refactored most of this functionality into the Yamba Application object in the section called “Yamba Application Object”. We can reuse all those features here, because our service is part of the same application and as such has access to the same Application object.
 
 要使用Twitter API的这一特性，首先应连接到Twitter服务。我们需要一个用户名、密码，以及一个API授权。回忆下本章前面“Yamba的Application对象”一节中，我们已经把大部分相关的功能重构到了YambaApplication中。因此我们得以在这里重用这一功能，因为包括Service在内的程序中任何一个构件，都可以访问同一个Application对象。
 
-We do need, however, to make a minor update to YambaApplication, because we would also like to be able to tell whether our service is running or not. To do that, we’ll add a flag to YambaApplication as well as provide setter and getter methods to access and update that flag:
+% We do need, however, to make a minor update to YambaApplication, because we would also like to be able to tell whether our service is running or not. To do that, we’ll add a flag to YambaApplication as well as provide setter and getter methods to access and update that flag:
 
 在这里我们需要小小地修改下YambaAppliaction，好让别人知道这个Service是否正在运行。因此在YambaApplication中添加一个标志变量，配合getter与setter用以访问与更新：
 
@@ -637,7 +675,7 @@ public class YambaApplication extends Application implements OnSharedPreferenceC
 + 这个全局方法用以访问标志变量serviceRunning的值。
 + 另一个全局方法，用以设置标志变量serviceRunning的值。
 
-Now we can write new code for UpdaterService and have it connect to the online API to pull the latest status of our friends.
+% Now we can write new code for UpdaterService and have it connect to the online API to pull the latest status of our friends.
 
 接下来我们可以为UpdaterService写些代码，让它连接到API，读取朋友的最新消息。
 
@@ -777,11 +815,11 @@ D/UpdaterService(  310): Marko Gargenta: right!
 % ==Summary==
 ==总结==
 
-We now have a working service, which we start and stop and in a relatively crude, manual way. The service connects to the cloud service and pulls down the status posts from our friends. For now, we just print this data in the Logcat, but in the next chapter we’ll insert the data into the database.
+% We now have a working service, which we start and stop and in a relatively crude, manual way. The service connects to the cloud service and pulls down the status posts from our friends. For now, we just print this data in the Logcat, but in the next chapter we’ll insert the data into the database.
 
 我们已经有了一个可用的Service，只是启动/停止还需要人工操作，仍略显粗放。这个Service能够连接到服务端更新朋友的最新消息。目前我们只是把这些消息输出到Logcat中，到下一章我们就把它们存进数据库里。
 
-Figure 8.3, “Yamba Completion” illustrates what we have done so far as part of the design outlined in Figure 5.4, “Yamba Design Diagram”:
+% Figure 8.3, “Yamba Completion” illustrates what we have done so far as part of the design outlined in Figure 5.4, “Yamba Design Diagram”:
 
 图8.3, //"Yamba Completion"//展示了目前为止我们已完成的部分。全图参见图5.4, //"Yamba Design Diagram"//。
 
