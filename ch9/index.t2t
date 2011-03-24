@@ -1,0 +1,659 @@
+
+
+
+= Chapter 9 Database =
+
+Android system uses databases to store many useful information that needs to be persisted so that the data is there for the app to access again if the user kills the app or even shuts down the device and powers it back on. The data includes contacts, system settings, bookmarks, and so on.
+
+So, why use a database in a mobile application? After all, isn’t it better to keep our data in a cloud where it’s always backed up instead of storing it in a mobile device which is easily lost or damaged?
+
+Database in a mobile device is very useful to supplement the online world. While it’s true that in many cases it is much better to count on the data living in the cloud, it is useful to store it locally in order to access it faster and have it available even when the network may not be available. In this case, we are using a local database as a cache. This is also how we use it in our Yamba application.
+
+In this chapter, you will learn how Android supports databases. You will learn to create and use a database inside Yamba application to store our status updates locally. Local data will help Yamba display statuses to the user quickly without having to wait for the network to provide the data. Our service will run in the background and periodically update the database so that the data is relatively fresh. This will overall improve the user experience of the application.
+
+== About SQLite ==
+
+SQLite is an open source database that is has been around for a long time, is quite stable, and is popular on many small devices in addition to Android. There are couple of good reasons why SQLite is a great fit for Android app development:
+
+	 - It’s a zero-configuration database. That means there’s absolutely nothing for you as developer to configure about how the database works. This makes it relatively simple to use.
+	 - It doesn’t have a server. There’s no SQLite database process running. It is basically a set of libraries that provide the database functionality. Not having a server to worry about is also a good thing.
+	 - It’s a single-file database. This makes database security straightforward, as it boils down to file system security. We already know that Android sets aside a special secure sandbox for each application.
+	 - It’s open source.
+
+The Android framework offers several ways to use SQLite easily and effectively, and we’ll look at the basic usage in this chapter. You may be pleased to find that, although SQLite uses SQL, Android provides a higher-level library with an interface that is much easier to integrate into an application.
+
+{NOTE}
+Although SQLite support is built into Android, it is by no means your only option when it comes to data persistence for your app. You can always use another database system, such as JavaDB or MongoDB, but you’d have to bundle the required libraries with you app and would not be able to rely on Android’s built-in support for database. SQLite is not an alternative to a full SQL server, instead it is an alternative to using a local file with an arbitrary format.
+{/NOTE}
+
+== DbHelper ==
+
+Android provides an elegant interface for your app to interact with a SQLite database. To get access to the database, you first need a helper class that provides a "connection" to the database, creating the connection if it doesn’t already exist. This class, provided to you by the Android framework, is called SQLiteOpenHelper. The database class it returns is an instance of SQLiteDatabase.
+
+In the following subsections I’ll explain some of the background concepts you should know when working with DbHelper. I’m not going to explain SQL or basic database concepts such as normalization, because there are hundreds of good places to find that information and I expect most of my readers already know it. This chapter, though, should give you enough to get started even if your knowledge of databases is spotty.
+
+=== The database schema and its creation ===
+
+A schema is just a description of what’s in a database. In our Yamba database, for instance, we want fields for the following information about each tweet we retrieve from Twitter:
+
+**created_at**
+	The date when the tweet was sent
+**source**
+	…
+**txt**
+	The text of the tweet
+**user**
+	The user who sent the tweet
+
+So each row in our table will contain the data for one tweet, and these four items will be the columns in our schema, along with a unique ID for each tweet. We need the ID so we can easily refer to a tweet. SQLite, like most database, allows us to declare the ID as a primary key and even assigns a unique number automatically to tweet for us.
+
+The schema has to be created when our application starts, so we’ll do it in the onCreate() method of DbHelper. We might add new fields or change existing ones in a later version of our application, so we’ll assign a version number to our schema and provide an onUpgrade() method that we can call to alter the schema.
+
+The onCreate() and onUpgrade() methods are the only ones in our application when we need to use SQL. We’ll execute CREATE TABLE in onCreate() to create a table in our database. In a production application, we’d use ALTER TABLE in onUpgrade() when the schema changes, but that requires a lot of complex introspection of the database, so for now we’ll use DROP TABLE and recreate the table. Of course, DROP TABLE destroys any data currently in the table, but that’s not a problem for our Yamba application. It always refills the table with tweets from the past 24 hours, which are the only ones our users will care about.
+
+=== Four major operations ===
+
+The DbHelper class offers you a high-level interface that’s much simpler than SQL. The developers realized that most applications use databases for only four major operations, which go by the appealing acronym [CRUD http://en.wikipedia.org/wiki/Create,_read,_update_and_delete] (create, read (query), update, and delete). To fulfill these requirements, DbHelper offers:
+
+**insert()**
+	Inserts one or more rows into the database.
+**query()**
+	Requests rows matching the criteria you specify.
+**update()**
+	Replaces ones or more rows that match the criteria you specify.
+**delete()**
+	Deletes rows matching the criteria you specify.
+
+Each of these methods has variants that enhance it with other functions. To use one of the methods, create a ContentValues container and place in it the information you want inserted, updated, etc. This chapter will show you the process for an insert, and the other operations work in similar ways.
+
+So, why not use SQL directly? There are three good reasons why.
+
+First, from security point of view, an SQL statement is a prime candidate for a security attack on your application and data, known as [SQL injection http://en.wikipedia.org/wiki/SQL_injection] attack. That is because the SQL statement takes user input that, unless you check and isolate it very carefully, could embed other SQL statements with undesirable effects.
+
+Secondly, from performance point of view, executing SQL statements repeatedly is highly inefficient because you’d have to parse the SQL every time the statement runs.
+
+Finally, the DbHelper methods are more robust and less likely to pass through the compiler with undetected errors. When you include SQL in a program, it’s easy to create errors that turn up only at run time.
+
+With so-called [Data Definition Language http://en.wikipedia.org/wiki/Data_Definition_Language] part of SQL language, there isn’t as much support in Android framework for prepared statements. That’s why we did use execSQL() to run the code to CREATE TABLE.... That is okay since that code doesn’t depend on any user input and as such SQL injection is not possible. Additionally, that code runs very rarely to have to worry about the performance implications.
+
+=== Cursors ===
+
+A query returns a set of rows along with a pointer called a cursor. You can retrieve results one at a time from the cursor, causing it to advance each time to the next row. You can also move the cursor around in the result set. An empty cursor indicates that you’ve retrieved all the rows.
+
+In general, anything you do with SQL could lead to SQL Exception since it’s code interacting with a system that’s outside our direct control. For example, the database could be running out of space, or somehow corrupted. So, it is a good practice to handle all the `SQLException`s by surrounding your database calls in a try/catch block.
+
+An easy way to do that is by using the Eclipse shortcut:
+
+ + Select the code that you’d like to handle exceptions for. Typically this would be most of your SQL calls.
+ + In Eclipse menu, choose Source→Surround With→Try/catch Block. Eclipse will generate the appropriate try/catch statements around your code for the proper exception class.
+ + Handle this exception in the catch block. This may be a simple call to Log.e() to pass the tag, message and the exception object itself.
+
+
+== First example ==
+
+So we’re going to create our own helper class to help us open our Yamba database. We’ll call the class DbHelper. It will create the database file if one doesn’t already exist, or upgrade the user’s database if the schema has changed between versions.
+
+Like many other classes in Android, we usually start by subclassing a framework class, in this case SQLiteOpenHelper. We then need to implement the class’s constructor as well as onCreate() and onUpgrade() methods.
+
+**Example 9.1. DbHelper.java, version 1**
+
+{CODE}
+package com.marakana.yamba4;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.BaseColumns;
+import android.util.Log;
+
+public class DbHelper1 extends SQLiteOpenHelper { //①
+  static final String TAG = "DbHelper";
+  static final String DB_NAME = "timeline.db"; //②
+  static final int DB_VERSION = 1; //③
+  static final String TABLE = "timeline"; //④
+  static final String C_ID = BaseColumns._ID;
+  static final String C_CREATED_AT = "created_at";
+  static final String C_SOURCE = "source";
+  static final String C_TEXT = "txt";
+  static final String C_USER = "user";
+  Context context;
+
+  // Constructor
+  public DbHelper1(Context context) { //⑤
+    super(context, DB_NAME, null, DB_VERSION);
+    this.context = context;
+  }
+
+  // Called only once, first time the DB is created
+  @Override
+  public void onCreate(SQLiteDatabase db) {
+    String sql = "create table " + TABLE + " (" + C_ID + " int primary key, "
+    + C_CREATED_AT + " int, " + C_USER + " text, " + C_TEXT + " text)"; //⑥
+
+    db.execSQL(sql);  //⑦
+
+    Log.d(TAG, "onCreated sql: " + sql);
+  }
+
+  // Called whenever newVersion != oldVersion
+  @Override
+  public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) { //⑧
+    // Typically do ALTER TABLE statements, but...we're just in development,
+    // so:
+
+    db.execSQL("drop table if exists " + TABLE); // drops the old database
+    Log.d(TAG, "onUpdated");
+    onCreate(db); // run onCreate to get new database
+  }
+
+}
+{/CODE}
+
+
++ Start by subclassing SQLiteOpenHelper.
++ This is the database file name.
++ This is the version of our database. Version is important so that later when you change the schema, you can provide existing users with a way to upgrade their database to the latest schema.
++ The following are some database constants specific to our application. It is handy to define these as constants to that we can refer to them from other classes.
++ We override the SQLiteOpenHelper by passing the constants to the super and retaining the local reference to the context.
++ This is the actual SQL that we’ll pass on to the database in order to have it create the appropriate SQL schema that we need.
++ Once we have our SQL to create the database by running execSQL() on the database object that was passed into onCreate().
++ onUpgrade() is called whenever user’s database version is different than the application version. This will typically happen when you change the schema and release the application update to users who already have older version of your app.
+
+
+{NOTE}
+As mentioned, earlier, you would typical execute ALTER TABLE ... SQL statements in onUpgrade(). Since we don’t have an old database to alter, we are assuming this application is still in pre-release mode and are just deleting any user data when recreating the database.
+{/NOTE}
+
+Next, we need to update the service in order to have it open up the database connection, fetch the data from the network and insert it into the database.
+
+== Update UpdaterService ==
+
+Remember that it is our UpdaterService that connects to the cloud and gets the data. So it is also UpdaterService that is responsible for inserting this data into the local database.
+
+We can now update the UpdaterService to pull the data from the cloud and store it in the database.
+
+**Example 9.2. UpdaterService.java, version 1**
+
+{CODE}
+package com.marakana.yamba4;
+
+import java.util.List;
+
+import winterwell.jtwitter.Twitter;
+import winterwell.jtwitter.TwitterException;
+import android.app.Service;
+import android.content.ContentValues;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.IBinder;
+import android.util.Log;
+
+public class UpdaterService1 extends Service {
+  private static final String TAG = "UpdaterService";
+
+  static final int DELAY = 60000; // wait a minute
+  private boolean runFlag = false;
+  private Updater updater;
+  private YambaApplication yamba;
+
+  DbHelper1 dbHelper; //①
+  SQLiteDatabase db;
+
+  @Override
+  public IBinder onBind(Intent intent) {
+    return null;
+  }
+
+  @Override
+  public void onCreate() {
+    super.onCreate();
+    this.yamba = (YambaApplication) getApplication();
+    this.updater = new Updater();
+
+    dbHelper = new DbHelper1(this); //②
+
+    Log.d(TAG, "onCreated");
+  }
+
+  @Override
+  public int onStartCommand(Intent intent, int flag, int startId) {
+    if (!runFlag) {
+      this.runFlag = true;
+      this.updater.start();
+      ((YambaApplication) super.getApplication()).setServiceRunning(true);
+
+      Log.d(TAG, "onStarted");
+    }
+    return Service.START_STICKY;
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+
+    this.runFlag = false;
+    this.updater.interrupt();
+    this.updater = null;
+    this.yamba.setServiceRunning(false);
+
+    Log.d(TAG, "onDestroyed");
+  }
+
+  /**
+   * Thread that performs the actual update from the online service
+   */
+  private class Updater extends Thread {
+    List<Twitter.Status> timeline;
+
+    public Updater() {
+      super("UpdaterService-Updater");
+    }
+
+    @Override
+    public void run() {
+      UpdaterService1 updaterService = UpdaterService1.this;
+      while (updaterService.runFlag) {
+        Log.d(TAG, "Updater running");
+        try {
+          // Get the timeline from the cloud
+          try {
+            timeline = yamba.getTwitter().getFriendsTimeline(); //③
+          } catch (TwitterException e) {
+            Log.e(TAG, "Failed to connect to twitter service", e);
+          }
+
+          // Open the database for writing
+          db = dbHelper.getWritableDatabase(); //④
+
+          // Loop over the timeline and print it out
+          ContentValues values = new ContentValues(); //⑤
+          for (Twitter.Status status : timeline) { //⑥
+            // Insert into database
+            values.clear(); //⑦
+            values.put(DbHelper1.C_ID, status.id);
+            values.put(DbHelper1.C_CREATED_AT, status.createdAt.getTime());
+            values.put(DbHelper1.C_SOURCE, status.source);
+            values.put(DbHelper1.C_TEXT, status.text);
+            values.put(DbHelper1.C_USER, status.user.name);
+            db.insertOrThrow(DbHelper1.TABLE, null, values); //⑧
+
+            Log.d(TAG, String.format("%s: %s", status.user.name, status.text));
+          }
+
+          // Close the database
+          db.close(); //㈨
+
+          Log.d(TAG, "Updater ran");
+          Thread.sleep(DELAY);
+        } catch (InterruptedException e) {
+          updaterService.runFlag = false;
+        }
+      }
+    }
+  } // Updater
+
+}
+{/CODE}
+
+
++ Since we are likely going to need db and dbHelper objects throughout the class, we declare them globally to the class.
++ Create the instance of DbHelper and pass this as the context for it. This works because Android Service class is a subclass of Context. DbHelper will figure out if the database needs to be created or upgraded.
++ We need to connect to the online service, get latest updates, and insert them into the database. getTwitter() in YambaApplication is our lazy initialization of Twitter object. Then we call the actual Twitter API call getFriendsTimeline() to get last 20 statuses from friends in last 24 hours.
++ Get the writable database so we can insert new statuses into it. First time we make this call, onCreate() in DbHelper will run and create the database file for this user.
++ ContentValues is a simple name-value pairs data structure that maps database table names to their respective values.
++ We loop over all the status data that we got. In this case, we are using Java for-each loop to make the iteration simple.
++ For each record, we create a content value. We are reusing the same Java object clearing it each time we start the loop and populating appropriate values for the status data.
++ We insert the content value into the database via insert() call to SQLiteDatabase object. Notice that we are not piecing together a SQL statement here, but rather using a prepared statement approach to inserting into the database.
++ Finally, remember to close the database. This is important since another activity could be trying to read or write from this shared resource.
+
+We are now ready to run our code and test it all works.
+
+
+=== Testing It Works ===
+
+At this point, we can test if the database got created properly and if the service has populated it with some data. We’re going to do this step by step.
+
+
+=== Verify Database Got Created ===
+
+If the database file got created successfully, it will be located in ``/data/data/com.marakana.yamba/databases/timeline.db`` file. You can use Eclipse DDMS perspective and File Explorer view to look at the file system of the device, or you can use adb shell on your command line, and then ``ls /data/data/com.marakana.yamba/databases/timeline.db`` to make sure the file is there.
+
+To use File Explorer in Eclipse, either open the ``DDMS`` perspective in the top-right corner of your Eclipse, or go to ``Windows→Show View→Other…→Android→File Explorer``. This will open the view of the file system of the device you are currently looking at.
+
+So far, you know that the database file is there, but don’t really know if the database schema got created properly. Next section address that.
+
+
+=== Using sqlite3 ===
+
+Android ships with the command line tool sqlite3. This tool give you access to the database itself.
+
+To see if your database schema got created properly:
+
++ Open up your terminal, or command line window.
++ Type adb shell to connect to your running emulator or physical phone.
++ Change directory to where your database file is created by typing cd /data/data/com.marakana.yamba/databases/.
++ Connect to the database by using sqlite3 timeline.db command.
+
+At this point, you should be connected to the database. Your prompt should be sqlite> indicating that you are inside the SQLite:
+
+{CODE}
+[user:~]> adb shell
+# cd /data/data/com.marakana.yamba/databases/
+# ls
+timeline.db
+# sqlite3 timeline.db
+SQLite version 3.6.22
+Enter ".help" for instructions
+Enter SQL statements terminated with a ";"
+sqlite>
+{/CODE}
+
+At this point, you can type two types of commands to your SQLite database:
+
+- Standard SQL commands, such as ``insert ...``, ``update ...``, ``delete ...``, ``select ...`` as well as ``create table ...``, ``alter table ...`` and so on. Note the [SQL http://en.wikipedia.org/wiki/SQL] is another language altogether and as such is not covered by this book. We assume you have very basic knowledge of SQL. Also note that in ``sqlite3``, you must terminate your SQL statements with a semi-column ;.
+- ``sqlite3`` commands. These are commands that are specific to SQLite. You can see the list of all commands by typing ``.help`` on the ``sqlite3>`` prompt. For now, we’ll just use ``.schema`` to verify that the schema got created.
+
+{CODE}
+# sqlite3 timeline.db
+SQLite version 3.6.22
+Enter ".help" for instructions
+Enter SQL statements terminated with a ";"
+sqlite> .schema
+CREATE TABLE android_metadata (locale TEXT);
+CREATE TABLE timeline ( _id integer primary key,created_at integer, source text, txt text, user text );
+{/CODE}
+
+
+The last line tells us that our database table timeline indeed got created and looks like we expected it, with columns: ``_id``, ``created_at``, ``source``, ``txt`` and ``user``.
+
+{WARNING}
+New Android developers often execute sqlite3 timeline.db command in a wrong folder, then wonder why the database table wasn’t created. SQLite will not complain if the file you are referring to doesn’t exist - it will simply create a brand new database. So, make sure you are either in the correct folder (/data/data/com.marakana.yamba/databases/) when you execute sqlite3 timeline.db, or run the command specifying the full path to your file: sqlite3 /data/data/com.marakana.yamba/databases/timeline.db.
+{/WARNING}
+
+Now that we have a way to create and open up our database, we are ready to update the service that will insert the data into the database.
+
+At this point we should be getting the data from the online service as well as insert that data in the database. We can also verify that the data is indeed in the database by using ``sqlite3``.
+
+
+=== Database Constraints ===
+
+Second time around, when your service runs, you’ll notice that it fails and that you get many ``SQLExceptions`` in the logcat. You will also notice that it complains about the database constraint failing.
+
+This happens because we have duplicate IDs. If you remember, we are fetching all the data from the online service, including IDs used online. We are then inserting this in to our local database. But we get the data via ``getFriendsTimeline()`` call which returns twenty most recent posts in the past 24 hours and we do this every minute or so. So, unless you have friends who post more than twenty posts a minute, you’re likely going to get duplicates. That means we’re attempting to insert duplicate IDs into a database that is setup to have _id be the primary key, meaning be unique. This fails for duplicate entries and that’s why the database complains via throwing ``SQLException``.
+
+We could check with the database that there are no duplicates before inserting, but that would mean writing that logic. Since database is already good at database stuff, it is more efficient to attempt to insert duplicate entries, fail at it, and ignore that failure.
+
+
+To do that, we need to change db.insert() to db.insertOrThrow(), catch the SQLException and ignore it.
+
+{CODE}
+...
+try {
+  db.insertOrThrow(DbHelper.TABLE, null, values);  //①
+  Log.d(TAG, String.format("%s: %s", status.user.name, status.text));
+} catch (SQLException e) {  //②
+  // Ignore exception
+}
+...
+{/CODE}
+
+Attempts to insert into the database but if it fails, it throws an exception.
+
++ We catch this exception and ignore it. We will improve on this later in the next section
++ At this point, our code works, but it’s not ideal. There’s an opportunity to refactor it further.
+
+
+== Refactoring Status Data ==
+
+While the previous work we did does work for UpdaterService, it is not ideal for supporting our next user of this data - the TimelineActivity. Since TimelineActivity will also need to access the same database and fetch the same data, it would be better if we would share some of the same functionality between the UpdaterService and the TimelineActivity.
+
+In order to do that, we’ll create a new Java class, StatusData and make it be the common container for database-related functionality. It will be hiding (encapsulating) SQLite in a higher-level class accessible to other parts of Yamba application. The rest of our app will then just ask for StatusData and not be concerned how that data is generated. This is a better design and will allows us later to improve even further on it using Content Providers as explained in [Chapter 12, Content Providers #ch12].
+
+**Example 9.3. StatusData.java**
+{CODE}
+package com.marakana.yamba4;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+public class StatusData { //①
+  private static final String TAG = StatusData.class.getSimpleName();
+
+  static final int VERSION = 1;
+  static final String DATABASE = "timeline.db";
+  static final String TABLE = "timeline";
+
+  public static final String C_ID = "_id";
+  public static final String C_CREATED_AT = "created_at";
+  public static final String C_TEXT = "txt";
+  public static final String C_USER = "user";
+
+  private static final String GET_ALL_ORDER_BY = C_CREATED_AT + " DESC";
+
+  private static final String[] MAX_CREATED_AT_COLUMNS = { "max("
+      + StatusData.C_CREATED_AT + ")" };
+
+  private static final String[] DB_TEXT_COLUMNS = { C_TEXT };
+
+  // DbHelper implementations
+  class DbHelper extends SQLiteOpenHelper {
+
+    public DbHelper(Context context) {
+      super(context, DATABASE, null, VERSION);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+      Log.i(TAG, "Creating database: " + DATABASE);
+      db.execSQL("create table " + TABLE + " (" + C_ID + " int primary key, "
+          + C_CREATED_AT + " int, " + C_USER + " text, " + C_TEXT + " text)");
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+      db.execSQL("drop table " + TABLE);
+      this.onCreate(db);
+    }
+  }
+
+  private final DbHelper dbHelper; //②
+
+  public StatusData(Context context) {  //③
+    this.dbHelper = new DbHelper(context);
+    Log.i(TAG, "Initialized data");
+  }
+
+  public void close() { //④
+    this.dbHelper.close();
+  }
+
+  public void insertOrIgnore(ContentValues values) {  //⑤
+    Log.d(TAG, "insertOrIgnore on " + values);
+    SQLiteDatabase db = this.dbHelper.getWritableDatabase();  //⑥
+    try {
+      db.insertWithOnConflict(TABLE, null, values,
+          SQLiteDatabase.CONFLICT_IGNORE);  //⑦
+    } finally {
+      db.close(); //⑧
+    }
+  }
+
+  /**
+   *
+   * @return Cursor where the columns are _id, created_at, user, txt
+   */
+  public Cursor getStatusUpdates() {  //⑨
+    SQLiteDatabase db = this.dbHelper.getReadableDatabase();
+    return db.query(TABLE, null, null, null, null, null, GET_ALL_ORDER_BY);
+  }
+
+  /**
+   *
+   * @return Timestamp of the latest status we ahve it the database
+   */
+  public long getLatestStatusCreatedAtTime() {  //⑩
+    SQLiteDatabase db = this.dbHelper.getReadableDatabase();
+    try {
+      Cursor cursor = db.query(TABLE, MAX_CREATED_AT_COLUMNS, null, null, null,
+          null, null);
+      try {
+        return cursor.moveToNext() ? cursor.getLong(0) : Long.MIN_VALUE;
+      } finally {
+        cursor.close();
+      }
+    } finally {
+      db.close();
+    }
+  }
+
+  /**
+   *
+   * @param id of the status we are looking for
+   * @return Text of the status
+   */
+  public String getStatusTextById(long id) {  //⑾
+    SQLiteDatabase db = this.dbHelper.getReadableDatabase();
+    try {
+      Cursor cursor = db.query(TABLE, DB_TEXT_COLUMNS, C_ID + "=" + id, null,
+          null, null, null);
+      try {
+        return cursor.moveToNext() ? cursor.getString(0) : null;
+      } finally {
+        cursor.close();
+      }
+    } finally {
+      db.close();
+    }
+  }
+
+
+}
+{/CODE}
+
+
++ Most of the StatusData code is a direct cut-paste from DbHelper.java. This is because it now makes sense to make DbHelper an [inner class http://en.wikipedia.org/wiki/Inner_class] since DbHelper now only exists in context of StatusData and is private to it. In other words, outside of StatusData, no other part of the system is concerned with the fact that we are using a database to store our data. That also makes our system flexible, which we will see later with use of Content Providers.
++ This is the private and final reference to the dbHelper instance. Making it [final http://en.wikipedia.org/wiki/Final_(Java)] ensures that this object is created only once, whichever part of the system requests it first.
++ The constructor simply constructs a new instance of ``DbHelper``.
++ We need to expose ``close()`` for the dbHelper in order to have users of it close it properly.
++ This is the new and improved version of ``db.insert...()`` method that we had in DbHelper before.
++ We open the database only when we need it, which is right before writing to it.
++ In this case, we use ``insertWithOnConflict()`` and pass ``SQLiteDatabase.CONFLICT_IGNORE`` as the final parameter to indicate that if there’s a conflict, the exception should be ignored. Remember that we did have conflict with the duplicate IDs, as explained [in the section called “Database Constraints” http://ofps.oreilly.com/titles/9781449390501/ch09.html#Database_Constraints].
++ Notice that we also close the database right after we are done. We also do this in [finally http://en.wikipedia.org/wiki/Exception_handling] section of our exception handling. This ensures the database is shut down properly regardless if something went wrong or not. This theme is something we repeat in ``getLatestStatusCreatedAtTime()`` and ``getStatusTextById()``.
++ This method simply returns all the statuses in the database, latest first.
++ ``getLatestStatusCreatedAtTime()`` returns the timestamp of the latest status we have in the database. Having a way to know what is the newest status we have cached locally is useful later to ensure we only add new statuses into the database.
++ For a given id, ``getStatusTextById()`` returns the actual text of this status.
+
+
+Now that we have a new common place to handle status data, we can have it hang off of our common Application object so that any part of the application can easily access it. So the UpdaterService and TimelineActivity classes are in a has-a relationship to StatusData via YambaApplication object.
+
+**Example 9.4. YambaApplication.java**
+
+{CODE}
+...
+private StatusData statusData; //①
+...
+
+public StatusData getStatusData() { //②
+  return statusData;
+}
+
+// Connects to the online service and puts the latest statuses into DB.
+// Returns the count of new statuses
+public synchronized int fetchStatusUpdates() {  //③
+  Log.d(TAG, "Fetching status updates");
+  Twitter twitter = this.getTwitter();
+  if (twitter == null) {
+    Log.d(TAG, "Twitter connection info not initialized");
+    return 0;
+  }
+  try {
+    List<Status> statusUpdates = twitter.getFriendsTimeline();
+    long latestStatusCreatedAtTime = this.getStatusData()
+        .getLatestStatusCreatedAtTime();
+    int count = 0;
+    ContentValues values = new ContentValues();
+    for (Status status : statusUpdates) {
+      values.put(StatusData.C_ID, status.getId());
+      long createdAt = status.getCreatedAt().getTime();
+      values.put(StatusData.C_CREATED_AT, createdAt);
+      values.put(StatusData.C_TEXT, status.getText());
+      values.put(StatusData.C_USER, status.getUser().getName());
+      Log.d(TAG, "Got update with id " + status.getId() + ". Saving");
+      this.getStatusData().insertOrIgnore(values);
+      if (latestStatusCreatedAtTime < createdAt) {
+        count++;
+      }
+    }
+    Log.d(TAG, count > 0 ? "Got " + count + " status updates"
+        : "No new status updates");
+    return count;
+  } catch (RuntimeException e) {
+    Log.e(TAG, "Failed to fetch status updates", e);
+    return 0;
+  }
+}
+
+...
+{/CODE}
+
+
++ Yamba application now encapsulates the status data as a private StatusData object.
++ This object is available to rest of the application for viewing only via this accessor method.
++ This is where we moved most of the code from the previous version of the UpdaterService. This was the code that was running on the Updater thread, connecting to online service to get the data, and then saving that data in the database.
+
+
+We can now simplify the ``UpdaterService`` to use the refactored code in the YambaApplication to get the latest data. Note that most of the Updater’s ``run()`` method has been moved to YambaApplication’s ``fetchStatusUpdates()`` method. In addition, the Updater doesn’t need any access to the ``StatusData`` object, which is totally hidden from it.
+
+**Example 9.5. UpdaterService.java**
+
+{CODE}
+...
+
+private class Updater extends Thread {
+
+  public Updater() {
+    super("UpdaterService-Updater");
+  }
+
+  @Override
+  public void run() {
+    UpdaterService updaterService = UpdaterService.this;
+    while (updaterService.runFlag) {
+      Log.d(TAG, "Running background thread");
+      try {
+        YambaApplication yamba = (YambaApplication) updaterService
+            .getApplication();  //①
+        int newUpdates = yamba.fetchStatusUpdates(); //②
+        if (newUpdates > 0) { //③
+          Log.d(TAG, "We have a new status");
+        }
+        Thread.sleep(DELAY);
+      } catch (InterruptedException e) {
+        updaterService.runFlag = false;
+      }
+    }
+  }
+} // Updater
+
+...
+{/CODE}
+
+
++ We get the reference to YambaApplication object, which is readily available to Android Service and thus our own UpdaterService instance.
++ We use the newly created fetchStatusUpdates() method in YambaApplication, which now houses most of the functionality previously part of this run() method.
++ One of the features of `fetchStatusUpdates() is that it returns the number of new records that were fetched. We can use this info for debugging for now, but later will make a different use of it as well.
+
+
+== Summary ==
+
+At this point, Yamba can pull the statuses of our friends from the cloud and post them into the local database. We still don’t have a way to view this data, but can verify that the data is there in the database.
+
+The following illustrates what we have done so far as part of the design outlined in __Figure 5.4, “Yamba Design Diagram”__:
+
+	Figure 9.1. Yamba Completion
+		[images/09-Yamba-4.png]
+

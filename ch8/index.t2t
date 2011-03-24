@@ -271,7 +271,7 @@ class PostToTwitter extends AsyncTask<String, Integer, String> {
 
 %**Figure 8.1. Service Lifecycle**
 **图8.1. Service的生存周期**
-		[images/ServiceLifeCycle.png]
+		[images/08-ServiceLifeCycle.png]
 
 % Next, we want to override some of the main lifecycle methods:
 
@@ -471,7 +471,7 @@ public boolean onOptionsItemSelected(MenuItem item) {
 
 **Figure 8.2. Running Services**
 
-[images/RunningServices.png]
+[images/08-RunningServices.png]
 
 % Your service is now working, although it’s not doing much at this point.
 
@@ -826,5 +826,5 @@ D/UpdaterService(  310): Marko Gargenta: right!
 
 **Figure 8.3. Yamba Completion**
 
-[images/Yamba-3.png]
+[images/08-Yamba-3.png]
 
