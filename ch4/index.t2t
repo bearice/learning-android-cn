@@ -6,10 +6,12 @@
 = 主要构件 =[ch4]
 
 {ORGI}In this chapter, you will learn about the big blocks in Android. We’ll give you a high-level overview of what Activities are, how Intents work, why Services are cool, how to use Broadcast Receivers and Content Providers to make your app scale, and much more.
-{TRAN}在本章里，你将会学到Android中的一些重要构件(Building Blocks)。我们会带你从高处俯瞰，什么是Activity，Intent如何工作，Service为什么很酷，怎么让Broadcast Receiver和Content Provider使你的程序变得易于扩展，和更多的知识。
+
+{TRAN}在本章，你将了解到Android应用的基本组成部分：构件(Building Blocks)。我们将在一个较高的层面上观察何为Activity、Intent如何工作、Service酷在什么地方、怎样使用Broadcast Receiver与Content Provider使你的程序更易于扩展，以及更多的相关内容。
 
 {ORGI}By the end of this chapter, you will understand the main Android components for building applications. You should conceptually know when you’d use what component. You will also see how these components relate to a real world application.
-{TRAN}读完本章，你将了解到用于构建应用程序的Android基本组件。你会大体明白何时需要采用哪种组件。同时你也将看到这些组件和实际情形间的关联。
+
+{TRAN}到本章结束，你将对何时使用哪个组件，以及它们在实际应用中的关系，有个概念性的认识。
 
 
 %== Main Building Blocks ==
@@ -17,23 +19,26 @@
 
 {ORGI}Main building blocks are components that you use as an application developer to build Android apps. They are the conceptual items that you put together to create a bigger whole. When you start thinking about your application, it is good to approach it top down. You design your application in terms of screens, features, and interactions between them. You start with conceptual drawing, something that you can represent in terms of "lines and circles". This approach to application development helps you see the big picture - how the components fit together and it all makes sense.
 
-{TRAN}Main building blocks是开发Android应用时组件，它们是用来构建大家伙的砖块。当你开始策划你的应用程序时，自顶向下地考虑会比较好。你从界面、功能和它们之间的交互去设计你的应用程序。于是你开始打草稿，用一些线和圆表达你的思路。开发应用程序时采用这种方法有助于你构想出一幅宏伟蓝图————这些组件是如何配合在一起，变得有意义的。
+{TRAN}构件(Building Blocks)即构建Android应用所需要用到的组件。就像盖房子需要砖块一样，有它们的堆叠组合才可以构建出完整的应用。刚开始设计时，不妨参照自顶向下的设计方法：先想想，你的应用的外观是什么样子，有什么功能，怎样实现。然后就可以打草稿了，画些线和圆表达你的思路。这对把握全局——怎样安排组件，让它们相互配合并且正常工作——是大有好处的。
 
 %== A Real World Example ==
 == 真实世界的例子==
 
 {ORGI}Let’s say that we want to build a Twitter app. We know that the user should be able to post status updates. We also know the user should be able to see what her friends are up to. Those are basic features. Beyond that, the user should also be able to set her username and password in order to login to her Twitter account. So, now we know we should have these three screens.
-{TRAN}让我们来讨论下如何构建一个Twitter应用。我们明白用户想要发布状态更新，还想要看到她的朋友们都在做些什么。这都是些基本功能。而在此之前，为了登陆到用户自己的Twitter账号，她要设置用户名和密码。所以现在我们需要有三个界面。
+
+{TRAN}我们要做的是一个Twitter应用。用户的需求很清楚，也就是发新消息，同时查看朋友的新消息，这也正是它的基本功能。除此之外，我们还需要事先知道用户的用户名和密码以登录Twitter帐号。由此可得知我们需要三个界面。
 
 {ORGI}Next, we would like my app to work fast regardless of network connection, or lack of. To achieve that, the app has to pull the data from Twitter when it’s online, and cache it locally. That will require a service that runs in the background as well as a database.
-{TRAN}下一步，我们希望应用无论网络连接与否都可以顺畅工作。为了实现这个设计，应用需要在设备在线时，从Twitter主动获取数据，缓存到本地。而这需要在后台运行服务和数据库。
+
+{TRAN}然后，我们希望我们的应用能够流畅地运行，而不受网络连接情况影响。这一来应用就得在设备联网时及时从Twitter抓取消息，并缓存到本地。这需要用到一个后台运行的Service，也需要用到数据库。
 
 {ORGI}We also know that we’d like this background service to be started when the device is initially turned on, so by the user first uses the app, there’s already up-to-date information on her friends.
-{TRAN}我们还知道，这个后台服务最好在设备初始化时就启用，这样用户第一次用这个应用时，就已经有她和朋友们的实时信息了。
 
+{TRAN}我们也希望这个后台Service最好在设备开机时就能运行。这样用户只要打开这个应用，就可以直接查看到朋友们的最新消息了。
 
 {ORGI}So, these are some straightforward requirements. Android building blocks make it easy to break them down into conceptual units so that you can work on them independently, and can also easily put them together into a complete package.
-{TRAN}所以，这都是很直接的需求。Android开发构件让这些轻松地变成概念单元，这样你能分开进行，最后简简单单地把它们组合为完整的软件包。
+
+{TRAN}如上，这都是些很直白的需求。通过Android提供的构件，你可以轻松将以上的任务分离开来，独立完成。到最后简单地将它们打包，一个完整的应用就成型了。
 
 
 %== Activities ==

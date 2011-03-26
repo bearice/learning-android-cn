@@ -4,7 +4,7 @@
 %       
 
 %= Services =
-= Service =
+=Service=
 
 % Services are among the main building blocks in Android. Unlike an activity, a service doesn’t have any user interface. It is simply a piece of code that runs in the background of your application.
 
