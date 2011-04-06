@@ -42,7 +42,7 @@ Android版本号差不多就是标志了其大版本和小版本发布的轨迹�
 
 % You may notice that there are not a lot of users of Android 1.5 and 1.6. You may also notice that there are not a lot of users of latest and greatest Android 2.3, but the number of 2.x users is growing. This is because everyone on 1.0 and 1.1 got upgraded over the air (OTA) automatically to 1.5. On the other hand, users who still have devices with Android 1.5 and 1.6 will likely never be able to upgrade to 2.x versions because their older devices do not have relevant firmware and most manufacturers are not planning on releasing firmware upgrades as they are busy working on new models.
 
-你可以注意到，使用Android 1.5和1.6的用户已经不是很多，最新版本2.3也还未成气候，不过2.x版本的用户数正保持增长势头。1.0和1.1的用户几乎都通过OTA自动升级到了1.5，不过1.5和1.6的用户却因为缺少相应的固件难以升级。甚至很多手机生产商并无推出新固件的计划，因为他们更专注于新机的开发。
+你可以注意到，使用Android 1.5和1.6的用户已经不是很多，最新版本2.3也还未成气候，不过2.x版本的用户数正保持着良好的增长势头。1.0和1.1的用户几乎都通过OTA自动升级到了1.5，不过1.5和1.6的用户却因为缺少相应的固件难以升级。很多手机生产商甚至并无推出新固件的计划，因为他们更专注于新机的开发。
 
 % With that in mind, you will probably choose 1.6 or 2.0 as your minimum development target, unless you really truly need features of the latest version.
 
