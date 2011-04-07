@@ -1,30 +1,30 @@
 .note {
-  background-color: #F2F2D5;
-  border: 1px solid #C4C47C;
+    background-color: #F2F2D5;
+    border: 1px solid #C4C47C;
 }
 
 .tip {
-  background-color: #D6F3D6;
-  border: 1px solid #7CC47C;
+    background-color: #D6F3D6;
+    border: 1px solid #7CC47C;
 }
 
 .warning, .caution {
-  background-color: #F3E3D6;
-  border: 1px solid #C8311B;
+    background-color: #F3E3D6;
+    border: 1px solid #C8311B;
 }
 
 .note > .title, .tip > .title, .caution > .title, .warning > .title {
-  font-family: inherit;
-  margin-left: 1em;
-  margin-top: 0;
-  color: black;
-  opacity: 0.6;
+    font-family: inherit;
+    margin-left: 1em;
+    margin-top: 0;
+    color: black;
+    opacity: 0.6;
 }
 
 .note, .tip, .caution, .warning {
-  /* width: 620px;/* Danger: Changes right: required for .comment_count */
-  margin: 1em auto;
-  padding: 1em;
+    /* width: 620px;/* Danger: Changes right: required for .comment_count */
+    margin: 1em auto;
+    padding: 1em;
 }
 
 pre, code, tt { 
@@ -37,25 +37,39 @@ p code {
 }
 
 pre {
-  background: #F2F2F2;
-  white-space: pre-wrap;
-  padding: 1em;
-  margin: 1em 0;
-  border: 1px solid #ddd; 
-  font-size: 90%;
+    background: #F2F2F2;
+    white-space: pre-wrap;
+    padding: 1em;
+    margin: 1em 0;
+    border: 1px solid #ddd; 
+    font-size: 90%;
 }
+
 p {
-  text-indent: 2em;
+    text-indent: 2em;
 }
+
+html {
+    background: #191322;
+}
+
 body {
-  width: 750px;
-  margin-left: auto;
-  margin-right: auto;
-  
+    width: 750px;
+    margin: 10px auto;
+    padding: 20px 50px 50px 50px;
+    font: 14px normal;
+    background: #fff;
+}
+
+h1,h2,h3,h4,h5,h6 {
+    color: #142A3B;
 }
 
 img {
-  max-width: 95%;
-  height:auto;
+    max-width: 95%;
+    height:auto;
 }
-  
+
+li {
+    margin: 0 0 3px 0;
+} 

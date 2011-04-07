@@ -7,13 +7,11 @@
 
 % In this chapter, you will learn how to create selection widgets, such as a ListView. But this isn’t just a chapter about user interface elements. We are continuing to deepen our understanding of data from the previous chapter by learning how to read data from the database of statuses and simply output it on the screen as scrollable text first. You will then learn about Adapters in order to connect your database directly with the list. You will create a custom adapter in order to be able to implement some additional functionality. You will link this new activity with your main activity so that the user can both post and read tweets.
 
-在本章，你将学到选择性控件(比如``ListView``)的创建方法。但是这里讨论的重点绝对不在用户界面，而在于进一步巩固我们在上一章中对“数据”的理解，从一开始简单的读取数据再输出到屏幕，到使用Adapter直接将数据库与List绑定在一起。你可以创建一个自己的Adapter，从而添加额外的功能。
-
-%TALK: 最后一句不知道怎么译好，待会回来
+在本章，你将学到选择性控件(比如``ListView``)的创建方法。但是这里讨论的重点绝对不在用户界面，而在于进一步巩固我们在上一章中对“数据”的理解，前面是简单地读取数据再输出到屏幕，到这里改为使用Adapter直接将数据库与List绑定在一起。你可以创建一个自己的Adapter，从而添加额外的功能。在这里我们新建一个界面，并将其作为用户发送/阅读消息的主界面。
 
 % By the end of this chapter, your app will be able to post new tweets, as well as pull them from Twitter, store them in local database, and let the user read the statuses in a nice and efficient UI. At that point, your app will have three activities and a service.
 
-到本章结束，你的程序将在完成发送消息、从Twitter读取消息、缓存在本地数据库等功能之外，更为有一个美观高效的UI允许用户阅读消息。同时，你的应用将拥有三个Activity和一个Service。
+在前面我们已经实现了发送消息、从Twitter读取消息、缓存在本地数据库等功能，在本章结束，它将拥有一个美观高效的UI允许用户阅读消息。到这里，你的程序将拥有三个Activity和一个Service。
 
 
 ==TimelineActivity==
@@ -24,15 +22,15 @@
 
 % We are going to build this activity in couple of steps, at each point keeping the application whole and complete as we make improvements.
 
-我们将创建这一Activity分成两步。保证经过每一轮更新，应用都是完整可用的。
+我们将创建这一Activity分成两步。保证经过每一轮迭代，应用都是完整可用的。
 
 % + The first iteration of TimelineActivity uses a TextView to display all the output from the database. Since there may be quite a bit of data, we will use ScrollView to wrap our large amount of text in so that there are scroll bars on provided.
 % + The second iteration uses the much more scalable and efficient ListView and Adapter approach. In this step, you will learn how Adapters and Lists work.
 % + Finally, we will create a custom Adapter to handle some additional business logic. At this point, we are going under the hood of an adapter and adding custom processing. You’ll understand the purpose and usage of adapters better after this exercise.
 
 + 第一次迭代：使用一个TextView显示数据库中的所有数据，由于数据量可能会比较大，我们将它置于ScrollView中，加一个滚动条。
-+ 第二次迭代：改用ListView与Adapter，这样伸缩性更好，而且效率更高。你将在这里学习Adapter与List的工作方式。
-+ 最后创建一个自定义的Adapter，在里面添加些额外的业务逻辑。搞定这个之后，你将体会到Adapter的设计动机与应用方式。
++ 第二次迭代：改用ListView与Adapter，这样伸缩性更好，效率也更高。你将在这里了解到Adapter与List的工作方式。
++ 最后创建一个自定义的Adapter，在里面添加些额外的业务逻辑。这需要深入Adapter的内部，你可以体会它的设计动机与应用方式。
 
 
 % ==Basic TimelineActivity Layout==
@@ -40,26 +38,26 @@
 
 % In this first iteration, we are creating a new layout for the TimelineActivity. This layout initially uses a TextView to display all the data that we have in the database. This is fine initially when we don’t have too many statuses to show.
 
-在第一次迭代中，我们为TimelineActty创建一个新的布局(Layout)，它使用一个TextView来展示数据库中的所有消息。在刚开始的时候没有多少数据，这样还是很合适的。
+在第一次迭代中，我们为TimelineActty创建一个新的布局(Layout)，它使用一个TextView来展示数据库中的所有消息。在刚开始的时候数据量不大，这样还是没有问题的。
 
 % ===Introducing ScrollView===
 ===简介ScrollView===
 
 % Since it’s unlikely that all our data will fit on a single page, we need a way to scroll the text. To do that, we use ‘ScrollView`. ScrollView is like a window that displays part of a larger component that takes more space than the screen provides. It does that by providing convenient scroll bars as as needed. To make some potentially large views scrollable, you wrap them with this ScrollView. For example, we have a printout of many friends’ statuses in form of a TextView. This TextView could become large as there are many statuses. In order to make it scrollable on a small screen, we put it into a ScrollView.
 
-不过数据一多，我们就不能保证所有的消息正好排满一页了，这时应使用``'ScrollView'``使之可以滚动。ScrollView与Window相似，不过它可以在必要时提供一个滚动条，从而允许在里面存放超过一屏的内容。要使某些可能会变得较大的视图(View)可以滚动，用ScrollView把它包起来就行了。比如在这里我们靠TextView输出所有朋友的消息，消息一多，它也跟着变大。在较小的屏幕中需要滚动，就把它放在ScrollView里。
+不过数据一多，我们就不能保证所有的消息正好排满一页了，这时应使用``'ScrollView'``使之可以滚动。ScrollView与Window相似，不过它可以在必要时提供一个滚动条，从而允许在里面存放超过一屏的内容。对付可能会变大的View，用ScrollView把它包起来就行。比如这里我们靠TextView输出所有朋友的消息，消息一多，它也跟着变大。在较小的屏幕中显示不开，就把它放在ScrollView里使之可以滚动。
 
 % A ScrollView can only contain one direct child. If you want to combine multiple views into a single view that scrolls, you need to first organize those views into another layout, like you did previously in the section called “StatusActivity Layout”, and than add that layout into ScrollView.
 
-ScrollView只能存放一个单独的子元素。要让多个View滚动的话，就需要像前面``StatusActivity Layout``一节所做的那样，先把它们放在另一个Layout里，随后把整个Layout添加到ScrollView里。
+ScrollView中只能存放单独的一个子元素。要让多个View一起滚动，就需要像前面``StatusActivity Layout``一节所做的那样，先把它们放在另一个Layout里，随后把整个Layout添加到ScrollView里。
 
 % Typically you will want ScrollView to take all the available space on the screen. Usually, therefore you will specify its layout width and height as fill_parent.
 
-通常你会希望ScrollView占满屏幕的所有可用空间。把它的高度与宽度都设置为``fill_parent``即可。
+通常你会希望ScrollView能够填满屏幕的所有可用空间。把它的高度与宽度都设置为``fill_parent``即可。
 
 % A ScrollView is usually not manipulated from Java, so it doesn’t require an id.
 
-ScrollView通常不需要使用Java控制，因此无需id。
+ScrollView通常不需要使用Java代码控制其行为，因此无需id。
 
 % In this example, we wrap our TextView with a ScrollView so that if there’s a lot of text to display, ScrollView automatically adds scroll bars.
 
@@ -95,7 +93,7 @@ ScrollView通常不需要使用Java控制，因此无需id。
 % + ScrollView that is wrapping our TextView and adding scroll bars as needed.
 % + TextView that shows the actual text, in this case statuses of our friends coming from the database.
 
-+ 在Activity屏幕顶部显示的标题。留意字符串titleTimeline的定义在``/res/values/strings.xml``文件中，具体参见``String Resource``一节。
++ 在Activity屏幕顶部显示的标题。留意字符串``titleTimeline``的定义在``/res/values/strings.xml``文件中，具体参见``String Resource``一节。
 + ScrollView包含TextView，在需要时添加滚动条。
 + TextView用以显示文本，在这里就是从数据库中读取的用户消息。
 
@@ -109,11 +107,11 @@ ScrollView通常不需要使用Java控制，因此无需id。
 
 % And just as before, whenever we create a new Java class that is one of those main building blocks—such as Activities, Services, Broadcast Receivers, and Content Providers—we first subclass a base class provided by the Android framework. In case of Activities, that class is Activity.
 
-就像前面一样，我们创建的类只要是基本构件——不管Activity，Service，Broadcast Reciever还是Content Provider——就肯定是基于Android框架提供的基类派生出来的子类。对Activity而言，其基类肯定是``Activity``。
+就像前面一样，我们创建的类只要是基本构件——不管Activity，Service，Broadcast Reciever还是Content Provider——就肯定是基于Android框架提供的基类派生出来的子类。对Activity而言，其基类即``Activity``。
 
 % The method we almost universally override in any activity is onCreate(). This is a great place for us to initialize the database. The flip side of the coin is onDestroy(), a good place to clean up anything that we create in onCreate(). In this case, we close the database in onDestroy(). Since we’d like to have the data as fresh as possible, we put the code for querying the database and outputting the data in onResume(), the method called every time this activity is brought up front. Here’s what our code looks like:
 
-在各种Activity中我们通常都会重载一个``onCreate()``，在这里则是初始化数据库的好地方。与之对应，我们在``onDestroy()``中清理``onCreate()``中创建的资源，也就是关闭数据库。我们希望显示出来的数据尽可能地最新，因此可以把查询数据库的代码放在``onResume()``中，在Activity每次激活都被调用一次。代码如下：
+我们通常会为每个Activity都重载一个``onCreate()``，这是初始化数据库的好地方。与之对应，我们在``onDestroy()``中清理``onCreate()``中创建的资源，也就是关闭数据库。我们希望显示的消息尽可能最新，因此把查询数据库的代码放在``onResume()``中，这样在界面每次显示时都会执行。代码如下：
 
 {CODE}
 package com.marakana.yamba5;
@@ -184,20 +182,20 @@ public class TimelineActivity1 extends Activity { // #{1}
 % + We finally append that new line of output to our text view textTimeline so user gets to see it on the screen.
 
 + 这是个Activity，因此它继承自Android框架提供的``Activity``类。
-+ 我们需要访问数据库以得到Timeline的相关数据，``onCreate()``是个连接数据库的好地方。
-+ 通过dbHelper打开数据库文件之后，我们需要通过它的``getReadableDatabase()``或``getWritableDatabase()``才能得到实际的数据库对象。在这里我们只需要读取Timeline的数据，因此按只读方式打开数据库。
-+ 我们得记着关闭数据库并释放资源。数据库若是在``onCreate()``中打开的，对应地可以在``onDestroy()``中关闭它。注意``onDestroy()``只有系统清理资源时才被调用。
-+ 我们调用``query()``方法从数据库中查询数据。这个方法的参数似乎多的过了头，几乎都是对应着SQL的SELECT语句的各个部分。在这里，也就相当与``SELECT * FROM timeline ORDER BY created_at DESC``。这些``null``表示我们并没有使用SQL语句中相应的部分，比如``WHERE``, ``GROUPING``, 与 ``HAVING``等。它返回一个Cursor对象作为迭代器。
-+ ``startManagingCursor()``用于提示Activity开始管理Cursor的生命周期，使之同自己一致。意思是指它能保证在Activity销毁时，同时释放掉Cursor关联的数据，这样有助于优化垃圾收集的性能。不然就只能在各个重载函数中添加代码手工管理Cursor了。
-+ cursor——回忆下``Cursors``一节的内容——表示通过``query()``方法查询数据库所得的结果。以表的形式，表示多行多列的数据。每一行都是一条独立的记录，就像Timeline中的一条消息，而其中的列则是预先定义的，比如``_id``, ``created_at``, ``user``以及``txt``。前面提到Cursor是个迭代器，我们可以通过它在每次迭代中读取一条记录，而在没有剩余数据时退出迭代。
-+ 对于cursor的当前记录，我们可以通过提供类型与列号来获得其中的值。由此，cursor.getString(3)返回一个字符串，表示消息的内容；cursor.getLong(1)返回一个数值，表示消息创建时的时间戳。但是，把列号硬编码在代码中不是个好习惯，因为数据库的原型一旦有变化，我们就不得不手工调整相关的代码，而且可读性也不好。更好的方法是，使用列名——回想下，在第九章[数据库 #ch9]我们曾定义过C_USER与C_TEXT等字符串——调用``cursor.getColumnIndex()``得到列号，然后再取其中的值。
-+ 使用``String.format()``对每行输出进行格式化。在这里我们选择使用TextView控件显示数据，因此只能显示文本，或者说有格式的文本。我们在以后的迭代中更新这里。
++ 我们需要访问数据库以得到Timeline的相关数据，而``onCreate()``正是连接数据库的好地方。
++ 通过dbHelper打开数据库文件之后，我们需要它的``getReadableDatabase()``或``getWritableDatabase()``才可以得到实际的数据库对象。在这里我们只需读取Timeline的相关数据，因此按只读方式打开数据库。
++ 我们得记着关闭数据库并释放资源。数据库是在``onCreate()``中打开，因此可以在``onDestroy()``中关闭。注意``onDestroy()``只有在系统清理资源时才被调用。
++ 调用``query()``方法从数据库中查询数据，返回一个Cursor对象作为迭代器。参数似乎多的过了头，不过几乎都是对应着SQL的SELECT语句的各个部分。在这里也就相当与``SELECT * FROM timeline ORDER BY created_at DESC``。这些``null``表示我们并没有使用SQL语句中相应的部分，比如``WHERE``, ``GROUPING``, 与 ``HAVING``等。
++ ``startManagingCursor()``用于提示Activity自动管理Cursor的生命周期，使之同自己保持一致。“保持一致”的意思是，它能保证在Activity销毁时，同时释放掉Cursor关联的数据，这样有助于优化垃圾收集的性能。没有自动管理的话，就只能在各个重载函数中添加代码手工地管理Cursor了。
++ cursor——回忆下``Cursors``一节的内容——即通过``query()``方法查询数据库所得的结果。按照表的形式，暂存多行多列的数据。每一行都是一条独立的记录——比如Timeline中的一条消息——而其中的列则都是预先定义的，比如``_id``, ``created_at``, ``user``以及``txt``。前面提到Cursor是个迭代器，我们可以通过它在每次迭代中读取一条记录，而在没有剩余数据时退出迭代。
++ 对于cursor的当前记录，我们可以通过类型与列号来获取其中的值。由此，cursor.getString(3)返回一个字符串，表示消息的内容；cursor.getLong(1)返回一个数值，表示消息创建时的时间戳。但是，把列号硬编码在代码中不是个好习惯，因为数据库的原型一旦有变化，我们就不得不手工调整相关的代码，而且可读性也不好。更好的方法是，使用列名——回想下，在第九章[数据库 #ch9]我们曾定义过C_USER与C_TEXT等字符串——调用``cursor.getColumnIndex()``得到列号，然后再取其中的值。
++ 使用``String.t()``对每行输出进行格式化。在这里我们选择使用TextView控件显示数据，因此只能显示文本，或者说有格式的文本。我们在以后的迭代中更新这里。
 + 最后把新的一行追加到textTimeline的文本中，用户就可以看到了。
 
 
 % While this approach works for smaller data sets, it is not optimal or recommended. The better approach is to use a ListView to represent the list of statuses that we have in the database. ListView, which we’ll use in the next version of our TimelineActivity, is much more scalable and efficient.
 
-上面的方法对较小的数据集还工作良好，但绝对不是值得推荐的好方法。更好的方法是通过ListView显示消息列表，它可以绑定数据库，更易于伸缩的同时也更加高效。
+上面的方法对较小的数据集还没问题，但绝对不是值得推荐的好方法。更好的方法是使用ListView，正如下文所示——它可以绑定数据库，伸缩性更好的同时也更加高效。
 
 
 % ==About Adapters==
@@ -205,11 +203,11 @@ public class TimelineActivity1 extends Activity { // #{1}
 
 % A ScrollView will work for a few dozen records. But what if your status database has hundreds or even thousands of records? Waiting to get and print them all would be highly inefficient. The user probably doesn’t even care about all of the data anyhow.
 
-一个ScrollView足以应付几十条记录，但是数据库里要有上百上千条记录时怎么办？全部读取并输出是很低效的。更何况，用户不一定关心所有的数据。
+一个ScrollView足以应付几十条记录，但是数据库里要有上百上千条记录时怎么办？全部读取并输出当然是很低效的。更何况，用户不一定关心所有的数据。
 
 % To address this issue, Android provides adapters. These are a smart way to connect a View with some kind of data source (see Figure 10.1, “Adapter”). Typically, your view would be a ListView and the data would come in form of a Cursor or Array. So adapters come as subclasses of CursorAdapter or ArrayAdapter.
 
-针对这一问题，Android提供了Adapter，从而允许开发者为一个View绑定一个数据源(如图10.1, //"Adapter"//)。典型的情景就是，view即ListView，数据即Cursor或者Array，因此选用其相应的Adapter：CursorAdapter或者ArrayAdapter。
+针对这一问题，Android提供了Adapter，从而允许开发者为一个View绑定一个数据源(如图10.1, //"Adapter"//)。典型的情景是，View即ListView，数据即Cursor或者数组(Array)，Adapter也就与之对应：CursorAdapter或者ArrayAdapter。
 
 	**Figure 10.1. Adapter**
 		[images/10-Adapter.png]
@@ -220,7 +218,7 @@ public class TimelineActivity1 extends Activity { // #{1}
 
 % As before, our first stop in upgrading out applications is our resources file. We’ll add a ListView to the timeline layout by editing timeline.xml.
 
-同前面一样，第一步仍是更改resource文件。修改``timeline.xml``，为Timeline的布局添加一个ListView。
+同前面一样，第一步仍是修改资源文件。修改``timeline.xml``，为Timeline的布局添加一个ListView。
 
 **Example 10.3. res/layout/timeline.xml**
 
@@ -281,7 +279,8 @@ ListActivity即含有一个ListView的Activty，我们完全拿它作为Timeline
 ListView中单行的布局在文件``row.xml``中定义。
 
 
-===Creating an Adapter in TimelineActivity.java===
+% ===Creating an Adapter in TimelineActivity.java===
+===在TimelineActivity.java中创建一个Adapter===
 
 % Now that we have the XML files sorted out, we are ready to update the Java code. First we need to create the adapter. Adapters generally come in two flavors: those that represent array data and those that represent cursor data. Since our data is coming from the database, we are going to use the cursor-based adapter. One of the simplest of those is SimpleCursorAdapter.
 
@@ -361,11 +360,11 @@ public class TimelineActivity2 extends Activity {
 
 + 这个Cursor用以读取数据库中的朋友消息。
 + ``listTimeLine``即我们用以显示数据的ListView。
-+ ``adapter``是我们自定义的Adapter，在后面的正文及例子中讲解。
++ ``adapter``是我们自定义的Adapter，这在后文中讲解。
 + ``FROM``是个字符串数组，用以指明我们需要的数据列。其内容与我们前面引用数据列时使用的字符串相同。
-+ ``TO``是个整型数组，对应布局row.xml中指明的View的ID，用以指明数据的绑定对象。FROM与TO的各个元素必须一一对应，比如``FROM[0]``对应``TO[0]``，如是继续。
-+ 获得XML布局中声明的ListView。
-+ 有了Cursor形式的数据，``row.xml``定义了单行消息的布局，常量FROM与TO表示了映射关系，现在可以创建一个``SimpleCursorAdapter``。
++ ``TO``是个整型数组，对应布局row.xml中指明的View的ID，用以指明数据的绑定对象。FROM与TO的各个元素必须一一对应，比如``FROM[0]``对应``TO[0]``，``FROM[1]``对应``TO[1]``，如是继续。
++ 获取XML布局中声明的ListView。
++ 获得了Cursor形式的数据，``row.xml``定义了单行消息的布局，常量FROM与TO表示了映射关系，现在可以创建一个``SimpleCursorAdapter``。
 + 最后通知ListView使用这个Adapter。
 
 
@@ -375,9 +374,9 @@ public class TimelineActivity2 extends Activity {
 
 TimelineAdapter即我们自定义的Adapter。虽说SimpleCursorAdapter映射起数据来倒也直白，但是我们在这里有个时间戳（timestamp）需要特殊处理。TimelineAdapter的工作即与之有关：加入将Unix时间戳转换为相对时间的业务逻辑。我们可以知道，``SimpleCursorAdapter``是在``bindView()``调用中处理View的显示，因此我们将重载这个方法，在数据显示出来之前处理一下。
 
-Typically, if you are not sure what method to override, look at the online documentation for that particular system class that you are modifying. In this case, that’d be http://developer.android.com/reference/android/widget/SimpleCursorAdapter.html.
+% Typically, if you are not sure what method to override, look at the online documentation for that particular system class that you are modifying. In this case, that’d be http://developer.android.com/reference/android/widget/SimpleCursorAdapter.html.
 
-一般来说，若不清楚需要重载的函数是哪个，看下相关类的官方文档即可。在这里，即[http://developer.android.com/reference/android/widget/SimpleCursorAdapter.html]
+一般来说，若不清楚类里需要重载的函数是哪个，看下相关的官方文档即可。在这里，可以参阅http://developer.android.com/reference/android/widget/SimpleCursorAdapter.html。
 
 **Example 10.6. TimelineAdapter.java**
 {CODE}
@@ -427,14 +426,14 @@ public class TimelineAdapter extends SimpleCursorAdapter { // #{1}
 + 创建我们自定义的Adapter。基于Android提供的Adapter派生一个新类，这里我们选择前面用到的SimpleCursorAdapter。
 + 跟上个例子一样，这个常量用以指明数据库中我们感兴趣的列。
 + 这个常量用以指明数据列对应View的ID。
-+ 因为是新定义的类，因此需要一个构造函数。通过super调用父类的构造函数即可。
-+ 这里只重载了一个方法，即``bindView()``。这个方法在映射每行数据到View时调用，Adapter的工作也主要在这里进行了。要重用SimpleCursorAdapter现有的映射操作(数据到View)，记得先调用super.bindView()。
-+ 要覆盖默认针对timestamp的映射操作，需要先得到数据库中timestamp的值。
++ 因为是新定义的类，因此需要一个构造函数。在这里仅仅通过super调用父类的构造函数即可。
++ 这里只重载了一个方法，即``bindView()``。这个方法在映射每行数据到View时调用，Adapter的主要工作在这里进行了。要重用SimpleCursorAdapter原有的映射操作(数据到View)，记得先调用super.bindView()。
++ 覆盖默认针对timestamp的映射操作，需要先得到数据库中timestamp的值。
 + 然后找到对应的TextView，其定义在``row.xml``。
-+ 最后，依据timestamp的值设置``textCreatedAt``的值为相对时间。通过``DataUtils.getRelativeTimeSpanString()``。
++ 最后，依据timestamp的值设置``textCreatedAt``的值为相对时间。通过``DateUtils.getRelativeTimeSpanString()``。
 
 
-At this point, we can further simplify our TimelineActivity class, because we moved some of the adapter details to TimelineAdapter.
+% At this point, we can further simplify our TimelineActivity class, because we moved some of the adapter details to TimelineAdapter.
 
 前面将Adapter相关的一些细节移入了``TimelineAdapter``，因此我们可以进一步简化``TimelineActivity``类。
 
@@ -518,7 +517,7 @@ public class TimelineActivity3 extends Activity {
 
 % In our final iteration of TimelineAdapter, we create a custom ViewBinder as a constant and attach it to the stock SimpleCursorAdapter.
 
-在如下针对``TimelineAdapter``的最后一轮迭代中，我们实现一个自定义的``ViewBinder``作为常量，并把它交给``SimpleCursorAdapter``。
+如下即针对``TimelineAdapter``的最后一轮迭代，我们实现一个自定义的``ViewBinder``作为常量，并把它交给``SimpleCursorAdapter``。
 
 **Example 10.8. TimelineActivity.java with ViewBinder**
 {CODE}
@@ -590,15 +589,15 @@ public class TimelineActivity3 extends Activity {
 
 % Now, in order to make TimelineActivity the main entry point into our application, we need to register it to respond to certain intents. Basically, when the user clicks to start your application, the system sends an intent. You have to define an activity to "listen" to this intent. The activity does that by filtering the intents using an IntentFilter. In XML, this is within the <intent-filter> element and it usually contains at least an <action> element representing the actual intent action we’re interested in.
 
-要把它设为程序的“主界面”，我们需要为它注册到特定的Intent。通常情况是，用户点击启动你的程序，系统就会发送一个Intent。你必须有个Activity能“侦听”到这个Intent才行，因此Andorid提供了IntentFilter，使之可以过滤出感兴趣的Intent。在XML中，它通过``<intent-filter>``元素表示，其下至少含有一个``<action>``元素，以表示我们感兴趣的Intent。
+要把它设为程序的“主界面”，我们需要为它注册到特定的Intent。通常情况是，用户点击启动你的程序，系统就会发送一个Intent。你必须有个Activity“侦听”到这个Intent才行，因此Andorid提供了IntentFilter，使之可以过滤出各自感兴趣的Intent。在XML中，它通过``<intent-filter>``元素表示，其下至少含有一个``<action>``元素，以表示我们感兴趣的Intent。
 
 % You may have noticed that StatusActivity had some extra XML compared to PrefsActivity. The extra code is the intent filter block, along with the action that it’s filtering for.
 
-你可以注意到，它比``PrefsActivity``多出了一段XML代码，这便是IntentFiltter那部分。
+你可以注意到，``StatusActivity``比``PrefsActivity``多出了一段XML代码，这便是IntentFilter的部分。
 
 % There is a special action named android.intent.action.MAIN that simply indicates that this is the main component that should be started when the user wants to start your application. Additionally, there’s a <category> element that tells the system that this application should be added to the main Launcher application so that the user can see the app icon along with all the other icons, click on it, and start it. This category is defined as android.intent.category.LAUNCHER.
 
-里面有个特殊的``action``，``android.intent.action.MAIN``，即简单地指明了在用户打算启动我们的程序时首先启动的组件。除此之外还有个``<category>``元素，用以通知系统这个程序会被加入到``main Launcher``之中，这一来用户就可以见到我们程序的图标，点击即可启动。这个目录(category)的定义就是``android.intent.category.LAUNCHER``。
+里面有个特殊的``action``，``android.intent.action.MAIN``，即指明了在用户打算启动我们的程序时首先启动的组件。除此之外还有个``<category>``元素，用以通知系统这个程序会被加入到``main Launcher``之中，这一来用户就可以见到我们程序的图标，点击即可启动。这个目录(category)的定义就是``android.intent.category.LAUNCHER``。
 
 % So, to make TimelineActivity the main entry point, we simply list it and move the code from the StatusActivity declaration over to the TimelineActivity declaration.
 
@@ -642,15 +641,329 @@ public class TimelineActivity3 extends Activity {
 + ``StatusActivity``就不需要IntentFilter了。
 
 
+% ===Initial App Setup===
+===程序初始化===
+
+% Now, when the user runs our application, the Timeline screen will show up first. But unless the user knows she should set up the preferences and start the service, there will be no data and very little hand holding telling her what to do.
+
+好，现在用户启动我们的程序就会首先看到Timeline界面。但是用户必须先设置个人选项并启动Service，否则就没有消息显示。这很容易让人摸不着头脑。
+
+% One solution to that would be to check whether preferences exist, and if they do not, redirect the user to the Preference activity with a message what to do next.
+
+一个解决方案是，在启动时检查用户的个人选项是否存在。若不存在，就跳到选项界面，并给用户一个提示，告诉她下一步该怎么做。
+
+{CODE}
+...
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+  ...
+  // Check whether preferences have been set
+  if (yamba.getPrefs().getString("username", null) == null) { // #{1}
+    startActivity(new Intent(this, PrefsActivity.class)); // #{2}
+    Toast.makeText(this, R.string.msgSetupPrefs, Toast.LENGTH_LONG).show(); // #{3}
+  }
+  ...
+}
+...
+{/CODE}
+
+% + We check whether one of the preferences have been set. In this case, I’ve shosen to check username because it’s likely to be set if any preferences at all are set. Since the first time user runs the application, the preferences do not exist, this means the value of username (or any other preference item we choose) will be null.
+% + We start the PrefsActivity. Note that startActivity() will dispatch an intent to the system, but the rest of onCreate() will execute as well. This is good since we’re likely going to come back to the Timeline activity once we’re done setting up preferences.
+% + We display a little pop-up message, i.e. a Toast telling the user what to do. This assumes that you have created the appropriate msgSetupPrefs in your strings.xml file, as usual.
+
++ 检查用户的个人选项是否设置。在这里先只检查``username``即可，因为有了``username``，往往就意味着所有个人选项都已设置。在第一次启动程序时个人选项还不存在，因此``username``(或者其它任意一项)肯定为null。
++ 启动``PrefsActivity``。留意这里的``startActivity()``调用给系统发送一个Intent，但并不会在这里退出``onCreate()``的执行。这一来就允许用户在设置完毕之后，可以回到Timeline界面。
++ 显示一条弹出消息(即Toast)，提示用户该怎么做。同前面一样，这里假定你在``strings.xml``中提供了``msgSetupPrefs``的定义。
 
 
+===BaseActivity===
+
+% Now that we have a Timeline activity, we need to give it an options menu, just as we did to our Status activity in the section called “Options Menu”. This is especially important because the Timeline activity is the entry point into our application and without the menu, the user cannot easily get to any other activity or start and stop the service.
+
+现在我们有了Timeline界面，接下来需要一个选项菜单，就像在``Options Menu``一节中对``StatusActivity``所做的那样。这对Timeline界面来说很重要，因为作为主界面，要没有菜单，用户就没法访问其它界面或者控制Service的开关了。
+
+% As one approach, we could copy and paste the code we already have from the Status activity, but that’s rarely a good strategy. Instead, we’ll do what we usually do: refactor the code. In this case, we can take out the common functionality from the Status activity and place it in another activity that will serve as the base. See Figure 10.2, “BaseActivity Refactor”.
+
+要实现上述功能，我们可以把``StatusActivity``中相关的代码都复制粘贴过来，但这不是好办法。相反，我们应该优先考虑的是重构。在这里，我们可以将``StatusActivity``中相应的功能放在另一个``Activity``中，并使其作为基类。
+
+**Figure 10.2. BaseActivity Refactor**
+
+[images/10-BaseActivity.png]
 
 
+% To do that, we’ll create a new class called BaseActivity and move the the common functionality into it. For us, the common functionality includes getting the reference to the YambaApplication object, as well as the onCreateOptionsMenu() and onOptionsItemSelected() methods that support the options menu.
+
+我们新建一个类``BaseActivity``，然后把需要重用的代码挪到里面。这里重用的代码就是：获得``YambaApplication``对象引用、选项菜单的相关代码(``onCreateOptionsMenu()``和``onOptionsItemSelected()``)。
+
+% ===Toggle Service===
+===Service开关===
+
+% While we’re at it, instead of having Start Service and Stop Service menu buttons, it would be nice to provide just one button that toggles between Start and Stop. To do that, we’ll change our menu and add onMenuOpened() to the base activity to dynamically update the title and images for this toggle item.
+
+在这个地方分别提供开/关两个按钮，总不如只留一个按钮做开关更好。因此需要修改菜单，并为``BaseActivity``添加一个``onMenuOpened()``方法用以动态控制按钮文本以及图标的变化。
+
+% First, we’ll update the menu.xml file to include our new toggle menu item. At the same time, we’ll remove the Start Service and Stop Service items because our toggle feature makes them obsolete.
+
+首先修改//munu.xml//文件，添加新的菜单项，也就是开关按钮。这时原先启动/关闭Service的两个按钮已经没必要了，删除即可。
+
+**Example 10.10. res/menu/menu.xml[]**
+{CODE}
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <item android:id="@+id/itemStatus" android:title="@string/titleStatus"
+    android:icon="@android:drawable/ic_menu_edit"></item>
+  <item android:title="@string/titleTimeline" android:id="@+id/itemTimeline"
+    android:icon="@android:drawable/ic_menu_sort_by_size"></item>
+  <item android:id="@+id/itemPrefs" android:title="@string/titlePrefs"
+    android:icon="@android:drawable/ic_menu_preferences"></item>
+  <item android:icon="@android:drawable/ic_menu_delete"
+    android:title="@string/titlePurge" android:id="@+id/itemPurge"></item>
+
+  <!-- #{1} -->
+  <item android:id="@+id/itemToggleService" android:title="@string/titleServiceStart"
+    android:icon="@android:drawable/ic_media_play"></item>
+
+</menu>
+{/CODE}
+
+% + This new itemToggleService now replaces both itemServiceStart and itemServiceStop.
+
++ 将原先的``itemServiceStart``与``itemServiceStop``替换为``itemToggleService``。
 
 
+**Example 10.11. BaseActivity.java**
+{CODE}
+package com.marakana.yamba5;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
+
+/**
+ * The base activity with common features shared by TimelineActivity and
+ * StatusActivity
+ */
+public class BaseActivity extends Activity { // #{1}
+  YambaApplication yamba; // #{2}
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    yamba = (YambaApplication) getApplication(); // #{3}
+  }
+
+  // Called only once first time menu is clicked on
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) { // #{4}
+    getMenuInflater().inflate(R.menu.menu, menu);
+    return true;
+  }
+
+  // Called every time user clicks on a menu item
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) { // #{5}
+
+    switch (item.getItemId()) {
+    case R.id.itemPrefs:
+      startActivity(new Intent(this, PrefsActivity.class)
+          .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
+      break;
+    case R.id.itemToggleService:
+      if (yamba.isServiceRunning()) {
+        stopService(new Intent(this, UpdaterService.class));
+      } else {
+        startService(new Intent(this, UpdaterService.class));
+      }
+      break;
+    case R.id.itemPurge:
+      ((YambaApplication) getApplication()).getStatusData().delete();
+      Toast.makeText(this, R.string.msgAllDataPurged, Toast.LENGTH_LONG).show();
+      break;
+    case R.id.itemTimeline:
+      startActivity(new Intent(this, TimelineActivity.class).addFlags(
+          Intent.FLAG_ACTIVITY_SINGLE_TOP).addFlags(
+          Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
+      break;
+    case R.id.itemStatus:
+      startActivity(new Intent(this, StatusActivity.class)
+          .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
+      break;
+    }
+    return true;
+  }
+
+  // Called every time menu is opened
+  @Override
+  public boolean onMenuOpened(int featureId, Menu menu) { // #{6}
+    MenuItem toggleItem = menu.findItem(R.id.itemToggleService); // #{7}
+    if (yamba.isServiceRunning()) { // #{8}
+      toggleItem.setTitle(R.string.titleServiceStop);
+      toggleItem.setIcon(android.R.drawable.ic_media_pause);
+    } else { // #{9}
+      toggleItem.setTitle(R.string.titleServiceStart);
+      toggleItem.setIcon(android.R.drawable.ic_media_play);
+    }
+    return true;
+  }
+
+}
+{/CODE}
+
+% + BaseActivity is an Activity.
+% + We declare the shared YambaApplication to make it accessible to all the other subclasses.
+% + In onCreate(), we get the reference to this yamba.
+% + onCreateOptionsMenu() is moved here from StatusActivity.
+% + onOptionsItemSelected() is also moved over from StatusActivity. Notice, however, that it now checks for itemToggleService instead of start and stop service items. Based on state of the service, which we know from the flag in yamba, we request either to start or to stop the Updater service.
+% + onMenuOpened() is the new method called by the system when the options menu is opened. This is a good callback for us to implement the toggle functionality. We’re given the menu object that represents the options menu.
+% + Within the menu object, we find our new toggle item so that we can update it based on the current state of the Updater service.
+% + We check whether the service is already running, and if it is, we set the appropriate title and icon for the toggle item. Notice that here we’re setting up the title and icon programmatically using the Java APIs, instead of the XML which we used initially to set up the menu in menu.xml.
+% + If the service is stopped, we set the icon and title so that user can click on it and start the service. This way our single toggle button communicates whatever state the service is currently in.
+
++ ``BaseActivity``是个Activity。
++ 声明一个共享的YambaApplication对象，使之可为所有子类访问。
++ 在``onCreate()``中获得``yamba``的引用。
++ 将``StatusActivity``的``onCreateOptionsMenu``挪到了这里。
++ ``onOptionsItemSelected``也是同样来自``StatusActivity``。不过留意下这里的变动：它不再检查启动/停止Service的两个条目，改为检查``itemToggleService``一个条目。通过yamba中的标志变量我们可以得到Service的运行状态，基于此，决定启动还是关闭。
++ ``onMenuOpened()``是个新加入的方法，它在菜单打开时为系统所调用，参数``menu``即我们的选项菜单。我们可以在这里控制开关的显示。
++ 在``menu``对象中找到我们新建的开关条目。
++ 检查Service是否正在运行，如果是，则设置对应的标题与图标。留意我们在这里是通过Java的API手工地修改GUI的内容，而无关xml。
++ 如果Service没有运行，则设置对应的标题与图标，用户点击它即可启动Service。这样我们就实现了开关按钮随Service状态的不同而变化。
 
 
+好，已经有了``BaseActivity``类，接下来修改``TimelineActivity``也使用它。如下为``TimelineActivity``的完整实现：
+
+**Example 10.12. TimelineActivity.java, final version**
+{CODE}
+package com.marakana.yamba5;
+
+import android.content.Intent;
+import android.database.Cursor;
+import android.os.Bundle;
+import android.text.format.DateUtils;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.SimpleCursorAdapter.ViewBinder;
+
+public class TimelineActivity extends BaseActivity { // #{1}
+  Cursor cursor;
+  ListView listTimeline;
+  SimpleCursorAdapter adapter;
+  static final String[] FROM = { DbHelper.C_CREATED_AT, DbHelper.C_USER,
+      DbHelper.C_TEXT };
+  static final int[] TO = { R.id.textCreatedAt, R.id.textUser, R.id.textText };
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.timeline);
+
+    // Check if preferences have been set
+    if (yamba.getPrefs().getString("username", null) == null) { // #{2}
+      startActivity(new Intent(this, PrefsActivity.class));
+      Toast.makeText(this, R.string.msgSetupPrefs, Toast.LENGTH_LONG).show();
+    }
+
+    // Find your views
+    listTimeline = (ListView) findViewById(R.id.listTimeline);
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+
+    // Setup List
+    this.setupList(); // #{3}
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+
+    // Close the database
+    yamba.getStatusData().close(); // #{4}
+  }
+
+  // Responsible for fetching data and setting up the list and the adapter
+  private void setupList() { // #{5}
+    // Get the data
+    cursor = yamba.getStatusData().getStatusUpdates();
+    startManagingCursor(cursor);
+
+    // Setup Adapter
+    adapter = new SimpleCursorAdapter(this, R.layout.row, cursor, FROM, TO);
+    adapter.setViewBinder(VIEW_BINDER); // #{6}
+    listTimeline.setAdapter(adapter);
+  }
+
+  // View binder constant to inject business logic for timestamp to relative
+  // time conversion
+  static final ViewBinder VIEW_BINDER = new ViewBinder() { // #{7}
+
+    public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+      if (view.getId() != R.id.textCreatedAt)
+        return false;
+
+      // Update the created at text to relative time
+      long timestamp = cursor.getLong(columnIndex);
+      CharSequence relTime = DateUtils.getRelativeTimeSpanString(view
+          .getContext(), timestamp);
+      ((TextView) view).setText(relTime);
+
+      return true;
+    }
+
+  };
+}
+{/CODE}
+
+% + For starters, we now subclass our BaseActivity instead of just of the system’s Activity. This way we inherit the yamba object as well as all the support for the options menu.
+%NOTE: for starters是俚语，to begin with
+% + This is where we check whether preferences are already set. If not, we’ll redirect the user to the Preference activity first.
+% + On resuming this activity, we set up the list. This is a private method, shown further down.
+% + When this activity is closed, we want to make sure we close the database to release this resource. The database is opened by the call to getStatusUpdates() in the yamba application.
+% + setupList() is the convenience method that gets the data, sets up the adapter, and connects it all to the list view.
+% + This is where we attach the view binder to the list, as discussed already in the section called “ViewBinder: A Better Alternative to TimelineAdapter”.
+% + ViewBinder is defined here.
+
++ 首先将基类由系统提供的``Activity``改为我们的``BaseActivity``。由此也就继承来了yamba对象，以及选项菜单的相关支持。
++ 在这里检查用户的个人选项是否存在，若不存在，则切换到选项界面。
++ 在界面显示时，初始化消息列表。这是个私有方法，定义在后面。
++ 我们希望在界面关闭时，关闭数据库并释放资源。数据库是在``yamba``对象中的``getStatusUpdates()``方法中打开的。
++ 辅助方法``setupList()``用以获取数据、设置Adapter并将其绑定于ListView。
++ 在这里将ViewBinder绑定于List。参见["ViewBinder：TimelineAdapter之外的更好选择" #]一节。
++ ViewBinder的定义。
 
 
+% At this point, we’ve done a lot of the refactoring work on our Timeline activity. We can also simplify the Status activity by cutting out the code related to the options menu. This makes it simpler and helps separate functional concerns among BaseActivity, StatusDate, and TimelineActivity.
 
+到这里，我们已经将``TimelineActivity``重构的差不多了。按照如上的步骤，我们可以进一步简化``StatusActivity``，将选项菜单相关的代码清掉，从而使得``BaseActivity``、``StatusDate``、``TimelineActivity``的职责更加分明。
+
+% **Figure 10.3, “TimelineActivity” shows what the final Timeline activity screen looks like.**
+
+//Figure 10.3, “TimelineActivity”// 展示了Timeline界面最后的样子。
+
+**Figure 10.3. TimelineActivity**
+
+[images/10-TimelineActivity-3.png]
+
+==总结==
+
+% At this point, Yamba can post a new status as well as list statuses of our friends. Our application is complete and usable.
+
+到这里，Yamba除了可以发信息，也可以阅读朋友的消息了。我们的程序仍是完整可用的。
+
+% Figure 10.4, “Yamba Completion” illustrates what we have done so far as part of the design outlined in Figure 5.4, “Yamba Design Diagram”.
+
+Figure 10.4 //"Yamba Completion"//展示了我们目前已完成的部分。完整图参见 Figure 5.4, //Yamba Design Diagram//。
+
+**Figure 10.4. Yamba Completion**
+
+[images/10-Yamba-5.png]
 
