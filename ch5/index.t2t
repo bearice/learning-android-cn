@@ -6,7 +6,7 @@
 {TRAN}= Yamba 项目简介 =[ch5]
 
 {ORGI}The best way to learn is by an example. And that example has to meet certain criteria. After working with thousands of new Android developers and explaining some of unique concepts that this platform has to offer, using various example applications, I concluded that the best example has to be:
-{TRAN}学习的最好方法就是参照一个合适的实例，并动手实践。在平日的教学中，我曾尝试使用过许多的实例，对数千名初学者讲解Android平台的一些特性。经过总结，一个好的实例该有如下特征：
+{TRAN}学习的最好方法就是动手实践，因此一个好的实例是很重要的。在平日的教学中，我曾尝试使用过许多的实例，对数千名初学者讲解Android平台的一些特性。经过总结，一个好的实例该有如下特征：
 
 {ORGI}**Comprehensive**
 {TRAN}**全面**
@@ -18,7 +18,7 @@
 {TRAN}**大众化**
 
 {ORGI} The example application should be simple to understand. We want to focus on design and implementation and not on features and benefits.
-{TRAN}一个好的实例应当是简单易懂的。对我们而言，重要的该是理解它的设计与实现，而非平铺直叙它的特性与好处。
+{TRAN}一个好的实例应当是简单易懂的。对我们来说，重点是理解它的设计与实现，而非平铺直叙它的特性与好处。
 
 {ORGI}== The Yamba Application ==
 {TRAN}== Yamba 项目 ==
@@ -86,7 +86,7 @@
 {TRAN}== 第一部分: Android 用户界面 ==
 
 {ORGI}This part will focus on developing the first part of Yamba application: the Status Update screen. Our tasks are:
-{TRAN}在这部分中，我们将着重介绍 Yamba 的第一个部分：消息列表界面。 我们的主要任务有：
+{TRAN}在这部分中，我们将着重介绍 Yamba 的第一个部分：消息更新界面。 我们的主要任务有：
 
 {ORGI}=== Building an activity ===
 {TRAN}=== 构建一个 Activity ===
@@ -96,65 +96,66 @@
 {TRAN}我们先来熟悉一下 Android 的用户界面(UI)模型。Android的UI模型可能与你接触过的其它UI模型有所不同，其最大特点即它的 UI既可以通过Java描述，也可以通过XML描述。
 
 {ORGI}In this chapter, you will learn how to develop the user interface for __Figure 5.2, “Screen where the user can enter a status message”__, where the user updates the status. Through this process, you will use XML and Java to put together a working UI. You will learn about Layouts and Views, units in Android, how to work with images, and how to make the UI look pretty.
-{TRAN}在这一章中，我们将学习开发一个如//图5.2//那样允许用户发布消息的界面。在此过程中，我们选择配合使用Java和XML来完成UI 的设计。在此读者将了解到Android中布局（Layout） 和视图（View）的概念，图片的使用方法，以及美化UI的窍门。
+{TRAN}在这一章中，我们将尝试开发一个如//图5.2//那样允许用户发布消息的界面。在此过程中，我们配合使用Java与XML完成UI 的设计。在此读者将了解到Android中布局（Layout） 与视图（View）的概念，图片的使用方法以及美化UI的窍门。
 
 {ORGI}Our approach will focus on best practices in UI development so that your application looks good and works well on any Android device, regardless of screen size and resolution.
-{TRAN}我们的目标是通过一些 UI 设计上的最佳实践，让你的程序在任何尺寸和分辨率的Android上都不失美观和实用。
+{TRAN}我们通过一些 UI 设计的最佳实践，使得你的程序得以适应任何尺寸和分辨率，而不失美观和实用。
 
 {ORGI}=== Networking and multithreading ===
 {TRAN}=== 网络和多线程 ===
 
 {ORGI}Once we have a working screen, we are going to want to post the user input to the cloud service. For that purpose, we are going to use a third-party library to help us with the Twitter API web service calls.
-{TRAN}我们有了用户界面之后，就应该知道怎么吧用户的输入交给云端服务处理了。为了达成这个目的，我们引入了一个第三方的库来帮助我们访问 Twitter 的 API 服务。
+{TRAN}有了用户界面，接下来就应该考虑用户与服务端交互的实现方法了。在此，我们引入一个三方库来帮助我们访问 Twitter 的 API 服务。
 
 {ORGI}While making the network calls, you’ll notice that the UI starts behaving sluggishly, due to the unpredictable nature of the network. The network latency may even cause our application to stop responding. At that point, we are going to introduce multithreading in Android and explain how to develop an app to work well regardless of external circumstances.
-{TRAN}在进行网络调用的过程中，我们会发现界面的相应速度变得极其缓慢，这是因为网络操作是不可预知的。网络上的延迟甚至可能使我们的程序停止响应。因此我们会在此时介绍Android的多线程系统，并且教你如何开发一个不会被外部条件所阻塞的应用程序。
+{TRAN}在网络调用执行中，我们会发现界面响应不灵，这是因为网络操作是不可预知的。毕竟不能让网络操作把我们的界面卡死，因此我们在这里引入Android中的多线程机制，避免不必要的外部阻塞。
 
 {ORGI}=== Debugging Android Apps ===
 {TRAN}=== Android 程序的调试 ===
 
 {ORGI}A few things are going to go wrong in this section. This is by design. Debugging is a normal part of application development. We’ll show you how to use the Android SDK tools to quickly find and fix problems. Debugging will become second nature to you.
-{TRAN}哦，糟糕，我们的程序不能正常工作了。 不过不要担心，这是故意的。 调试是任何程序开发中都不能缺少的组成部分。 我们会在本章教你如何使用 Android SDK 中提供的工具快速的定位并且解决问题。 调试会变成你的第二本能的！
+{TRAN}哦，糟糕，我们的程序不能正常工作了。不过别担心，这是必须的，调试是开发中不可或缺的一部分。 我们会在本章讲解使用 Android SDK中的调试工具的使用方法，学会如何快速地定位问题并解决问题。调试会变成你的第二本能的！
 
 {ORGI}== Part 2: Preferences, File System, Options Menu, and Intents ==
-{TRAN}== 第二部分: 首选项，文件系统，选项菜单和Intents ==
+{TRAN}== 第二部分: 首选项，文件系统，选项菜单和Intent ==
 % 关于 Intents 这个词是否需要翻译还需要讨论，我的建议是不翻译 理由同样是它属于一个类名。
+% 不译 +1
 
 {ORGI}This part is all about the preferences screen. At the end of this section, your Yamba application will have two screens, one for status updates and the other for setting up the preferences. At this point, Yamba is configurable for various users and starts being a useful app. The elements we’ll create at this stage are:
-{TRAN}这部分着重讨论配置页的开发。 在本节结束后，Yamba 将会拥有它的第二个界面， 一个界面用来更新用户状态，另一个用于配置首选项。 此时 Yamba 已经可以被不同的用户所配置，成为一个有用的 App 了。本阶段我们要创建的东西有：
+{TRAN}这部分讨论用户个人选项界面的实现。 在本节结束后，Yamba 将会拥有它的第二个界面， 一个用来更新消息，另一个用于配置个人选项。 此时的Yamba已经可以为用户所配置，成为一个有用的 App 了。本阶段我们要新建的东西有：
 
 {ORGI}=== The Activity ===
 {TRAN}=== Activity ===
 
 {ORGI}First, we’ll create the screen, which is an activity, a basic Android building block. You will see the steps involved and understand what it takes to create new screens.
-{TRAN}首先，我们需要把界面做好。界面对应一个Activity，它是 Android 的基本组成之一。 我们将学习创建新界面的基本步骤和必备条件。
+{TRAN}首先我们需要一个界面。界面对应着一个Activity，它是 Android 的基本构件之一。 我们将在这里学习新建界面的步骤和方法。
 
 {ORGI}=== Menu System and Intents ===
-{TRAN}=== 菜单系统与 Intents ===
+{TRAN}=== 菜单系统与 Intent ===
 
 {ORGI}Next, we’ll need a way to get to that screen. For that purpose, we’ll introduce menu system in Android and how it works. You will also learn about Intents and how to send intents to open up a specific activity.
-{TRAN}接下来，我们需要一个可以切换界面的方法。 所以在这里开始介绍 Android 的菜单系统是怎么工作的。同时你也将学习 Intents 的相关知识并且了解如何发送一个 Intent 来切换 Activity。
+{TRAN}接下来我们需要一个切换界面的地方，因此在这里引入 Android 的菜单系统及 Intent 机制，学习如何通过发送一个 Intent 实现切换界面。
 
 {ORGI}=== File System ===
 {TRAN}=== 文件系统 ===
 
 {ORGI}Finally, we’ll learn about the file system on a typical Android device. You will get a deeper understanding how the operating system is put together. You will also learn more about Android security.
-{TRAN}最后，我们来学习典型 Android 设备上的文件系统。阅读本章，你将深入了解操作系统是怎么组合在一起的。同时你还将学习 Android 的安全知识。
+{TRAN}最后我们将学习典型 Android 设备上的文件系统。阅读本章，你将对操作系统的组织方式有深一层的理解，以及还有Android的安全机制。
 
 {ORGI}== Part 3: Android Services ==
-{TRAN}== 第三部分: Android 系统服务 ==
+{TRAN}== 第三部分: Android Service ==
 
 {ORGI}This part introduces background services. By the end of this section, your Yamba application will be able to periodically connect to the cloud and pull down your friends' status updates.
-{TRAN}这部分介绍了后台服务的相关知识。 本章结束时， Yamba 将能够在后台周期性的连接云端服务并且下载友邻们的状态数据。
+{TRAN}这部分介绍了后台服务(Service)的相关知识。 在本章结束，Yamba 将实现定期访问服务端并更新朋友的消息。
 
 {ORGI}=== Android Services ===
-{TRAN}=== Android 系统服务 ===
+{TRAN}=== Android Service ===
 
 {ORGI}Android services are very useful building blocks. They allow a process to run in the background without the need for any user interface. This will be perfect for Yamba, as we’ll have an update process periodically connect to the cloud and pull the data. In this section, you will also learn about multithreading considerations as they apply to background services.
-{TRAN}Android 的服务系统是一个非常有用的模块。它允许进程在后台运行而不显示任何用户界面。 这对 Yamba 来说是非常有用的，我们可以定期从云端上传或者下载数据。在本节中，你将学习在后台服务中如何使用多线程。
+{TRAN}Android 的 Service 是个很重要的构件。它允许进程在后台运行，而无需用户界面。 这对 Yamba 自然是再合适不过，我们可以凭借它实现定期与服务端交互。在本节，你将学到Service中多线程的使用方法。
 
 {ORGI}=== Application object ===
-{TRAN}=== Application 对象 ===
+{TRAN}=== Application对象 ===
 
 {ORGI}At this point, we’ll notice repetition in the code and recognize that our system is no longer as elegant as it could be. So we are going to introduce the Application object as a way to refactor Yamba and make it easier to grow.
 {TRAN}在本章，我们会发现代码中的重复变多并且程序不像刚开始时那样优雅了。为了重构 Yamba 使它变得更容易扩展，所以我们决定介绍 Application 对象。
