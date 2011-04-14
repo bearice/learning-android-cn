@@ -1,0 +1,433 @@
+%
+%
+%
+= Content Providers =
+
+{ORGI}Take your contacts, for example. You may have a large database of contacts on your device. You can view them via the Contacts app as well as via the Dialer app. On some devices, such as HTC Android models, there may be even multiple versions of Contacts and Dialer apps available. It would not make a lot of sense to have similar data live in multiple databases.
+{TRAN}用联系人来举个例子。你设备里可能有了一个庞大的联系人数据库。你能用过Contacts应用查看它们，同时Dialer应用也可以这么做。在一些设备上，例如HTC的Android型号，会存在不同版本的Contacts和Dialer应用。因此不同数据库存放了相似的数据是毫无意义的。
+
+{ORGI}Content Providers provide a way to centralize content in one place and have many different applications access it as needed. In case of the Contacts on your phone, there is actually a ContactProvider application that contains a Content Provider. Other applications access the data via this interface. The interface itself is fairly simple: it is the same insert(), update(), delete(), and query() methods we saw in Chapter 9, Database.
+{TRAN}Content Providers提供了一种在统一位置中心化数据，让多个应用程序存取所需的方式。在手机联系人这个例子里，实际存有ContactProvider应用程序包括了一个Content Provider。其他应用程序通过这个接口存取数据。而接口本身相当简洁，就像在第九章数据库里所看到的只有insert(), update(), delete(), 和query() 方法。
+
+{ORGI}Android uses Content Providers quite a bit internally. We already mentioned contacts. Settings is another example, and so are all your bookmarks. All the media in the system is also registered with MediaStore, a content provider that dispenses images, music, and videos in your device.
+{TRAN}Android在内部常常使用Content Provider。除了我们已经提到的联系人数据，统设置也是个例子，除此以外还有你的书签等。系统中所有的媒体信息也注册在了MediaStore里，这是一个存储了设备中图像、音乐和视频信息的Content Provider.
+
+== Creating Content Provider==
+
+To create a content provider:
+
+- Create a new Java class that subclasses the system’s ContentProvider class.
+-Declare your CONTENT_URI.
+- Implement all the unimplemented methods, such as insert(), update(), delete(), query(), getID(), and getType().
+- Declare your Content Provider in the AndroidManifest.xml file.
+
+We are going to start by creating a brand new Java class in the same package as any other classes. Its name will be StatusProvider. This class, like any of Android’s main building blocks, will subclass an Android framework class, in this case ContentProvider.
+
+So in Eclipse, select your package, click on File→New→Java Class, and enter StatusProvider. Then update the class to subclass ContentProvider and organize imports (Ctrl-Shift-O) to import the appropriate Java packages. The result should look like this:
+
+{CODE}
+package com.marakana.yamba7;
+
+import android.content.ContentProvider;
+
+public class StatusProvider extends ContentProvider {
+
+}
+{/CODE}
+
+Of course this code is now broken because we need to provide implementation for many of its methods. The easiest way to do that is to click on the class name and choose "Add unimplemented methods" from the list of quick fixes. Eclipse will then create stubs, or templates, of the missing methods.
+
+
+=== Defining the URI ===
+Objects within a single app can refer to each other simply by variable names, because they share an address space. But objects in different apps don’t recognize the different address spaces, so they need some other mechanism just to find each other. Android uses a A Uniform Resource Identifier, a string that identifies a specific resource, to locate a Content Provider. A URI has three or four parts, shown in Parts of a URI.
+
+
+Parts of a URI.
+
+content://com.marakana.yamba.statusprovider/status/47
+   A              B                           C    D
+- Part A, content://, is always set to this value. This is written in stone.
+- Part B, com.marakana.yamba.provider, is the so-called authority. It is typically the name of the class, all in lower case. This authority must match the authority that we specify for this provider when we declare it in the manifest file later on.
+- Part C, status, indicates the type of data that this particular provider is providing. It could contain any number of segments separated with a slash, including none at all.
+- Part D, 47, is an optional ID of the specific item that we are referring to. If not set, the URI will represent the entire set. Number 47 is an arbitrary number picked for example.
+
+Sometimes you need to refer to the Content Provider in its entirety, and sometimes to one of the items of data it contains. If you refer to it in its entirety, you leave off Part D; otherwise you include that part to identify one item within the Content Provider. Actually, since we have only one table, we do not need the C part of the URI.
+
+One way to define the constants for this particular case is like this:
+
+{CODE}
+public static final Uri CONTENT_URI = Uri
+    .parse("content://com.marakana.yamba7.statusprovider");
+public static final String SINGLE_RECORD_MIME_TYPE =
+    "vnd.android.cursor.item/vnd.marakana.yamba.status";
+public static final String MULTIPLE_RECORDS_MIME_TYPE =
+    "vnd.android.cursor.dir/vnd.marakana.yamba.mstatus";
+{/CODE}
+
+In the section called “Getting the Data Type” we’ll explore the reason for two MIME types. We are also going to define the status data object in a class-global variable so that we can refer to it:
+
+{CODE}
+StatusData statusData;
+{/CODE}
+
+The reason we’ll be using the status data object all over our app is that all our database connectivity is centralized in that class. So now the StatusProvider class has a reference to an object of class StatusData.
+
+
+=== Inserting Data ===
+To insert a record into a database via the Content Provider interface, we need to override the insert() method. The caller provides the URI of this Content Provider (without an ID) and the values to be inserted. A successful call to insert the new record returns the ID for that record. We end by returning a new URI concatenating the provider’s URI with the ID we just got back.
+
+{CODE}
+@Override
+public Uri insert(Uri uri, ContentValues values) {
+  SQLiteDatabase db = statusData.dbHelper.getWritableDatabase();  // 
+  try {
+    long id = db.insertOrThrow(StatusData.TABLE, null, values);  // 
+    if (id == -1) {
+      throw new RuntimeException(String.format(
+          "%s: Failed to insert [%s] to [%s] for unknown reasons.", TAG,
+          values, uri));  // 
+    } else {
+      return ContentUris.withAppendedId(uri, id); // 
+    }
+  } finally {
+    db.close(); // 
+  }
+}
+{/CODE}
+
+- We need to open the database for writing.
+- We attempt to insert the values into the database and, upon a successful insert, get back the ID of the new record from the database.
+- If anything fails during the insert, the database will return -1. We can than throw a runtime exception because this is an error that should never have happened.
+- If the insert was successful, we use the ContentUris.withAppendedId() helper method to craft a new URI containing the ID of the new record appended to the standard provider’s URI.
+- We need to close the database no matter what, so a finally block is a good place to do that.
+
+
+=== Updating Data ===
+To update the data via the Content Provider API, we need:
+
+
+** The URI of the provider **
+This may or may not contain an ID. If it does, the ID indicates the specific record that needs to be updated, and we can ignore the selection. If the ID is not specified, it means that we are updating many records and we need the selection to indicate which are to be changed.
+
+** The values to be updated **
+The format of this parameter is a set of name/value pairs that represent column names and new values.
+
+** Any selection and arguments that go with it **
+These together make up a WHERE clause in SQL, selecting the records that will change. The selection and its arguments are omitted when there is an ID, because that is enough to select the record that is being updated.
+
+The code that handles both types of update—by ID and by selection—can be as follows.
+
+{CODE}
+@Override
+public int update(Uri uri, ContentValues values, String selection,
+    String[] selectionArgs) {
+  long id = this.getId(uri); // 
+  SQLiteDatabase db = statusData.dbHelper.getWritableDatabase(); // 
+  try {
+    if (id < 0) {
+      return db.update(StatusData.TABLE, values, selection, selectionArgs); // 
+    } else {
+      return db.update(StatusData.TABLE, values, StatusData.C_ID + "=" + id, null); // 
+    }
+  } finally {
+    db.close(); // 
+  }
+}
+{/CODE}
+
+- We use the local helper method getId() to extract the ID from the URI that we get. If no ID is present, this method returns -1. getId() will be defined later in this chapter.
+- We need to open the database for writing the updates.
+- If there’s no ID, that means we’re simply updating all the database records that match the selection and selectionArgs constraints.
+- If ID is present, we are using that ID as the only part of the WHERE clause to limit the single record that we’re updating.
+- Don’t forget to close the database no matter what.
+
+
+=== Deleting Data ===
+Deleting the data is similar to updating the data. The URI may or may not contain the ID of the particular record to delete.
+
+{CODE}
+@Override
+public int delete(Uri uri, String selection, String[] selectionArgs) {
+  long id = this.getId(uri); // 
+  SQLiteDatabase db = statusData.dbHelper.getWritableDatabase(); // 
+  try {
+    if (id < 0) {
+      return db.delete(StatusData.TABLE, selection, selectionArgs); // 
+    } else {
+      return db.delete(StatusData.TABLE, StatusData.C_ID + "=" + id, null); // 
+    }
+
+  } finally {
+    db.close(); // 
+  }
+}
+{/CODE}
+
+- The getId() helper method extracts the ID from the URI that we get. If no ID is present, this method returns -1.
+- We need to open the database for writing the updates.
+- If there’s no ID, we simply delete all the database records that match the selection and selectionArgs constraints.
+- If ID is present, we use that ID as the only part of the WHERE clause to limit the operation to the single record the user wants to delete.
+- Don’t forget to close the database.
+
+
+=== Querying Data ===
+
+To query the data via a Content Provider, we override the query() method. This method has a long list of paramaters, but usually we just forward most of them to the database call with the same name.
+
+{CODE}
+@Override
+public Cursor query(Uri uri, String[] projection, String selection,
+    String[] selectionArgs, String sortOrder) {
+  long id = this.getId(uri); // 
+  SQLiteDatabase db = statusData.dbHelper.getReadableDatabase(); // 
+  if (id < 0) {
+    return db.query(StatusData.TABLE, projection, selection, selectionArgs, null,
+        null, sortOrder); // 
+  } else {
+    return db.query(StatusData.TABLE, projection, StatusData.C_ID + "=" + id, null, null, null,
+        null); // 
+  }
+}
+{/CODE}
+
+- The getId() helper method extracts the ID from the URI that we get.
+- We need to open the database, in this case just for reading.
+- If there’s no ID, we simply forward what we got for the Content Provider to the equivalent database call. Note that the database call has two additional parameters that correspond to SQL GROUPING and HAVING components. Because Content Providers do not support this feature, we simply pass in null.
+- If an ID is present, we use that ID as the WHERE clause to limit what record to return.
+
+
+{NOTE}
+	We do not close the database here because closing the database will destroy the cursor and we still need it on the receiving end to go over the data returned by the query. One way to handle the cursor is to have the receiver manage it. Activities have a simple startManagingCursor() method for this purpose.
+{/NOTE}
+
+=== Getting the Data Type ===
+A ContentProvider must return the MIME type of the data it is returning. The MIME type is either single item, or all the records for the given URI. Earlier in this chapter we defined the single-record MIME type is as vnd.android.cursor.item/vnd.marakana.yamba.status and the directory of all statuses as vnd.android.cursor.dir/vnd.marakana.yamba.status. The call we must define, to let others retrieve the MIME type, is called getType().
+
+The first part of the MIME type is either vnd.android.cursor.item or vnd.android.cursor.dir, depending on whether the type represents a specific item or all items we are referring to. The second part, vnd.marakana.yamba.status or vnd.marakana.yamba.mstatus for our app, is a combination of constant vnd followed by your company or app name and the actual content type.
+
+As you may recall, the URI could end with a number. If it does, that number is the ID of the specific record. If it doesn’t, the URI refers to the entire collection.
+
+The following source shows the implementation of getType() as well as the getId() helper method that we’ve already used several times.
+
+{CODE}
+@Override
+public String getType(Uri uri) {
+  return this.getId(uri) < 0 ? MULTIPLE_RECORDS_MIME_TYPE
+      : SINGLE_RECORD_MIME_TYPE;  // 
+}
+
+private long getId(Uri uri) {
+  String lastPathSegment = uri.getLastPathSegment();  // 
+  if (lastPathSegment != null) {
+    try {
+      return Long.parseLong(lastPathSegment); // 
+    } catch (NumberFormatException e) { // 
+      // at least we tried
+    }
+  }
+  return -1;   // 
+}
+{/CODE}
+
+- getType() uses the helper method getId() to determine whether the URI has an ID part. If it does not—as indicated by a negative return value—we return vnd.android.cursor.dir/vnd.marakana.yamba.mstatus for the MIME type. Otherwise, we’re referring to a single record and the MIME type is vnd.android.cursor.item/vnd.marakana.yamba.status. Of course, we previously defined these values as class constants.
+- To extract the ID in our implementation of getId(), we take the last part of the URI.
+- If that last part is not null, we try to parse it as long and return it.
+- It could be that the last part is not a number at all, in which case the parse will fail.
+- We return -1 to indicate that the given URI doesn’t contain a valid ID.
+
+
+=== Updating the Android Manifest File ===
+As with any major building block, we want to define our Content Provider in the Android Manifest XML file. Notice that in this case the android:authorities property specifies the URI authority authorized to access this content provider. Typically, this authority would be your Content Provider class—which we use here—or your package.
+
+{CODE}
+<application>
+  ...
+  <provider android:name=".StatusProvider"
+    android:authorities="com.marakana.yamba7.statusprovider" />
+  ...
+</application>
+{/CODE}
+
+At this point our content provider is complete and we are ready to use it in other building blocks of Yamba. But since our application already centralizes all data access in a StatusData object that is readily accessible via YambaApplication, we don’t really have a good use for this content provider within the same application. Besides, content providers mostly make sense when we want to expose the data to another application.
+
+== Using Content Providers Through Widgets ==
+As mentioned before, Content Providers mostly make sense when you want to expose the data to other applications. It is a good practice to always think of your application as part of a larger Android ecosystem and, as such, a potential provider of useful data to other applications.
+
+To demonstrate how Content Providers can be useful, we’ll create a Home screen widget. We’re not using the term widget here as in a synonym for Android’s View class, but as a useful embedded service for the Home screen to offer.
+
+Android typically ships with a few Home screen widgets. You can access them by going to your home screen, long-pressing on it to pull up an Add to Home Screen dialog, and choosing Widgets. Widgets that come with Android include Alarm Clock, Picture Frame, Power Controls, Music, and Search. Our goal is to create our own Yamba Widget that the user will be able to add to the Home screen.
+
+The Yamba Widget will be simple, displaying just the latest status update. To create it, we’ll create a new YambaWidget Class that subclasses AppWidgetProviderInfo. We’ll also have to register the widget with the manifest file.
+
+=== Implementing the YambaWidget class ===
+YambaWidget is the main class for our widget. It is a subclass of AppWidgetProvider, a special system class that makes widgets. This class itself is a subclass of BroadcastReceiver, so our Yamba Widget is automatically a broadcast receiver. Basically, whenever our widget is updated, deleted, enabled, or disabled, we’ll get a broadcast intent with that information. So this class inherits the onUpdate(), onDeleted(), onEnabled(), onDisabled(), and onReceive() callbacks. We can override any of these, but typically we care mostly about the updates and general broadcasts we receive.
+
+Now that we understand the overall design of the widget framework, here’s how we implement it.
+
+Example 12.1. YambaWidget.java
+{CODE}
+package com.marakana.yamba7;
+
+import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.text.format.DateUtils;
+import android.util.Log;
+import android.widget.RemoteViews;
+
+public class YambaWidget extends AppWidgetProvider { // 
+  private static final String TAG = YambaWidget.class.getSimpleName();
+
+  @Override
+  public void onUpdate(Context context, AppWidgetManager appWidgetManager,
+      int[] appWidgetIds) { // 
+    Cursor c = context.getContentResolver().query(StatusProvider.CONTENT_URI,
+        null, null, null, null); // 
+    try {
+      if (c.moveToFirst()) { // 
+        CharSequence user = c.getString(c.getColumnIndex(StatusData.C_USER)); // 
+        CharSequence createdAt = DateUtils.getRelativeTimeSpanString(context, c
+            .getLong(c.getColumnIndex(StatusData.C_CREATED_AT)));
+        CharSequence message = c.getString(c.getColumnIndex(StatusData.C_TEXT));
+
+        // Loop through all instances of this widget
+        for (int appWidgetId : appWidgetIds) { // 
+          Log.d(TAG, "Updating widget " + appWidgetId);
+          RemoteViews views = new RemoteViews(context.getPackageName(),
+              R.layout.yamba_widget); // 
+          views.setTextViewText(R.id.textUser, user); // 
+          views.setTextViewText(R.id.textCreatedAt, createdAt);
+          views.setTextViewText(R.id.textText, message);
+          views.setOnClickPendingIntent(R.id.yamba_icon, PendingIntent
+              .getActivity(context, 0, new Intent(context,
+                  TimelineActivity.class), 0));
+          appWidgetManager.updateAppWidget(appWidgetId, views); // 
+        }
+      } else {
+        Log.d(TAG, "No data to update");
+      }
+    } finally {
+      c.close(); // 
+    }
+    Log.d(TAG, "onUpdated");
+  }
+
+  @Override
+  public void onReceive(Context context, Intent intent) { // 
+    super.onReceive(context, intent);
+    if (intent.getAction().equals(UpdaterService.NEW_STATUS_INTENT)) { // 
+      Log.d(TAG, "onReceived detected new status update");
+      AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context); // 
+      this.onUpdate(context, appWidgetManager, appWidgetManager
+          .getAppWidgetIds(new ComponentName(context, YambaWidget.class))); // 
+    }
+  }
+}
+{/CODE}
+
+- As mentioned before, our widget is a subclass of AppWidgetProvider, which itself is a BroadcastReceiver.
+- This method is called whenever our widget is to be updated, so it’s where we’ll implement the main functionality of the widget. When we register the widget with the system in the manifest file later, we’ll specify the update frequency we’d like. In our case, this method will be called about every 30 minutes.
+- We finally get to use our Content Provider. The whole purpose of this widget in this chapter is to illustrate how to use the StatusProvider that we created earlier. As you have already seen when we implemented the content provider, its API is quite similar to the SQLite database API. The main difference is that instead of passing a table name to a database object, we’re passing a Content URI to the Content Resolver. We still get back the very same Cursor object as we did with databases in Chapter 9, Database.
+- In this particular example, we care only about the very latest status update from the online service. So we position the cursor to the first element. If one exists, it’s our latest status update.
+- In the next few of lines of code, we extract data from the cursor object and store it in local variables.
+- Since the user could have multiple Yamba Widgets installed, we need to loop through them and update them all. We don’t particularly care what the appWidgetId is because we’re doing identical work to update every instance of Yamba Widget. The appWidgetId becomes an opaque handle we use to access each widget in turn.
+- The actual view representing our widget is in another process. To be precise, our widget is running inside the Home application, which acts as its host and is the process we are updating. Hence the RemoteViews constructor. The Remote Views framework is a special shared memory system designed specifically for widgets.
+- Once we have the reference to the Java memory space of our widget views in another process, we can update those views. In this case, we’re setting the status data in the row that represents our widget.
+- Once we update the remote views, the AppWidgetManager call to updateAppWidget() actually posts a message to have the system update our widget. This will happen asynchronously, but shortly after onUpdate() completes.
+- Whether or not the StatusProvider found a new status, we release the data that we might have gotten from the Content Provider. This is just a good practice.
+- The call to onReceive() is not necessary in a typical widget. But since a widget is a Broadcast Receiver, and since our Updater Service does send a broadcast when we get a new status update, this method is a good opportunity to invoke onUpdate() and get the latest status data updated on the widget.
+- We check whether the intent was the one for the new status broadcast.
+- If it was, we get the instance of AppWidgetManager for this context.
+- We then invoke onUpdate().
+
+At this point, we have coded the Yamba Widget, and as a receiver, it will get notified periodically or when there are new updates, and it will loop through all instances of this widget on the Home screen and update them.
+
+Next, we need to set up the layout for our widget.
+
+
+=== Creating the XML Layout ===
+The layout for the widget is fairly straightforward. Note that we’re reusing our existing row.xml file that displays status data properly in the Timeline Activity. Here, we just include it along with a little title and an icon to make it look good on the home screen.
+
+Example 12.2. res/layout/yamba_widget.xml
+
+{CODE}
+<?xml version="1.0" encoding="utf-8"?>
+  <!--  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_height="wrap_content" android:layout_width="fill_parent"
+  android:background="@color/edit_text_background"
+  android:layout_margin="5dp" android:padding="5dp">
+  <!--  -->
+  <ImageView android:layout_width="wrap_content" android:src="@drawable/icon"
+    android:layout_height="fill_parent" android:id="@+id/yamba_icon"
+    android:clickable="true" />
+  <!--  -->
+  <include layout="@layout/row" />
+</LinearLayout>
+{/CODE}
+
+We’re using Linear Layout to hold our widget together. It runs horizontally with the icon on the left and the status data on the right.
+
+This is the icon, our standard Yamba icon.
+
+Notice the use of <include> element. This is how we include our existing row.xml into this layout so we don’t have to duplicate the code.
+This layout is simple enough, but does the job for our particular needs. Next, we need to define some basic information about this widget and its behavior.
+
+Creating the AppWidgetProviderInfo File
+This XML file is responsible for describing the widget. It typically specifies what layout this widget uses, how frequently it should be updated by the system, and what its size is.
+
+Example 12.3. res/xml/yamba_widget_info.xml
+
+{CODE}
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+  android:initialLayout="@layout/yamba_widget" android:minWidth="294dp"
+  android:minHeight="72dp" android:label="@string/msgLastTimelineUpdate"
+  android:updatePeriodMillis="1800000" />
+{/CODE}
+
+In this case we are specifying that we’d like to have to have our widget updated every 30 minutes or so (1800000 milliseconds). Here, we also specify the layout to use, the title of this widget, and its size.
+
+Updating the Manifest File
+Finally, we need to update the manifest file and register the widget.
+
+{CODE}
+  ...
+  <application .../>
+    ...
+    <receiver android:name=".YambaWidget" android:label="@string/msgLastTimelineUpdate">
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+      <intent-filter>
+        <action android:name="com.marakana.yamba.NEW_STATUS" />
+      </intent-filter>
+      <meta-data android:name="android.appwidget.provider"
+        android:resource="@xml/yamba_widget_info" />
+    </receiver>
+    ...
+  </application>
+  ...
+{/CODE}
+
+Notice that the widget is a receiver, as we mentioned before. So, just like other broadcast receivers, we declare it within a <receiver> tag inside an <application> element. It is important to register this receiver to receive ACTION_APPWIDGET_UPDATE updates. We do that via the <intent-filter>. The <meta-data> specifies the meta information for this widget in the yamba_widget_info XML file described in the previous section.
+
+That’s it. We now have the widget and are ready to test it.
+
+=== Test That It Works ===
+To test this widget, install your latest application on the device. Next, go to the Home screen, long-press it, and click on the Widgets choice. You should be able to navigate to the Yamba Widget at this point. After adding it to the Home screen, the widget should display the latest status update.
+
+If your Updater Service is running, you should be able to see the latest updates show up on the Home screen. This means your widget is running properly.
+
+== Summary ==
+
+At this point, the Yamba app is complete—congratulations! You are ready to fine-tune it, customize it, and publish it to the market.
+
+Figure 12.1, “Yamba Completion” illustrates what we have done so far as part of the design outlined in Figure 5.4, “Yamba Design Diagram”.
+
+Figure 12.1. Yamba Completion
+
