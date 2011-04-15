@@ -12,18 +12,28 @@
 {ORGI}Android uses Content Providers quite a bit internally. We already mentioned contacts. Settings is another example, and so are all your bookmarks. All the media in the system is also registered with MediaStore, a content provider that dispenses images, music, and videos in your device.
 {TRAN}Android在内部常常使用Content Provider。除了我们已经提到的联系人数据，统设置也是个例子，除此以外还有你的书签等。系统中所有的媒体信息也注册在了MediaStore里，这是一个存储了设备中图像、音乐和视频信息的Content Provider.
 
-== Creating Content Provider==
+%== Creating Content Provider==
+== 创建Content Provider ==
 
-To create a content provider:
+{ORGI}To create a content provider:
+{TRAN}欲创建一个Content Provider:
 
+{ORGI}
 - Create a new Java class that subclasses the system’s ContentProvider class.
--Declare your CONTENT_URI.
+- Declare your CONTENT_URI.
 - Implement all the unimplemented methods, such as insert(), update(), delete(), query(), getID(), and getType().
 - Declare your Content Provider in the AndroidManifest.xml file.
+{TRAN}
+- 创建一个继承系统ContentProvider类的新Java类。
+- 声明你的CONTENT_URI。
+- 实现所有未实现的方法，包括insert()，update()，delete()，query()，getID()和getType()。
+- 在AndroidManifest.xml文件中，申明你的ContentProvider。
 
-We are going to start by creating a brand new Java class in the same package as any other classes. Its name will be StatusProvider. This class, like any of Android’s main building blocks, will subclass an Android framework class, in this case ContentProvider.
+{ORGI}We are going to start by creating a brand new Java class in the same package as any other classes. Its name will be StatusProvider. This class, like any of Android’s main building blocks, will subclass an Android framework class, in this case ContentProvider.
+{TRAN}我们将创建一个全新的Java类，放于和其他类相同的包下，它的类名是StatusProvider。这个类同其他Android主要构建一样，都需要继承一个Android框架类。在这里就是ContentProvider。
 
-So in Eclipse, select your package, click on File→New→Java Class, and enter StatusProvider. Then update the class to subclass ContentProvider and organize imports (Ctrl-Shift-O) to import the appropriate Java packages. The result should look like this:
+{ORGI}So in Eclipse, select your package, click on File→New→Java Class, and enter StatusProvider. Then update the class to subclass ContentProvider and organize imports (Ctrl-Shift-O) to import the appropriate Java packages. The result should look like this:
+{TRAN}所以在Eclipse里，选择包，点击菜单File→New→Java Class，输入StatusProvider。然后让这个类继承ContentProvider，并选择organize imports（Ctrl-Shift-O）导入关联的Java包。结果如同下面所示：
 
 {CODE}
 package com.marakana.yamba7;
@@ -35,25 +45,40 @@ public class StatusProvider extends ContentProvider {
 }
 {/CODE}
 
-Of course this code is now broken because we need to provide implementation for many of its methods. The easiest way to do that is to click on the class name and choose "Add unimplemented methods" from the list of quick fixes. Eclipse will then create stubs, or templates, of the missing methods.
+{ORGI}Of course this code is now broken because we need to provide implementation for many of its methods. The easiest way to do that is to click on the class name and choose "Add unimplemented methods" from the list of quick fixes. Eclipse will then create stubs, or templates, of the missing methods.
+{TRAN}当然代码现在还不完整，我们还需要提供多个方法的实现。最简单的办法就是单击这个类名，并在quick fix列表中选择”Add unimplemented methods“。Eclipse会自动创建未实现方法的stub或template。 
 
 
-=== Defining the URI ===
-Objects within a single app can refer to each other simply by variable names, because they share an address space. But objects in different apps don’t recognize the different address spaces, so they need some other mechanism just to find each other. Android uses a A Uniform Resource Identifier, a string that identifies a specific resource, to locate a Content Provider. A URI has three or four parts, shown in Parts of a URI.
+%=== Defining the URI ===
+=== 定义URI ===
+{ORGI}Objects within a single app can refer to each other simply by variable names, because they share an address space. But objects in different apps don’t recognize the different address spaces, so they need some other mechanism just to find each other. Android uses a A Uniform Resource Identifier, a string that identifies a specific resource, to locate a Content Provider. A URI has three or four parts, shown in Parts of a URI.
+{TRAN}在单个应用中的对象可以通过变量名来相互引用，因为他们共享了地址空间。但是在不同应用中的对象无法识别不同的地址空间，所以他们需要其他的机制找到对方。Android使用了全局资源标识符（URI），一串标识特定资源，以定位到ContentProvider的字符串。一个URI有三或四部分组成，在URI字段里说明。
 
-
-Parts of a URI.
-
+URI字段
+{CODE}
 content://com.marakana.yamba.statusprovider/status/47
    A              B                           C    D
+{/CODE}
+
+{ORGI}
 - Part A, content://, is always set to this value. This is written in stone.
 - Part B, com.marakana.yamba.provider, is the so-called authority. It is typically the name of the class, all in lower case. This authority must match the authority that we specify for this provider when we declare it in the manifest file later on.
 - Part C, status, indicates the type of data that this particular provider is providing. It could contain any number of segments separated with a slash, including none at all.
 - Part D, 47, is an optional ID of the specific item that we are referring to. If not set, the URI will represent the entire set. Number 47 is an arbitrary number picked for example.
+{TRAN}
+- 字段A，content://，总是设为此值。这是固定不变的。
+- 字段B，com.marakana.yamba.provider，被称为授权。它通常是类名，全部小写。授权必须符合我们在随后的manifest文件中指定给这个ContentProvider的内容。
+- 字段C，status，表明这个ContentProvider提供的数据类型。它可以是包含任意段由斜线分割的字符串，甚至什么都没有也成。
+- 字段D，47，这是一个可选的ID，用来指明我们所引用的项。如果不设置，此URI将代表整个集合。数字47是任意选取的，仅作个例子。
 
+
+{ORGI}
 Sometimes you need to refer to the Content Provider in its entirety, and sometimes to one of the items of data it contains. If you refer to it in its entirety, you leave off Part D; otherwise you include that part to identify one item within the Content Provider. Actually, since we have only one table, we do not need the C part of the URI.
+{TRAN}
+有时候你需要引用整个ContentProvider，而有时你只是需要其中一项。如果需要引用整个数据集，留下字段D；否则包含该部分，来指明该ContentProvider中的一项。实际上，这里我们只有一个表，因此可以不需要URI中的字段C。
 
-One way to define the constants for this particular case is like this:
+{ORGI}One way to define the constants for this particular case is like this:
+{TRAN}在本例中，一种定义这个常量的方式可以是如下所示：
 
 {CODE}
 public static final Uri CONTENT_URI = Uri
@@ -64,17 +89,21 @@ public static final String MULTIPLE_RECORDS_MIME_TYPE =
     "vnd.android.cursor.dir/vnd.marakana.yamba.mstatus";
 {/CODE}
 
-In the section called “Getting the Data Type” we’ll explore the reason for two MIME types. We are also going to define the status data object in a class-global variable so that we can refer to it:
+{ORGI}In the section called “Getting the Data Type” we’ll explore the reason for two MIME types. We are also going to define the status data object in a class-global variable so that we can refer to it:
+{TRAN}在“获取数据类型”这节里，我们将探索这两个MIME类型的缘由。我们为了能引用状态数据，同样地还会在类全局变量中定义状态数据对象：
 
 {CODE}
 StatusData statusData;
 {/CODE}
 
-The reason we’ll be using the status data object all over our app is that all our database connectivity is centralized in that class. So now the StatusProvider class has a reference to an object of class StatusData.
+{ORGI}The reason we’ll be using the status data object all over our app is that all our database connectivity is centralized in that class. So now the StatusProvider class has a reference to an object of class StatusData.
+{TRAN}在整个应用范围内中使用状态数据对象，能将所有的数据库连接集中到该类里。所以现在StatusProvider类拥有了一个StatusData类的引用。
 
 
-=== Inserting Data ===
-To insert a record into a database via the Content Provider interface, we need to override the insert() method. The caller provides the URI of this Content Provider (without an ID) and the values to be inserted. A successful call to insert the new record returns the ID for that record. We end by returning a new URI concatenating the provider’s URI with the ID we just got back.
+%=== Inserting Data ===
+=== 插入数据 ===
+{ORGI}To insert a record into a database via the Content Provider interface, we need to override the insert() method. The caller provides the URI of this Content Provider (without an ID) and the values to be inserted. A successful call to insert the new record returns the ID for that record. We end by returning a new URI concatenating the provider’s URI with the ID we just got back.
+{TRAN}要通过ContentProvider，插入记录到数据库中，我们需要覆盖insert()方法。调用它的代码提供了这个ContentProvider的URI（但是不包含ID），和要插入的值。对一次插入新记录的调用，如果成功的话会返回记录ID，于是我们最后以返回新的包含了这个ID的URI结束。
 
 {CODE}
 @Override
@@ -95,27 +124,47 @@ public Uri insert(Uri uri, ContentValues values) {
 }
 {/CODE}
 
+{ORGI}
 - We need to open the database for writing.
 - We attempt to insert the values into the database and, upon a successful insert, get back the ID of the new record from the database.
 - If anything fails during the insert, the database will return -1. We can than throw a runtime exception because this is an error that should never have happened.
 - If the insert was successful, we use the ContentUris.withAppendedId() helper method to craft a new URI containing the ID of the new record appended to the standard provider’s URI.
 - We need to close the database no matter what, so a finally block is a good place to do that.
+{TRAN}
+- 我们需要打开数据库写入。
+- 我们试着将数据插入到数据库中，对于成功的调用，会从数据库回馈到新记录的ID。
+- 如果在插入过程中出现了任何的失败，数据库会返回-1。我们可以随即抛出一个运行时异常，因为这是决不该发生的情况。
+- 我们无论如何都需要最后关闭数据库，因此finally块是完成这件事情的好地方。
 
 
-=== Updating Data ===
-To update the data via the Content Provider API, we need:
+%=== Updating Data ===
+=== 更新数据 ===
+{ORGI}To update the data via the Content Provider API, we need:
+{TRAN}要通过ContentProvider API更新数据，我们需要这些参数：
 
-
+{ORGI}
 ** The URI of the provider **
 This may or may not contain an ID. If it does, the ID indicates the specific record that needs to be updated, and we can ignore the selection. If the ID is not specified, it means that we are updating many records and we need the selection to indicate which are to be changed.
+{TRAN}
+** ContentProvider的URI **
+它可选的包含一个ID。如果有的话，ID指示特定的需要更新的记录，这样我们可以忽略选择条件。如果ID没有指定，也就意味着我们会更新多个记录，并且我们需要选择条件指明哪些数据需要修改。
 
+{ORGI}
 ** The values to be updated **
 The format of this parameter is a set of name/value pairs that represent column names and new values.
+{TRAN}
+** 更新的值 **
+这个参数的格式是一组键值对集，提供了数据列名和新的值。
 
+{ORGI}
 ** Any selection and arguments that go with it **
 These together make up a WHERE clause in SQL, selecting the records that will change. The selection and its arguments are omitted when there is an ID, because that is enough to select the record that is being updated.
+{TRAN}
+** 任何附加的选择条件 **
+这些组成了一个SQL的WHERE块，来选择需要修改的记录。如果提供了ID，选择条件会忽略，因为单凭ID就能够知道哪些记录会更新。
 
-The code that handles both types of update—by ID and by selection—can be as follows.
+{ORGI}The code that handles both types of update—by ID and by selection—can be as follows.
+{TRAN}可以同时处理通过ID和通过选择条件指定记录的代码如下：
 
 {CODE}
 @Override
@@ -135,15 +184,24 @@ public int update(Uri uri, ContentValues values, String selection,
 }
 {/CODE}
 
+{ORGI}
 - We use the local helper method getId() to extract the ID from the URI that we get. If no ID is present, this method returns -1. getId() will be defined later in this chapter.
 - We need to open the database for writing the updates.
 - If there’s no ID, that means we’re simply updating all the database records that match the selection and selectionArgs constraints.
 - If ID is present, we are using that ID as the only part of the WHERE clause to limit the single record that we’re updating.
 - Don’t forget to close the database no matter what.
+{TRAN}
+- 我们使用本地helper方法getId()从URI中获取ID。如果没有提供ID，该方法将返回-1。getId()将在本章后面定义。
+- 为了写入更新，我们需要打开数据库。
+- 如果没有ID，也就意味着我们只是简单地更新所有匹配选择条件和选择参数的数据库记录。
+- 如果提供了ID，我们就用ID作为WHERE语句块的唯一部分，限制其只更新这个唯一的记录。
+- 不要忘了无论如何数据库最后都要关闭。
 
 
-=== Deleting Data ===
-Deleting the data is similar to updating the data. The URI may or may not contain the ID of the particular record to delete.
+%=== Deleting Data ===
+=== 删除数据 ===
+{ORGI}Deleting the data is similar to updating the data. The URI may or may not contain the ID of the particular record to delete.
+{TRAN}删除数据和更新数据类似。URI可以包含也可以不包含特定待删除记录的ID。
 
 {CODE}
 @Override
@@ -163,16 +221,23 @@ public int delete(Uri uri, String selection, String[] selectionArgs) {
 }
 {/CODE}
 
+{ORGI}
 - The getId() helper method extracts the ID from the URI that we get. If no ID is present, this method returns -1.
 - We need to open the database for writing the updates.
 - If there’s no ID, we simply delete all the database records that match the selection and selectionArgs constraints.
 - If ID is present, we use that ID as the only part of the WHERE clause to limit the operation to the single record the user wants to delete.
 - Don’t forget to close the database.
+{TRAN}
+- getId() helper方法从URI中展开了ID，如果没有ID提供，该方法会返回-1.
+- 我们需要打开数据库写入更新。
+- 如果没有ID，我们简单的删除所有符合选择条件和选择参数的记录。
+- 如果提供了ID，我们使用ID作为唯一的WHERE语句块，限制其只操作用户想删除的单个记录。
 
 
-=== Querying Data ===
-
-To query the data via a Content Provider, we override the query() method. This method has a long list of paramaters, but usually we just forward most of them to the database call with the same name.
+%=== Querying Data ===
+=== 查询数据 ===
+{ORGI}To query the data via a Content Provider, we override the query() method. This method has a long list of paramaters, but usually we just forward most of them to the database call with the same name.
+{TRAN}想要通过ContentProvider查询数据，我们需重载query()方法。这个方法有一个长长的参数列表，不过通常我们只需要每次调用相同的方法，但是只使用其中的某些参数。
 
 {CODE}
 @Override
@@ -190,24 +255,36 @@ public Cursor query(Uri uri, String[] projection, String selection,
 }
 {/CODE}
 
+{ORGI}
 - The getId() helper method extracts the ID from the URI that we get.
 - We need to open the database, in this case just for reading.
 - If there’s no ID, we simply forward what we got for the Content Provider to the equivalent database call. Note that the database call has two additional parameters that correspond to SQL GROUPING and HAVING components. Because Content Providers do not support this feature, we simply pass in null.
 - If an ID is present, we use that ID as the WHERE clause to limit what record to return.
+{TRAN}
+- getId() helper方法从URI中获取ID。
+- 我们需要打开数据库，但这里只用读取。
+- 如果没有ID，我们简单地传入参数到对应于该ContentProvider的数据库调用。注意到数据库调用还有两个额外参数对应于SQL的GROUPING和HAVING语句块。因为ContentProvider不支持这个功能，我们就简单地传入null。
+- 如果ID给出了，我们使用这个ID作为WHERE语句来指定返回的记录。
 
 
 {NOTE}
-	We do not close the database here because closing the database will destroy the cursor and we still need it on the receiving end to go over the data returned by the query. One way to handle the cursor is to have the receiver manage it. Activities have a simple startManagingCursor() method for this purpose.
+{ORGI}	We do not close the database here because closing the database will destroy the cursor and we still need it on the receiving end to go over the data returned by the query. One way to handle the cursor is to have the receiver manage it. Activities have a simple startManagingCursor() method for this purpose.
+{TRAN}	在这里我们不用关闭数据库，因为关闭数据库将毁掉游标，所以我们仍然需要保持获取，直到遍历完所有返回的数据。一种处理游标的方法是让接受数据的对象管理它。Activity有一个简单的startManagingCursor()方法达到这个目的。
 {/NOTE}
 
-=== Getting the Data Type ===
-A ContentProvider must return the MIME type of the data it is returning. The MIME type is either single item, or all the records for the given URI. Earlier in this chapter we defined the single-record MIME type is as vnd.android.cursor.item/vnd.marakana.yamba.status and the directory of all statuses as vnd.android.cursor.dir/vnd.marakana.yamba.status. The call we must define, to let others retrieve the MIME type, is called getType().
+%=== Getting the Data Type ===
+=== 获取数据类型 ===
+{ORGI}A ContentProvider must return the MIME type of the data it is returning. The MIME type is either single item, or all the records for the given URI. Earlier in this chapter we defined the single-record MIME type is as vnd.android.cursor.item/vnd.marakana.yamba.status and the directory of all statuses as vnd.android.cursor.dir/vnd.marakana.yamba.status. The call we must define, to let others retrieve the MIME type, is called getType().
+{TRAN}ContentProvider必须返回数据的MIME类型。MIME类型可以是单个项目的，或者也可以是URI所值记录的。在本章前面我们定义了单个记录的MIME类型为vnd.android.cursor.item/vnd.marakana.yamba.status，同时所有状态的目录定义为vnd.android.cursor.dir/vnd.marakana.yamba.status。为了让其他对象获取到MIME类型，我们必须定义getType()方法。
 
-The first part of the MIME type is either vnd.android.cursor.item or vnd.android.cursor.dir, depending on whether the type represents a specific item or all items we are referring to. The second part, vnd.marakana.yamba.status or vnd.marakana.yamba.mstatus for our app, is a combination of constant vnd followed by your company or app name and the actual content type.
+{ORGI}The first part of the MIME type is either vnd.android.cursor.item or vnd.android.cursor.dir, depending on whether the type represents a specific item or all items we are referring to. The second part, vnd.marakana.yamba.status or vnd.marakana.yamba.mstatus for our app, is a combination of constant vnd followed by your company or app name and the actual content type.
+{TRAN}MIME类型的第一个字段可以是vnd.android.cursor.item或vnd.android.cursor.dir之一，具体值根据类型所指的是特定项还是所有项目来决定。第二个字段，在我们的应用里是vnd.marakana.yamba.status或vnd.marakana.yamba.mstatus，是一个常量vnd加上公司或应用名和具体类型的组合形式。
 
-As you may recall, the URI could end with a number. If it does, that number is the ID of the specific record. If it doesn’t, the URI refers to the entire collection.
+{ORGI}As you may recall, the URI could end with a number. If it does, that number is the ID of the specific record. If it doesn’t, the URI refers to the entire collection.
+{TRAN}你或许还记得URI可以以数字结尾。如果是这样，数字就是特定记录的ID。如果不是如此，URI指向整个记录。
 
-The following source shows the implementation of getType() as well as the getId() helper method that we’ve already used several times.
+{ORGI}The following source shows the implementation of getType() as well as the getId() helper method that we’ve already used several times.
+{TRAN}随后所附的源代码展示了getType()和我们之前就已经多次调用过的getId() helper方法的实现。
 
 {CODE}
 @Override
@@ -229,15 +306,24 @@ private long getId(Uri uri) {
 }
 {/CODE}
 
+{ORGI}
 - getType() uses the helper method getId() to determine whether the URI has an ID part. If it does not—as indicated by a negative return value—we return vnd.android.cursor.dir/vnd.marakana.yamba.mstatus for the MIME type. Otherwise, we’re referring to a single record and the MIME type is vnd.android.cursor.item/vnd.marakana.yamba.status. Of course, we previously defined these values as class constants.
 - To extract the ID in our implementation of getId(), we take the last part of the URI.
 - If that last part is not null, we try to parse it as long and return it.
 - It could be that the last part is not a number at all, in which case the parse will fail.
 - We return -1 to indicate that the given URI doesn’t contain a valid ID.
+{TRAN}
+- getType()使用了helper方法getId()来判断URI是否包含ID字段。如果从该方法返回的负值判断它没有ID，我们就返回vnd.android.cursor.dir/vnd.marakana.yamba.mstatus作为MIME类型。否则，我们引用的是单个记录，MIME类型就是vnd.android.cursor.item/vnd.marakana.yamba.status。当然，我们之前就已经在类中定义了这些常量。
+- 为了在我们的getId()实现里获取到ID，我们只取URI的最后一个字段。
+- 如果最后一个字段不是空，我们就试着解析为长整数并返回它。
+- 最后一个字段可能更本就不是数，那么解析就会失败。
+- 我们返回-1来表明给出的URI不包含合法的ID。
 
 
-=== Updating the Android Manifest File ===
-As with any major building block, we want to define our Content Provider in the Android Manifest XML file. Notice that in this case the android:authorities property specifies the URI authority authorized to access this content provider. Typically, this authority would be your Content Provider class—which we use here—or your package.
+%=== Updating the Android Manifest File ===
+=== 更新Android Manifest文件 ===
+{ORGI}As with any major building block, we want to define our Content Provider in the Android Manifest XML file. Notice that in this case the android:authorities property specifies the URI authority authorized to access this content provider. Typically, this authority would be your Content Provider class—which we use here—or your package.
+{TRAN}如同其他的主要构件一样，我们需要在Android Manifest XML文件里定义这个Content Provider。注意到本例中android:authorities属性表明了需要访问这个ContentProvider的URI权限。典型地这个授权会是你的ContentProvider类名和其所在的包。
 
 {CODE}
 <application>
@@ -248,7 +334,8 @@ As with any major building block, we want to define our Content Provider in the 
 </application>
 {/CODE}
 
-At this point our content provider is complete and we are ready to use it in other building blocks of Yamba. But since our application already centralizes all data access in a StatusData object that is readily accessible via YambaApplication, we don’t really have a good use for this content provider within the same application. Besides, content providers mostly make sense when we want to expose the data to another application.
+{ORGI}At this point our content provider is complete and we are ready to use it in other building blocks of Yamba. But since our application already centralizes all data access in a StatusData object that is readily accessible via YambaApplication, we don’t really have a good use for this content provider within the same application. Besides, content providers mostly make sense when we want to expose the data to another application.
+{TRAN}此时我们的ContentProvider就全部完成了，并且我们这就可以在Yamba的其他构件里使用它。但是因为我们应用程序已经集中所有的数据存储于StatusData对象，并且它已经可以通过Yamba应用程序访问，我们不必的在同一个应用程序中完全地只使用这个ContentProvider。通常当我们想暴露数据给其他应用程序时，ContentProvider才会更管用。
 
 == Using Content Providers Through Widgets ==
 As mentioned before, Content Providers mostly make sense when you want to expose the data to other applications. It is a good practice to always think of your application as part of a larger Android ecosystem and, as such, a potential provider of useful data to other applications.
