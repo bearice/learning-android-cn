@@ -1,0 +1,389 @@
+
+
+
+= Native Development Kit (NDK) =
+
+The Native Development Kit, or NDK, is an add-on to SDK that helps you integrate native code—code that uses platform-specific features, generally exposed through C or C++ language APIs—within your Android application. The NDK allows your Android application call some native code and even include some native libraries.
+
+In Gingerbread release of Android, NDK takes support for native code even further with the introduction of NativeActivity class. You can now write your entire activity in C or C++. However, NativeActivity is not subject of this chapter. Here, we’ll look at integrating C native code within your Java Android application.
+
+== What Is and Isn’t NDK For? ==
+
+The main motivation for developing parts of your app in native code is performance. As you can see, the NDK supports math and graphics libraries well, as well as some supporting system libraries. So graphically and computationally intensive application are the best candidates for NDK. One could argue that the recent boom in the popularity of mobile games is driving this development as well.
+
+Note that any native code accessible from your app via JNI still runs inside your application’s Dalvik VM. So it’s subject to the same security sand-boxing rules that Android application lives by. Writing parts of your application in C or C++ just so you can do something that may not be possible to do in Java is usually not a good reason for NDK. Keep in mind that most of the low level hardware features are already elegantly exposed via the Android framework in Java and are usually what you want to use anyhow.
+
+== Problems Solved by the NDK ==
+
+The NDK addresses several of the major issues you’d have to deal with if you were doing native development directly.
+
+=== Tool Chain ===
+
+Java offers access to native code via the Java Native Interface (JNI). To make it work, you would typically have to compile everything on your host computer for the target architecture, requiring you to have the entire tool chain on your development machine. Setting up the proper cross-compiler and other tools is not easy.
+
+NDK provides the complete toolchain you need to compile and build your native code so it can run on your target platform. The build system makes it really easy to set up your environment and integrate your native code into your project.
+
+=== Packaging Your Libs ===
+
+If you had a native library and you wanted it available to your application to load, you’d have to make sure it is part of the library path where the system searches for libraries to load. This is typically ``LD_LIBRARY_PATH`` on Linux. On an Android device, only the ///system/lib// directory is part of this path. This is a problem because the entire ///system// partition is read-only and thus unavailable to an app developer to install libraries there.
+
+NDK solves this problem by providing for a mechanism to ship your native library as part of your Application Package (APK) file. Basically, when the user installs an APK that contains a native library, the system creates a directory named ///data/data/your.package/lib///. If you recall from the section called __“File System, Explained”__, this partition is private just to your application and thus a safe place to keep your libraries for the user, while not letting other applications load and use your libraries. This packaging mechanism is a dramatic change to the rules for distributing applications on Android devices, and is a big deal because it brings the huge range of legacy and new native code into the game.
+
+=== Documentation and Standardized Headers ===
+
+The NDK comes with helpful documentation and sample application explaining how to get things done in native code. It also standardizes on certain guaranteed C and C++ headers, such as:
+
+	 - libc (C library) headers
+	 - libm (math library) headers
+	 - JNI interface headers
+	 - libz (Zlib compression) headers
+	 - liblog (Android logging) header
+	 - OpenGL ES 1.1 and OpenGL ES 2.0 (3D graphics libraries) headers
+	 - libjnigraphics (Pixel buffer access) header (for Android 2.2 and above).
+	 - A minimal set of headers for C++ support
+	 - OpenSL ES native audio libraries
+	 - Android native application APIS
+
+
+Given this set of standard headers, you may have extrapolated what NDK is well suited for. We’ll examine that in the next section.
+
+== NDK Example - Fibonacci ==
+
+Because the NDK is well-suited for computationally intensive applications, I wanted to find an example where we can implement a relatively simple algorithm in both native code and Java to compare their relative speed.
+
+So I picked a Fibonacci algorithm as the example. It’s a fairly simple algorithm that can be easily implemented in both C and Java. We can also implement it recursively as well as iteratively.
+
+As a quick refresher, the Fibonacci series is defined as:
+
+{CODE}
+fib(0)=0
+fib(1)=1
+fib(n)=fib(n-1)+fib(n-2)
+{/CODE}
+
+
+So the Fibonacci sequence looks like this: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, and so on.
+
+Add a comment
+In this example, we are going to:
+
+Add a comment
+Create the Java class representing the Fibonacci library.
+Create the native code header file.
+Implement the native code by writing C code.
+Compile everything and build a shared library.
+Use this native code inside Android activity.
+FibLib
+
+FibLib is where we declare our algorithms for computing the Fibonacci sequence. We have a total of four versions of the Fibonacci algorithm:
+
+	 + Java recursive version
+	 + Java iterative version
+	 + Native recursive version
+	 + Native iterative version
+
+
+We’ll write the Java implementation here and do the native ones in C later.
+
+	**Example 15.1. FibLib.java**
+
+{CODE}
+package com.marakana;
+
+public class FibLib {
+
+        // Java implementation - recursive
+        public static long fibJ(long n) {  //#{1}
+                if (n <= 0)
+                        return 0;
+                if (n == 1)
+                        return 1;
+                return fibJ(n - 1) + fibJ(n - 2);
+        }
+
+        // Java implementation - iterative
+        public static long fibJI(long n) { //#{2}
+          long previous = -1;
+          long result = 1;
+                for (long i = 0; i <= n; i++) {
+                  long sum = result + previous;
+                        previous = result;
+                        result = sum;
+                }
+                return result;
+        }
+
+        // Native implementation
+        static {
+                System.loadLibrary("fib"); //#{3}
+        }
+
+        // Native implementation - recursive
+        public static native long fibN(int n); //#{4}
+
+        // Native implementation - iterative
+        public static native long fibNI(int n);  //#{5}
+}
+{/CODE}
+
+ + This is the Java recursive version of the Fibonacci recursive algorithm.
+ + The iterative version of the same Java recursive algorithm. Everything that can be implemented recursively can be reduced to an iterative algorithm as well.
+ + The native version will be implemented in a shared library. Here, we tell the Java virtual machine to load that library so that the function can be found when called.
+ + We declare the native Fibonacci method, but don’t implement it. Notice the use of the ``native`` keyword here. It tells the Java VM that the implementation of this method is in a shared library. The library should be loaded prior to this method call.
+ + The previous declaration is for the recursive native implementation. This one is for the iterative version.
+
+
+At this point, our FibLib is complete, but we still need to back the ``native`` methods with their C implementations. To do that, first we need to create the appropriate JNI header file.
+
+=== JNI Header File ===
+
+The next step is to create the C header file based on our FibLib Java file. To do that, we use Java’s standard javah tool. Note that you must have the Java Development Kit (JDK) installed in order to find this tool in the //JDK/bin// directory.
+
+Now, to create the C header, go to your project’s bin directory and execute:
+
+{CODE}
+[Fibonacci/bin]> javah -jni com.marakana.FibLib
+{/CODE}
+
+
+``javah -jni`` takes a Java class as the parameter. Since not all the classes are in the Java classpath by default, it is easiest to just change directory to your project’s bin directory. Here, we assume that the current working directory is part of your Java classpath and thus that ``javah -jni com.marakana.FibLib`` at this location will work.
+
+The result should be a new file named //com_marakana_FibLib.h//. This is the C header file that we need to implement next.
+
+Before implementing our native files, let’s organize our project a little bit. Although Eclipse did a lot to setup our Android application directories in a meaningful way thus far, it doesn’t yet offer that level or support and automation for NDK development. We are going to do a couple of steps manually here.
+
+For one, create a directory named jni inside your Eclipse Fibonacci project. This will be the place where you’ll store all your native code and related files. You can create this directory from within Eclipse by selecting the Fibonacci project in Package Explorer, right-clicking on it, and choosing New→Folder.
+
+Next, move this new header file into that folder:
+
+{CODE}
+[Fibonacci/bin]> mv com_marakana_FibLib.h ../jni/
+{/CODE}
+
+
+You can look into this file:
+
+{CODE}
+include::code/Fibonacci/jni/com_marakana_FibLib.h
+{/CODE}
+
+
+As you can see, this file is automatically generated and is not to be modified by the programmer directly. You may observe signatures for two of our native functions that we’re yet to implement:
+
+{CODE}
+...
+JNIEXPORT jlong JNICALL Java_com_marakana_FibLib_fibN
+  (JNIEnv *, jclass, jlong);
+...
+JNIEXPORT jlong JNICALL Java_com_marakana_FibLib_fibNI
+  (JNIEnv *, jclass, jlong);
+...
+{/CODE}
+
+
+These are standard JNI signatures. They are generated by a naming convention indicating that the function contains code defined in ``Java`` as part of ``com.marakana.FibLib`` class for native methods ``fibN`` and ``fibNI``. You can also see that both methods return ``jlong``, a JNI-standardized integer value.
+
+Their input parameters are also interesting: ``JNIEnv``, ``jclass`` and ``jint``. The first two are always part of a Java class created to interface with native code: the ``JNIEnv`` points back to the virtual machine environment, and the next parameter points back to the class or object where this method is from; the parameter is ``jclass`` for a class method or ``jobject`` for an instance method. The third parameter, ``jlong`` is just our input into the Fibonacci algorithm, our ``n``.
+
+Now that we have this header file, it is time to provide its implementation in C.
+
+
+=== C Implementation ===
+
+We are going to create a C file that will implement our native algorithms. For simplicity sake, we’ll call it fib.c. Like the header file we looked at earlier, this file will reside in the jni folder. To create it, right-click on jni folder and choose New→File. Save it as fib.c.
+
+{NOTE}
+You’ll notice that when you open the C file, it may open up in another editor outside of Eclipse. That’s because Java version of Eclipse typically doesn’t have support for C development. You could extend your Eclipse with C development tools by going to Help→Install New Software inside of Eclipse. Alternatively, you can just open the file with standard Eclipse text editor by selecting it and choosing Open With→Text Editor.
+{/NOTE}
+
+
+Next, we provide the implementation of the Fibonacci algorithm in C in this fib.c file. The C versions of our algorithms are almost identical to the Java versions:
+
+ **Example 15.2. jni/fib.c**
+
+{CODE}
+#include "com_marakana_FibLib.h" /* #{1} */
+
+/* Recursive Fibonacci Algorithm #{2} */
+long fibN(long n) {
+  if(n<=0) return 0;
+  if(n==1) return 1;
+  return fibN(n-1) + fibN(n-2);
+}
+
+/* Iterative Fibonacci Algorithm #{3} */
+long fibNI(long n) {
+  long previous = -1;
+  long result = 1;
+  long i=0;
+  int sum=0;
+  for (i = 0; i <= n; i++) {
+    sum = result + previous;
+    previous = result;
+    result = sum;
+  }
+  return result;
+}
+
+/* Signature of the JNI method as generated in header file #{4} */
+JNIEXPORT jlong JNICALL Java_com_marakana_FibLib_fibN
+  (JNIEnv *env, jclass obj, jlong  n) {
+  return fibN(n);
+}
+/* Signature of the JNI method as generated in header file #{5} */
+JNIEXPORT jlong JNICALL Java_com_marakana_FibLib_fibNI
+  (JNIEnv *env, jclass obj, jlong  n) {
+  return fibNI(n);
+}
+{/CODE}
+
+
+ + We import com_marakana_FibLib.h, the header file that was produced when we called ``javah -jni com.marakana.FibLib``.
+ + The actual recursive Fibonacci algorithm. This is fairly similar to the Java version.
+ + An iterative version of Fibonacci. Again, very similar to the Java version.
+ + JNI provides this function to us. Copy-paste the prototype from //com_marakana_FibLib.h//, add variable names, and call the appropriate C function to produce the result.
+ + Same for the iterative signature of the method.
+
+
+Now that we have implemented C versions of Fibonacci, we want to build the shared library. To that, we need an appropriate Makefile.
+
+
+=== The Makefile ===
+
+To build the native library, the ``Android.mk`` Makefile must describe our pieces. The file looks like this:
+
+ **Example 15.3. jni/Android.mk**
+
+{CODE}
+LOCAL_PATH := $(call my-dir)
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE    := fib
+LOCAL_SRC_FILES := fib.c
+
+include $(BUILD_SHARED_LIBRARY)
+{/CODE}
+
+
+It is a part of the standard Android make system. All we are adding here is our specific input (//fib.c//) and our specific output (the //fib// module). The name of the module we specify is important and will determine the name of the library based on operating system convention. For example, on ARM-based systems, the output will be ``libfib.so`` file.
+
+Once we have this make file, we’re ready to initiate the build.
+
+=== Building Shared Library ===
+
+Assuming you have the NDK installed properly, you can now build the native shared library by running //ndk//``/ndk-build`` in your project directory. Here, ndk refers to the directory where your NDK is installed.
+
+At this point, you should have a subdirectory named lib containing your shared library. When you deploy the Fibonacci application in the next section, this library is packaged as part of the APK.
+
+{NOTE}
+The shared library is by default compiled to run on the emulator, so it’s based on ARM architecture.
+{/NOTE}
+
+
+Finally, we need an application to put this library to good use.
+
+=== Fibonacci Activity ===
+
+The Fibonacci Activity asks the user to input a number. Then it runs the four algorithms to compute Fibonacci value of that number. It also times the results and prints them to the screen. This activity basically uses the ``FibLib`` class that in turn uses //libfib.so// for its native part.
+
+ **Example 15.4. FibActivity.java**
+
+{CODE}
+package com.marakana;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+public class Fibonacci extends Activity implements OnClickListener {
+        TextView textResult;
+        Button buttonGo;
+        EditText editInput;
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+                setContentView(R.layout.main);
+
+                // Find UI views
+                editInput = (EditText) findViewById(R.id.editInput);
+                textResult = (TextView) findViewById(R.id.textResult);
+                buttonGo = (Button) findViewById(R.id.buttonGo);
+                buttonGo.setOnClickListener(this);
+        }
+
+        public void onClick(View view) {
+
+                int input = Integer.parseInt(editInput.getText().toString()); //#{1}
+
+                long start, stop;
+                long result;
+                String out = "";
+
+                // Dalvik - Recursive
+                start = System.currentTimeMillis(); //#{2}
+                result = FibLib.fibJ(input);  //#{3}
+                stop = System.currentTimeMillis();  //#{4}
+                out += String.format("Dalvik recur  sive: %d (%d msec)", result, stop
+                                - start);
+
+                // Dalvik - Iterative
+                start = System.currentTimeMillis();
+                result = FibLib.fibJI(input); //#{5}
+                stop = System.currentTimeMillis();
+                out += String.format("\nDalvik iterative: %d (%d msec)", result, stop
+                                - start);
+
+                // Native - Recursive
+                start = System.currentTimeMillis();
+                result = FibLib.fibN(input); //#{6}
+                stop = System.currentTimeMillis();
+                out += String.format("\nNative recursive: %d (%d msec)", result, stop
+                                - start);
+
+                // Native - Iterative
+                start = System.currentTimeMillis();
+                result = FibLib.fibNI(input); //#{7}
+                stop = System.currentTimeMillis();
+                out += String.format("\nNative iterative: %d (%d msec)", result, stop
+                                - start);
+
+                textResult.setText(out); //#{8}
+        }
+}
+{/CODE}
+
+
+ + We convert the string we get from the user into a number.
+ + Before we start the calculation, we take the current timestamp.
+ + We perform the actual Fibonacci calculation by invoking the appropriate static method in ``FibLib``. In this case, it’s the Java recursive implementation.
+ + We take another timestamp and subtract the previous one. The delta is the length of the computation, in milliseconds.
+ + We do the same for the iterative Java implementation of Fibonacci.
+ + Here we use the native recursive algorithm.
+ + And finally we use the native iterative algorithm.
+ + We format the output and print out the results on the screen.
+
+
+
+=== Testing It All Works ===
+
+At this point, we can fire up the Fibonacci application and run some tests on it. Keep in mind that larger values for //n// take quite a bit longer to process, especially using the recursive algorithms. One suggestion would be to keep //n// in the 25-30 range. Also keep in mind that we are doing all this processing on Activity’s main UI thread, and blocking that thread for a long period of time will lead to the Application Not Responding (ANR) error we talked about in __Figure 6.9, “Application Not Responding”__ . As an exercise, you may want to move the actual calculation into an AsyncTask as described in the section called  __“AsyncTask”__ to prevent blocking the main thread.
+
+As you run some tests, you may notice that the native version of the algorithm runs about one [order of magnitude http://en.wikipedia.org/wiki/Order_of_magnitude] faster than the Java implementation (__Figure 15.1, “Fibonacci of 33”__).
+
+	**Figure 15.1. Fibonacci of 33**
+		[images/15-Fibonacci.png]
+
+
+These results in themselves should provide enough motivation to consider moving some of your computationally intensive code into native code. NDK makes the job of integrating native code into your app much simpler.
+
+
+== Summary ==
+
+Starting with the Gingerbread version of Android, NDK also supports Native Activities, a way to create an entire activity in C and still have it adhere to Activity lifecycle rules as discussed in the section called __“Activity Lifecycle”__. This further makes game development in Android easier.
+
