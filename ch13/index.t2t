@@ -269,7 +269,7 @@ public Cursor query(Uri uri, String[] projection, String selection,
 
 {NOTE}
 {ORGI}	We do not close the database here because closing the database will destroy the cursor and we still need it on the receiving end to go over the data returned by the query. One way to handle the cursor is to have the receiver manage it. Activities have a simple startManagingCursor() method for this purpose.
-{TRAN}	在这里我们不用关闭数据库，因为关闭数据库将毁掉游标，所以我们仍然需要保持获取，直到遍历完所有返回的数据。一种处理游标的方法是让接受数据的对象管理它。Activity有一个简单的startManagingCursor()方法达到这个目的。
+{TRAN}	在这里我们不用关闭数据库，因为关闭数据库将毁掉游标，所以我们仍然需要保持获取，直到遍历完所有返回的数据。一种处理游标的方法是让接受数据的对象管理它。Activity有一个简单的startManagingCursor()方 法达到这个目的。
 {/NOTE}
 
 %=== Getting the Data Type ===
@@ -335,21 +335,31 @@ private long getId(Uri uri) {
 {/CODE}
 
 {ORGI}At this point our content provider is complete and we are ready to use it in other building blocks of Yamba. But since our application already centralizes all data access in a StatusData object that is readily accessible via YambaApplication, we don’t really have a good use for this content provider within the same application. Besides, content providers mostly make sense when we want to expose the data to another application.
-{TRAN}此时我们的ContentProvider就全部完成了，并且我们这就可以在Yamba的其他构件里使用它。但是因为我们应用程序已经集中所有的数据存储于StatusData对象，并且它已经可以通过Yamba应用程序访问，我们不必的在同一个应用程序中完全地只使用这个ContentProvider。通常当我们想暴露数据给其他应用程序时，ContentProvider才会更管用。
+{TRAN}此时我们的ContentProvider就全部完成了，并且我们这就可以在Yamba的其他构件里使用它。但是因为我们应用程序已经集中所有的数据存储于StatusData对象，并且它已经可以通过Yamba应用程序访问，我们不必的在同一个应用程序中使用这个ContentProvider（= =！）。通常当我们想暴露数据给其他应用程序时，ContentProvider才会更管用。
 
-== Using Content Providers Through Widgets ==
-As mentioned before, Content Providers mostly make sense when you want to expose the data to other applications. It is a good practice to always think of your application as part of a larger Android ecosystem and, as such, a potential provider of useful data to other applications.
 
-To demonstrate how Content Providers can be useful, we’ll create a Home screen widget. We’re not using the term widget here as in a synonym for Android’s View class, but as a useful embedded service for the Home screen to offer.
+%== Using Content Providers Through Widgets ==
+== 将ContentProvider运用到Widget中 ==
+{ORGI}As mentioned before, Content Providers mostly make sense when you want to expose the data to other applications. It is a good practice to always think of your application as part of a larger Android ecosystem and, as such, a potential provider of useful data to other applications.
+{TRAN}就像在之前提到过的，ContentProvider一般在我们想暴露数据给其他应用程序时会很有用。总是把自己的应用程序当作为庞大Android生态系统的一部分是种很好的态度，也就是说，需要一个ContentProvider提供给其他应用程序。
 
-Android typically ships with a few Home screen widgets. You can access them by going to your home screen, long-pressing on it to pull up an Add to Home Screen dialog, and choosing Widgets. Widgets that come with Android include Alarm Clock, Picture Frame, Power Controls, Music, and Search. Our goal is to create our own Yamba Widget that the user will be able to add to the Home screen.
+{ORGI}To demonstrate how Content Providers can be useful, we’ll create a Home screen widget. We’re not using the term widget here as in a synonym for Android’s View class, but as a useful embedded service for the Home screen to offer.
+{TRAN}为了演示ContentProvider的用处，我们将创建一个主屏幕Widget。我们这里不是指Android中View类的Widget，而是指主屏幕中嵌入的实用服务。
 
-The Yamba Widget will be simple, displaying just the latest status update. To create it, we’ll create a new YambaWidget Class that subclasses AppWidgetProviderInfo. We’ll also have to register the widget with the manifest file.
+{ORGI}Android typically ships with a few Home screen widgets. You can access them by going to your home screen, long-pressing on it to pull up an Add to Home Screen dialog, and choosing Widgets. Widgets that come with Android include Alarm Clock, Picture Frame, Power Controls, Music, and Search. Our goal is to create our own Yamba Widget that the user will be able to add to the Home screen.
+{TRAN}Android通常自带了一些主屏幕Widget。你可以在主屏幕上加入它们，长按主屏幕来弹出增加到主屏幕对话框，并选择Widget。Android内建的Widget有时钟、相框、能源控制、音乐和搜索等。我们的目标是创建我们自己的Yamba Widget，让用户能自行添加到主屏幕上。
 
-=== Implementing the YambaWidget class ===
-YambaWidget is the main class for our widget. It is a subclass of AppWidgetProvider, a special system class that makes widgets. This class itself is a subclass of BroadcastReceiver, so our Yamba Widget is automatically a broadcast receiver. Basically, whenever our widget is updated, deleted, enabled, or disabled, we’ll get a broadcast intent with that information. So this class inherits the onUpdate(), onDeleted(), onEnabled(), onDisabled(), and onReceive() callbacks. We can override any of these, but typically we care mostly about the updates and general broadcasts we receive.
+{ORGI}The Yamba Widget will be simple, displaying just the latest status update. To create it, we’ll create a new YambaWidget Class that subclasses AppWidgetProviderInfo. We’ll also have to register the widget with the manifest file.
+{TRAN}Yamba Widget将是简洁的，仅仅展示最近的状态更新。要创建它，我们将新建一个继承于AppWidgetProviderInfo类的YambaWidget类。同时我们将注册这个Widget到Manifest文件里。
 
-Now that we understand the overall design of the widget framework, here’s how we implement it.
+
+%=== Implementing the YambaWidget class ===
+=== 实现YambaWidget类 ===
+{ORGI}YambaWidget is the main class for our widget. It is a subclass of AppWidgetProvider, a special system class that makes widgets. This class itself is a subclass of BroadcastReceiver, so our Yamba Widget is automatically a broadcast receiver. Basically, whenever our widget is updated, deleted, enabled, or disabled, we’ll get a broadcast intent with that information. So this class inherits the onUpdate(), onDeleted(), onEnabled(), onDisabled(), and onReceive() callbacks. We can override any of these, but typically we care mostly about the updates and general broadcasts we receive.
+{TRAN}YambaWidget是我们这个Widget的主类。它是一个用来构建Widget的特殊系统类AppWidgetProvider的子类。而该类自身又是BroadcastReceiver的一个子类，所以我们的YambaWidget自然也是一个BroadcastReceiver。基本上，不论我们的Widget是更新、删除、启用还是关闭，我们都会得到包含着相关信息的Broadcast Indent。所以该类继承了onUpdate(), onDeleted(), onEnabled(),onDisabled()和onReceive()回调方法。我们可以重载它们，但是通常我们关心的是更新和我们接受到的原始广播。
+
+{ORGI}Now that we understand the overall design of the widget framework, here’s how we implement it.
+{TRAN}现在我们明白了Widget框架的大体设计，这里是我们如何来实现它的例子：
 
 Example 12.1. YambaWidget.java
 {CODE}
@@ -416,6 +426,7 @@ public class YambaWidget extends AppWidgetProvider { //
 }
 {/CODE}
 
+{ORGI}
 - As mentioned before, our widget is a subclass of AppWidgetProvider, which itself is a BroadcastReceiver.
 - This method is called whenever our widget is to be updated, so it’s where we’ll implement the main functionality of the widget. When we register the widget with the system in the manifest file later, we’ll specify the update frequency we’d like. In our case, this method will be called about every 30 minutes.
 - We finally get to use our Content Provider. The whole purpose of this widget in this chapter is to illustrate how to use the StatusProvider that we created earlier. As you have already seen when we implemented the content provider, its API is quite similar to the SQLite database API. The main difference is that instead of passing a table name to a database object, we’re passing a Content URI to the Content Resolver. We still get back the very same Cursor object as we did with databases in Chapter 9, Database.
@@ -430,14 +441,34 @@ public class YambaWidget extends AppWidgetProvider { //
 - We check whether the intent was the one for the new status broadcast.
 - If it was, we get the instance of AppWidgetManager for this context.
 - We then invoke onUpdate().
+{TRAN}
+- 就像之前提到的，我们的Widget是AppWidgetProvider的子类，它自己也是一个BroadcastReceiver。
+- 一旦Widget被更新，就会被调用，所以这里将实现该Widget的主要功能。当我们随后在manifest文件里注册了这个Widget到系统时，我们将指定更新频率。在这个例子里，该方法每30分钟调用一次。
+- 我们最终得以使用ContentProvider。本章中这个Widget的目的就是形象地展示如何使用我们之前创建的StatusProvider。就像我们在ContentProvider里已经实现的那样，这个API很像SQLite数据库API。主要的不同是，我们没有传递表名到数据库对象，而是传递了标识内容的URI到Content Resolver。我们将得到十分相近的Cursor对象，就像我们在第九章，数据库里做的那样。
+- 在这个特例里，我们仅关心在线服务中最近的更新。所以我们将游标移到第一个元素。如果存在，那就是最新的状态更新。
+- 后面的几行代码里，我们从游标对象中获取数据，并保存到本地变量。
+- 因为用户可能使用了多个YambaWidget，我们需要遍历它们并更新全部。我们不是很关心appWidgetId到底是什么，因为我们要做的是更新每一个YambaWidget的实例。appWidgetId在我们需要处理单个Widget时起作用。
+- View在另外的进程里展示我们的Widget。准确地说，我们的Widget在Home应用程序中运行，它作为Widget的宿主和更新操作所在的进程。Hence the RemoteViews constroctor。Remote View框架是一个特别为Widget所设计的内存共享系统。
+- 一旦在其他的进程里引用了这个Widget的Java内存空间，我们就能更新这些View。在此时，我们设置状态数据到我们的Widget。
+- 一旦我们更新了Remote View，AppWidgetManager会调用updateAppWidget()提交消息让系统更新我们的Widget。这些将是异步地，但是很快在onUpdate()结束后调用。
+- 不论StatusProvider是否发现新状态，我们都会释放ContentProvider得到的数据。这是一个好习惯。
+- 在典型的Widget实现里，调用onReceive()方法不是必要的。但是因为Widget也是BroadcastReceiver，因此当有新状态更新时，我们的更新服务会发送Broadcast，这个方法拥有恰好调用onUpdate()的时机，并且能将最新的状态数据更新到Widget上。
+- 我们检查这个Intent是否是一个新状态Broadcast。
+- 如果是的话，我们调用当前Context的AppWidgetManager实例。
+- 我们然后调用onUpdate()。
 
-At this point, we have coded the Yamba Widget, and as a receiver, it will get notified periodically or when there are new updates, and it will loop through all instances of this widget on the Home screen and update them.
 
-Next, we need to set up the layout for our widget.
+{ORGI}At this point, we have coded the Yamba Widget, and as a receiver, it will get notified periodically or when there are new updates, and it will loop through all instances of this widget on the Home screen and update them.
+{TRAN}这时，我们完成了YambaWidget的编码，并且作为一个Receiver，它将会定期，或者有新状态更新时得到通知，然后它将遍历所有的主屏幕上的Widget实例并更新它们。
+
+{ORGI}Next, we need to set up the layout for our widget.
+{TRAN}下一步，我们需要设计Widget的布局。
 
 
-=== Creating the XML Layout ===
-The layout for the widget is fairly straightforward. Note that we’re reusing our existing row.xml file that displays status data properly in the Timeline Activity. Here, we just include it along with a little title and an icon to make it look good on the home screen.
+%=== Creating the XML Layout ===
+=== 创建XML布局 ===
+{ORGI}The layout for the widget is fairly straightforward. Note that we’re reusing our existing row.xml file that displays status data properly in the Timeline Activity. Here, we just include it along with a little title and an icon to make it look good on the home screen.
+{TRAN}Widget布局非常直接。注意到我们重用了已经设定好的在特定Timeline Activity显示状态数据的row.xml文件。这里我们只用包含它，再加上一个小标题和图标，让它在主屏幕上显得好看点。
 
 Example 12.2. res/layout/yamba_widget.xml
 
@@ -457,15 +488,23 @@ Example 12.2. res/layout/yamba_widget.xml
 </LinearLayout>
 {/CODE}
 
-We’re using Linear Layout to hold our widget together. It runs horizontally with the icon on the left and the status data on the right.
+{ORGI}
+- We’re using Linear Layout to hold our widget together. It runs horizontally with the icon on the left and the status data on the right.
+- This is the icon, our standard Yamba icon.
+- Notice the use of <include> element. This is how we include our existing row.xml into this layout so we don’t have to duplicate the code.
+{TRAN}
+- 我们使用Linear Layout组织起Widget。它水平地布局，图标在左边，而状态在右边。
+- 这就是图标，我们的标准Yamba图标。
+- 注意到我们使用了<include>元素。这就是我们如何包含之前定义的row.xml到这个布局的方法，所以我们不用复制粘贴代码。
 
-This is the icon, our standard Yamba icon.
+{ORGI}This layout is simple enough, but does the job for our particular needs. Next, we need to define some basic information about this widget and its behavior.
+{TRAN}这个布局够简单了，但是所做的正是我们需要的。下一步我们需要定义一些关于这个Widget的基本信息和行为。
 
-Notice the use of <include> element. This is how we include our existing row.xml into this layout so we don’t have to duplicate the code.
-This layout is simple enough, but does the job for our particular needs. Next, we need to define some basic information about this widget and its behavior.
 
-Creating the AppWidgetProviderInfo File
-This XML file is responsible for describing the widget. It typically specifies what layout this widget uses, how frequently it should be updated by the system, and what its size is.
+%=== Creating the AppWidgetProviderInfo File ===
+=== 创建AppWidgetProviderInfo文件 ===
+{ORGI}This XML file is responsible for describing the widget. It typically specifies what layout this widget uses, how frequently it should be updated by the system, and what its size is.
+{TRAN}这个XML文件用于描述Widget。它通常指定Widget使用何种布局，多久由系统更新一次，和它的尺寸。
 
 Example 12.3. res/xml/yamba_widget_info.xml
 
@@ -477,10 +516,14 @@ Example 12.3. res/xml/yamba_widget_info.xml
   android:updatePeriodMillis="1800000" />
 {/CODE}
 
-In this case we are specifying that we’d like to have to have our widget updated every 30 minutes or so (1800000 milliseconds). Here, we also specify the layout to use, the title of this widget, and its size.
+{ORGI}In this case we are specifying that we’d like to have to have our widget updated every 30 minutes or so (1800000 milliseconds). Here, we also specify the layout to use, the title of this widget, and its size.
+{TRAN}在这个例子里指定了我们想要更新Widget的频率是每30分钟或者是这样（1800000毫秒）。这里我们还指定了所用的布局，Widget的标题和大小。
 
-Updating the Manifest File
-Finally, we need to update the manifest file and register the widget.
+
+%=== Updating the Manifest File ===
+=== 更新Manifest文件 ===
+{ORGI}Finally, we need to update the manifest file and register the widget.
+{TRAN}最后，我们需要更新manifest文件，注册这个Widget。
 
 {CODE}
   ...
@@ -501,20 +544,26 @@ Finally, we need to update the manifest file and register the widget.
   ...
 {/CODE}
 
-Notice that the widget is a receiver, as we mentioned before. So, just like other broadcast receivers, we declare it within a <receiver> tag inside an <application> element. It is important to register this receiver to receive ACTION_APPWIDGET_UPDATE updates. We do that via the <intent-filter>. The <meta-data> specifies the meta information for this widget in the yamba_widget_info XML file described in the previous section.
+{ORGI}Notice that the widget is a receiver, as we mentioned before. So, just like other broadcast receivers, we declare it within a <receiver> tag inside an <application> element. It is important to register this receiver to receive ACTION_APPWIDGET_UPDATE updates. We do that via the <intent-filter>. The <meta-data> specifies the meta information for this widget in the yamba_widget_info XML file described in the previous section.
+{TRAN}注意到Widget也是Receiver，就像我们之前提到的。所以就像其他BroadcastReceiver，我们用<receiver>声明它，并把它放在<application>元素内部。注册这个Receiver接受ACTION_APPWIDGET_UPDATE更新是十分必要地，而我们需要通过<intent-filter>实现。<meta-data>指定了这个Widget的元信息在yamba_widget_info XML文件里。
 
-That’s it. We now have the widget and are ready to test it.
+{ORGI}That's it. We now have the widget and are ready to test it.
+{TRAN}就是这样。我们现在拥有了一个Widget，并且可以准备测试它了。
 
 === Test That It Works ===
-To test this widget, install your latest application on the device. Next, go to the Home screen, long-press it, and click on the Widgets choice. You should be able to navigate to the Yamba Widget at this point. After adding it to the Home screen, the widget should display the latest status update.
+{ORGI}To test this widget, install your latest application on the device. Next, go to the Home screen, long-press it, and click on the Widgets choice. You should be able to navigate to the Yamba Widget at this point. After adding it to the Home screen, the widget should display the latest status update.
+{TRAN}要测试这个Widget，安装最新的应用程序到设备上。接着，到主屏幕上，长按它，然后点击Widget选项。在此时你应该能看到Yamba Widget。在添加到主屏幕上后，这个Widget应该会显示最新的状态更新。
 
-If your Updater Service is running, you should be able to see the latest updates show up on the Home screen. This means your widget is running properly.
+{ORGI}If your Updater Service is running, you should be able to see the latest updates show up on the Home screen. This means your widget is running properly.
+{TRAN}如果你的Updater Service正在运行，你应该能在主屏幕看到最近的更新显示。这也意味着你的Widget运行正常。
 
-== Summary ==
+%== Summary ==
+== 总结 ==
+{ORGI}At this point, the Yamba app is complete—congratulations! You are ready to fine-tune it, customize it, and publish it to the market.
+{TRAN}恭喜您！Yamba应用全部完成了！你可以准备进一步调试设计，优化设计，并发布到市场上了。
 
-At this point, the Yamba app is complete—congratulations! You are ready to fine-tune it, customize it, and publish it to the market.
-
-Figure 12.1, “Yamba Completion” illustrates what we have done so far as part of the design outlined in Figure 5.4, “Yamba Design Diagram”.
+{ORGI}Figure 12.1, “Yamba Completion” illustrates what we have done so far as part of the design outlined in Figure 5.4, “Yamba Design Diagram”.
+{TRAN}图表12.1，“Yamba Completion”说明了我们到目前为止在图表5.4，“Yamba Design”里所实现的设计部分。
 
 Figure 12.1. Yamba Completion
 
