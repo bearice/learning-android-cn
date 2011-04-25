@@ -108,18 +108,18 @@ StatusData statusData;
 {CODE}
 @Override
 public Uri insert(Uri uri, ContentValues values) {
-  SQLiteDatabase db = statusData.dbHelper.getWritableDatabase();  // 
+  SQLiteDatabase db = statusData.dbHelper.getWritableDatabase();  //#1
   try {
-    long id = db.insertOrThrow(StatusData.TABLE, null, values);  // 
+    long id = db.insertOrThrow(StatusData.TABLE, null, values);  //#2
     if (id == -1) {
       throw new RuntimeException(String.format(
           "%s: Failed to insert [%s] to [%s] for unknown reasons.", TAG,
-          values, uri));  // 
+          values, uri));  //#3
     } else {
-      return ContentUris.withAppendedId(uri, id); // 
+      return ContentUris.withAppendedId(uri, id); //#4
     }
   } finally {
-    db.close(); // 
+    db.close(); //#5
   }
 }
 {/CODE}
@@ -170,16 +170,16 @@ These together make up a WHERE clause in SQL, selecting the records that will ch
 @Override
 public int update(Uri uri, ContentValues values, String selection,
     String[] selectionArgs) {
-  long id = this.getId(uri); // 
-  SQLiteDatabase db = statusData.dbHelper.getWritableDatabase(); // 
+  long id = this.getId(uri); //#1
+  SQLiteDatabase db = statusData.dbHelper.getWritableDatabase(); //#2
   try {
     if (id < 0) {
-      return db.update(StatusData.TABLE, values, selection, selectionArgs); // 
+      return db.update(StatusData.TABLE, values, selection, selectionArgs); //#3
     } else {
-      return db.update(StatusData.TABLE, values, StatusData.C_ID + "=" + id, null); // 
+      return db.update(StatusData.TABLE, values, StatusData.C_ID + "=" + id, null); //#4
     }
   } finally {
-    db.close(); // 
+    db.close(); //#4
   }
 }
 {/CODE}
@@ -206,17 +206,17 @@ public int update(Uri uri, ContentValues values, String selection,
 {CODE}
 @Override
 public int delete(Uri uri, String selection, String[] selectionArgs) {
-  long id = this.getId(uri); // 
-  SQLiteDatabase db = statusData.dbHelper.getWritableDatabase(); // 
+  long id = this.getId(uri); //#1
+  SQLiteDatabase db = statusData.dbHelper.getWritableDatabase(); //#2
   try {
     if (id < 0) {
-      return db.delete(StatusData.TABLE, selection, selectionArgs); // 
+      return db.delete(StatusData.TABLE, selection, selectionArgs); //#3
     } else {
-      return db.delete(StatusData.TABLE, StatusData.C_ID + "=" + id, null); // 
+      return db.delete(StatusData.TABLE, StatusData.C_ID + "=" + id, null); //#4
     }
 
   } finally {
-    db.close(); // 
+    db.close(); //#5
   }
 }
 {/CODE}
@@ -243,14 +243,14 @@ public int delete(Uri uri, String selection, String[] selectionArgs) {
 @Override
 public Cursor query(Uri uri, String[] projection, String selection,
     String[] selectionArgs, String sortOrder) {
-  long id = this.getId(uri); // 
-  SQLiteDatabase db = statusData.dbHelper.getReadableDatabase(); // 
+  long id = this.getId(uri); //#1
+  SQLiteDatabase db = statusData.dbHelper.getReadableDatabase(); //#2
   if (id < 0) {
     return db.query(StatusData.TABLE, projection, selection, selectionArgs, null,
-        null, sortOrder); // 
+        null, sortOrder); //#3
   } else {
     return db.query(StatusData.TABLE, projection, StatusData.C_ID + "=" + id, null, null, null,
-        null); // 
+        null); //#4
   }
 }
 {/CODE}
@@ -290,19 +290,19 @@ public Cursor query(Uri uri, String[] projection, String selection,
 @Override
 public String getType(Uri uri) {
   return this.getId(uri) < 0 ? MULTIPLE_RECORDS_MIME_TYPE
-      : SINGLE_RECORD_MIME_TYPE;  // 
+      : SINGLE_RECORD_MIME_TYPE;  //#1
 }
 
 private long getId(Uri uri) {
-  String lastPathSegment = uri.getLastPathSegment();  // 
+  String lastPathSegment = uri.getLastPathSegment();  //#2
   if (lastPathSegment != null) {
     try {
-      return Long.parseLong(lastPathSegment); // 
-    } catch (NumberFormatException e) { // 
+      return Long.parseLong(lastPathSegment); //#3
+    } catch (NumberFormatException e) { //#4
       // at least we tried
     }
   }
-  return -1;   // 
+  return -1;   //#5
 }
 {/CODE}
 
@@ -376,51 +376,51 @@ import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-public class YambaWidget extends AppWidgetProvider { // 
+public class YambaWidget extends AppWidgetProvider { //#1
   private static final String TAG = YambaWidget.class.getSimpleName();
 
   @Override
   public void onUpdate(Context context, AppWidgetManager appWidgetManager,
-      int[] appWidgetIds) { // 
+      int[] appWidgetIds) { //#2
     Cursor c = context.getContentResolver().query(StatusProvider.CONTENT_URI,
-        null, null, null, null); // 
+        null, null, null, null); //#3
     try {
-      if (c.moveToFirst()) { // 
-        CharSequence user = c.getString(c.getColumnIndex(StatusData.C_USER)); // 
+      if (c.moveToFirst()) { //#4
+        CharSequence user = c.getString(c.getColumnIndex(StatusData.C_USER)); //#5
         CharSequence createdAt = DateUtils.getRelativeTimeSpanString(context, c
             .getLong(c.getColumnIndex(StatusData.C_CREATED_AT)));
         CharSequence message = c.getString(c.getColumnIndex(StatusData.C_TEXT));
 
         // Loop through all instances of this widget
-        for (int appWidgetId : appWidgetIds) { // 
+        for (int appWidgetId : appWidgetIds) { //#5
           Log.d(TAG, "Updating widget " + appWidgetId);
           RemoteViews views = new RemoteViews(context.getPackageName(),
-              R.layout.yamba_widget); // 
-          views.setTextViewText(R.id.textUser, user); // 
+              R.layout.yamba_widget); //#6
+          views.setTextViewText(R.id.textUser, user); //#7
           views.setTextViewText(R.id.textCreatedAt, createdAt);
           views.setTextViewText(R.id.textText, message);
           views.setOnClickPendingIntent(R.id.yamba_icon, PendingIntent
               .getActivity(context, 0, new Intent(context,
                   TimelineActivity.class), 0));
-          appWidgetManager.updateAppWidget(appWidgetId, views); // 
+          appWidgetManager.updateAppWidget(appWidgetId, views); //#8
         }
       } else {
         Log.d(TAG, "No data to update");
       }
     } finally {
-      c.close(); // 
+      c.close(); //#9
     }
     Log.d(TAG, "onUpdated");
   }
 
   @Override
-  public void onReceive(Context context, Intent intent) { // 
+  public void onReceive(Context context, Intent intent) { //#10
     super.onReceive(context, intent);
-    if (intent.getAction().equals(UpdaterService.NEW_STATUS_INTENT)) { // 
+    if (intent.getAction().equals(UpdaterService.NEW_STATUS_INTENT)) { //#11
       Log.d(TAG, "onReceived detected new status update");
-      AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context); // 
+      AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context); //#12
       this.onUpdate(context, appWidgetManager, appWidgetManager
-          .getAppWidgetIds(new ComponentName(context, YambaWidget.class))); // 
+          .getAppWidgetIds(new ComponentName(context, YambaWidget.class))); //#13
     }
   }
 }
@@ -474,16 +474,16 @@ Example 12.2. res/layout/yamba_widget.xml
 
 {CODE}
 <?xml version="1.0" encoding="utf-8"?>
-  <!--  -->
+  <!-- #1 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_height="wrap_content" android:layout_width="fill_parent"
   android:background="@color/edit_text_background"
   android:layout_margin="5dp" android:padding="5dp">
-  <!--  -->
+  <!-- #2 -->
   <ImageView android:layout_width="wrap_content" android:src="@drawable/icon"
     android:layout_height="fill_parent" android:id="@+id/yamba_icon"
     android:clickable="true" />
-  <!--  -->
+  <!-- #3 -->
   <include layout="@layout/row" />
 </LinearLayout>
 {/CODE}
@@ -565,5 +565,6 @@ Example 12.3. res/xml/yamba_widget_info.xml
 {ORGI}Figure 12.1, “Yamba Completion” illustrates what we have done so far as part of the design outlined in Figure 5.4, “Yamba Design Diagram”.
 {TRAN}图表12.1，“Yamba Completion”说明了我们到目前为止在图表5.4，“Yamba Design”里所实现的设计部分。
 
-Figure 12.1. Yamba Completion
+		Figure 12.1. Yamba Completion
+	[images/12-Yamba-7.png]
 
