@@ -232,7 +232,7 @@ public class Message implements Parcelable { // 1
 %== Registering with the Manifest File ==
 == 注册到Manifest文件 ==
 {ORGI}As always, whenever we provide one of the new main building blocks for applications, we must register it with the system. The most common way to do that is to define it in the Manifest file.
-{TRAN}总是这样地，只要是我们为应用程序提供了一个新的基本构件，就必须注册到系统里。最普遍的实现办法就是定义到Manifest文件中。
+{TRAN}只要是我们为应用程序提供了一个新的基本构件，就总得注册到系统里。最普遍的实现办法就是定义到Manifest文件中。
 
 {ORGI}Just as we registered UpdaterService before, we provide a <service> element specifying our service. The difference this time around is that this service is going to be invoked remotely, so we should specify what Action this service responds to. To do that, we specify the action and the Intent Filter as part of this service registration.
 {TRAN}就像之前注册UpdaterService那样，我们提供了<service>元素指定Service。这里的不同之处是本Service将由远程调用，所以我们应该指定此服务响应何种Action。要实现这点，我们指定Action和Intent Filter为这个Service注册的一部分。
@@ -392,19 +392,18 @@ public class LogActivity extends Activity implements OnClickListener {
 - Whenever we make a remote call, it could fail for variety of reasons outside of our control. Because of that, it is a good practice to handle a possible RemoteException.
 - When this activity is about to be destroyed, we ask to unbind the service and free those resources.
 {TRAN}
-- LogConnection是我们处理连接和断开操作到远程服务的类.
--
--
--
--
--
--
--
--
--
--
--
-
+- LogConnection是我们处理连接和断开操作到远程服务的类。该类将随后做具体解释。
+- 这是个用于连接到远程服务的Action Intent。它必须符合LogService在Manifest文件中对应的Intent Filter部分里所指定的Action。
+- 这里是我们把数据加入到Intent，它会被远程方法解析出来。
+- bindService() 用于向请求Android运行时绑定该Activity到通过Intent Action所指定的远程服务上。In addition to the Intent, we pass on the Service Connection class to handle the actual connection. BIND_AUTO_CREATE标志用于表示，如果我们试图连接到的服务未启动，将创建一个出来。
+- LogConnection是成功连接到远程服务或失去连接后回调的类。该类需要继承ServiceConnection并实现onServiceConnected()和onServiceDisconnected()方法。
+- onServiceConnected()方法仅在绑定成功后调用。在这里，IBinder实例就代表着远程服务。
+- 我们现在需要将此绑定的服务强制转换成LogService实例。要这么做，我们使用AIDL工具自动生成的Java stub代码中的帮助方法ILogService.Stub.asInterface()。
+- onServiceDisconnected()仅远程服务不在使用时调用。它有机会处理所有必须的清理工作。这个例子中，我们只需要设置logService为null来让它被垃圾回收器销毁掉。
+- 假设我们成功绑定了远程服务，现在便可以如同本地调用去调用它。就像我们在LogService定义的那样，logService.log_d()仅仅需传递了两个字符串到log_d()方法中。
+- 就像之前提到的，如果我们想传递Message到远程方法，我们需要首先创建parcel。这当然是可行的，因为Message是一个parcelable对象了。我们只需要通过对应的setter设置属性。
+- 当我们做出远程调用时，可能会出现各种意料之外的失败。由于这个原因，处理可能的RemoteException是个好办法。
+- 当Activity快要销毁时，我们需请求解除绑定并释放这些资源。
 
 
 {ORGI}At this point our client is complete. There’s a simple UI with a single button that triggers an onClick() call. Once the user clicks the button, our client should be invoking the remote call in the service.
