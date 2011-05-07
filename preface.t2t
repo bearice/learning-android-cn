@@ -12,11 +12,11 @@
 
 % My background is in Java from back before it was even called that. From the beginning, I was very much interested in embedded development in order to program various devices that surround us in every day life. Because Java took off mostly in the web application development, most of my previous decade went to building large enterprise system. Then Android arrived and I got once again very excited about building software for non-traditional computers. My current interests are Android on devices that may not even resemble a typical phone.
 
-自Java初出茅庐不久，我就与它结下了不解之缘。当时java的定位还是在嵌入式领域，“对身边的各种设备编程”，这一想法对我触动很深。不久之后Java的主力就转向了Web应用的开发，我的工作也顺之而转型到大型企业级应用，并在此间度过了十个春秋。所以当Android出现时，我马上就认了出来：为非PC的设备编程！更何况Android所支持的，甚至不仅仅是手机而已。
+自Java初出茅庐不久，我就与它结下了不解之缘。当时java的定位还是在嵌入式领域，“对身边的各种设备编程”，这一想法对我触动很深。不久之后Java的主力就转向了Web应用的开发，我的工作也顺之而转型到大型企业级应用，并在此间度过了十个春秋。所以当Android出现时，我马上就认了出来：为非PC的设备编程！更何况Android所支持的不仅仅是手机而已。
 
 % This book lets anyone who knows Java (or a similar language) grow to develop a reasonably complex Android application. I hope you find this book fairly comprehensive and that you find the example-based learning reasonably motivating. The goal of Learning Android is to get you to think in Android terms.
 
-本书假定读者拥有java或类似语言的基础，配合实例，参照一个合适的难度，手把手地为你讲解Android应用的开发过程。Learning Android，更是把握Android的思维方式。
+本书假定读者拥有java或类似语言的基础，配合实例，参照一个合适的难度，手把手地为你讲解Android应用的开发过程。Learning Android，更是体会Android的思维方式。
 
 == What’s Inside ==
 
@@ -111,7 +111,7 @@
 {NOTE}
 % This icon signifies a tip, suggestion, or general note.  
 	
-	用于表示一个提示、建议或者笔记。
+	用于表示一段提示、建议或者笔记。
 
 {/NOTE}
 

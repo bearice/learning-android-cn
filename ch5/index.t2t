@@ -6,7 +6,7 @@
 {TRAN}= Yamba 项目简介 =[ch5]
 
 {ORGI}The best way to learn is by an example. And that example has to meet certain criteria. After working with thousands of new Android developers and explaining some of unique concepts that this platform has to offer, using various example applications, I concluded that the best example has to be:
-{TRAN}学习的最好方法就是动手实践，因此一个好的实例是很重要的。在平日面向数千名初学者的教学中，我曾尝试使用过许多的实例。经过总结，一个好的实例该有如下特征：
+{TRAN}学习的最好方法就是动手实践，因此一个好的实例是很重要的。在平日面向数千名初学者的教学中，我曾尝试使用过许多不同的实例。经过总结，一个好的实例该有如下特征：
 
 {ORGI}**Comprehensive**
 {TRAN}**全面**
@@ -18,7 +18,7 @@
 {TRAN}**大众化**
 
 {ORGI} The example application should be simple to understand. We want to focus on design and implementation and not on features and benefits.
-{TRAN}一个好的实例应当是简单易懂的。对我们来说，学习的重点是理解它的设计与实现，而非死记硬背它的特性与好处。
+{TRAN}一个好的实例应当是简单易懂的。对我们来说，学习的重点在于理解它的设计与实现，而非死记硬背它的特性与好处。
 
 {ORGI}== The Yamba Application ==
 {TRAN}== Yamba 项目 ==
@@ -27,7 +27,7 @@
 {TRAN}我为这本书选择了一个类Twitter的应用程序作为实例，它的名字是Yamba，即 //Yet Another Micro Blogging App//。 使用Yamba，你可以连接到twitter之类的微博服务以跟踪朋友的消息，也可以更新自己的消息。
 
 {ORGI}Yamba covers most of the main Android building blocks in a natural way. As such, it’s a great sample application to illustrate how various components work individually as well as fit together. Services such as Twitter are more or less familiar to most people, so the features of the application do not require much explaining.
-{TRAN}Yamba作为一个实例，完整又不失简单。它用上了Android的所有构件(Building Blocks)，我们可以留意下它是如何将各个独立工作的部分合而为一的。至于Twitter这样的微博服务大家肯定不会陌生，因此有关程序的功能也就不多做解释了。
+{TRAN}Yamba作为一个实例，它应用了Android的所有构件(Building Blocks)，完整又不失简单。我们可以留意下它是如何将各个独立工作的部分合而为一的。至于Twitter这样的微博服务大家肯定不会陌生，因此有关程序的功能也就不多做解释了。
 
 {ORGI}Here’s what a finished product could look like:
 {TRAN}成品图大约如下：
@@ -114,7 +114,7 @@
 {TRAN}=== Android 程序的调试 ===
 
 {ORGI}A few things are going to go wrong in this section. This is by design. Debugging is a normal part of application development. We’ll show you how to use the Android SDK tools to quickly find and fix problems. Debugging will become second nature to you.
-{TRAN}哦，糟糕，我们的程序不能正常工作了。不过别担心，这是必须的。调试正是开发中不可回避的一部分。我们将在本章讲解 Android SDK中提供的调试工具的使用方法，学会如何快速地定位问题并解决问题。调试会变成你的第二本能的！
+{TRAN}哦，糟糕，我们的程序不能正常工作了。不过别担心，这是必须的。调试是正式开发中不可回避的一部分。我们将在本章讲解 Android SDK中提供的调试工具的使用方法，学会如何快速地定位问题并解决问题。调试会成为你的第二本能的！
 
 {ORGI}== Part 2: Preferences, File System, Options Menu, and Intents ==
 {TRAN}== 第二部分: 首选项，文件系统，选项菜单和Intent ==

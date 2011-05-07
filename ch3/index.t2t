@@ -5,20 +5,20 @@
 
 {ORGI}In this chapter, you will learn how to set up your environment for Android development. I’ll go beyond just telling you where to download the software from, but will also into some of the best practices in getting set up. I’ll look at development operating system choices as well as Android tools available. You will see the good, the bad, and the ugly of various choices of tools and platforms that you’re about to make (or someone else has already made for you).
 
-{TRAN}在本章中，你将学会如何搭建一个 Android 开发环境。除了罗列出软件的下载地址外，还将给出搭建过程中的若干最佳实践。本章会涉及如何选择开发用操作系统和可能用到的 Android 工具。面对诸多选择（或者被规定使用），你需要对它们长处短处、是否靠谱心里有数。
+{TRAN}本章我们介绍Android 开发环境的搭建方法。这里列出了所需的各种软件的下载地址，也提供了构建开发环境的最佳实践。毕竟操作系统各有不同，开发工具也多种多样。面对诸多选择（或者被规定使用），对其差异长短心里有数总是好的。
 
 {ORGI}By the end of this chapter, you will have your entire development environment setup. You’ll be able to write a Hello World application, build it, and run it on the emulator (or physical device, if you want).
 
-{TRAN}在本章的最后，你将得到一个完整的开发环境。然后你就可以动手编写第一个 Hello World 程序了，构建它，然后在虚拟机里（或者在真机上，只要你乐意）运行它。
+{TRAN}在本章的最后，你将拥有一个完整的开发环境。随后就可以动手编写并构建第一个 Hello World 程序了，在虚拟机里（或者在真机上，只要你乐意）运行即可。
 
 {NOTE}
 {ORGI}I’m going to be using ~ to refer to your home directory. On Mac OS X, that’s typically something like /Users/marko. On Linux, it would be /home/marko and on Windows Vista and 7, C:\Users\marko (in Windows XP, it would be C:\Documents and Settings\marko). Also, I’m going to be using Unix-style forward slashes and not Windows back slashes to denote file path separators.
 
-{TRAN}下文中将会使用 ``~`` 符号来表示你的个人目录。对于 Mac OS X 来说，这个符号一般代表 ``/Users/marko/`` 这样的目录。对于 Linux 用户来说这个目录在 ``/home/marko`` ，而在 Windows Vista 和 Windows 7 中是``C:\Documents and Settings\marko``。同样，我将使用 Unix 风格的正斜线而不是 Windows 风格的反斜线作为路径分隔符。
+{TRAN}下文将会使用 ``~`` 符号表示你的个人目录。对于 Mac OS X ，这个符号一般代表 ``/Users/marko/`` 这样的目录。对于 Linux ，这个符号是 ``/home/marko`` ，而在 Windows Vista 和 Windows 7 中是``C:\Documents and Settings\marko``。同样，我将选择 Unix 风格的正斜线而非 Windows 风格的反斜线作为路径分隔符。
 
 {ORGI}So, if you’re on Windows, just change ~ to C:\Users\YourUserName and / to \. Other than that, everything should be pretty much the same no matter whether you are on Mac, Linux, or Windows.
 
-{TRAN}所以如果你使用 Windows 的话，只需要把 ``~`` 替换成 ``C:\Users\YourUserName`` ，并把 ``/`` 换成 ``\`` 。除此以外，在 Mac 、 Linux 或者 Windows 上都是相同的。
+{TRAN}因此如果你使用 Windows 的话，只需要把 ``~`` 替换成 ``C:\Users\YourUserName`` ，并把 ``/`` 换成 ``\`` 。除此以外，在 Mac 、 Linux 或者 Windows 上都是相同的。
 {/NOTE}
 
 % == Installing the Android SDK ==
@@ -30,7 +30,7 @@
 
 {ORGI}Once you download it, unzip (or on Linux, untar) it into a folder that is easy to get to. Further examples in the book will assume your SDK is in the folder ~/android-sdk. If it’s in a different location, use that location instead of ~/android-sdk. For example:
 
-{TRAN}下载之后，解压到一个方便访问的目录。在本书随后的例子中，将假定你SDK的安装目录在~/andorid-sdk。若你的安装目录在其它位置，注意替换即可。比如：
+{TRAN}下载之后，解压到一个方便访问的目录。在本书随后的例子中，将假定你SDK的安装目录在~/andorid-sdk。若你的安装目录在其它位置，留意替换即可。比如：
 
 : Windows
   C:\apps\android-sdk-windows
@@ -43,11 +43,11 @@
 {TIP}
 % For Windows users, I strongly recommend choosing directories without spaces in them. This is because we’ll be doing work on the command-line and spaces just complicate things. Because the Windows XP home directory is in C:\Documents and Settings, I would recommend putting android-sdk in a top-level directory that you create, such as C:\apps.
 
-我强烈建议Windows用户避免选择带空格的目录名，因为我们会经常用到命令行，而夹带空格的目录名只会增加无谓的复杂性。Windows XP的个人目录又恰恰是C:\Document and Settings，因此我建议不如把android-sdk放在一个新建的顶级目录之下，比如C:\apps。
+我强烈建议Windows用户避免选择带空格的目录名，因为我们会经常用到命令行，夹带空格的目录名只会增加无谓的复杂性。而Windows XP的个人目录又恰恰带着空格:``C:\Document and Settings``，因此我建议把android-sdk放在一个新建的顶级目录之下，比如C:\apps。
 
 % However, on Windows Vista or 7, you can simply extract android-sdk into C:\Users\YourUserName.
 
-不过，Windows Vista或Windows 7的话，直接放在C:\Users\**YourUserName**之下就好。
+不过，Windows Vista或Windows 7的话，直接放在C:\Users\**YourUserName**下面就好。
 {/TIP}
 
 
@@ -56,11 +56,11 @@
 
 % Android SDK has a folder with all the major tools in it. Since we’re going to be using these tools from the command line, it is very helpful to add your ~/android-sdk/tools/ directory to your system PATH variable. This will allow you easier access to your tools without having to navigate to their specific location every single time.
 
-Android SDK里有个目录，其主要工具都在里面。我们会经常在命令行中使用这些工具，所以把你的~/android-sdk/tools/目录加入系统的环境变量PATH之中会是个好办法，这一来就不用每次使用它们都切换目录了。
+Android SDK里有个目录，主要的工具都在里面。我们会频繁地用到这些工具，因此把你的~/android-sdk/tools/目录加入系统的环境变量PATH会是个好办法，这一来就不需要每次使用它们都切换目录了。
 
 % Details for setting up PATH variable depend on the platform, and are documented at [Installing Android SDK http://developer.android.com/sdk/installing.html] page, Step 2.
 
-不同系统中设置PATH的方式各有不同，详见 [Installing Android SDK http://developer.android.com/sdk/installing.html] 页面中的第二步。
+对不同系统设置PATH的方式各有不同，详见 [Installing Android SDK http://developer.android.com/sdk/installing.html] 页面中的第二步。
 
 %=== Installing Eclipse ===
 === 安装 Eclipse ===
@@ -159,10 +159,10 @@ Eclipse通过project组织你的工作，而所有的project皆放置在workspac
 % + Finally, click on Finish button and Eclipse will create your project. Let’s look at the various files that this process created:
 
 + 填写"Project name"。这是个Eclipse概念：Eclipse把一切皆组织为项目(project)，而项目名只能是一个单词。在命名上，我个人比较喜欢[CamelCase http://en.wikipedia.org/wiki/Camel_case]方式。在此输入：``HelloWorld``。
-+ 接下来选择"build target"，它为构建工具指明了目标平台的版本。其中列出了所有可用的目标平台，以及你的SDK中附带的扩展。在这里可以选择一个较新的版本，比如Android 2.2（但不要选择Google APIs）。
++ 接下来选择"build target"，它为构建工具指明了目标平台的版本。其中罗列了所有可用的目标平台，以及你的SDK中附带的扩展。在这里可以选择一个较新的版本，比如Android 2.2（但不要选择Google APIs）。
 + 接下来设置你的project属性。其中的application name也就是你应用的英文名字，随便写上就好，比如"Hello, World!!!"。
 + "package name"是个Java中的概念。在Java中所有源码都是组织为package，用以表示Java对象在不同类中的可见性，是个很重要的概念。在Android开发中package作为应用注册的单位，也是很重要的。其命名规范为逆序的域名，后跟可选的子域名(译者：这里译法有存疑)。比如我有个域名是example.com，要编写一个计算器（caculator）的应用，那package的名字就可以是com.example.caculator。
-+ "activity"一项是可选的。目前我们还没讲到Activity（参见[第六章，Android用户界面 #ch6]），姑且把它看作是应用中的不同屏幕即可。Activity通过Java的类来表示，因此其名字也就遵守Java中类的命名规范：首字母大写，对多个单词使用CamelCase命名规范。在此输入``HelloWorld``作为Activity的名字。
++ "activity"一项是可选的。目前我们还没讲到Activity（参见[第六章，Android用户界面 #ch6]），姑且把它看作是程序的界面即可。Activity通过Java的类来表示，因此其名字也就遵守Java中类的命名规范：首字母大写，对多个单词使用CamelCase命名规范。在此输入``HelloWorld``作为Activity的名字。
 + "minimum SDK version"是这一应用所支持目标平台的最低版本，以API Level为单位。若想要得到较高的兼容性，就选择一个较低的版本。在这里我们只要支持本机即可，因此选择8，对应Android 2.2。
 + 最后单击Finish按钮，Eclipse就会新建出一个项目。接下来，我们依次观察一下在这一环节中新建出来的文件。
 
@@ -175,7 +175,7 @@ Eclipse通过project组织你的工作，而所有的project皆放置在workspac
 
 % Manifest file glues everything together. It is this file that explains what the application consists of, what all its main building blocks are, what permissions it requires, and so on.
 
-Manifest文件是应用各部分之间的牵线人。它申明了应用中包含的构件(Building Blocks)、所需的权限等等信息。
+Manifest文件是应用各部分之间的牵线人。它申明了程序中包含的构件(Building Blocks)、所需的权限等等信息。
 
 **Example 3.1. AndroidManifest.xml**
 {CODE}
@@ -201,7 +201,7 @@ Manifest文件是应用各部分之间的牵线人。它申明了应用中包含
 
 % The layout file specifies the layout of your screen. In this case, we have only one screen and its loaded by the Java code, HelloWorld activity above.
 
-Layout文件用于表示屏幕的布局。在这里我们只用到了一个屏幕，即上面定义的Activity：``HelloWorld``。
+Layout文件用于表示界面的布局。在这里我们只用到了一个界面，即上面定义的Activity：``HelloWorld``。
 
 **Example 3.2. res/layout/main.xml**
 {CODE}
