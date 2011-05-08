@@ -1,0 +1,443 @@
+%
+%
+%
+
+%= Android Interface Definition Language =
+= Android界面描述语言 =
+{ORGI}Each application in Android runs in its own process. An application cannot directly access the data of another application for security reasons. However, a couple of mechanisms allow communication between applications. One such mechanism that you’ve seen throughout the book is Intents. Intents are asynchronous, meaning that you can post a message for someone to receive at some future point in time and just continue with your application.
+{TRAN}在Android中，每个应用程序运行于各自的进程里。基于安全考虑，应用程序不能直接获取其他应用程序的数据。然而，有两个机制允许在应用程序间通讯。其中一个你已经在本书中关于Intent的章节里了解过。Intent是异步的，意味着你可以提交给对方的数据，要在未来某个时间点才会接受到，但是程序本身却不会等待继续执行。
+
+{ORGI}Every once in a while we need a more direct, synchronous access to another process. There are many ways to implement this across process boundaries, and collectively they are called Interprocess Communication, or IPC for short.
+{TRAN}但有时候我们还是需要更直接，同步访问其他进程的方法。这里有许多可以跨进程的方法，它们统称未跨进程通讯，或简称IPC。
+
+{ORGI}To allow cross-application communication, Android provides its own version of an IPC protocol. One of the biggest challenges in IPC is passing data around, such as when passing parameters to method calls on the remote systems. IPC protocols tend to get complicated because they have to convert data from its in-memory format to a format that’s convenient for sending to another process. This is called marshaling, and the unpacking at the receiver is called unmarshaling.
+{TRAN}为了支持跨应用程序通讯，Android提供了它自己的IPC协议。对IPC来说，最大的挑战出现在传递数据时，也就是当传递参数到远程系统的方法调用时。由于IPC协议需将数据从内存中的表示转换成适合传递给其他进程的形式，因此它们变得趋近复杂。这叫做编组（序列化？），而同时解开收到的数据则被称为解编（反序列化？）。
+
+{ORGI}To help with this, Android provides the Android Interface Definition Language, or AIDL. It is a lightweight implementation of IPC using a syntax that is very familiar to Java developers, and a tool that automatically creates the hidden code required to connect a client and a remote service.
+{TRAN}为了协助我们完成这个任务，Android提供了Android界面描述语言，或者称为AIDL。这是个轻量级IPC实现，为Java开发者提供了十分熟悉的语法形式，同时也是一种自动生成连接客户端和远程服务端隐藏代码的工具。
+
+{ORGI}To illustrate how to use AIDL to create interprocess communication, we’ll create two applications: a remote service called LogService and a client called LogClient that will bind to that remote service.
+{TRAN}为了展示如何使用AIDL创建跨进程通讯，我们将创建两个应用程序，一个是称做LogService的远程服务，而另一个叫做LogClient的客户端将绑定到远程服务上。
+
+%== Implementing the Remote Service ==
+== 实现远程服务 ==
+{ORGI}Our remote service, LogService, will simply allow remote clients to log a message to it.
+{TRAN}我们的远程服务LogService，仅用来允许远程客户端在它上面记录日志。
+
+{ORGI}We are going to start by creating the interface for the remote service. This interface represents the API, or set of capabilities that the service provides. We write this interface in AIDL language and save it in the same directory as our Java code with an .aidl extension.
+{TRAN}我们即将开始创建远程服务的接口。这个接口呈现为API的形式，也就是一组服务提供的协议。我们用AIDL语言编写接口，并使用.aidl扩展名保存到同Java代码相同的目录下。
+
+{ORGI}The AIDL syntax is very similar to a regular Java interface. You simply define the method signature. The datatypes supported by AIDL are somewhat different from regular Java interfaces. But all Java primitive datatypes are supported. So are the String, List, Map, and CharSequence classes.
+{TRAN}AIDL语法十分类似于标准的Java接口。你只需简单的定义方法签名。AIDL支持的数据类型则与通常的Java接口有所不同。但是所有Java原始数据类型都还是支持的。字符串、列表、映射和字符序列类也同样支持。
+
+{ORGI}If you have a custom complex data type, such as a class, you need to make it Parcelable so that the Android run-time can marshal and unmarshal it. In this example, we’ll create a Message as a custom type.
+{TRAN}如果你拥有自定义的复杂数据类型，例如一个类，你需要让它是Parcelable的，这样Android运行时才能编组和解编它。在这个例子里，我们将创建自定义类型Message。
+
+%== Writing the AIDL ==
+== 编写AIDL ==
+{ORGI}We start by defining the interface for our service. As you can see, the interface very much resembles a typical Java interface. For readers who might have worked with CORBA in the past, AIDL has its roots in CORBA’s IDL.
+{TRAN}我们开始定义服务的接口。就像你看到的，这个接口很像个典型的Java接口。对于那些以前用过CORBA的读者来说，AIDL基于CORBA的IDL。
+
+Example 14.1. ILogService.aidl
+{CODE}
+package com.marakana.logservice; // 1
+
+import com.marakana.logservice.Message; // 2
+
+interface ILogService { //3
+  void log_d(String tag, String message); // 4
+  void log(in Message msg); // 5
+}
+{/CODE}
+
+{ORGI}
+- Just as in Java, our AIDL code specifies what package it’s part of.
+- However, unlike Java, we have to explicitly import other AIDL definitions even if they are in the same package.
+- We specify the name of our interface. Interface names conventionally start with I for interface.
+- This method is simple because it doesn’t return anything and takes only primitives as inputs. Note that the String class is not a Java primitive, but AIDL considers it to be one.
+- This method takes our custom Message parcel as its input. We’ll define Message next.
+{TRAN}
+- 就像Java，AIDL代码指定了其所在的包
+- 然而不像Java，就算在同一个包内，我们也要显式的导入其他AIDL定义。
+- 我们指定了接口的名字，将接口名出于方便的考虑以Interface首字母I开头。
+- 这个方法很简单，因为不返回任何东西，而且输入都是基本类型。注意到字符串虽不是Java基本类型，但AIDL仍认为它是的。
+- 这个方法采用我们自定义的Message parcel作为输入。随后我们将定义出Message。
+
+
+{ORGI}Next, we’ll look at the implementation of the Message AIDL.
+{TRAN}接下来，我们将看看Message的AIDL实现。
+
+Example 14.2. Message.aidl
+{CODE}
+package com.marakana.logservice; // 1
+
+/* 2 */
+parcelable Message;
+{/CODE}
+
+{ORGI}
+- Specifies the package it’s in.
+- Declares that Message is a parcelable object. We will define this object later in Java.
+{TRAN}
+- 指定所在的包名
+- 申明Message是一个paracelable对象。而这个对象将随后在Java中定义。
+
+
+{ORGI}At this point, we are done with the AIDL. As you save your files, Eclipse automatically builds the code to which the client will connect, called the stub because it looks like a complete method to the client but actually just passes on the client request to your remote service. The new Java file is located in Gen folder under /gen/com/marakana/logservice/LogService.java. Because this file is derived from your AIDL, you should never modify it. The aidl tool that comes with the Android SDK will regenerate it whenever you make any changes to your AIDL files.
+{TRAN}这时，我们完成了AIDL。当你保存文件时，Eclipse将全自动地建立起用于客户端访问的称为stub的代码，因为它看起来像个完整的用于连接到客户端的方法，但是实际上却仅是将客户端请求传递到远程服务罢了。新的Java文件位于Gen文件夹下的/gen/com/marakana/logservice/LogService.java里。由于该文件自动地从AIDL转化而来，因此你决不能修改它。Android SDK中的aidl工具，将在你对AIDL文件作出任何修改后重新生成它。
+
+{ORGI}Now that we have the AIDL and the generated Java stub, we are ready to implement the service.
+{TRAN}现在我们拥有了AIDL和生成的Java stub，然后我们要准备实现这个服务。
+
+%== Implementing the Service ==
+== 实现Service ==
+{ORGI}Just like any Android service, we implement LogService in a Java class that subclasses the system Service class. But unlike our earlier Service implementations, where we ignored onBind() but implemented onCreate(), onStartCommand(), and onDestroy(), here we’re going to do the opposite. A method in a remote service starts when the client makes its request, which is called binding to the service, and therefore the client request triggers the service’s onBind() method.
+{TRAN}如同其他Android Service，我们通过继承系统Service类来在Java类里实现LogService。但是不像我们之前定义的Service，我们忽略了onBind()方法，但相反地实现了onCreate()，onStartCommand()，和onDestroy()方法。远程服务方法开始于客户端提出请求时，也称为绑定到服务，同时客户端请求触发了系统的onBind()方法。
+
+{ORGI}To implement our remote service, we’ll return an IBinder object from the onBind() method in our service class. IBinder represents the implementation of the remote service. To implement IBinder, we subclass the ILogService.Stub class from the auto-generated Java code, and provide the implementation for our AIDL-defined methods, in this case various log() methods.
+{TRAN}为了要实现我们的远程服务，我们将从服务类的onBind()方法中返回一个IBinder对象。IBinder表示了远程服务的实现。要实现IBinder，我们需继承来自自动生成的Java代码中的ILogervice.Stub类，并提供我们定义过的AIDL方法实现，本例中是log()方法。
+
+Example 14.3. LogService.java
+{CODE}
+package com.marakana.logservice;
+
+import android.app.Service;
+import android.content.Intent;
+import android.os.IBinder;
+import android.os.RemoteException;
+import android.util.Log;
+
+public class LogService extends Service { // 1
+
+  @Override
+  public IBinder onBind(Intent intent) { // 2
+    final String version = intent.getExtras().getString("version");
+
+    return new ILogService.Stub() { // 3
+
+      public void log_d(String tag, String message) throws RemoteException { // 4
+        Log.d(tag, message + " version: " + version);
+      }
+
+      public void log(Message msg) throws RemoteException { // 5
+        Log.d(msg.getTag(), msg.getText());
+      }
+    };
+  }
+
+}
+{/CODE}
+
+
+{ORGI}
+- LogService is an Android class derived from Service. We’ve seen many services, but this time around, it’s a bound service as opposed to UpdaterService, which was unbound.
+- Since this is a bound service, we must implement onBind() and have it return a correct instance of IBinder class. The client passes us an Intent, from which we extract some string data. During the client implementation, we’ll see how it sets this, and thus how we can pass small amounts of data into the remote service as part of the binding process.
+- This instance of IBinder is represented by ILogService.Stub(), a helper method that is generated for us in the Java stub file created by the aidl tool when we saved our AIDL interface. This code is part of /gen/com/marakana/logservice/LogService.java.
+- log_d() is the simple method that takes two strings and logs them. Our implementation simply invokes the system’s Log.d().
+- We also provide a log() method that gets our Message parcel as its input parameter. Out of this object we extract the tag and the message. Again, for this trivial implementation, we just invoke Android’s logging mechanism.
+{TRAN}
+- LogService是继承自Service的Android类。我们已经见到过许多Service，但是这个有点不同，它是个Bound Service，而UpdateService之类则是Unbound的。
+- 因为它是一个Bound Service，我们必须实现onBind()方法，并需返回IBinder类的正确实例。客户端传来Intent，在这里解包了一些字符串数据。在客户端实现里，我们将看到如何设置它，也就是如何传递少量数据到作为绑定进程部分的远程服务中。
+- IBinder实例由ILogService.Stub()提供，这是一个aidl工具创建的Java stub文件中生成出的helper方法，它每当我们保存AIDL接口就更新一次。这块代码是/gen/com/marakana/logservice/LogService.java的一部分。
+- log_d()是示例方法，它需要两个字符串参数并记录它们。我们的实现就简单地调用系统Log.d()。
+- 我们还要提供log()方法获取Message Parcel做参数。我们在此对象中将提取出标签和消息。同样地，这只是实现个样例，我们就调用Android的日志机制好了。
+
+
+{ORGI}Now that we have implemented the service in Java, we have to provide the Java implementation of the Message parcel as well.
+{TRAN}现在我们已经用Java实现出了Service，同时我们还需要提供Message Parcel的Java实现。
+
+%== Implementing a Parcel ==
+== 实现Parcel ==
+{ORGI}Since Message is a Java object that we’re passing across processes, we need a way to encode and decode this object—marshal and unmarshal it—so that it can be passed. In Android, the object that is capable of doing that is called a Parcel and implements the Parcelable interface.
+{TRAN}在进程间传递的Message其实也是一个Java类，我们需要有种办法编码和解码这个对象——封包和解包它——这样它才能传递。在Android中，能完成这件事情的对象叫做Parcel，而它需实现Parcelable接口。
+
+{ORGI}To be a parcel, this object must know how to write itself to a stream and how to recreate itself.
+{TRAN}要创建Parcel，这个对象必须得知道如何将自身写入到数据流中，并如何重建自身。
+
+Example 14.4. Message.java
+{CODE}
+package com.marakana.logservice;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Message implements Parcelable { // 1
+  private String tag;
+  private String text;
+
+  public Message(Parcel in) { // 2
+    tag = in.readString();
+    text = in.readString();
+  }
+
+  public void writeToParcel(Parcel out, int flags) { // 3
+    out.writeString(tag);
+    out.writeString(text);
+  }
+
+  public int describeContents() { // 4
+    return 0;
+  }
+
+  public static final Parcelable.Creator<Message> CREATOR = new Parcelable.Creator<Message>() { // 5
+
+    public Message createFromParcel(Parcel source) {
+      return new Message(source);
+    }
+
+    public Message[] newArray(int size) {
+      return new Message[size];
+    }
+
+  };
+
+  // Setters and Getters 6
+  public String getTag() {
+    return tag;
+  }
+
+  public void setTag(String tag) {
+    this.tag = tag;
+  }
+
+  public String getText() {
+    return text;
+  }
+
+  public void setText(String text) {
+    this.text = text;
+  }
+
+}
+{/CODE}
+
+{ORGI}
+- As we said before, Message implements the Parcelable interface.
+- To be parcelable, this object must provide a constructor that takes in a Parcel and recreates the object. Here we read the data from the parcel into our local variables. The order in which we read in data is important: it must correspond to the order in which the data was written out as well.
+- writeToParcel() is the counterpart to the constructor. This method is responsible for taking the current state of this object and writing it out into a parcel. Again, the order in which variables are written out must match the order in which they are read in by the constructor that gets this parcel as its input.
+- We’re not using this method because we have no special objects within out parcel.
+- A parcelable object must provide a Creator. This Creator is responsible for creating the object from a parcel. It simply calls our other methods.
+- These are just various setter and getter methods for our private data.
+{TRAN}
+- 就像之前说的，Message实现Parcelable接口。
+- 要能够是parcelable的，这个对象必须提供提供以Parcel作为参数的构造器来重建该对象。这里我们从Parcel读取数据到本地变量。数据读取的顺序十分重要：它必须对应于我们写入到Parcel的数据。
+- writeToParcel()方法是对应于构造器方法的。这个方法用来获取当前对象的状态并写入到parcel中。同样地，变量写入的顺序必须符合它们通过以parcel作为输入的构造器读入数据的顺序。
+- 我们没用使用这个方法，因为这类没有在parcel里写入特殊的对象。
+- 一个parcelable对象必须提供Creactor。此Creactor用于从parcel中创建对象。它仅仅调用了其他方法。
+- 这些只是私有变量的setter和getter方法。
+
+{ORGI}At this point, we have implemented the required Java code. We now need to register our service with the Manifest file.
+{TRAN}此时我们已经实现了需要Java代码来做的事。而现在还需要注册服务到Manifest文件中。
+
+%== Registering with the Manifest File ==
+== 注册到Manifest文件 ==
+{ORGI}As always, whenever we provide one of the new main building blocks for applications, we must register it with the system. The most common way to do that is to define it in the Manifest file.
+{TRAN}只要是我们为应用程序提供了一个新的基本构件，就总得注册到系统里。最普遍的实现办法就是定义到Manifest文件中。
+
+{ORGI}Just as we registered UpdaterService before, we provide a <service> element specifying our service. The difference this time around is that this service is going to be invoked remotely, so we should specify what Action this service responds to. To do that, we specify the action and the Intent Filter as part of this service registration.
+{TRAN}就像之前注册UpdaterService那样，我们提供了<service>元素指定Service。这里的不同之处是本Service将由远程调用，所以我们应该指定此服务响应何种Action。要实现这点，我们指定Action和Intent Filter为这个Service注册的一部分。
+
+{CODE}
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="com.marakana.logservice" android:versionCode="1"
+  android:versionName="1.0">
+  <application android:icon="@drawable/icon" android:label="@string/app_name">
+
+  <!-- 1 -->
+    <service android:name=".LogService">
+      <!-- 2 -->
+      <intent-filter>
+        <action android:name="com.marakana.logservice.ILogService" />
+      </intent-filter>
+    </service>
+
+  </application>
+  <uses-sdk android:minSdkVersion="4" />
+</manifest>
+{/CODE}
+
+{ORGI}
+- This is where we define our service. It is a <service> element within the application block.
+- The difference between this service and our UpdaterService is that this service is going to be remote to the client, so calling it by an explicit class name wouldn’t work well since the client may not have access to the same set of classes. So instead we provide the Intent filter and action to which this service is registered to respond.
+{TRAN}
+- 这里就是我们定义的服务。Application块里有个<service>标签。
+- 该Service与UpdaterService的不用在于这个Service将由远程客户端调用，所以通过显式的以类名来调用它将无法正常工作，此时客户端可能没有同样的类访问权限。所以我们提供了Intent Filter和Action来定义Service响应何种事件。
+
+
+{ORGI}At this point, our service is complete. We can now move on to the client implementation.
+{TRAN}此时，我们的Service就完成了。现在我们可以转而实现客户端。
+
+%== Implementing the Remote Client ==
+== 实现远程客户端 ==
+{ORGI}Now that we have the remote service, we are going to create a client that connects to that service to test that it all works well. Note that in this example we purposely separated the client and the server into two separate projects with different Java packages altogether, in order to demonstrate how they are separate apps.
+{TRAN}现在我们拥有了远程服务端，而将转而创建链接到该服务的客户端，用以测试这一切是否工作正常。注意到本例里我们有意将客户端与服务端分成两个独立项目并放于不同的Java包，来演示它们是独立应用的情况。
+
+{ORGI}So we’re going to create a new Android project in Eclipse for this client, just as we’ve done before for various other applications. However, this time around we are also going to make this project depend on the LogService project. This is important because LogClient has to find the AIDL files we created as part of LogService in order to know what that remote interface looks like. To do this in Eclipse:
+{TRAN}所以我们将在Eclipse里创建新Android工程来开发客户端，就像在之前的其他几个应用程序做的那样。然而这次我们让这个工程依赖于LogService工程。这点十分重要，因为LogClient需要找到用来构成LogService的AIDL文件，来清楚远程接口是个什么样子。要这么做在Eclipse里：
+
+    {ORGI}After you have created your LogClient project, right-click on your project in Package Explorer and choose Properties.
+    {TRAN}当你创建了LogClient工程后，在Package Explorer里右键单击该工程，选择属性。
+    {ORGI}In the "Properties for LogClient" dialog box, choose Java Build Path, then click on the Projects tab.
+    {TRAN}在“Properties for LogClient”对话框里，选择Java Build Path，然后单击Projects标签。
+    {ORGI}In this tab, click on "Add…" and point to your LogService project. 
+    {TRAN}在该标签里，单击“Add…”并指向LogService工程。
+
+{ORGI}This procedure will add LogService as a dependent project for LogClient.
+{TRAN}这几步将LogService加入到LogClient的依赖工程中。
+
+%== Binding to the Remote Service ==
+== 绑定到远程服务 ==
+{ORGI}Our client is going to be an activity so that we can graphically see it working. In this activity, we’re going to bind to the remote service and from that point on use it as if it was just like any other local class. Behind the scenes, the Android binder will marshal and unmarshal the calls to the service.
+{TRAN}客户端可以是一个Activity，这样我们可以形象化的看到它工作情况。在这个Activity里，我们将绑定到远程服务端，然后就像使用其他本地类一样马上可以使用它。在此之后，Android Binder将封包与解包连接到Service的调用。
+
+{ORGI}The binding process is asynchronous, meaning we request it and it happens at some later point in time. To handle that, we need a callback mechanism to handle remote service connections and disconnections.
+{TRAN}绑定操作是异步的，也就是说我们请求它，然后它会在未来某一点发生。为了操作这一切，我们需要回调机制来连接到远程服务或断开连接。
+
+{ORGI}Once we have the service connected, we can make calls to it as if it was any other local object. However, if we want to pass any complex data types, such as a custom Java object, we have to create a parcel for it first. In our case, we have Message as a custom type, and we have already made it parcelable.
+{TRAN}一旦连接上了服务，我们就能如同在调用本地对象一般地调用它。然而，如果我们想要传递复杂数据类型，例如自定义的Java对象，那么需要首先为它创建一个Parcel。在我们的例子里，我们需要自定义的Message类型，并且我们也已经让它是Parcelable的了。
+
+Example 14.5. LogActivity.java
+{CODE}
+package com.marakana.logclient;
+
+import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.os.Parcel;
+import android.os.RemoteException;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+
+import com.marakana.logservice.ILogService;
+import com.marakana.logservice.Message;
+
+public class LogActivity extends Activity implements OnClickListener {
+  private static final String TAG = "LogActivity";
+  ILogService logService;
+  LogConnection conn;
+
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.main);
+
+    // Request bind to the service
+    conn = new LogConnection(); // 1
+    Intent intent = new Intent("com.marakana.logservice.ILogService"); // 2
+    intent.putExtra("version", "1.0"); // 3
+    bindService(intent, conn, Context.BIND_AUTO_CREATE); // 4
+
+    // Attach listener to button
+    ((Button) findViewById(R.id.buttonClick)).setOnClickListener(this);
+  }
+
+  class LogConnection implements ServiceConnection { // 5
+
+    public void onServiceConnected(ComponentName name, IBinder service) { // 6
+      logService = ILogService.Stub.asInterface(service); // 7
+      Log.i(TAG, "connected");
+    }
+
+    public void onServiceDisconnected(ComponentName name) { // 8
+      logService = null;
+      Log.i(TAG, "disconnected");
+    }
+
+  }
+
+  public void onClick(View button) {
+    try {
+      logService.log_d("LogClient", "Hello from onClick()"); // 9
+      Message msg = new Message(Parcel.obtain()); // 10
+      msg.setTag("LogClient");
+      msg.setText("Hello from inClick() version 1.1");
+      logService.log(msg); // 11
+    } catch (RemoteException e) { // 12
+      Log.e(TAG, "onClick failed", e);
+    }
+
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    Log.d(TAG, "onDestroyed");
+
+    unbindService(conn); // 13
+
+    logService = null;
+  }
+}
+{/CODE}
+
+{ORGI}
+- LogConnection is our class that connects to, and handles disconnections from, the remote service. The class is explained later.
+- This is the action Intent that we’re using to connect to the remote service. It must match the action that LogService specified in the Manifest file as part of its Intent filter.
+- Here is where we add the data to the Intent, to be extracted by the remote method.
+- bindService() is the method you use to ask the Android runtime to bind this activity to the remote service specified by the Intent action. In addition to the Intent, we pass on the Service Connection class to handle the actual connection. The BIND_AUTO_CREATE flag indicates that if the service we’re trying to connect to doesn’t already exist, it should be created.
+- LogConnection is the class that will be called back upon successful connection to the remote service, and whenever the service disconnects. This class needs to subclass ServiceConnection and implement onServiceConnected() and onServiceDisconnected().
+- onServiceConnected() is called once the bind succeeded. At this point, the IBinder instance represents our remote service.
+- We now need to cast the bound service into our LogService instance. To do that, we use a helper method named ILogService.Stub.asInterface(), provided by that Java stub that was created automatically by the aidl tool when we saved our AIDL files.
+- onServiceDisconnected() is called once the remote service is no longer available. It is an opportunity to handle any necessary cleaning up. In this case, we just set logService to null to help with the garbage collection.
+- Assuming that we have successfully bound to the remote service, we can now make calls to it as if it was a local call. logService.log_d() simply passes two strings to the log_d() method that we saw defined in LogService.
+- As mentioned earlier, if we want to pass a Message to the remote method, we have to create a parcel out of it first. This is possible because Message is a parcelable object. We then set it its properties using appropriate setters.
+- Once we have the parcel, we simply call logService.log() and pass it to LogService, where it gets logged.
+- Whenever we make a remote call, it could fail for variety of reasons outside of our control. Because of that, it is a good practice to handle a possible RemoteException.
+- When this activity is about to be destroyed, we ask to unbind the service and free those resources.
+{TRAN}
+- LogConnection是我们处理连接和断开操作到远程服务的类。该类将随后做具体解释。
+- 这是个用于连接到远程服务的Action Intent。它必须符合LogService在Manifest文件中对应的Intent Filter部分里所指定的Action。
+- 这里是我们把数据加入到Intent，它会被远程方法解析出来。
+- bindService() 用于向请求Android运行时绑定该Activity到通过Intent Action所指定的远程服务上。In addition to the Intent, we pass on the Service Connection class to handle the actual connection. BIND_AUTO_CREATE标志用于表示，如果我们试图连接到的服务未启动，将创建一个出来。
+- LogConnection是成功连接到远程服务或失去连接后回调的类。该类需要继承ServiceConnection并实现onServiceConnected()和onServiceDisconnected()方法。
+- onServiceConnected()方法仅在绑定成功后调用。在这里，IBinder实例就代表着远程服务。
+- 我们现在需要将此绑定的服务强制转换成LogService实例。要这么做，我们使用AIDL工具自动生成的Java stub代码中的帮助方法ILogService.Stub.asInterface()。
+- onServiceDisconnected()仅远程服务不在使用时调用。它有机会处理所有必须的清理工作。这个例子中，我们只需要设置logService为null来让它被垃圾回收器销毁掉。
+- 假设我们成功绑定了远程服务，现在便可以如同本地调用去调用它。就像我们在LogService定义的那样，logService.log_d()仅仅需传递了两个字符串到log_d()方法中。
+- 就像之前提到的，如果我们想传递Message到远程方法，我们需要首先创建parcel。这当然是可行的，因为Message是一个parcelable对象了。我们只需要通过对应的setter设置属性。
+- 当我们做出远程调用时，可能会出现各种意料之外的失败。由于这个原因，处理可能的RemoteException是个好办法。
+- 当Activity快要销毁时，我们需请求解除绑定并释放这些资源。
+
+
+{ORGI}At this point our client is complete. There’s a simple UI with a single button that triggers an onClick() call. Once the user clicks the button, our client should be invoking the remote call in the service.
+{TRAN}此时我们的客户端就完工了。它界面简单，仅拥有能触发onClick()调用的按钮。一旦用户点击按钮，我们的客户端就能调用远程服务。
+
+%== Testing That All Works ==
+== 测试全部的工作 ==
+{ORGI}Try to run the client from within Eclipse. Since Eclipse knows that LogClient is dependent on LogService, it should install both packages onto your device. Once the client starts, it should bind to the service. Try clicking on the button and check that LogService is indeed logging. Your adb logcat call should give you something like this:
+{TRAN}试着在Eclipse里运行客户端。因为Eclipse知道LogCient依赖LogService，它会在你的设备里同时安装这两个包。只要Client启动，它就会绑定到Service。试着点击按钮，并检查LogService是否正在记录日志。adb的logcat调用应该会给你这样的信息：
+
+{CODE}
+...
+I/LogActivity(  613): connected
+...
+D/LogClient(  554): Hello from onClick() version: 1.0
+D/LogClient(  554): Hello from inClick() version 1.1
+...
+{/CODE}
+
+{ORGI}The first line is from LogConnection in the client, indicating that we’ve successfully bound to the service. The other two lines are from the remote service, one for LogService.log_d() and the other one for LogService.log(), where we passed in the Message parcel.
+{TRAN}第一行来源于客户端的LogConnection，表明我们成功绑定到了Service。其他两行来源于远程服务，一个来源于LogService.log_d()，另一个来源于能接收Message Parcel的LogService.log()。
+
+{ORGI}If you run adb shell ps to see the running processes on your device, you’ll notice two separate line items for the client and the server:
+{TRAN}如果你运行adb shell的ps命令来查看运行设备上的进程，那么你将注意到有两行项目，分别代表了Client和Server。
+
+{CODE}
+app_43    554   33    130684 12748 ffffffff afd0eb08 S com.marakana.logservice
+app_42    613   33    132576 16552 ffffffff afd0eb08 S com.marakana.logclient
+{/CODE}
+
+{ORGI}This indicates that indeed the client and server are two separate applications.
+{TRAN}这也表明了Client和Server的确是两个分开的应用程序。
+
+%== Summary ==
+== 总结 ==
+{ORGI}Android provides an interprocess communication mechanism. It is based on binder: a high-performance, shared-memory system. To create create a remote service, we define it using the Android Interface Definition Language (AIDL), similar to Java interfaces. We then implement the remote interface and connect to it via the IBinder object. This allows us to connect our client to a remote service in a different process altogether.
+{TRAN}Android提供了跨进程通讯机制。它基于Binder：一个高性能、共享内存系统。要创建远程服务，我们用Android接口描述语言（AIDL）定义，类似于Java接口。然后实现远程接口并通过IBinder对象连接到它。这将允许客户端能连接到不同进程里的远程服务。
