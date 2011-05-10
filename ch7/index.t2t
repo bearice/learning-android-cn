@@ -1,4 +1,169 @@
 %
 %
 %
-= CH7 is MISSING =
+% =Preferences, File System, Options Menu, and Intents=
+=首选项，文件系统，选项菜单以及Intent=
+
+% In this chapter, you will learn how to create preferences for your application, how the file system is organized, and how to use intents and the options menu to jump from one activity to another.
+
+本章我们讲解首选项功能的实现、文件系统的组织方式以及通过Intent与菜单实现界面切换的方法。
+
+% ==Preferences==
+==首选项==
+
+% Preferences are user-specific settings for an application. Preferences usually consist of some configuration data as well as a user interface to manipulate that data.
+
+首选项即用户所做的个人设置。它包含一些选项数据，以及一个修改这些选项数据的用户界面。
+
+% From user interface point of view preferences can be simple text values, checkboxes, selections from a pull-down menu, or similar. From data point of view, preferences is a collection of name-value pairs, also known as key-value or attribute-value pairs. The values are basic data types, such as integers, booleans, strings, and similar.
+
+在用户看来，首选项就是一些文本框、复选框、下拉菜单等等组合成的集合体；而在程序员看来，首选项是一组键值对构成的数据集，其中的值可以是整型、布尔型、字符串等等。
+
+% Our micro-blogging applications needs to connect to specific server in the cloud using specific user account information. For that, Yamba needs to know username and password for that account as well as the URL of the server it’s connecting to. This URL is also knowns as API root. So, in our case, we’ll have three fields where user can enter and edit username, password and API root. This data will be stored as strings.
+
+我们的微博应用需要连接到服务端，因此用户的用户名与密码自是必须，除此还需要知道服务端的URL(或者叫API root)。可知我们在这里需要提供三个选项条目，而且都是作为字符串存储的。
+
+% To enable our app to handle user-specific preferences, we’d have to build a screen to enter the information, a Java code to validate and process that information, and some kind of storage mechanism to store this information.
+
+为应用添加首选项功能，我们的工作就是实现一个输入选项数据的界面，编写Java代码验证并处理数据，以及引入某种存储机制。
+
+% While all this sounds like a lot of work, Android provides a framework to help streamline working with user preferences. First, we’ll define what our preference data looks like in a Preference resource file.
+
+% The steps to creating preferences for our application will be to:
+
+听起来像是工作量不少，不过有Android提供的框架可用，我们的工作可以大大简化为如下几个步骤：
+
+% + Create Preference resource file prefs.xml.
+% + Implement PrefsActivity.java file that inflates that resource file.
+% + Register this new activity with the AndroidManifest.xml file.
+% + Provide a way to start that activity from the rest of the application.
+
++ 创建首选项的资源文件``prefs.xml``。
++ 对应这个资源文件，再PrefsActivity.java中实现一个Activiy。
++ 将这个Activity注册到``AndroidManifest.xml``。
++ 提供一个访问这个Activity的方法。
+
+
+===资源文件===
+
+% We are going to start by creating the prefs.xml - a resource file that outlines what our preference screen will look like. The easiest way to create it would be to use New Android XML File tool in Eclipse. To start the New Android XML File dialog, go to File→New→Android XML File, or click on the little a+ icon in the top menu bar of Eclipse: [images/a-plus.png] 
+
+首先创建一个资源文件``prefs.xml``——它用来声明首选项界面的内容。创建它的最简单方法就是使用Eclipse的New Android XML工具：可以选择File→New→Android XML File，也可以点击菜单栏上的[images/a-plus.png]按钮。
+
+**Figure 7.1. New Android XML File**
+[images/07-NewAndroidXMLFile.png]
+
+% The key is to give the new file the name, in this case prefs.xml and to choose Preference for the type of resource. The tool should automatically suggest that this new file should be created in /res/xml folder and that the root element for the XML file should be PreferenceScreen. Just like discussed before in the section called “Alternative Resources”, we could create alternative versions of this same resource by applying various qualifiers such as screen size and orientation, language and region, etc.
+
+输入文件的名字，也就是``prefs.xml``，选择资源类型为Preference。工具缺省将文件放在``/res/xml``目录下边，且其根节点为``PreferenceScreen``。前面``Alternative Resources``一节中提到，我们可以伟同一资源设置多个不同的资源文件，以适应不同的屏幕尺寸、语言及区域等参数的需要。
+
+{NOTE}
+% We’re using Eclipse tools where applicable to get the job done quicker. If you were to use another tool, you’d have to create this file manually and put it in the right folder.
+
+在这里我们通过Eclipse的辅助工具简化了工作。如果使用其它工具，可能就需要手工创建这个文件并将其置于合适的目录之下。
+{/NOTE}
+
+% Once you click on Finish, Eclipse will create a new file for you and open it up. Eclipse typically opens the XML files it knows about in its developer-friendly view.
+
+点击``Finish``，Eclipse即可创建出这个文件，同时打开一个开发者友好的界面，允许你编辑它。
+
+% In this view, you can create the username preference entry by selecting PreferenceScreen on the left, and then choosing Add→EditTextPreference On the right hand side, expand Attributes from Preferences section. Eclipse will offer you number of attributes to set for this EditTextPreference.
+
+在这个界面中，选择左边的``PreferenceScreen``，然后``Add→EditTextPreference``，这就可以为``username``创建对应的选项条目了。展开右边``Preference``下边的``Attributes``，可以见到``EditTextPreference``的诸多属性。
+
+% Not all attributes are equally important. Typically, you will care about the following:
+
+属性有很多，但是我们关心的一般也就这几个：
+
+% Key
+%       A unique identifier for each preference item. This is how we’ll look up particular preference later.
+% Title
+%       The name of this preference that user will see. It should be a short name that fits on a single line of the preference screen.
+% Summary
+%       A short description of this preference item. This is optional but highly recommended.
+
+Key
+    每个选项条目的唯一标识符。用以获取相应选项条目的引用。
+
+Title
+    用户见到的选项名称。长度不要超过屏幕的一行。
+
+Summary
+    针对这个选项条目的简介信息。此项可选，但强烈建议提供上。
+
+
+% username preference, we’ll put username for key. We will define Title and Summary in strings.xml as this is the best practice.
+
+对username一项而言，key就是``username``。置于Title与Summary的值我们都放在``string.xml``里面，这是个好习惯。
+
+% Instead of modifying strings.xml file directly, you can use an Eclipse shortcut. Here’s how it goes:
+
+编辑``string.xml``也可以使用Eclipse提供的辅助工具。步骤如下：
+
+% + Click on Browse and select New String…. This will open a dialog to create a new string resource.
+% + Enter titleUsername for R.string. value and Username for String value.
+% + Click Ok and this will insert a new string resource in strings.xml resource.
+% + You can now pick that value from the list of resources.
+
++ 单击Browse，选择``New String...``，打开新建string资源的对话框。
++ 为R.string输入``titleUsername``，为String输入``Username``。
++ 单击Ok，即可在``strings.xml``中插入一条新的string资源。
++ 随后就可以在资源列表中取出来引用它了。
+
+
+% The above describes how to add Username preference item. You can now repeat the same steps for Password and API Root items.
+
+如上即为创建``Username``选项条目的步骤。对//Password//及//API Root//两项同理。
+
+% To switch to the actual XML code by clicking on the tab on the bottom of this window:
+
+要查看实际的xml代码，可以单击窗口地下的标签。
+
+**Figure 7.2. Prefs.xml in Developer-friendly view**
+[images/07-prefs_xml.png]
+
+它的内容大致如下：
+
+**Example 7.1. res/xml/prefs.xml**
+
+{CODE}
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <EditTextPreference android:title="@string/titleUsername"
+    android:summary="@string/summaryUsername" android:key="username"></EditTextPreference>
+
+  <EditTextPreference android:title="@string/titlePassword"
+    android:password="true" android:summary="@string/summaryPassword"
+    android:key="password"></EditTextPreference>
+
+  <EditTextPreference android:title="@string/titleApiRoot"
+    android:summary="@string/summaryApiRoot" android:key="apiRoot"></EditTextPreference>
+
+</PreferenceScreen>
+{/CODE}
+
+% <PreferenceScreen> is the root element that defines our main preference screen. It has three children, all <EditTextPreference>. This is simply a piece of editable text. Other common elements here could be <CheckBoxPreference>, <ListPreference>, and so on.
+
+<PreferenceScreen>是定义首选项界面的根节点。它下面有三个子元素，皆为<EditTextPreference>，也就都是文本框。常见的元素还有<CheckBoxPreference>，<ListPreference>等等。
+
+% The main property of any of these elements is the key. The key is how we’ll look up these values later on. Remember, preferences is just a set of name-value pairs at the end of the day.
+
+以上最重要的属性就是key了，它是获取对应的配置数据所必须的标识符。前面提到，首选项正是一组键值对(Key-Value Pair)构成的数据集。
+
+% Like we said couple of times earlier, while Eclipse does provide a developer-friendly tools to manage XML files, you often run into certain limitations with with Eclipse. For example, we would like to hide the actual text that the user types in the password field as it’s commonly done with passwords. Android does provide support for that but Eclipse tools haven’t integrated it in there yet. Since we can always edit the XML directly, in this case we to that to add android:password="true" property to our password property. This will cause the password to be masked while user is typing it in.
+
+如前所示，编辑XML，有Eclipse提供的辅助工具可用，它们界面友好，使用方便，但有时这也限制了灵活性。比如按照管理，我们希望在密码一栏中隐藏数据的输入，Android也提供了这一功能的支持，但是Eclipse的工具还没有跟上。这时就需要手工修改XML了，为password元素添加一个属性``android:password="true"``即可。
+
+
+
+
+
+
+
+    
+
+
+
+
+
