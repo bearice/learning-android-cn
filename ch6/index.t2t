@@ -3,48 +3,68 @@
 %
 
 %= Android User Interface =
-= Android 用户界面 =
+= Android 用户界面 =[ch6]
 
 {ORGI}In this chapter, you will learn how to build user interface in Android. You will create your first Activity. You will learn how to create an XML layout for it, and how to connect it to Java. You will learn about Views (a.k.a. widgets) and Layouts. You will learn how to handle events in Java, such as a button click. Additionally, you’ll add the support for twitter-like API into your project as an external jar so your app can make web service calls to the cloud.  
-{TRAN}在本章里，你将能学习到如何在Android中建立用户界面。你将创建出你的第一个Activity。你将学到如何使用XML创建界面，并和关联到Java里。你将学习到View（又称Widget）和Layout。你将学会如何处理Java中的事件，如点击按钮。另外，你会得到将类Twitter API通过外部jar引入到你的工程中的支援，这样你的应用将能在远程调用网络服务。
+
+{TRAN}本章介绍Android中用户界面的构建方法。我们将在这里创建第一个Activity作为实例，体验如何使用XML描述界面布局，以及如何在Java中引用它。随后介绍View(又称Widget，控件)和Layout的概念，以及在Java中捕获事件的方法(比如单击按钮)。另外，还需要在这里导入一个三方的jar文件，从而获得访问微博服务的API。
+
+%TALK: Widget能否翻译成“控件”？若与"App Widget"同时保留原文，容易让读者混淆。感觉后者可以翻译成“小部件”。 -fleuria
 
 {ORGI}By the end of this chapter, you will have written your own Twitter-like Android app. The app will feature a single screen that will prompt user for current status update, and post that update online.
-{TRAN}在本章最后，你将会得到你自己编写的类Twitter Android客户端应用。这个应用将有单独的提示用户当前状态更新的界面，并将更新提交到网上。
+
+{TRAN}到本章结束，你就有了一个自己编写的微薄应用。暂时它只有一个界面，允许用户输入消息并发布到网上。
 
 %== Two Ways to Create User Interface ==
-== 两种创建用户界面的途径 ==
-{ORGI}There are two ways to create user interface (UI) in Android. One is declarative and the other one is programmatic. They are quite different but often used together to get the job done.
-{TRAN}在Android中，有两种创建用户界面（UI）的途径。一种是声明式的（declarative），另一种是可编程式的（programmatic）。它们十分不同，但是往往需要相互结合使用才能完成任务。
+== 创建用户界面的两种方法 ==
 
-=== Declarative User Interface ===
+{ORGI}There are two ways to create user interface (UI) in Android. One is declarative and the other one is programmatic. They are quite different but often used together to get the job done.
+
+{TRAN}Android提供了两种风格可供我们创建用户界面(UI)：一种是声明风格，另一种是编程风格。它们之间的差别不小，但是我们想做好界面，往往离不开它们的相互配合。
+
+{ORGI}=== Declarative User Interface ===
+{TRAN}=== 声明风格的用户界面===
+
 {ORGI}Declarative approach involves using XML to declare what the UI will look like. It is similar to creating a web page using HTML. You write tags and specify elements to appear on your screen. If you ever hand-coded an HTML page, you did pretty much the same work as creating an Android screen.
-{TRAN}声明式方法就是用XML去声明UI看起来应当是什么样子。这就像用HTML创建一个网页。你通过编写标签和特定元素来显示到屏幕上。如果你曾用代码写过（hand-coded）HTML网页，那么就和创建一个Android界面的工作相同。
+
+{TRAN}声明风格就是使用XML来声明UI的外观。通过标签表示显示出来的相应元素，这与使用HTML编写网页是很相似的。若是以前写过HTML页面，编写声明式的Android界面也很快就能上手。
 
 {ORGI}The advantages of declarative user interface are that you can use what-you-see-is-what-you-get (WYSIWYG) tools. Some of these tools ship with Eclipse Android Development Tools (ADT) extension, others come from third parties. Additionally, XML is fairly human readable and event people unfamiliar with the Android platform and framework can readily determine what the intent of the user interface is.
-{TRAN}声明式的用户界面带来的好处是你可以使用所见即所得（WYSIWYG）工具。这些工具中的一部分已经包含于Eclipse Android开发工具集（ADT）扩展中，或者其他第三方开发工具里。另外，XML是人可读的，甚至不熟悉Android平台和框架的人也可以清晰地阅读用户界面的意图是什么。
+
+{TRAN}声明风格的好处就是，便于使用所见及所得(WYSIWYG)工具——有些来自Eclipse Android Development Tools(ADT)的扩展，有些来自第三方。另外一个好处是，XML是易于人类阅读的，即使你不熟悉Android的平台与框架，也可以大致看得明白。
 
 {ORGI}The disadvantages of declarative UI approach are that you can only get so far with XML. XML is great for declaring the look and feel of your user interface, but that doesn’t provide a good way of handling user input. That’s where programmatic approach comes in.
-{TRAN}声明式的用户界面的不利之处则在于你只能使用XML。XML非常适合声明界面的外观，但是不能提供较好地处理用户输入的方法。这就是为什么会提供可编程方法的原因。
 
-=== Programmatic User Interface ===
+{TRAN}声明风格的缺点是也正在XML本身。描述界面的外观样式，XML自是再合适不过，但是响应外部事件、处理用户交互它就无能为力了。而这就是引入编程风格的理由。
+
+{ORGI}=== Programmatic User Interface ===
+{TRAN}=== 编程风格的用户界面 ===
+
 {ORGI}Programmatic user interface involves writing Java code to develop UI. For anyone who ever did any Java AWT or Java Swing development, Android is pretty much the same in that respect. It is also similar to many other UI toolkits in other languages as well.
-{TRAN}可编程的用户界面就是用Java代码开发UI。对于那些做过Java AWT或Java Swing开发的人，Android就和这些工作类似。这也类似于其他程序语言里许多不同的UI工具箱一样。
+
+{TRAN}编程风格的用户界面就是使用Java代码来编写UI，做过Java AWT或者Java Swing开发的同学对此肯定不会陌生。这跟其它语言中提供的UI库也区别不大。
 
 {ORGI}Basically, if you want to create a button programmatically, you have to declare the button variable, create an instance of it, add it to a container that is to contain this button, and set any button properties that may make sense, such as color, text, text size, background, and so on. You would probably also want to declare what the button does once the button is clicked, so that’s another piece of code. All in all, you end up writing quite a few lines of Java.
-{TRAN}基本上如果你想要通过编程创建一个按钮，你不得不宣称按钮，创建它的实例，加入到要包含按钮的容器里，并设置可能有意义的按钮属性，例如颜色、文字、文字大小、背景等等。你大概会想要宣称按钮一旦被点击会做什么，所以还要有块放代码的地方。所有工作完毕，最后你需要编写好几行代码。
+
+{TRAN}假如你想通过编写代码的方式创建一个按钮，一般就需要声明一个按钮变量、获得按钮的实例、添加到容器里面，然后设置相应的属性——颜色、文本、文本大小、背景颜色等等不一而足。你也希望对按钮的点击事件做些响应，因此还需要添加额外的逻辑。这样一来二去，敲出来的代码是很可观的。
 
 {ORGI}Everything you can do declaratively, you can also do programmatically. But additionally, Java also allows you to specify what happens when that button is actually clicked. This is the main advantage of programmatic approach to user interface.
-{TRAN}所有可以声明的操作，你都可以用编程的方式做到。但是额外地，Java还能允许你指定按钮按下时能做些什么。这是编程方式创建用户界面的主要优点。
 
-%=== The Best of Both Worlds ===
-=== 结合两者最好 ===
+{TRAN}理论上讲，声明式风格能做到的，编程风格也都能做到。但是通过Java代码，你能够为按钮的点击事件作出响应——这才是编程风格的主要优点。
+
+{ORGI}=== The Best of Both Worlds ===
+{TRAN}=== 各取所长 ===
+
 {ORGI}So which approach to use? The best practice is to use both. You would use declarative (XML) approach to declare everything about the user interface that is static, such as the layout of the screen, all the widgets, etc. You would then switch to programmatic (Java) approach to define what goes on when user interacts with various widgets of the user interface. In other words, you’d use XML to declare what the "button" looks like, and Java to specify what it does.
-{TRAN}所以该用哪种？最好的实践是两者都用。你最好用声明式的（XML）方法声明所有用户界面中的静态元素，例如界面布局，所有的控件等，然后切换到可编程的（Java）方法定义当用户和界面中各个控件交互时的反应。换句话说，你用XML声明“按钮”长什么样子，用Java指定做什么。
+
+{TRAN}好，那我应该选择哪种风格？好的选择是两者皆用：使用声明风格(XML)表示用户界面中的静态元素，比如页面布局、控件摆放等；同时使用编程风格(Java)来定义控件对用户操作的响应。换种说法，就是使用XML描述它的"样子"，而使用Java定义它的"操作"。
 
 {NOTE}
 {ORGI}	Note that there are two approaches to developing the actual user interface, but at the end of the day, all the XML is actually "inflated" into Java memory space as if you actually wrote Java code. So, it’s only Java code that runs.
-{TRAN}	注意到这里有两种开发用户界面的方法，但是在最后，所有的XML都会“展开”到Java内存空间里，就像你编写了Java代码一样。因此实际运行的只有Java代码。
+
+{TRAN}虽然两种做法风格迥异，但是到最后XML终究还是要"解析"到Java的运行环境中才可以显示出来。实际运行的只有Java代码。
 {/NOTE}
+
 
 %== Views and Layouts ==
 == View和Layout ==

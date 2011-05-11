@@ -5,11 +5,11 @@
 
 {ORGI}In this chapter, you will learn how to set up your environment for Android development. I’ll go beyond just telling you where to download the software from, but will also into some of the best practices in getting set up. I’ll look at development operating system choices as well as Android tools available. You will see the good, the bad, and the ugly of various choices of tools and platforms that you’re about to make (or someone else has already made for you).
 
-{TRAN}本章我们介绍Android 开发环境的搭建方法。这里列出了所需的各种软件的下载地址，也提供了构建开发环境的最佳实践。毕竟操作系统各有不同，开发工具也多种多样。面对诸多选择（或者被规定使用），对其差异长短心里有数总是好的。
+{TRAN}本章我们介绍Android 开发环境的搭建方法。这里列出了所需的各种软件的下载地址，也提供了构建开发环境的最佳实践。毕竟操作系统各有不同，开发工具也多种多样。面对诸多选择，对其长短优劣心里有数总是好的。
 
 {ORGI}By the end of this chapter, you will have your entire development environment setup. You’ll be able to write a Hello World application, build it, and run it on the emulator (or physical device, if you want).
 
-{TRAN}在本章的最后，你将拥有一个完整的开发环境。随后就可以动手编写并构建第一个 Hello World 程序了，在虚拟机里（或者在真机上，只要你乐意）运行即可。
+{TRAN}在本章的最后，你将拥有一个完整的开发环境。随后就可以动手编写并构建第一个 Hello World 程序，并且在虚拟机里（或者在真机上，只要你乐意）运行了。
 
 {NOTE}
 {ORGI}I’m going to be using ~ to refer to your home directory. On Mac OS X, that’s typically something like /Users/marko. On Linux, it would be /home/marko and on Windows Vista and 7, C:\Users\marko (in Windows XP, it would be C:\Documents and Settings\marko). Also, I’m going to be using Unix-style forward slashes and not Windows back slashes to denote file path separators.
@@ -346,5 +346,5 @@ AVD中也有一个SD卡，你能以MB为单位指明其大小。Skin指明其位
 
 % Setting up Android development environment breaks down to setting up Android SDK and Eclipse. Once you have set you your development environment, a good test that everything is working is to use Eclipse to create a simple Hello World project and run it in the Emulator. If that runs fine, you are almost certain that your system is setup and ready for further development.
 
-Android开发环境的构建，几乎就是对付Android SDK和Eclipse了。 开发环境设置完毕，不妨动手搞个简单的Hello World实验一下。运行良好的话，也就证明环境已经配好，为往后正式的开发做好了准备。
+Android开发环境的搭建，几乎就是对付Android SDK和Eclipse了。 开发环境设置完毕，不妨动手搞个简单的Hello World实验一下。运行良好的话，也就证明环境已经配好，为往后正式的开发做好了准备。
 

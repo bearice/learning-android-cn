@@ -82,14 +82,12 @@
 % Summary
 %       A short description of this preference item. This is optional but highly recommended.
 
-Key
-    每个选项条目的唯一标识符。用以获取相应选项条目的引用。
-
-Title
-    用户见到的选项名称。长度不要超过屏幕的一行。
-
-Summary
-    针对这个选项条目的简介信息。此项可选，但强烈建议提供上。
+: Key
+  每个选项条目的唯一标识符。用以获取相应选项条目的引用。
+: Title
+  用户见到的选项名称。长度不要超过屏幕的一行。
+: Summary
+  针对这个选项条目的简介信息。此项可选，但强烈建议提供上。
 
 
 % username preference, we’ll put username for key. We will define Title and Summary in strings.xml as this is the best practice.
