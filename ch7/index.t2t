@@ -151,7 +151,7 @@
 
 % Like we said couple of times earlier, while Eclipse does provide a developer-friendly tools to manage XML files, you often run into certain limitations with with Eclipse. For example, we would like to hide the actual text that the user types in the password field as it’s commonly done with passwords. Android does provide support for that but Eclipse tools haven’t integrated it in there yet. Since we can always edit the XML directly, in this case we to that to add android:password="true" property to our password property. This will cause the password to be masked while user is typing it in.
 
-如前所示，编辑XML，有Eclipse提供的辅助工具可用，它们界面友好，使用方便，但有时这也限制了灵活性。比如按照管理，我们希望在密码一栏中隐藏数据的输入，Android也提供了这一功能的支持，但是Eclipse的工具还没有跟上。这时就需要手工修改XML了，为password元素添加一个属性``android:password="true"``即可。
+如前所示，编辑XML，有Eclipse提供的辅助工具可用，它们界面友好，使用方便，但有时这也限制了灵活性。比如按照惯例，我们希望在密码一栏中隐藏数据的输入，Android也提供了这一功能的支持，但是Eclipse的工具还没有跟上。这时就需要手工修改XML了，为password元素添加一个属性``android:password="true"``即可。
 
 
 

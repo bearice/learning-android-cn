@@ -7,13 +7,13 @@
 
 {ORGI}In this chapter, you will learn how to build user interface in Android. You will create your first Activity. You will learn how to create an XML layout for it, and how to connect it to Java. You will learn about Views (a.k.a. widgets) and Layouts. You will learn how to handle events in Java, such as a button click. Additionally, you’ll add the support for twitter-like API into your project as an external jar so your app can make web service calls to the cloud.  
 
-{TRAN}本章介绍Android中用户界面的构建方法。我们将在这里创建第一个Activity作为实例，体验如何使用XML描述界面布局，以及如何在Java中引用它。随后介绍View(又称Widget，控件)和Layout的概念，以及在Java中捕获事件的方法(比如单击按钮)。另外，还需要在这里导入一个三方的jar文件，从而获得访问微博服务的API。
+{TRAN}本章介绍Android中用户界面的构建方法。我们将在这里创建第一个Activity作为实例，体验如何使用XML描述界面布局，以及在Java中引用它的方法。随后介绍View(又称Widget，控件)和Layout的概念，以及如何在Java中捕获事件(比如单击按钮)。另外，还需要在这里导入一个三方的jar文件，从而获得访问微博服务的API。
 
 %TALK: Widget能否翻译成“控件”？若与"App Widget"同时保留原文，容易让读者混淆。感觉后者可以翻译成“小部件”。 -fleuria
 
 {ORGI}By the end of this chapter, you will have written your own Twitter-like Android app. The app will feature a single screen that will prompt user for current status update, and post that update online.
 
-{TRAN}到本章结束，你就有了一个自己编写的微薄应用。暂时它只有一个界面，允许用户输入消息并发布到网上。
+{TRAN}到本章结束，你就有了一个自己编写的微博应用。暂时它只有一个界面，允许用户输入消息并发布到网上。
 
 %== Two Ways to Create User Interface ==
 == 创建用户界面的两种方法 ==
@@ -67,61 +67,85 @@
 
 
 %== Views and Layouts ==
-== View和Layout ==
+== View与Layout ==
 
 {ORGI}Android organizes its UI elements into layouts and views. Everything you see, such as a button, label, or text box, is a view. Layouts organize views, such as grouping together a button and label or a group of them.
-{TRAN}Android组织UI元素到Layout和View中。所有你看到的，例如按钮、标签、文字框都是一个View。Layout组织View，例如一个按钮和标签的组合或这种组合的组合。
+
+{TRAN}Android通过Layout与View机制组织UI中元素的显示。View就是屏幕上显示的所有控件——比如按钮、标签、文本框等等。而Layout用来安排View的排列，比如它可以将一组按钮或标签排成一行或者一列。
 
 **Figure 6.1. Layouts and Views relationship**
 	[images/06-LayoutsAndViews.png]
 
 {NOTE}
 {ORGI}	Don’t confuse widgets in Android UI with App Widgets - miniature application views that can be embedded in other applications (such as the Home screen application). Here, we are referring to widgets as views in our activities.
-{TRAN}	不要混淆Android UI中的控件（Widget）和App Widget —— 可以嵌入到其他应用程序（例如Home Screen应用程序）的小应用程序。这里我们指的是Activity中作View的控件。
+
+{TRAN}不要将Android UI中的控件(Widget)与应用程序小部件(App Widget)相混淆，后者是指可以嵌入到其它应用程序(如主屏幕程序)里面显示的小程序。而这里我们谈到的控件(Widget)，是指Acitivity中的View。
 {/NOTE}
 
 {ORGI}So, a layout can contain other children. Those children can furthermore be layouts themselves allowing for complex user interface structure.
-{TRAN}因此，Layout能容纳其他子元素。这些子元素也可以是Layout，这允许了复杂的用户界面结构。
+
+{TRAN}可以把Layout看作是容纳一些子元素的容器。这些子元素可以是View，也可以是Layout本身，这样可以方便组合出复杂的用户界面。
 
 {ORGI}A layout is responsible for allocating space for each child. Different layouts use different approach to laying out their child widgets.
-{TRAN}Layout给每个子元素分配空间。不同的Layout使用不同的方法布局它们的子控件。
+
+{TRAN}Layout为每个子元素安排位置，不同的Layout提供不同的安置方法。
+
+%NOTE: 当心，这个allocating space不是“申请内存”，而是老老实实的“申请(放置的)空间”。 -fleuria
 
 {ORGI}There are couple of main layouts that we use more frequently than others, such as Linear Layout, Table Layout, Frame Layout, Relative Layout, and Absolute Layout.
-{TRAN}下面是一些我们相比较下使用更为频繁的主要布局方式。例如Linear Layout，Table Layout， Frame Layout，Relative Layout，和Absolute Layout。
+
+{TRAN}Android框架中内置的Layout各种各样，不过常用的大约也就这几个：LinearLayout, TableLayout, FrameLayout, RelativeLayout和AbsoluteLayout。
 
 === LinearLayout ===
+
 {ORGI}LinearLayout is one of the simplest and most common layouts. It simply lays out its children next to each other, either horizontally or vertically. The order of children matters. As LinearLayout asks its children for how much space they need, it allocates desired space to each child in the order they are added. So, if an "older" child comes along and asks for all the space on the screen, there won’t be much left for the subsequent widgets in this layout.
-{TRAN}LinearLayout是最为简单通用的布局方式之一。它简单地顺次纵向或横向排列它的子元素。子元素的顺序很重要。作为LinearLayout，它要询问每一个子元素它们需要多大空间，按照每个子元素加入的顺序分配所需空间。因此，如果存在一个较“早”的子元素请求占据整个界面空间，那么布局中的其他控件将没有剩余空间。
+
+{TRAN}LinearLayout是最简单的Layout之一，只是简单地纵向或者横向排列它的子元素。它会按顺序计算每个子元素需要的空间，如果一个“较早加入的”元素占据了整个屏幕的大小，后面的元素就显示不出来了。因此子元素的顺序很重要。
 
 {ORGI}An important property for LinearLayout are layout_orientation and valid options are vertical or horizontal.
-{TRAN}LinearLayout的一个重要属性是layout_orientation，它的选项有certical和horizontal。
+
+{TRAN}LinearLayout的一个重要属性是layout_orientation。可用的选项有certical和horizontal，用以指示它是水平排列还是垂直排列。
 
 {TIP}
 {ORGI}	While Linear Layout is probably the simplest and most commonly used layout, it is not always the best choice. A good rule of thumb is that if you start to nest multiple Linear Layouts, you should probably be using another layout, such as Relative Layout. Too many nested layouts can have big consequences on the time to inflate the UI and overall CPU and battery consumption.
-{TRAN}	虽然LinearLayout可能是最简单和通用的布局，但它不总是最好的选择。一个好的规则是如果你开始需要嵌套多个LinearLayout，你就可能需要使用别的布局，例如RelativeLayout。太多的嵌套布局会带来大量展开UI的时间消耗，且会使CPU超载、电池浪费。
+
+{TRAN}虽说LinearLayout可能是最简单也最常用的Layout，但它并不总是最好的选择。一条经验是，一旦你想嵌套多个LinearLayout，那就换用别的Layout吧，比如RelativeLayout之类。Layout如果嵌套的太深，可能会浪费较多的CPU时间，电池的续航也会因此而受到影响。
+
+%NOTE: “a good rule of thumb”是个俚语， "经验之谈."的意思
+
 {/TIP}
 
 === TableLayout===
+
 {ORGI}TableLayout lays out its children in a table. TableLayout consists of only other TableRow widgets. TableRow represents a row in a table and can contain other UI widgets. TableRow widgets are laid out next to each other horizontally, sort of like LinearLayout with horizontal orientation.
-{TRAN}TableLayout 在一个表格里布局它的子元素。TableLayout只存在TableRow控件。TableRow代表表格中的一行，并且它还能包含其他UI控件。TableRow控件水平地排列它的子元素，就像水平旋转的LinearLayout。
+
+{TRAN}TableLayout将其子元素布局在一个表格之中。TableLayout只接纳TableRow作为自己的子元素，表示表格中的一行，下面可以容纳其它子元素。TableRow水平地排列它的子元素，这同水平排列的LinearLayout很像。
 
 {ORGI}For those familiar with HTML, Table Layout is similar to <table> element, while Table Row is similar to the <tr> element. Where as in HTML we also have <td> to represent each cell in the table, in Android the columns are determined dynamically based on the number of views we add to a table row.
-{TRAN}对于那些熟悉HTML的人来说，TableLayou类似于<table>元素，而TableRow则类似于<tr>元素。然而HTML还会用<td>表示表中每一个空格，而在Android中，每一栏由我们加入到TableRow中View的数量来动态决定。
+
+{TRAN}熟悉HTML的同学可能会有同感，TableLayout接近于<table>标签，而TableRow接近于<tr>标签。不过Android中并没有<td>的对应物，每一行的列数由TableRow的子元素的个数动态决定。
 
 {ORGI}An important property for TableLayout is stretch_columns indicating index of column to stretch to fill out available space. You can also use * to stretch all columns.
-{TRAN}TableLayout的一项重要属性是stretch_columns，它指明了展开填充可用控件的列索引。你也可以使用*来展开所有列。
+
+{TRAN}TableLayout的一个重要属性是stretch_columns，可以用它来展开列号对应的列来占据可用的空间。也可以通过*来展开所有的列。
 
 === FrameLayout ===
+
 {ORGI}FrameLayout places its children on top of each other so that latest child is covering the previous, like a deck of cards. This layout policy is useful for tabs, for example. FrameLayout is also used as placeholder for other widgets to be added to it programmatically at some later point in time.
-{TRAN}FrameLayout将所有的子元素都依次放在顶端，这样最后一个子元素会覆盖先前的元素，就像一叠卡片。这种布局策略对于标签等很有用。FrameLayout也用于其他控件的保留区，它们可以在随后某个时间用编程的方式及时加入到屏幕上。
+
+{TRAN}FrameLayout将其下的子元素相互覆盖起来，就像一副扑克牌，只留一个显示在外面。它可以用于标签的实现，也可以作为以后要用的控件的临时存放地。
 
 === RelativeLayout ===
+
 {ORGI}RelativeLayout lays out its children relative to each other. As such, it is very powerful as it doesn’t require you to nest unnecessary layouts in order to achieve certain look. At the same time, using RelativeLayout can minimize total number of widgets that need to be drawn thus improving the overall performance of you application. Having said that, RelativeLayout requires each of its child views to have an ID set so that we can position it relatively to other children.
-{TRAN}RelativeLayout将它子元素各自相对的布局。因此这是种十分强大的布局方式，它也不需要你不必要的嵌套Layout才能实现某种外观。同时，使用RelativeLayout可以最小化需要绘制Widget的总数，继而提高应用程序的整体性能。就像之前说的，RelativeLayout需要所有的子View都拥有一个ID，这样我们才能相对的定位其他子元素。
+
+{TRAN}RelativeLayout实现子元素的相对布局。它十分强大，不需要嵌套就可以实现复杂的布局，同时还可以减少使用的控件的数量，从而提高程序的整体性能。RelativeLayout需要我们为它的每个子元素提供一个ID，你可以单独设置它们的相对位置。
 
 === AbsoluteLayout ===
+
 {ORGI}AbsoluteLayout positions its children at absolute coordinates on the screen. It is the favorite layout for WYSIWYG tools that automatically generate your UI. While very simple, it is not very flexible. Your user interface would look good on one particular screen but as soon as the screen size, orientation, or density changes, AbsoluteLayout would not be able to adjust.
-{TRAN}AbsoluteLayout在屏幕上绝对地定位每个子元素。这是对所见即所得工具最友好的布局，它能自动生成你想要的UI。虽然很简单，但是它的扩展性相当不好。你的用户界面可能会在一部分屏幕上看起来不错，但是一旦屏幕大小、旋转或分辨率产生了变化，AbsoluteLayout将无法调整。
+
+{TRAN}AbsoluteLayout可以为它的子元素设置一个屏幕上的绝对位置。这个Layout简单易懂，对所见及所得工具来说是再好用不过。缺点就是不那么灵活，在某个屏幕上显示很好的界面，换个不同大小、宽高、分辨率的屏幕可能就不能正常显示了。
 
 %== Starting Yamba Project ==
 == 启动Yamba项目 ==

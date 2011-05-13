@@ -273,7 +273,7 @@
 {TRAN}=== Intent Service, Alarms, Notifications ===
 
 {ORGI}It turns out that some of the cool features Android services provide can make our Updater service much simpler. So we’ll refactor our code, yet again. This time, we’ll introduce Intent Services that respond to Intents. But we’re going to need something to fire off these intents on regular basis, and for that we’ll use the Alarm service. Additionally, we’ll add a feature to notify the user of new updates by putting a notification in the notification bar. For that, we’ll use the Notification service. All this will prove to be a substantially more elegant solution to our Updater service need.
-{TRAN}我们可以看到Android内置了一些很酷的Service，用好可以简化UpdaterService的实现，所以再次重构代码吧。在这里我们引入Intent Service用来专门处理Intent 请求。同时还需要一些东西来触发Intent请求，因此引入Alarm Service。另外我们还会使用到Notification Service，好在系统托盘(Notification Area)显示提示信息。经过重构，我们将得到一个更优雅的UpdaterService实现。
+{TRAN}我们可以看到Android内置了一些很酷的Service，用好可以简化UpdaterService的实现。所以再次重构代码吧。在这里我们引入Intent Service用来专门处理Intent请求。还需要有人来触发Intent请求，因此引入Alarm Service。另外我们还会使用到Notification Service，好在系统托盘(Notification Area)显示提示信息。经过重构，我们将得到一个更优雅的UpdaterService实现。
 
 {ORGI}== Summary ==
 {TRAN}== 总结 ==
