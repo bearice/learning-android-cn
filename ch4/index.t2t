@@ -172,7 +172,7 @@
 {TRAN}Andorid将这种机制应用到了方方面面。比如Contact Provider专为不同的应用程序提供联系人数据，Setting Provider专为不同的应用程序提供系统的配置信息，Media Store为不同的应用程序提供多媒体信息(比如图片、音乐)的存储与分享，等等。
 
 {ORGI}This separation of data storage and the actual user interface application offers greater flexibility to mash up various parts of the system. For example, a user could install an alternative Address Book application that uses the same data as the default Contacts app. Or, install widgets on the Home Screen that allow for easy changes in the System Settings, such as turning on or off the Wifi, Bluetooth or GPS features. Many phone manufactures take advantage of Content Providers to add their own applications on top of standard Android to improve overall user experience, such as HTC Sense.
-{TRAN}把数据的存储与用户界面分离开来，这使得系统中各个部分之间的联系更紧密，拆换起来也更灵活。比如用户可以安装一个新的通讯录应用替换掉原先的默认的联系人app，但也希望使用原先的数据。或者在主屏幕上面安装一个小部件，方便做些开关WiFi/蓝牙/GPS之类的系统设置。也有许多手机制造商(比如 HTC Sense)基于Content Provider机制，设计一套自己的软件集来提升用户体验。
+{TRAN}把数据的存储与用户界面分离开来，这使得系统中各个部分之间的联系更紧密，拆换起来也更灵活。比如用户可以安装一个新的通讯录应用替换掉原先的默认的联系人app，同时仍希望使用原先的数据；或在主屏幕上面安装一个小部件，方便做些开关WiFi/蓝牙/GPS之类的系统设置。也有许多手机制造商(比如 HTC Sense)基于Content Provider机制，通过设计一套自己的软件集来提升用户体验。
 
 {ORGI}Content Providers are a relatively simple interface with the standard insert(), update(), delete() and query() methods. These methods look a lot like standard database methods, so it is relatively easy to implement a content provider as a proxy to the database. Having said that, you are much more likely to use content providers than write your own.
 {TRAN}Content Provider的接口很简单，就是``insert()``、``update()``、``delete()``与``query()``。这与一个数据库的接口很相似，因此针对某数据库实现一个Content Provider当作代理也十分简单。话虽这么说，不过你该更喜欢使用现成的Content Provider，而不是自己造轮子。

@@ -161,7 +161,7 @@
 //Project Name//
 {ORGI}The name under which Eclipse organizes our project. Is is a good idea if the project name doesn’t have any spaces in it - makes it easier to access from the command line later. Enter Yamba here.
 
-{TRAN}这是Eclipse项目的名字。出于以后使用命令行访问的考虑，最好不要在项目名里夹带空格。输入``Yamba``。
+{TRAN}这是Eclipse项目的名字。出于方便以后使用命令行的考虑，最好不要在项目名里夹带空格。输入``Yamba``。
 
 //Contents//
 {ORGI}Leave this as is, set to creating a new project since that’s what we’re intending to do.
@@ -171,35 +171,42 @@
 //Build Target//
 {ORGI}The type of Android system we are intending to run this application on. This could be any Android platform, either standard or proprietary. I’m assuming we’re working with Android 2.3 (API level 9) and thus will choose Android 2.3.
 
-{TRAN}我们想让应用程序运行与在哪种Android系统类型上。可以是任何Android平台，标准的或定制的。在这里我们假设要工作在Android2.3（API level 9），因此我们选择Android 2.3。
-注：最新2.3.1（API Level 9）已过时，2.3的最新版本是2.3.3（API Level 10）。
+{TRAN}目标平台的版本。不分标准版还是定制版，只要是Android平台即可。前面我们既已定下将Android 2.3 (API level 9)作为目标平台，在这里就选择``Android 2.3``。
 
-{TRAN}目标平台的版本。
+%NOTE：最新2.3.1（API Level 9）已过时，2.3的最新版本是2.3.3（API Level 10）。 -elephas
 
 //Application name//
 {ORGI}Simply a plain text name of your application. It can be any text. For our app, feel free to enter Yamba.
-{TRAN}应用程序的一个简单的文本名。可以是任意文本。就我们的应用来说，就输入Yamba好了。
+
+{TRAN}应用程序的名字。要求是纯文本，内容可以是任何有效字符。在这里输入``Yamba``即可。
 
 //Package name//
 {ORGI}A Java package, and as such it needs to adhere to Java package naming convention. In a nutshell, you want to use the reverse of your domain name for your package. I’m going to use com.marakana.yamba here.
-{TRAN}一个Java包，因此这里需要遵守Java包命名规范。简要地说，你要反着写你拥有的域名。我在这里会使用com.marakana.yamba。
+
+{TRAN}为项目的Java package命名，自然得遵循Java package的命名规范，也就是逆序的域名形式。在这里使用``com.marakana.yamba``。
 
 //Create Activity//
 {ORGI}An option to create an activity as part of this project. You can leave it checked. For the activity name, we must adhere to Java class naming convention. That simply means use upper CamelCase convention. I’m going to enter StatusActivity here
-{TRAN}创建一个用于项目中的Activity的可选项。你可以就让它选中。就Activity name而言，我们必须遵守Java类命名规范。简单地说就是指驼峰式（CamelCase）规范。
+
+{TRAN}是否为项目默认创建一个Activity。保留默认的选中即可。Activity的名字必须遵循Java类的命名规范，也就是CamelCase命名法。在此输入``StatusActivity``。
 
 //Min SDK Version//
 {ORGI}Represents the minimum version of Android SDK that is installed on the device in order to be able to run this particular application. Typically, this number will correspond to the API level that you picked for your target, in our case Android 9. However, if the app doesn’t depend on latest-greatest API or is capable of scaling gracefully to lower API, you should rethink this number. In our case, the app will be able to work on API level 4 (Android 1.6). So, enter 4 here. This is good because we can distribute our app to way more people than if minimum was Android 2.3.
-{TRAN}表明能够使用在设备上的最低版本的Android SDK。这个数字和你选择的目标设备API Level相对应，在我们的例子里是Android 9。然而如果你的应用不依赖最新的API或者在较低的API上兼容度也十分好，你就应该重新考虑这个数字。在我们的例子里，该应用将能在API Level 4（Android 1.6）上运行。因此在这里输入4。这和直接限定最小为Android 2.3相比，较有利于我们将应用发行到更多的用户那里。
+
+{TRAN}表示支持平台的最低版本。一般这个数字与前面的API Level是对应的，不过你的应用若并没有对高版本API的依赖，那就可以降低这个数字。我们的应用最低可以在API Level 4(Android 1.6)上运行，因此输入``4``。一个较低的API Level有助于提高兼容性，从而允许更多的用户使用它。
 
 {ORGI}Click on Finish. You should have Yamba project now appear in your Package Explorer in Eclipse.
-{TRAN}点击Finish。Eclipse的Package Explorer中就会出现Yamba工程。
+
+{TRAN}单击Finish。即可在Eclipse的Package Explorer里面见到一个新的项目，也就是Yamba。
 
 **Figure 6.2. New Project Dialog**
 	[images/06-NewProjectDialog.png]
 
+
+
 %== StatusActivity Layout ==
 == StatusActivity 布局 ==
+
 {ORGI}Let’s start by designing the user interface for our screen where we’ll enter the new status and click a button to update it.
 {TRAN}让我们开始设计一个用户界面，当我们进入新状态输入界面并点击按钮更新。
 
@@ -513,11 +520,7 @@ private static final String TAG = "StatusActivity";
 
 
 === LogCat from Eclipse DDMS Perspective ===
-<<<<<<< .mine
 {ORGI}To view logcat in Eclipse, you need to open the LogCat View. It is typically available in DDMS perspective to which you can switch by clicking on DDMS in top-right corner of Eclipse [images/icon_ddms.png] or by going to Window→Open Perspective→DDMS in the Eclipse menu.
-=======
-To view logcat in Eclipse, you need to open the LogCat View. It is typically available in DDMS perspective to which you can switch by clicking on DDMS in top-right corner of Eclipse [images/06-icon_ddms.png] or by going to Window→Open Perspective→DDMS in the Eclipse menu.
->>>>>>> .r103
 
 {ORGI}DDMS stands for Dalvik Debug Monitor Server. DDMS is the connection between your application running on the device and your development environment, such as Eclipse.
 {TRAN}DDMS指的是Dalvik Debug Monitor Server。它将运行于设备上的应用程序同Eclipse这样的开发环境连接了起来。
