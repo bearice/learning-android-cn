@@ -150,24 +150,31 @@
 %== Starting Yamba Project ==
 == 启动Yamba项目 ==
 
-{ORGI}We aie about to start our Yamba project. So, fire up your Eclipse and click on File→New→Android Project.
-{TRAN}我们就要启动Yamba项目了。那么，启动你的Eclipse，点击File→New→Android Project。
+{ORGI}We are about to start our Yamba project. So, fire up your Eclipse and click on File→New→Android Project.
+
+{TRAN}接下来开始编写Yamba。打开你的Eclipse，选择File→New→Android Project。
 
 {ORGI}You will get a dialog window asking you about your new Android project. Let’s explain again all the different fields that are significant.
-{TRAN}你会发现一个对话框，询问新Android工程的信息。让我们再解释下所有重要项目的区别。
+
+{TRAN}然后出现一个对话框，要求你输入有关新项目的各种信息。其中重要的条目如下：
 
 //Project Name//
 {ORGI}The name under which Eclipse organizes our project. Is is a good idea if the project name doesn’t have any spaces in it - makes it easier to access from the command line later. Enter Yamba here.
-{TRAN}这是Eclipse组织我们的工程时所用的名字。让Project Name不包含任何空格是个好注意，这样以后使用命令行访问更加地方便。这里就输入Yamba。
+
+{TRAN}这是Eclipse项目的名字。出于以后使用命令行访问的考虑，最好不要在项目名里夹带空格。输入``Yamba``。
 
 //Contents//
 {ORGI}Leave this as is, set to creating a new project since that’s what we’re intending to do.
-{TRAN}在这里就原封不动的保留，设置为creating a new project，这就是我们想要做的。
+
+{TRAN}保留默认选项也就是``creating a new project``，不需要修改。
 
 //Build Target//
 {ORGI}The type of Android system we are intending to run this application on. This could be any Android platform, either standard or proprietary. I’m assuming we’re working with Android 2.3 (API level 9) and thus will choose Android 2.3.
+
 {TRAN}我们想让应用程序运行与在哪种Android系统类型上。可以是任何Android平台，标准的或定制的。在这里我们假设要工作在Android2.3（API level 9），因此我们选择Android 2.3。
 注：最新2.3.1（API Level 9）已过时，2.3的最新版本是2.3.3（API Level 10）。
+
+{TRAN}目标平台的版本。
 
 //Application name//
 {ORGI}Simply a plain text name of your application. It can be any text. For our app, feel free to enter Yamba.

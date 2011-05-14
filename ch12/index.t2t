@@ -1,4 +1,570 @@
 %
 %
 %
-= CH12 is MISSING =
+= Content Providers =
+
+{ORGI}Take your contacts, for example. You may have a large database of contacts on your device. You can view them via the Contacts app as well as via the Dialer app. On some devices, such as HTC Android models, there may be even multiple versions of Contacts and Dialer apps available. It would not make a lot of sense to have similar data live in multiple databases.
+{TRAN}用联系人来举个例子。你设备里可能有了一个庞大的联系人数据库。你能用过Contacts应用查看它们，同时Dialer应用也可以这么做。在一些设备上，例如HTC的Android型号，会存在不同版本的Contacts和Dialer应用。因此不同数据库存放了相似的数据是毫无意义的。
+
+{ORGI}Content Providers provide a way to centralize content in one place and have many different applications access it as needed. In case of the Contacts on your phone, there is actually a ContactProvider application that contains a Content Provider. Other applications access the data via this interface. The interface itself is fairly simple: it is the same insert(), update(), delete(), and query() methods we saw in Chapter 9, Database.
+{TRAN}Content Providers提供了一种在统一位置中心化数据，让多个应用程序存取所需的方式。在手机联系人这个例子里，实际存有ContactProvider应用程序包括了一个Content Provider。其他应用程序通过这个接口存取数据。而接口本身相当简洁，就像在第九章数据库里所看到的只有insert(), update(), delete(), 和query() 方法。
+
+{ORGI}Android uses Content Providers quite a bit internally. We already mentioned contacts. Settings is another example, and so are all your bookmarks. All the media in the system is also registered with MediaStore, a content provider that dispenses images, music, and videos in your device.
+{TRAN}Android在内部常常使用Content Provider。除了我们已经提到的联系人数据，统设置也是个例子，除此以外还有你的书签等。系统中所有的媒体信息也注册在了MediaStore里，这是一个存储了设备中图像、音乐和视频信息的Content Provider.
+
+%== Creating Content Provider==
+== 创建Content Provider ==
+
+{ORGI}To create a content provider:
+{TRAN}欲创建一个Content Provider:
+
+{ORGI}
+- Create a new Java class that subclasses the system’s ContentProvider class.
+- Declare your CONTENT_URI.
+- Implement all the unimplemented methods, such as insert(), update(), delete(), query(), getID(), and getType().
+- Declare your Content Provider in the AndroidManifest.xml file.
+{TRAN}
+- 创建一个继承系统ContentProvider类的新Java类。
+- 声明你的CONTENT_URI。
+- 实现所有未实现的方法，包括insert()，update()，delete()，query()，getID()和getType()。
+- 在AndroidManifest.xml文件中，申明你的ContentProvider。
+
+{ORGI}We are going to start by creating a brand new Java class in the same package as any other classes. Its name will be StatusProvider. This class, like any of Android’s main building blocks, will subclass an Android framework class, in this case ContentProvider.
+{TRAN}我们将创建一个全新的Java类，放于和其他类相同的包下，它的类名是StatusProvider。这个类同其他Android主要构建一样，都需要继承一个Android框架类。在这里就是ContentProvider。
+
+{ORGI}So in Eclipse, select your package, click on File→New→Java Class, and enter StatusProvider. Then update the class to subclass ContentProvider and organize imports (Ctrl-Shift-O) to import the appropriate Java packages. The result should look like this:
+{TRAN}所以在Eclipse里，选择包，点击菜单File→New→Java Class，输入StatusProvider。然后让这个类继承ContentProvider，并选择organize imports（Ctrl-Shift-O）导入关联的Java包。结果如同下面所示：
+
+{CODE}
+package com.marakana.yamba7;
+
+import android.content.ContentProvider;
+
+public class StatusProvider extends ContentProvider {
+
+}
+{/CODE}
+
+{ORGI}Of course this code is now broken because we need to provide implementation for many of its methods. The easiest way to do that is to click on the class name and choose "Add unimplemented methods" from the list of quick fixes. Eclipse will then create stubs, or templates, of the missing methods.
+{TRAN}当然代码现在还不完整，我们还需要提供多个方法的实现。最简单的办法就是单击这个类名，并在quick fix列表中选择”Add unimplemented methods“。Eclipse会自动创建未实现方法的stub或template。 
+
+
+%=== Defining the URI ===
+=== 定义URI ===
+{ORGI}Objects within a single app can refer to each other simply by variable names, because they share an address space. But objects in different apps don’t recognize the different address spaces, so they need some other mechanism just to find each other. Android uses a A Uniform Resource Identifier, a string that identifies a specific resource, to locate a Content Provider. A URI has three or four parts, shown in Parts of a URI.
+{TRAN}在单个应用中的对象可以通过变量名来相互引用，因为他们共享了地址空间。但是在不同应用中的对象无法识别不同的地址空间，所以他们需要其他的机制找到对方。Android使用了全局资源标识符（URI），一串标识特定资源，以定位到ContentProvider的字符串。一个URI有三或四部分组成，在URI字段里说明。
+
+URI字段
+{CODE}
+content://com.marakana.yamba.statusprovider/status/47
+   A              B                           C    D
+{/CODE}
+
+{ORGI}
+- Part A, content://, is always set to this value. This is written in stone.
+- Part B, com.marakana.yamba.provider, is the so-called authority. It is typically the name of the class, all in lower case. This authority must match the authority that we specify for this provider when we declare it in the manifest file later on.
+- Part C, status, indicates the type of data that this particular provider is providing. It could contain any number of segments separated with a slash, including none at all.
+- Part D, 47, is an optional ID of the specific item that we are referring to. If not set, the URI will represent the entire set. Number 47 is an arbitrary number picked for example.
+{TRAN}
+- 字段A，content://，总是设为此值。这是固定不变的。
+- 字段B，com.marakana.yamba.provider，被称为授权。它通常是类名，全部小写。授权必须符合我们在随后的manifest文件中指定给这个ContentProvider的内容。
+- 字段C，status，表明这个ContentProvider提供的数据类型。它可以是包含任意段由斜线分割的字符串，甚至什么都没有也成。
+- 字段D，47，这是一个可选的ID，用来指明我们所引用的项。如果不设置，此URI将代表整个集合。数字47是任意选取的，仅作个例子。
+
+
+{ORGI}
+Sometimes you need to refer to the Content Provider in its entirety, and sometimes to one of the items of data it contains. If you refer to it in its entirety, you leave off Part D; otherwise you include that part to identify one item within the Content Provider. Actually, since we have only one table, we do not need the C part of the URI.
+{TRAN}
+有时候你需要引用整个ContentProvider，而有时你只是需要其中一项。如果需要引用整个数据集，留下字段D；否则包含该部分，来指明该ContentProvider中的一项。实际上，这里我们只有一个表，因此可以不需要URI中的字段C。
+
+{ORGI}One way to define the constants for this particular case is like this:
+{TRAN}在本例中，一种定义这个常量的方式可以是如下所示：
+
+{CODE}
+public static final Uri CONTENT_URI = Uri
+    .parse("content://com.marakana.yamba7.statusprovider");
+public static final String SINGLE_RECORD_MIME_TYPE =
+    "vnd.android.cursor.item/vnd.marakana.yamba.status";
+public static final String MULTIPLE_RECORDS_MIME_TYPE =
+    "vnd.android.cursor.dir/vnd.marakana.yamba.mstatus";
+{/CODE}
+
+{ORGI}In the section called “Getting the Data Type” we’ll explore the reason for two MIME types. We are also going to define the status data object in a class-global variable so that we can refer to it:
+{TRAN}在“获取数据类型”这节里，我们将探索这两个MIME类型的缘由。我们为了能引用状态数据，同样地还会在类全局变量中定义状态数据对象：
+
+{CODE}
+StatusData statusData;
+{/CODE}
+
+{ORGI}The reason we’ll be using the status data object all over our app is that all our database connectivity is centralized in that class. So now the StatusProvider class has a reference to an object of class StatusData.
+{TRAN}在整个应用范围内中使用状态数据对象，能将所有的数据库连接集中到该类里。所以现在StatusProvider类拥有了一个StatusData类的引用。
+
+
+%=== Inserting Data ===
+=== 插入数据 ===
+{ORGI}To insert a record into a database via the Content Provider interface, we need to override the insert() method. The caller provides the URI of this Content Provider (without an ID) and the values to be inserted. A successful call to insert the new record returns the ID for that record. We end by returning a new URI concatenating the provider’s URI with the ID we just got back.
+{TRAN}要通过ContentProvider，插入记录到数据库中，我们需要覆盖insert()方法。调用它的代码提供了这个ContentProvider的URI（但是不包含ID），和要插入的值。对一次插入新记录的调用，如果成功的话会返回记录ID，于是我们最后以返回新的包含了这个ID的URI结束。
+
+{CODE}
+@Override
+public Uri insert(Uri uri, ContentValues values) {
+  SQLiteDatabase db = statusData.dbHelper.getWritableDatabase();  //#1
+  try {
+    long id = db.insertOrThrow(StatusData.TABLE, null, values);  //#2
+    if (id == -1) {
+      throw new RuntimeException(String.format(
+          "%s: Failed to insert [%s] to [%s] for unknown reasons.", TAG,
+          values, uri));  //#3
+    } else {
+      return ContentUris.withAppendedId(uri, id); //#4
+    }
+  } finally {
+    db.close(); //#5
+  }
+}
+{/CODE}
+
+{ORGI}
+- We need to open the database for writing.
+- We attempt to insert the values into the database and, upon a successful insert, get back the ID of the new record from the database.
+- If anything fails during the insert, the database will return -1. We can than throw a runtime exception because this is an error that should never have happened.
+- If the insert was successful, we use the ContentUris.withAppendedId() helper method to craft a new URI containing the ID of the new record appended to the standard provider’s URI.
+- We need to close the database no matter what, so a finally block is a good place to do that.
+{TRAN}
+- 我们需要打开数据库写入。
+- 我们试着将数据插入到数据库中，对于成功的调用，会从数据库回馈到新记录的ID。
+- 如果在插入过程中出现了任何的失败，数据库会返回-1。我们可以随即抛出一个运行时异常，因为这是决不该发生的情况。
+- 我们无论如何都需要最后关闭数据库，因此finally块是完成这件事情的好地方。
+
+
+%=== Updating Data ===
+=== 更新数据 ===
+{ORGI}To update the data via the Content Provider API, we need:
+{TRAN}要通过ContentProvider API更新数据，我们需要这些参数：
+
+{ORGI}
+** The URI of the provider **
+This may or may not contain an ID. If it does, the ID indicates the specific record that needs to be updated, and we can ignore the selection. If the ID is not specified, it means that we are updating many records and we need the selection to indicate which are to be changed.
+{TRAN}
+** ContentProvider的URI **
+它可选的包含一个ID。如果有的话，ID指示特定的需要更新的记录，这样我们可以忽略选择条件。如果ID没有指定，也就意味着我们会更新多个记录，并且我们需要选择条件指明哪些数据需要修改。
+
+{ORGI}
+** The values to be updated **
+The format of this parameter is a set of name/value pairs that represent column names and new values.
+{TRAN}
+** 更新的值 **
+这个参数的格式是一组键值对集，提供了数据列名和新的值。
+
+{ORGI}
+** Any selection and arguments that go with it **
+These together make up a WHERE clause in SQL, selecting the records that will change. The selection and its arguments are omitted when there is an ID, because that is enough to select the record that is being updated.
+{TRAN}
+** 任何附加的选择条件 **
+这些组成了一个SQL的WHERE块，来选择需要修改的记录。如果提供了ID，选择条件会忽略，因为单凭ID就能够知道哪些记录会更新。
+
+{ORGI}The code that handles both types of update—by ID and by selection—can be as follows.
+{TRAN}可以同时处理通过ID和通过选择条件指定记录的代码如下：
+
+{CODE}
+@Override
+public int update(Uri uri, ContentValues values, String selection,
+    String[] selectionArgs) {
+  long id = this.getId(uri); //#1
+  SQLiteDatabase db = statusData.dbHelper.getWritableDatabase(); //#2
+  try {
+    if (id < 0) {
+      return db.update(StatusData.TABLE, values, selection, selectionArgs); //#3
+    } else {
+      return db.update(StatusData.TABLE, values, StatusData.C_ID + "=" + id, null); //#4
+    }
+  } finally {
+    db.close(); //#4
+  }
+}
+{/CODE}
+
+{ORGI}
+- We use the local helper method getId() to extract the ID from the URI that we get. If no ID is present, this method returns -1. getId() will be defined later in this chapter.
+- We need to open the database for writing the updates.
+- If there’s no ID, that means we’re simply updating all the database records that match the selection and selectionArgs constraints.
+- If ID is present, we are using that ID as the only part of the WHERE clause to limit the single record that we’re updating.
+- Don’t forget to close the database no matter what.
+{TRAN}
+- 我们使用本地helper方法getId()从URI中获取ID。如果没有提供ID，该方法将返回-1。getId()将在本章后面定义。
+- 为了写入更新，我们需要打开数据库。
+- 如果没有ID，也就意味着我们只是简单地更新所有匹配选择条件和选择参数的数据库记录。
+- 如果提供了ID，我们就用ID作为WHERE语句块的唯一部分，限制其只更新这个唯一的记录。
+- 不要忘了无论如何数据库最后都要关闭。
+
+
+%=== Deleting Data ===
+=== 删除数据 ===
+{ORGI}Deleting the data is similar to updating the data. The URI may or may not contain the ID of the particular record to delete.
+{TRAN}删除数据和更新数据类似。URI可以包含也可以不包含特定待删除记录的ID。
+
+{CODE}
+@Override
+public int delete(Uri uri, String selection, String[] selectionArgs) {
+  long id = this.getId(uri); //#1
+  SQLiteDatabase db = statusData.dbHelper.getWritableDatabase(); //#2
+  try {
+    if (id < 0) {
+      return db.delete(StatusData.TABLE, selection, selectionArgs); //#3
+    } else {
+      return db.delete(StatusData.TABLE, StatusData.C_ID + "=" + id, null); //#4
+    }
+
+  } finally {
+    db.close(); //#5
+  }
+}
+{/CODE}
+
+{ORGI}
+- The getId() helper method extracts the ID from the URI that we get. If no ID is present, this method returns -1.
+- We need to open the database for writing the updates.
+- If there’s no ID, we simply delete all the database records that match the selection and selectionArgs constraints.
+- If ID is present, we use that ID as the only part of the WHERE clause to limit the operation to the single record the user wants to delete.
+- Don’t forget to close the database.
+{TRAN}
+- getId() helper方法从URI中展开了ID，如果没有ID提供，该方法会返回-1.
+- 我们需要打开数据库写入更新。
+- 如果没有ID，我们简单的删除所有符合选择条件和选择参数的记录。
+- 如果提供了ID，我们使用ID作为唯一的WHERE语句块，限制其只操作用户想删除的单个记录。
+
+
+%=== Querying Data ===
+=== 查询数据 ===
+{ORGI}To query the data via a Content Provider, we override the query() method. This method has a long list of paramaters, but usually we just forward most of them to the database call with the same name.
+{TRAN}想要通过ContentProvider查询数据，我们需重载query()方法。这个方法有一个长长的参数列表，不过通常我们只需要每次调用相同的方法，但是只使用其中的某些参数。
+
+{CODE}
+@Override
+public Cursor query(Uri uri, String[] projection, String selection,
+    String[] selectionArgs, String sortOrder) {
+  long id = this.getId(uri); //#1
+  SQLiteDatabase db = statusData.dbHelper.getReadableDatabase(); //#2
+  if (id < 0) {
+    return db.query(StatusData.TABLE, projection, selection, selectionArgs, null,
+        null, sortOrder); //#3
+  } else {
+    return db.query(StatusData.TABLE, projection, StatusData.C_ID + "=" + id, null, null, null,
+        null); //#4
+  }
+}
+{/CODE}
+
+{ORGI}
+- The getId() helper method extracts the ID from the URI that we get.
+- We need to open the database, in this case just for reading.
+- If there’s no ID, we simply forward what we got for the Content Provider to the equivalent database call. Note that the database call has two additional parameters that correspond to SQL GROUPING and HAVING components. Because Content Providers do not support this feature, we simply pass in null.
+- If an ID is present, we use that ID as the WHERE clause to limit what record to return.
+{TRAN}
+- getId() helper方法从URI中获取ID。
+- 我们需要打开数据库，但这里只用读取。
+- 如果没有ID，我们简单地传入参数到对应于该ContentProvider的数据库调用。注意到数据库调用还有两个额外参数对应于SQL的GROUPING和HAVING语句块。因为ContentProvider不支持这个功能，我们就简单地传入null。
+- 如果ID给出了，我们使用这个ID作为WHERE语句来指定返回的记录。
+
+
+{NOTE}
+{ORGI}	We do not close the database here because closing the database will destroy the cursor and we still need it on the receiving end to go over the data returned by the query. One way to handle the cursor is to have the receiver manage it. Activities have a simple startManagingCursor() method for this purpose.
+{TRAN}	在这里我们不用关闭数据库，因为关闭数据库将毁掉游标，所以我们仍然需要保持获取，直到遍历完所有返回的数据。一种处理游标的方法是让接受数据的对象管理它。Activity有一个简单的startManagingCursor()方 法达到这个目的。
+{/NOTE}
+
+%=== Getting the Data Type ===
+=== 获取数据类型 ===
+{ORGI}A ContentProvider must return the MIME type of the data it is returning. The MIME type is either single item, or all the records for the given URI. Earlier in this chapter we defined the single-record MIME type is as vnd.android.cursor.item/vnd.marakana.yamba.status and the directory of all statuses as vnd.android.cursor.dir/vnd.marakana.yamba.status. The call we must define, to let others retrieve the MIME type, is called getType().
+{TRAN}ContentProvider必须返回数据的MIME类型。MIME类型可以是单个项目的，或者也可以是URI所值记录的。在本章前面我们定义了单个记录的MIME类型为vnd.android.cursor.item/vnd.marakana.yamba.status，同时所有状态的目录定义为vnd.android.cursor.dir/vnd.marakana.yamba.status。为了让其他对象获取到MIME类型，我们必须定义getType()方法。
+
+{ORGI}The first part of the MIME type is either vnd.android.cursor.item or vnd.android.cursor.dir, depending on whether the type represents a specific item or all items we are referring to. The second part, vnd.marakana.yamba.status or vnd.marakana.yamba.mstatus for our app, is a combination of constant vnd followed by your company or app name and the actual content type.
+{TRAN}MIME类型的第一个字段可以是vnd.android.cursor.item或vnd.android.cursor.dir之一，具体值根据类型所指的是特定项还是所有项目来决定。第二个字段，在我们的应用里是vnd.marakana.yamba.status或vnd.marakana.yamba.mstatus，是一个常量vnd加上公司或应用名和具体类型的组合形式。
+
+{ORGI}As you may recall, the URI could end with a number. If it does, that number is the ID of the specific record. If it doesn’t, the URI refers to the entire collection.
+{TRAN}你或许还记得URI可以以数字结尾。如果是这样，数字就是特定记录的ID。如果不是如此，URI指向整个记录。
+
+{ORGI}The following source shows the implementation of getType() as well as the getId() helper method that we’ve already used several times.
+{TRAN}随后所附的源代码展示了getType()和我们之前就已经多次调用过的getId() helper方法的实现。
+
+{CODE}
+@Override
+public String getType(Uri uri) {
+  return this.getId(uri) < 0 ? MULTIPLE_RECORDS_MIME_TYPE
+      : SINGLE_RECORD_MIME_TYPE;  //#1
+}
+
+private long getId(Uri uri) {
+  String lastPathSegment = uri.getLastPathSegment();  //#2
+  if (lastPathSegment != null) {
+    try {
+      return Long.parseLong(lastPathSegment); //#3
+    } catch (NumberFormatException e) { //#4
+      // at least we tried
+    }
+  }
+  return -1;   //#5
+}
+{/CODE}
+
+{ORGI}
+- getType() uses the helper method getId() to determine whether the URI has an ID part. If it does not—as indicated by a negative return value—we return vnd.android.cursor.dir/vnd.marakana.yamba.mstatus for the MIME type. Otherwise, we’re referring to a single record and the MIME type is vnd.android.cursor.item/vnd.marakana.yamba.status. Of course, we previously defined these values as class constants.
+- To extract the ID in our implementation of getId(), we take the last part of the URI.
+- If that last part is not null, we try to parse it as long and return it.
+- It could be that the last part is not a number at all, in which case the parse will fail.
+- We return -1 to indicate that the given URI doesn’t contain a valid ID.
+{TRAN}
+- getType()使用了helper方法getId()来判断URI是否包含ID字段。如果从该方法返回的负值判断它没有ID，我们就返回vnd.android.cursor.dir/vnd.marakana.yamba.mstatus作为MIME类型。否则，我们引用的是单个记录，MIME类型就是vnd.android.cursor.item/vnd.marakana.yamba.status。当然，我们之前就已经在类中定义了这些常量。
+- 为了在我们的getId()实现里获取到ID，我们只取URI的最后一个字段。
+- 如果最后一个字段不是空，我们就试着解析为长整数并返回它。
+- 最后一个字段可能更本就不是数，那么解析就会失败。
+- 我们返回-1来表明给出的URI不包含合法的ID。
+
+
+%=== Updating the Android Manifest File ===
+=== 更新Android Manifest文件 ===
+{ORGI}As with any major building block, we want to define our Content Provider in the Android Manifest XML file. Notice that in this case the android:authorities property specifies the URI authority authorized to access this content provider. Typically, this authority would be your Content Provider class—which we use here—or your package.
+{TRAN}如同其他的主要构件一样，我们需要在Android Manifest XML文件里定义这个Content Provider。注意到本例中android:authorities属性表明了需要访问这个ContentProvider的URI权限。典型地这个授权会是你的ContentProvider类名和其所在的包。
+
+{CODE}
+<application>
+  ...
+  <provider android:name=".StatusProvider"
+    android:authorities="com.marakana.yamba7.statusprovider" />
+  ...
+</application>
+{/CODE}
+
+{ORGI}At this point our content provider is complete and we are ready to use it in other building blocks of Yamba. But since our application already centralizes all data access in a StatusData object that is readily accessible via YambaApplication, we don’t really have a good use for this content provider within the same application. Besides, content providers mostly make sense when we want to expose the data to another application.
+{TRAN}此时我们的ContentProvider就全部完成了，并且我们这就可以在Yamba的其他构件里使用它。但是因为我们应用程序已经集中所有的数据存储于StatusData对象，并且它已经可以通过Yamba应用程序访问，我们不必的在同一个应用程序中使用这个ContentProvider（= =！）。通常当我们想暴露数据给其他应用程序时，ContentProvider才会更管用。
+
+
+%== Using Content Providers Through Widgets ==
+== 将ContentProvider运用到Widget中 ==
+{ORGI}As mentioned before, Content Providers mostly make sense when you want to expose the data to other applications. It is a good practice to always think of your application as part of a larger Android ecosystem and, as such, a potential provider of useful data to other applications.
+{TRAN}就像在之前提到过的，ContentProvider一般在我们想暴露数据给其他应用程序时会很有用。总是把自己的应用程序当作为庞大Android生态系统的一部分是种很好的态度，也就是说，需要一个ContentProvider提供给其他应用程序。
+
+{ORGI}To demonstrate how Content Providers can be useful, we’ll create a Home screen widget. We’re not using the term widget here as in a synonym for Android’s View class, but as a useful embedded service for the Home screen to offer.
+{TRAN}为了演示ContentProvider的用处，我们将创建一个主屏幕Widget。我们这里不是指Android中View类的Widget，而是指主屏幕中嵌入的实用服务。
+
+{ORGI}Android typically ships with a few Home screen widgets. You can access them by going to your home screen, long-pressing on it to pull up an Add to Home Screen dialog, and choosing Widgets. Widgets that come with Android include Alarm Clock, Picture Frame, Power Controls, Music, and Search. Our goal is to create our own Yamba Widget that the user will be able to add to the Home screen.
+{TRAN}Android通常自带了一些主屏幕Widget。你可以在主屏幕上加入它们，长按主屏幕来弹出增加到主屏幕对话框，并选择Widget。Android内建的Widget有时钟、相框、能源控制、音乐和搜索等。我们的目标是创建我们自己的Yamba Widget，让用户能自行添加到主屏幕上。
+
+{ORGI}The Yamba Widget will be simple, displaying just the latest status update. To create it, we’ll create a new YambaWidget Class that subclasses AppWidgetProviderInfo. We’ll also have to register the widget with the manifest file.
+{TRAN}Yamba Widget将是简洁的，仅仅展示最近的状态更新。要创建它，我们将新建一个继承于AppWidgetProviderInfo类的YambaWidget类。同时我们将注册这个Widget到Manifest文件里。
+
+
+%=== Implementing the YambaWidget class ===
+=== 实现YambaWidget类 ===
+{ORGI}YambaWidget is the main class for our widget. It is a subclass of AppWidgetProvider, a special system class that makes widgets. This class itself is a subclass of BroadcastReceiver, so our Yamba Widget is automatically a broadcast receiver. Basically, whenever our widget is updated, deleted, enabled, or disabled, we’ll get a broadcast intent with that information. So this class inherits the onUpdate(), onDeleted(), onEnabled(), onDisabled(), and onReceive() callbacks. We can override any of these, but typically we care mostly about the updates and general broadcasts we receive.
+{TRAN}YambaWidget是我们这个Widget的主类。它是一个用来构建Widget的特殊系统类AppWidgetProvider的子类。而该类自身又是BroadcastReceiver的一个子类，所以我们的YambaWidget自然也是一个BroadcastReceiver。基本上，不论我们的Widget是更新、删除、启用还是关闭，我们都会得到包含着相关信息的Broadcast Indent。所以该类继承了onUpdate(), onDeleted(), onEnabled(),onDisabled()和onReceive()回调方法。我们可以重载它们，但是通常我们关心的是更新和我们接受到的原始广播。
+
+{ORGI}Now that we understand the overall design of the widget framework, here’s how we implement it.
+{TRAN}现在我们明白了Widget框架的大体设计，这里是我们如何来实现它的例子：
+
+Example 12.1. YambaWidget.java
+{CODE}
+package com.marakana.yamba7;
+
+import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.text.format.DateUtils;
+import android.util.Log;
+import android.widget.RemoteViews;
+
+public class YambaWidget extends AppWidgetProvider { //#1
+  private static final String TAG = YambaWidget.class.getSimpleName();
+
+  @Override
+  public void onUpdate(Context context, AppWidgetManager appWidgetManager,
+      int[] appWidgetIds) { //#2
+    Cursor c = context.getContentResolver().query(StatusProvider.CONTENT_URI,
+        null, null, null, null); //#3
+    try {
+      if (c.moveToFirst()) { //#4
+        CharSequence user = c.getString(c.getColumnIndex(StatusData.C_USER)); //#5
+        CharSequence createdAt = DateUtils.getRelativeTimeSpanString(context, c
+            .getLong(c.getColumnIndex(StatusData.C_CREATED_AT)));
+        CharSequence message = c.getString(c.getColumnIndex(StatusData.C_TEXT));
+
+        // Loop through all instances of this widget
+        for (int appWidgetId : appWidgetIds) { //#5
+          Log.d(TAG, "Updating widget " + appWidgetId);
+          RemoteViews views = new RemoteViews(context.getPackageName(),
+              R.layout.yamba_widget); //#6
+          views.setTextViewText(R.id.textUser, user); //#7
+          views.setTextViewText(R.id.textCreatedAt, createdAt);
+          views.setTextViewText(R.id.textText, message);
+          views.setOnClickPendingIntent(R.id.yamba_icon, PendingIntent
+              .getActivity(context, 0, new Intent(context,
+                  TimelineActivity.class), 0));
+          appWidgetManager.updateAppWidget(appWidgetId, views); //#8
+        }
+      } else {
+        Log.d(TAG, "No data to update");
+      }
+    } finally {
+      c.close(); //#9
+    }
+    Log.d(TAG, "onUpdated");
+  }
+
+  @Override
+  public void onReceive(Context context, Intent intent) { //#10
+    super.onReceive(context, intent);
+    if (intent.getAction().equals(UpdaterService.NEW_STATUS_INTENT)) { //#11
+      Log.d(TAG, "onReceived detected new status update");
+      AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context); //#12
+      this.onUpdate(context, appWidgetManager, appWidgetManager
+          .getAppWidgetIds(new ComponentName(context, YambaWidget.class))); //#13
+    }
+  }
+}
+{/CODE}
+
+{ORGI}
+- As mentioned before, our widget is a subclass of AppWidgetProvider, which itself is a BroadcastReceiver.
+- This method is called whenever our widget is to be updated, so it’s where we’ll implement the main functionality of the widget. When we register the widget with the system in the manifest file later, we’ll specify the update frequency we’d like. In our case, this method will be called about every 30 minutes.
+- We finally get to use our Content Provider. The whole purpose of this widget in this chapter is to illustrate how to use the StatusProvider that we created earlier. As you have already seen when we implemented the content provider, its API is quite similar to the SQLite database API. The main difference is that instead of passing a table name to a database object, we’re passing a Content URI to the Content Resolver. We still get back the very same Cursor object as we did with databases in Chapter 9, Database.
+- In this particular example, we care only about the very latest status update from the online service. So we position the cursor to the first element. If one exists, it’s our latest status update.
+- In the next few of lines of code, we extract data from the cursor object and store it in local variables.
+- Since the user could have multiple Yamba Widgets installed, we need to loop through them and update them all. We don’t particularly care what the appWidgetId is because we’re doing identical work to update every instance of Yamba Widget. The appWidgetId becomes an opaque handle we use to access each widget in turn.
+- The actual view representing our widget is in another process. To be precise, our widget is running inside the Home application, which acts as its host and is the process we are updating. Hence the RemoteViews constructor. The Remote Views framework is a special shared memory system designed specifically for widgets.
+- Once we have the reference to the Java memory space of our widget views in another process, we can update those views. In this case, we’re setting the status data in the row that represents our widget.
+- Once we update the remote views, the AppWidgetManager call to updateAppWidget() actually posts a message to have the system update our widget. This will happen asynchronously, but shortly after onUpdate() completes.
+- Whether or not the StatusProvider found a new status, we release the data that we might have gotten from the Content Provider. This is just a good practice.
+- The call to onReceive() is not necessary in a typical widget. But since a widget is a Broadcast Receiver, and since our Updater Service does send a broadcast when we get a new status update, this method is a good opportunity to invoke onUpdate() and get the latest status data updated on the widget.
+- We check whether the intent was the one for the new status broadcast.
+- If it was, we get the instance of AppWidgetManager for this context.
+- We then invoke onUpdate().
+{TRAN}
+- 就像之前提到的，我们的Widget是AppWidgetProvider的子类，它自己也是一个BroadcastReceiver。
+- 一旦Widget被更新，就会被调用，所以这里将实现该Widget的主要功能。当我们随后在manifest文件里注册了这个Widget到系统时，我们将指定更新频率。在这个例子里，该方法每30分钟调用一次。
+- 我们最终得以使用ContentProvider。本章中这个Widget的目的就是形象地展示如何使用我们之前创建的StatusProvider。就像我们在ContentProvider里已经实现的那样，这个API很像SQLite数据库API。主要的不同是，我们没有传递表名到数据库对象，而是传递了标识内容的URI到Content Resolver。我们将得到十分相近的Cursor对象，就像我们在第九章，数据库里做的那样。
+- 在这个特例里，我们仅关心在线服务中最近的更新。所以我们将游标移到第一个元素。如果存在，那就是最新的状态更新。
+- 后面的几行代码里，我们从游标对象中获取数据，并保存到本地变量。
+- 因为用户可能使用了多个YambaWidget，我们需要遍历它们并更新全部。我们不是很关心appWidgetId到底是什么，因为我们要做的是更新每一个YambaWidget的实例。appWidgetId在我们需要处理单个Widget时起作用。
+- View在另外的进程里展示我们的Widget。准确地说，我们的Widget在Home应用程序中运行，它作为Widget的宿主和更新操作所在的进程。Hence the RemoteViews constroctor。Remote View框架是一个特别为Widget所设计的内存共享系统。
+- 一旦在其他的进程里引用了这个Widget的Java内存空间，我们就能更新这些View。在此时，我们设置状态数据到我们的Widget。
+- 一旦我们更新了Remote View，AppWidgetManager会调用updateAppWidget()提交消息让系统更新我们的Widget。这些将是异步地，但是很快在onUpdate()结束后调用。
+- 不论StatusProvider是否发现新状态，我们都会释放ContentProvider得到的数据。这是一个好习惯。
+- 在典型的Widget实现里，调用onReceive()方法不是必要的。但是因为Widget也是BroadcastReceiver，因此当有新状态更新时，我们的更新服务会发送Broadcast，这个方法拥有恰好调用onUpdate()的时机，并且能将最新的状态数据更新到Widget上。
+- 我们检查这个Intent是否是一个新状态Broadcast。
+- 如果是的话，我们调用当前Context的AppWidgetManager实例。
+- 我们然后调用onUpdate()。
+
+
+{ORGI}At this point, we have coded the Yamba Widget, and as a receiver, it will get notified periodically or when there are new updates, and it will loop through all instances of this widget on the Home screen and update them.
+{TRAN}这时，我们完成了YambaWidget的编码，并且作为一个Receiver，它将会定期，或者有新状态更新时得到通知，然后它将遍历所有的主屏幕上的Widget实例并更新它们。
+
+{ORGI}Next, we need to set up the layout for our widget.
+{TRAN}下一步，我们需要设计Widget的布局。
+
+
+%=== Creating the XML Layout ===
+=== 创建XML布局 ===
+{ORGI}The layout for the widget is fairly straightforward. Note that we’re reusing our existing row.xml file that displays status data properly in the Timeline Activity. Here, we just include it along with a little title and an icon to make it look good on the home screen.
+{TRAN}Widget布局非常直接。注意到我们重用了已经设定好的在特定Timeline Activity显示状态数据的row.xml文件。这里我们只用包含它，再加上一个小标题和图标，让它在主屏幕上显得好看点。
+
+Example 12.2. res/layout/yamba_widget.xml
+
+{CODE}
+<?xml version="1.0" encoding="utf-8"?>
+  <!-- #1 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_height="wrap_content" android:layout_width="fill_parent"
+  android:background="@color/edit_text_background"
+  android:layout_margin="5dp" android:padding="5dp">
+  <!-- #2 -->
+  <ImageView android:layout_width="wrap_content" android:src="@drawable/icon"
+    android:layout_height="fill_parent" android:id="@+id/yamba_icon"
+    android:clickable="true" />
+  <!-- #3 -->
+  <include layout="@layout/row" />
+</LinearLayout>
+{/CODE}
+
+{ORGI}
+- We’re using Linear Layout to hold our widget together. It runs horizontally with the icon on the left and the status data on the right.
+- This is the icon, our standard Yamba icon.
+- Notice the use of <include> element. This is how we include our existing row.xml into this layout so we don’t have to duplicate the code.
+{TRAN}
+- 我们使用Linear Layout组织起Widget。它水平地布局，图标在左边，而状态在右边。
+- 这就是图标，我们的标准Yamba图标。
+- 注意到我们使用了<include>元素。这就是我们如何包含之前定义的row.xml到这个布局的方法，所以我们不用复制粘贴代码。
+
+{ORGI}This layout is simple enough, but does the job for our particular needs. Next, we need to define some basic information about this widget and its behavior.
+{TRAN}这个布局够简单了，但是所做的正是我们需要的。下一步我们需要定义一些关于这个Widget的基本信息和行为。
+
+
+%=== Creating the AppWidgetProviderInfo File ===
+=== 创建AppWidgetProviderInfo文件 ===
+{ORGI}This XML file is responsible for describing the widget. It typically specifies what layout this widget uses, how frequently it should be updated by the system, and what its size is.
+{TRAN}这个XML文件用于描述Widget。它通常指定Widget使用何种布局，多久由系统更新一次，和它的尺寸。
+
+Example 12.3. res/xml/yamba_widget_info.xml
+
+{CODE}
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+  android:initialLayout="@layout/yamba_widget" android:minWidth="294dp"
+  android:minHeight="72dp" android:label="@string/msgLastTimelineUpdate"
+  android:updatePeriodMillis="1800000" />
+{/CODE}
+
+{ORGI}In this case we are specifying that we’d like to have to have our widget updated every 30 minutes or so (1800000 milliseconds). Here, we also specify the layout to use, the title of this widget, and its size.
+{TRAN}在这个例子里指定了我们想要更新Widget的频率是每30分钟或者是这样（1800000毫秒）。这里我们还指定了所用的布局，Widget的标题和大小。
+
+
+%=== Updating the Manifest File ===
+=== 更新Manifest文件 ===
+{ORGI}Finally, we need to update the manifest file and register the widget.
+{TRAN}最后，我们需要更新manifest文件，注册这个Widget。
+
+{CODE}
+  ...
+  <application .../>
+    ...
+    <receiver android:name=".YambaWidget" android:label="@string/msgLastTimelineUpdate">
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+      <intent-filter>
+        <action android:name="com.marakana.yamba.NEW_STATUS" />
+      </intent-filter>
+      <meta-data android:name="android.appwidget.provider"
+        android:resource="@xml/yamba_widget_info" />
+    </receiver>
+    ...
+  </application>
+  ...
+{/CODE}
+
+{ORGI}Notice that the widget is a receiver, as we mentioned before. So, just like other broadcast receivers, we declare it within a <receiver> tag inside an <application> element. It is important to register this receiver to receive ACTION_APPWIDGET_UPDATE updates. We do that via the <intent-filter>. The <meta-data> specifies the meta information for this widget in the yamba_widget_info XML file described in the previous section.
+{TRAN}注意到Widget也是Receiver，就像我们之前提到的。所以就像其他BroadcastReceiver，我们用<receiver>声明它，并把它放在<application>元素内部。注册这个Receiver接受ACTION_APPWIDGET_UPDATE更新是十分必要地，而我们需要通过<intent-filter>实现。<meta-data>指定了这个Widget的元信息在yamba_widget_info XML文件里。
+
+{ORGI}That's it. We now have the widget and are ready to test it.
+{TRAN}就是这样。我们现在拥有了一个Widget，并且可以准备测试它了。
+
+=== Test That It Works ===
+{ORGI}To test this widget, install your latest application on the device. Next, go to the Home screen, long-press it, and click on the Widgets choice. You should be able to navigate to the Yamba Widget at this point. After adding it to the Home screen, the widget should display the latest status update.
+{TRAN}要测试这个Widget，安装最新的应用程序到设备上。接着，到主屏幕上，长按它，然后点击Widget选项。在此时你应该能看到Yamba Widget。在添加到主屏幕上后，这个Widget应该会显示最新的状态更新。
+
+{ORGI}If your Updater Service is running, you should be able to see the latest updates show up on the Home screen. This means your widget is running properly.
+{TRAN}如果你的Updater Service正在运行，你应该能在主屏幕看到最近的更新显示。这也意味着你的Widget运行正常。
+
+%== Summary ==
+== 总结 ==
+{ORGI}At this point, the Yamba app is complete—congratulations! You are ready to fine-tune it, customize it, and publish it to the market.
+{TRAN}恭喜您！Yamba应用全部完成了！你可以准备进一步调试设计，优化设计，并发布到市场上了。
+
+{ORGI}Figure 12.1, “Yamba Completion” illustrates what we have done so far as part of the design outlined in Figure 5.4, “Yamba Design Diagram”.
+{TRAN}图表12.1，“Yamba Completion”说明了我们到目前为止在图表5.4，“Yamba Design”里所实现的设计部分。
+
+		Figure 12.1. Yamba Completion
+	[images/12-Yamba-7.png]
+
