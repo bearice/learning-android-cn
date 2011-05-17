@@ -1,2 +1,251 @@
 % 
 %
+
+% =System Services=
+=系统服务=[ch13]
+
+% Like many modern operating systems, Android comes with a number of system services that are always on, always running, and readily available to developers to tap into. These system services include things like Location service, Sensor service, WiFi service, Alarm service, Telephony service, Bluetooth service, and so on. System services are started at boot time and are guaranteed to be running by the time your application launches.
+
+同其它现代操作系统一样，Android也内置了一系列的系统服务。它们都是随着系统启动，并一直处于运行状态，随时可供开发者访问。比如Location服务、Sensor服务、WiFi服务、Alarm服务、Telephony服务、Bluetooth服务等等。
+
+% In this chapter, we’ll see how we can use some of the system services to further expand the Yamba application. First we’ll take a look at the Sensor service in a small example in order to demonstrate some of the concepts that are common to most of the system services. Then we’ll add support for location information to our status updates via the Location service.
+
+本章介绍几个常见的系统服务，以及将其应用到Yamba中的方法。我们先在一个小例子里引入Sensor服务，观察系统服务的一般特性，然后通过Location服务为Yamba添加地理坐标的功能。
+
+% Additionally, we’re going to refactor the Yamba application to take advantage of Intent Service support. This will demonstrate how to use Alarm service and will make our Updater slightly more efficient and simpler.
+
+另外，我们会重构Yamba的代码来获得Intent服务的支持，继而引出Alarm服务，并凭借它优化Updater的实现。
+
+==Compass Demo==
+
+% To start with system services, we are going to look at a simple, self-contained example of a compass application. This application uses the Sensor service to get updates from the orientation sensor and use its information to rotate a Rose, our custom UI component. The Sensor service is very typical of system services and a relatively easy one to understand.
+
+我们先从一个简单的样例——指南针(Compass)——开始，然后在实际代码中引入系统服务的相关知识。它可以通过Sensor服务获得传感器的输出，转屏幕上的表盘显示方位。Sensor服务是个有代表性的系统服务，也不难懂。
+
+% To build this example, we’ll create an activity that will get the Sensor service and register for updates from a particular sensor. Next, we’ll build the Rose that will rotate on the screen based on the sensor readings.
+
+在例子中，我们先创建一个Activity，由它来访问Sensor服务，订阅来自某传感器的输出。然后创建表盘控件(Rose)，使之可以依据传感器的输出旋转。
+
+%NOTE: Compass Rose,表盘。翻成“玫瑰”就笑话大了。
+
+% ===Common Steps in Using System Services===
+===使用系统服务的一般步骤===
+
+% To get any system service, issue the getSystemService() call. This returns a Manager object representing that system service, which you then use to access the service. Most system services work on some sort of publish/subscribe mechanism. In other words, you generally register your app for notifications from that service and provide your own callbacks methods that the service will invoke when an event happens. To do this in Java, create a Listener that implements an interface so that the service can call the callback methods.
+
+使用系统服务，就调用``getSystemService()``。它返回一个表示系统服务的Manager对象，然后凭它就可以访问系统服务了。系统服务大多都是发布/订阅的接口，使用起来大约就是准备一个回调函数，将你的程序注册相应的系统服务，然后等它的通知。在Java中的通行做法是，实现一个内含回调函数的侦听器(Listener)的接口，将它传给系统服务。
+
+% Keep in mind that requesting notifications from a system service can be costly in terms of the battery usage. For example, getting a GPS signal or processing sensor updates takes a lot of energy from the device. To preserve the battery, we typically want to be doing the work of processing updates only when the user is looking at the activity itself. In terms of the Activity lifecycle (see the section called “Activity Lifecycle”), this means we want to get the notifications only while in the Running state (see the section called “Running State”).
+
+有一点需要注意，那就是访问系统服务可能会比较费电。比如访问GPS数据或者传感器操作，都会额外消耗设备的电能。为了节约电能，我们可以仅在界面激活时进行传感器操作，使不必要的操作减到最少。用Activity生命周期(参见"Activity生命周期"一节)的话来说，我们就是仅在Running状态中响应这些操作。
+
+% To ensure that you request service updates only while in the Running state, register for updates in onResume() and unregister in onPause(). This is because all roads into the Running state go via onResume() and all roads out of it go via onPause(). In certain other situations, you may want to cast the net wider and have the activity be registered between onStart() and onStop(), or even between onCreate() and onDestroy(). In our case, we don’t want to register in onCreate() because it would waste a lot of battery and processing time by making us listen and process sensor updates even when our activity is not in the foreground. You can now see how understanding the Activity lifecycle plays an important role in optimizing usage of system services for the battery consumption.
+
+进入Running状态之前必经``onResume()``，离开Running状态之后必经``onPause()``。因此要保证只在Running状态中使用系统服务，就在``onResume()``中注册到系统服务，并在``onPause()``中注销即可。在某些情景中，我们可能希望将Activity注册在``onStart()``与``onStop()``之间，甚至``onCreate()``与``onDestroy()``之间，好让它在整个生命周期里都在注册中。但在这里，我们并不希望在``onCreate()``中就开始使用系统服务，因为``onCreate()``时，Activity还未显示，在此注册到系统服务只会空耗电能。由此可以看出，对Activity的声明周期有理解，对省电是肯定有帮助的。
+
+% ===Getting Updates From the Compass===
+===获取指南针的更新===
+
+% To code our Compass demo application, we get SensorManager, the class that represents the Sensor system service. We make our main activity implement SensorEventListener so that we can register it (i.e. this) to get updates for a specific sensor. We register and unregister the listener in onResume() and onPause() respectively. To implement the sensor listeners, our activity provides onAccuracyChanged() and onSensorChanged(). The former is a requirement, but we’ll leave it empty because the accuracy of the orientation sensor is not expected to change. The latter call is what’s really of interest to us.
+
+我们的指南针需要用到SensorManager，也就是表示Sensor系统服务的类。在Activity中实现一个SensorEventListener，将它注册到特定传感器中，就可以获取传感器的更新了。注册在``onResume()``，注销在``onPause()``。为了实现侦听器(Listener)，我们的Activity需要提供``onAccuracyChanged()``和``onSensorChanged()``两个方法。前者必须，后者可选。不过我们对传感器的精度(Accuracy)并不感兴趣——因为方向传感器(Orientation Sensor)的精度在中间并不会发生变化，我们真正感兴趣的是它的数据。因此在这里，将前者留空，并提供后者的实现。
+
+% When the orientation sensor changes, the Sensor service calls back our sensor listener via onSensorChanged() and reports the new sensor data. The data always comes back as an array of float values that represent degrees and therefore range from 0 to 359. In the case of orientation sensor, the elements represent the following dimensions, illustrated in Figure 13.1, “Axis”:
+
+在方向传感器状态变化时，Sensor服务会回调``onSensorChanged()``，通知侦听器(Listener)得到了新数据。这些数据都是0~359之间的浮点数组成的数组。方向角(azimuth)与磁偏角(pitch与roll)，构成了下边的坐标，如图13.1：
+
+%NOTE: 磁偏角：磁针指示的方向并不是正南正北，而是微偏西北和东南，这在科学上称为磁偏角。
+
+% Index [0], the azimuth:: The amount of rotation around the Z axis from the vertical position around the back and then around the bottom toward the front. 
+% Index [1], the pitch:: The amount of rotation around the X axis from the front to the left and then the around the back toward the right. 
+% Index [2], the roll: The amount of rotation around the Y axis from the vertical position to the left and then the around the bottom toward the right.
+
+- 下标[0]，方位角(azimuth)：在水平面上偏离Z轴的角度。
+- 下标[1]，横摇(pitch)：在水平方向偏离X轴的角度。
+- 下标[2]，纵摇(roll)：在垂直方向偏离Y轴的角度。
+
+
+% For the Compass demo, we are interested only in the first element, i.e., the azimuth. The data returned by each sensor has a different meaning, and you should look up the particulars in the documentation at http://d.android.com/reference/android/hardware/SensorManager.html.
+
+我们的指南针只关心第一个元素，也就是方位角。不同传感器的返回值的含义各有不同，对此需要查询相应的文档 http://d.android.com/reference/android/hardware/SensorManager.html。
+
+**Figure 13.1. Axis**
+
+[images/13-axis_globe_inverted.png]
+
+
+% ===Compass Main Activity===
+===Compass的主界面===
+
+% The main Compass activity sets the Rose as its only widget on the screen. It also registers with SensorManager to listen to sensor events, and updates the Rose orientation accordingly.
+
+指南针的主界面里只有一个控件，那就是表盘。它也将自己注册给SensorManager，监听传感器的事件，调整表盘的角度。
+
+**Example 13.1. Compass.java**
+
+{CODE}
+package com.marakana;
+
+import android.app.Activity;
+import android.content.res.Configuration;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
+
+// implement SensorListener
+public class Compass extends Activity implements SensorEventListener { //#{1}
+  SensorManager sensorManager; //#{2}
+  Sensor sensor;
+  Rose rose;
+
+  /** Called when the activity is first created. */
+  @Override
+  public void onCreate(Bundle savedInstanceState) { //#{3}
+    super.onCreate(savedInstanceState);
+
+    // Set full screen view #{4}
+    getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+    // Create new instance of custom Rose and set it on the screen
+    rose = new Rose(this); //#{5}
+    setContentView(rose); // #{6}
+
+    // Get sensor and sensor manager
+    sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE); // #{7}
+    sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION); // #{8}
+
+    Log.d("Compass", "onCreated");
+  }
+
+  // Register to listen to sensors
+  @Override
+  public void onResume() {
+    super.onResume();
+    sensorManager.registerListener(this, sensor,
+        SensorManager.SENSOR_DELAY_NORMAL); // #{9}
+  }
+
+  // Unregister the sensor listener
+  @Override
+  public void onPause() {
+    super.onPause();
+    sensorManager.unregisterListener(this); // #{10}
+  }
+
+  // Ignore accuracy changes
+  public void onAccuracyChanged(Sensor sensor, int accuracy) { // #{11}
+  }
+
+  // Listen to sensor and provide output
+  public void onSensorChanged(SensorEvent event) { // #{12}
+    int orientation = (int) event.values[0]; // #{13}
+    Log.d("Compass", "Got sensor event: " + event.values[0]);
+    rose.setDirection(orientation); // #{14}
+  }
+
+  @Override
+  public void onConfigurationChanged(Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+  }
+
+}
+{/CODE}
+
+% + Since Compass listens to sensor events, it needs to implement the SensorEventListener interface.
+% + We define local variable for the sensor, the sensor manager, and the Rose.
+% + Because getting access to the sensor is a one-time activity, we do it when our app is created.
+% + The window manager flags set the activity into full-screen mode.
+% + We create a new instance of the Rose widget, our custom compass rose.
+% + In this case, the activity content is the single Rose widget. This is unlike the usual reference to an XML layout resource.
+% + We get the sensor manager from the system service.
+% + From the sensor manager, we can obtain the actual sensor object that we are interested in.
+% + We register to listen to sensor updates in activity’s onResume() method, as described earlier.
+% + We unregister from sensor updates in onPause(), the counterpart to onResume().
+% + onAccuracyChanged() is implemented because it is required by the SensorEventListener interface. but is left empty as explained earier.
+% + onSensorChanged() is called whenever the sensor changes, indicating a rotation of the device in some direction. The particular information about the change is stored in SensorEvent.
+% + We are interested in the first element of the array of new values reported.
+% + Once we have the new orientation, we update our Rose widget to rotate accordingly.
+
++ Compass需要监听来自传感器的事件，因此需要提供SensorEventListener接口的实现。
++ 定义几个私有变量，分别表示传感器(sensor)对象，SensorManager与表盘。
++ 初始化sensor是个一次性的操作，因此我们把它放在``onCreate()``中执行。
++ 设置此Activity的状态为全屏。
++ 创建一个Rose控件的实例，这是我们自定义的控件。
++ 这里Activity里面唯一的控件就是Rose，这与通常引用一个XML资源表示的Layout有所不同。
++ 获得SensorManager对象。
++ 通过SensorManager对象，选择我们关心的传感器。
++ 同前面所说，在``onResume()``中将自己注册到系统服务，侦听传感器的输出。
++ 对应``onResume()``，在onPause()``中注销系统服务。
++ 依然提供``onAccuracyChanged()``的实现，因为这对SensorEventListener接口来说是必须的。但是留空，前面已有解释。
++ 传感器在状态改变时会回调``onSensorChanged()``，表示设备的方向发生变化。具体的角度信息储存在``SensorEvent``对象中。
++ 我们只关心返回值中的第一个元素。
++ 得到新的方向信息，更新表盘的角度。
+
+
+{NOTE}
+% The way a device reports sensor data can be very erratic, coming at uneven intervals. There are ways to suggest to the system how frequently we’d like the sensor updates, but these are just suggestions and not a guarantee. Also, sensors are not supported by the emulator, so to really test your application, you’ll need a physical device with support for orientation sensor. Most Android phones have that support.
+
+{/NOTE}
+
+===Custom Rose Widget===
+
+Rose is our custom UI widget showing the rose of a compass that can be rotated like a real compass. Every UI widget in Android needs to be a subclass of View. But since this is an image, we’ll start from a higher starting point, in this case the ImageView class, which is a View. By subclassing ImageView, our Rose inherits some useful methods to load an image and draw it on the screen.
+
+With any custom UI widget, one of the most important methods is onDraw(), which draws the widget onto a Canvas that is provided to the method. In case of our Rose, we rotate this canvas around its middle point for the same number of degrees as reported by the orientation sensor. Next, we draw the image onto this rotated sensor as it would have normally be drawn by the super class. The result is a rotated compass rose representing the direction we are pointing to.
+
+**Example 13.2. Rose.java**
+
+{CODE}
+package com.marakana;
+
+import android.content.Context;
+import android.graphics.Canvas;
+import android.widget.ImageView;
+
+public class Rose extends ImageView { //#{1}
+  int direction = 0;
+
+  public Rose(Context context) {
+    super(context);
+
+    this.setImageResource(R.drawable.compassrose); // #{2}
+  }
+
+  // Called when component is to be drawn
+  @Override
+  public void onDraw(Canvas canvas) { // #{3}
+    int height = this.getHeight();  // #{4}
+    int width = this.getWidth();
+
+    canvas.rotate(direction, width / 2, height / 2); // #{5}
+    super.onDraw(canvas); // #{6}
+  }
+
+  // Called by Compass to update the orientation
+  public void setDirection(int direction) { // #{7}
+    this.direction = direction;
+    this.invalidate(); // request to be redrawn #{8}
+  }
+
+}
+{/CODE}
+
++ Our widget has to be a subclass of View, but since our widget is an image, we get more functionality by starting from ImageView.
++ ImageView already knows how to set an image as its content. We just specify to super which image resource to use. Note that compassrose.jpg is in our /res/drawable folder.
++ onDraw() is the method that the layout manager calls to have each widget draw itself. The layout manager passes the Canvas to this method. This method is where you typically do any custom drawing to the canvas.
++ Once we have the canvas, we can figure out its size.
++ We simply rotate the entire canvas for some amount (in degrees) around its mid point.
++ We tell super to draw the image on this rotated canvas. At this point we have our rose drawn at the proper angle.
++ setDirection() is called by the Compass activity to update the direction of the rose based on the values that sensor manager reported.
++ Calling invalidate() on a view marks it for redrawing, which happens later via a call to onDraw().
+
+At this point, your compass application is working. The compass rose should be pointing north, more or less, when the device is held upright as usual. Keep in mind that you should run this application on a physical device as the emulator doesn’t support.
+
+
