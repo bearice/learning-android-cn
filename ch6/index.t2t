@@ -213,7 +213,7 @@
 {ORGI}By default, Eclipse created a file called main.xml under res/layout folder. For consistency purposes, we should rename this file to status.xml to match our StatusActivity. To rename a file in Eclipse, right-click on it, choose Refactor→Rename… and enter new name. Eclipse is somewhat smart about renaming files and does more than just change the name. It also offers to lookup all the places where this file is referred from and update those references as well. While this feature works well when renaming a Java file, it is not fully automatic with XML files. So, renaming this file requires us to change the line in Java where we refer to it via the R class. To do that, in your StatusActivity’s onCreate(), change setContentView(R.layout.main); to setContentView(R.layout.status);.
 
 
-{TRAN}Eclipse默认会在``res/layout``下创建一个``main.xml``文件。出于一致性的考虑，我们把它的名字改为``status.xml``以对应StatusActivity。在Eclipse中重命名一个文件，就右键点击它，选择//Refactor→Rename…//，输入新名字即可。Eclipse在重命名时会智能地做些同步工作，使所有引用到这个文件的地方保持一致。这在更新Java文件时可以做到完全自动，但对XML文件就不那么尽善尽美了。修改一个XML文件名，我们还需要手工修改Java代码中引用R class的相关部分。比如在这里，就需要将``onCreate()``里的``setContentView(R.layout.main)``修改为``setContentView(R.layout.status)``。
+{TRAN}Eclipse默认会在``res/layout``下创建一个``main.xml``文件。出于一致性的考虑，我们将把它的名字改为``status.xml``以对应StatusActivity。在Eclipse中重命名一个文件，就右键点击它，选择//Refactor→Rename…//，输入新名字即可。Eclipse在重命名时会智能地做些同步工作，使所有引用到这个文件的地方保持一致。这在更新Java文件时可以做到完全自动，但对XML文件就不那么尽善尽美了。修改一个XML文件名，我们还需要手工修改Java代码中引用R class的相关部分。比如在这里，就需要将``onCreate()``里的``setContentView(R.layout.main)``修改为``setContentView(R.layout.status)``。
 
 %TALK: "So, renaming this file requires us to change the line in Java where we refer to it via the R class." 很绕的一句。
 
@@ -350,36 +350,49 @@
 == StatusActivity Java Class ==
 
 {ORGI}Now that we have our UI designed in XML, we are ready to switch over to Java. Remember from earlier in this chapter that Android provides two ways to building user interface. One is by declaring it in XML, which is what we just did. And we got as far as we could (for now). The other one is to programmatically build it in Java. We also said earlier that the best practice is to get as far as possible in XML, and then switch over to Java.
-{TRAN}现在我们将UI设计变成了XML，然后我们要准备切换到Java。本章前面说道Android提供了两种构建用户界面的方法。一种是用XML申明，就像我们刚才所做的。我们在能力所及做到了这些。另外一种方法是用Java编写程序来构建。我们也像之前说的像XML那样尽可能的去做，切换到Java上来。
+
+{TRAN}现在已经有了设计好的XML界面，接下来转到Java这边。本章的开头曾提到构建用户界面有两种方式：一种使用XML的声明风格界面，也正是我们前面所做的；另一种是使用Java的编程风格。而最佳实践是尽可能多地使用XML来描述界面，到最后使用Java专门处理外部交互。
 
 {ORGI}Our Java class for this is StatusActivity.java and the Eclipse New Project Dialog has already created the stub for this class for us. The class is part of com.marakana.yamba1 Java package, and as such is part of that directory.
-{TRAN}我们的Java类文件是StatusActivity.java，并且Eclipse新建工程对话框已经为我们创建了其实现框架。这个类包含在com.marakana.yamba1 Java包中的，因此文件也在对应目录内。
 
-T'RAN=== Creating your application-specific object and initialization code ===
+{TRAN}相应的Java文件是StatusActivity.java，Eclipse New Project对话框已在里面生成了类的大体框架。这个类是``com.marakana.yamba1`` package的一部分，因而肯定是在它的目录之下。
+
+{ORGI}=== Creating your application-specific object and initialization code ===
+===创建自己的对象===
+
 {ORGI}As with all Main Building Blocks in Android, such as Activities, Services, BroadcastReceivers and ContentProviders, you usually start by subclassing a base class provided by the Android framework, and overriding certain inherited methods. In this case, we subclass Android’s Activity class and override its onCreate() method. As you recall, activities have a certain lifecycle the section called “Activity Lifecycle”, or state machine through which they go. We as developers do not control what state the activity is in, but we do get to say what happens at a transition to a particular state. In this case, the transition we want to override is onCreate() method that is invoked by the system’s ActivityManager when the activity is first created (i.e. it goes from Starting the section called “Starting State” to Running the section called “Running State” state). This sort of programming when we subclass a system class and fill out the blanks is also known as Template pattern.
-{TRAN}对于所有的Android主要构件，包括Activity，Service，BroadcastReceiver和ContentProvider，你通常都需要从Android框架的基类里集成子类，并且需要重载某些继承方法。在本例中，我们从Android的Activity类继承子类，并重载了onCreate()方法。当你调用它，Activity便拥有了一个确定的生命周期，也可认为是它们进入了状态机。我们作为开发者不能控制当前Activity处于何种状态，但是我们可以确定当转移到一个特定状态时会发生什么。在这个例子里，我们要重载的方法是onCreate()，它由系统ActivityManager在Activity第一次创建时调用（例如当要启动时叫做Starting State，而当运行时称为Running State状态）。这种我们需要继承一个系统类并填充空白方法的编程模式也就是熟知的模板模式。
+
+{TRAN}Android程序中所有的构件(Activity、Service、BroadcastReceiver、ContentProvider等)都是继承一个Android框架中原有的类，然后重载特定的方法。在这里，我们继承的是Activity类，重载了``onCreate()``方法。前面曾提到说Activity有个精心设计的生命周期，作为指导Activity行动的一台自动机。身为开发者，我们通常不会主动地干涉Activity的状态，而是跟踪Activity状态的变更，被动地对事件做处理。这里我们重载的``onCreate()``会在Activity第一次创建时，由系统的ActivityManager负责调用。像这样继承一个基类然后重载特定的方法的编程范式，被称作Template模式。
+
+%TALK:  (i.e. it goes from Starting the section called “Starting State” to Running the section called “Running State” state). 很诡异的一句。
 
 {ORGI}Our onCreate(), in addition to doing some standard housekeeping, will carry out two major tasks that the application needs done just once, and done at the beginning. We’ll set up our button so it responds to clicks, and connect to the cloud.
-{TRAN}我们的onCreate()方法，还需要额外的做些杂事，它将做两件应用程序只需要在开始时完成的主要任务。我们要为按钮设置点击响应，并将之连接到远程端。
+
+{TRAN}``onCreate()``方法还会做些杂事，处理些一次性的初始化工作。比如为按钮绑定点击事件、将程序连接到服务端等。
 
 {ORGI}Notice that onCreate() take a Bundle as a parameter. This is a small amount of data that can be passed into the activity via the Intent that started it. The data provided in a Bundle is typically limited to basic data types and more complex ones need to be specially encoded. For the most part, we’re not going to be using Bundle in Yamba example as there’s no real need for us.
-{TRAN}注意到onCreate()会接受一个Bundle类型的参数。这是个可以通过Intent在启动Activity时在其间传递的少量数据。Bundle中提供的数据通常限制为基本数据类型，较复杂的类型则需要特别的编码。对于大部分情况，如果我们在Yamba例子中不是真的需要，则不会使用Bundle
+
+{TRAN}留意``onCreate()``有个Bundle类型的参数。它表示启动这一Activity的Intent所附带的少量数据。Bundle只能存储基本类型，复杂的数据需要自己编码。不过话说回来，在Yamba中我们并无使用Bundle的特殊需求，也就没有使用它。
 
 {ORGI}Keep in mind that whenever you override a method, you first want to make a call to the original method provided by the parent. That’s why we have super.onCreate() call here.
-{TRAN}记住不论何时，你只要想重载方法，那么第一件要做的事情就是调用原先由父类提供的方法。这就是为什么我们需要在这里调用syper.onCreate()的原因。
+
+{TRAN}永远记住：不论何时，只要重载一个方法，就先调用父类中原先的方法。而这里的做法就是``super.onCreate()``。
 
 {ORGI}So, once you subclass the framework’s class, override the appropriate method, and call super’s method in it, you are still back at status quo - your code does the same thing the original class did. But now we have a placeholder where we can add our own code.
-{TRAN}所以，一旦你的子类继承了框架中的类，重载了特定方法，在方法中调用了父类方法，你还是需要回到状态，你的代码会合原本的类做的一致。但是现在我们需要在我们可以加上自己代码的地方先占个位子。
 
-{ORGI}The very first thing we typically do in activity’s onCreate() is to load the UI from the XML file and inflate it into the Java memory space. In other words, we write some Java code that opens up our XML layout file, parses it, and for each element in XML it creates a corresponding Java object in our memory space. For each attribute of a particular XML element, this code will set that attribute on our Java object. This process is called inflating from XML and the line of code that does all this is setContentView(R.layout.status);.
-Remember that R class is the automatically generated set of pointers that helps connect the world of Java to our world of XML and other resources in /res folder. Similarly, R.layout.status points to our /res/layout/status.xml file.
-{TRAN}我们通常在ACtivity中的onCreate()里做的最基本的事情就是从XML文件里加载UI并展开到Java内存空间内。换句话说，我们写些Java代码打开XML布局文件，解析它，并对每个XML中的元素在内存空间内创建一个对应的Java对象。对于特定XML元素的每一个属性，代码都将在其Java对象中设置对应属性。这个过程叫做展开XML，并且这行包办了所有这些事务的代码是setContentView(R.layout.status);.
+{TRAN}这一来保留了父类的逻辑。我们可以将自己的逻辑放在后面，但并不希望从零做起。
+
+{ORGI}The very first thing we typically do in activity’s onCreate() is to load the UI from the XML file and inflate it into the Java memory space. In other words, we write some Java code that opens up our XML layout file, parses it, and for each element in XML it creates a corresponding Java object in our memory space. For each attribute of a particular XML element, this code will set that attribute on our Java object. This process is called inflating from XML and the line of code that does all this is setContentView(R.layout.status);.  Remember that R class is the automatically generated set of pointers that helps connect the world of Java to our world of XML and other resources in /res folder. Similarly, R.layout.status points to our /res/layout/status.xml file.
+
+{TRAN}``onCreate()``所做最基本的工作之一就是，读取XML文件并将UI投射到Java中。也就是编写Java代码读取并解析XML文件，为XML中表示的每个元素创建一个对应的Java对象，这被称作UI的“投射”(inflating)。而这一步的所有代码，全在``setContentView(R.layout.status);`` 这一句。R文件是Eclipse自动生成的资源文件，作为Java与其它资源文件之间的牵线人，储存着一些辅助性质的指针。比如，R.layout.status就是指向``/res/layout/status.xml``文件的指针。
 
 {ORGI}This method setContentView() does a lot of work, in other words. It reads the XML file, parses it, creates all the appropriate Java objects to correspond to XML elements, sets object properties to correspond to XML attributes, sets up parent/child relationships between objects and overall inflates the entire view. At the end of this one line, our screen is ready for drawing.
-{TRAN}换句话说，方法setContentView()做了太多的工作。它读取XML文件，解析它，创建所有的对应于XML元素的特定Java对象，设置所有对应XML属性的对象属性，在对象间设置父子关系并全局地展开整个界面。在这行代码执行结束后，我们屏幕就绘制好了。
+
+{TRAN}显而易见，``setContentView()``做了很多工作。读取文件、解析XML、创建对应XML元素的Java对象、设置对象的属性、处理对象的从属关系、投射整个View。等它执行完毕，界面就可以重绘了。
 
 {ORGI}Your objects are not the only ones that define methods and respond to external stimuli. Android’s user interface objects do that too. Thus, you can tell your Button to execute certain code when its clicked. To do that, you need to define a method named onClick() and put the code there that you want executed. You also have to run the setOnClickListener method on the Button. You pass this as an argument to setOnClickListener because your object is where you define onClick().
-{TRAN}不是只有你编写的对象能够定义方法和响应外界事件。Android的用户界面对象也能做这些。因此你可以告诉你的Button，当点击时执行确定的代码。为了实现这个，你需要定义一个叫做onClick()的方法并将你想要执行的代码放在这个方法中。你也需要让这个Button运行setOnClickListener方法。对象是可以让你定义onClick()的地方，因此你需要通过setOnClickListener传递一个参数。
+
+{TRAN}添加处理外部事件的响应函数，不一定需要额外派生一个类。Android的UI对象对此已做考虑。比如，想让某按钮处理点击事件，你可以定义一个方法``onClick()``，然后调用setOnClickListener，将this传给它，因为``onClick()``的定义正在这个对象里面。
 
 **Example 6.3. StatusActivity.java, version 1**
 

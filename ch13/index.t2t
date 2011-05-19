@@ -10,7 +10,7 @@
 
 % In this chapter, we’ll see how we can use some of the system services to further expand the Yamba application. First we’ll take a look at the Sensor service in a small example in order to demonstrate some of the concepts that are common to most of the system services. Then we’ll add support for location information to our status updates via the Location service.
 
-本章介绍几个常见的系统服务，以及将其应用到Yamba中的方法。我们先在一个小例子里引入Sensor服务，观察系统服务的一般特性，然后通过Location服务为Yamba添加地理坐标的功能。
+本章介绍几个常见的系统服务，并思考如何将它们应用到Yamba。我们先在一个小例子里引入Sensor服务，借以观察系统服务的一般特性，然后通过Location服务为Yamba添加地理坐标的功能。
 
 % Additionally, we’re going to refactor the Yamba application to take advantage of Intent Service support. This will demonstrate how to use Alarm service and will make our Updater slightly more efficient and simpler.
 
@@ -20,11 +20,11 @@
 
 % To start with system services, we are going to look at a simple, self-contained example of a compass application. This application uses the Sensor service to get updates from the orientation sensor and use its information to rotate a Rose, our custom UI component. The Sensor service is very typical of system services and a relatively easy one to understand.
 
-我们先从一个简单的样例——指南针(Compass)——开始，然后在实际代码中引入系统服务的相关知识。它可以通过Sensor服务获得传感器的输出，转屏幕上的表盘显示方位。Sensor服务是个有代表性的系统服务，也不难懂。
+理解系统服务，我们先从一个简单的样例——指南针(Compass)——开始。它可以通过Sensor服务获得传感器的输出，旋转屏幕上的表盘(Rose)显示方位。Sensor服务是个有代表性的系统服务，也不难懂。
 
 % To build this example, we’ll create an activity that will get the Sensor service and register for updates from a particular sensor. Next, we’ll build the Rose that will rotate on the screen based on the sensor readings.
 
-在例子中，我们先创建一个Activity，由它来访问Sensor服务，订阅来自某传感器的输出。然后创建表盘控件(Rose)，使之可以依据传感器的输出旋转。
+在例子中，我们先创建一个Activity，由它来访问Sensor服务，订阅来自传感器的输出。然后自定义一个表盘控件(Rose)，使之可以依据从传感器得到的数据旋转一定的角度。
 
 %NOTE: Compass Rose,表盘。翻成“玫瑰”就笑话大了。
 
@@ -33,22 +33,22 @@
 
 % To get any system service, issue the getSystemService() call. This returns a Manager object representing that system service, which you then use to access the service. Most system services work on some sort of publish/subscribe mechanism. In other words, you generally register your app for notifications from that service and provide your own callbacks methods that the service will invoke when an event happens. To do this in Java, create a Listener that implements an interface so that the service can call the callback methods.
 
-使用系统服务，就调用``getSystemService()``。它返回一个表示系统服务的Manager对象，然后凭它就可以访问系统服务了。系统服务大多都是发布/订阅的接口，使用起来大约就是准备一个回调函数，将你的程序注册相应的系统服务，然后等它的通知。在Java中的通行做法是，实现一个内含回调函数的侦听器(Listener)的接口，将它传给系统服务。
+使用系统服务，就调用``getSystemService()``。它返回一个表示系统服务的Manager对象，随后凭它就可以访问系统服务了。系统服务大多都是发布/订阅的接口，使用起来大约就是准备一个回调函数，将你的程序注册到相应的系统服务，然后等它的通知。在Java中的通行做法是，实现一个内含回调函数的侦听器(Listener)，将它传递给系统服务。
 
 % Keep in mind that requesting notifications from a system service can be costly in terms of the battery usage. For example, getting a GPS signal or processing sensor updates takes a lot of energy from the device. To preserve the battery, we typically want to be doing the work of processing updates only when the user is looking at the activity itself. In terms of the Activity lifecycle (see the section called “Activity Lifecycle”), this means we want to get the notifications only while in the Running state (see the section called “Running State”).
 
-有一点需要注意，那就是访问系统服务可能会比较费电。比如访问GPS数据或者传感器操作，都会额外消耗设备的电能。为了节约电能，我们可以仅在界面激活时进行传感器操作，使不必要的操作减到最少。用Activity生命周期(参见"Activity生命周期"一节)的话来说，我们就是仅在Running状态中响应这些操作。
+有一点需要注意，那就是访问系统服务可能会比较费电。比如访问GPS数据或者传感器操作，都会额外消耗设备的电能。为了节约电能，我们可以仅在界面激活时进行传感器操作，使不必要的操作减到最少。用Activity生命周期(参见"Activity生命周期"一节)的说法就是，我们仅在Running状态中响应这些操作。
 
 % To ensure that you request service updates only while in the Running state, register for updates in onResume() and unregister in onPause(). This is because all roads into the Running state go via onResume() and all roads out of it go via onPause(). In certain other situations, you may want to cast the net wider and have the activity be registered between onStart() and onStop(), or even between onCreate() and onDestroy(). In our case, we don’t want to register in onCreate() because it would waste a lot of battery and processing time by making us listen and process sensor updates even when our activity is not in the foreground. You can now see how understanding the Activity lifecycle plays an important role in optimizing usage of system services for the battery consumption.
 
-进入Running状态之前必经``onResume()``，离开Running状态之后必经``onPause()``。因此要保证只在Running状态中使用系统服务，就在``onResume()``中注册到系统服务，并在``onPause()``中注销即可。在某些情景中，我们可能希望将Activity注册在``onStart()``与``onStop()``之间，甚至``onCreate()``与``onDestroy()``之间，好让它在整个生命周期里都在注册中。但在这里，我们并不希望在``onCreate()``中就开始使用系统服务，因为``onCreate()``时，Activity还未显示，在此注册到系统服务只会空耗电能。由此可以看出，对Activity的声明周期有理解，对省电是肯定有帮助的。
+进入Running状态之前必经``onResume()``，离开Running状态之后必经``onPause()``。因此要保证只在Running状态中使用系统服务，就在``onResume()``中注册到系统服务，并在``onPause()``中注销即可。在某些情景中，我们可能希望将Activity注册在``onStart()``与``onStop()``之间，甚至``onCreate()``与``onDestroy()``之间，好让它在整个生命周期里都在注册中。但在这里，我们并不希望在``onCreate()``中就开始使用系统服务，因为``onCreate()``时，Activity还未显示，在此注册到系统服务只会空耗电能。由此可以看出，对Activity的生命周期有所理解，对省电是肯定有帮助的。
 
 % ===Getting Updates From the Compass===
 ===获取指南针的更新===
 
 % To code our Compass demo application, we get SensorManager, the class that represents the Sensor system service. We make our main activity implement SensorEventListener so that we can register it (i.e. this) to get updates for a specific sensor. We register and unregister the listener in onResume() and onPause() respectively. To implement the sensor listeners, our activity provides onAccuracyChanged() and onSensorChanged(). The former is a requirement, but we’ll leave it empty because the accuracy of the orientation sensor is not expected to change. The latter call is what’s really of interest to us.
 
-我们的指南针需要用到SensorManager，也就是表示Sensor系统服务的类。在Activity中实现一个SensorEventListener，将它注册到特定传感器中，就可以获取传感器的更新了。注册在``onResume()``，注销在``onPause()``。为了实现侦听器(Listener)，我们的Activity需要提供``onAccuracyChanged()``和``onSensorChanged()``两个方法。前者必须，后者可选。不过我们对传感器的精度(Accuracy)并不感兴趣——因为方向传感器(Orientation Sensor)的精度在中间并不会发生变化，我们真正感兴趣的是它的数据。因此在这里，将前者留空，并提供后者的实现。
+表示Sensor系统服务的类是SensorManager，接下来就是跟它打交道了。在Activity中实现一个SensorEventListener，将它注册到SensorManager中即可订阅特定传感器的更新。为了省电，我们将传感器操作安排在``onResume()``与``onPause()``之间。然后实现侦听器(Listener)，在Activity中提供``onAccuracyChanged()``和``onSensorChanged()``两个方法。前者必须，后者可选。不过我们对传感器的精度(Accuracy)并无兴趣——因为方向传感器(Orientation Sensor)的精度在中间并不会发生变化，我们真正感兴趣的是它的数据。所以在这里我们将前者留空，而提供后者的实现。
 
 % When the orientation sensor changes, the Sensor service calls back our sensor listener via onSensorChanged() and reports the new sensor data. The data always comes back as an array of float values that represent degrees and therefore range from 0 to 359. In the case of orientation sensor, the elements represent the following dimensions, illustrated in Figure 13.1, “Axis”:
 
@@ -192,13 +192,19 @@ public class Compass extends Activity implements SensorEventListener { //#{1}
 {NOTE}
 % The way a device reports sensor data can be very erratic, coming at uneven intervals. There are ways to suggest to the system how frequently we’d like the sensor updates, but these are just suggestions and not a guarantee. Also, sensors are not supported by the emulator, so to really test your application, you’ll need a physical device with support for orientation sensor. Most Android phones have that support.
 
+传感器输出的数据流可能是不稳定的，接到数据的时间间隔不可预知。我们可以为传感器提供一个建议的时间间隔，但只是建议，不是强制。而且仿真器没有提供传感器的支持，因此要测试这个程序就需要一台拥有方向传感器的真机。好在多数Android手机都有这一功能。
 {/NOTE}
 
-===Custom Rose Widget===
+% ===Custom Rose Widget===
+===自定义的表盘控件===
 
-Rose is our custom UI widget showing the rose of a compass that can be rotated like a real compass. Every UI widget in Android needs to be a subclass of View. But since this is an image, we’ll start from a higher starting point, in this case the ImageView class, which is a View. By subclassing ImageView, our Rose inherits some useful methods to load an image and draw it on the screen.
+% Rose is our custom UI widget showing the rose of a compass that can be rotated like a real compass. Every UI widget in Android needs to be a subclass of View. But since this is an image, we’ll start from a higher starting point, in this case the ImageView class, which is a View. By subclassing ImageView, our Rose inherits some useful methods to load an image and draw it on the screen.
 
-With any custom UI widget, one of the most important methods is onDraw(), which draws the widget onto a Canvas that is provided to the method. In case of our Rose, we rotate this canvas around its middle point for the same number of degrees as reported by the orientation sensor. Next, we draw the image onto this rotated sensor as it would have normally be drawn by the super class. The result is a rotated compass rose representing the direction we are pointing to.
+Rose是我们自定义的UI控件，它可以旋转，表示指南针的表盘。Android中的任何UI控件都是View的子类。Rose的主要部分是一个图片，这一来我们可以让它继承自ImageView类，在较高的层面上实现它，从而可以使用原有的方法实现装载并显示图片。
+
+% With any custom UI widget, one of the most important methods is onDraw(), which draws the widget onto a Canvas that is provided to the method. In case of our Rose, we rotate this canvas around its middle point for the same number of degrees as reported by the orientation sensor. Next, we draw the image onto this rotated sensor as it would have normally be drawn by the super class. The result is a rotated compass rose representing the direction we are pointing to.
+
+自定义一个UI控件，``onDraw()``方法最为重要。它负责控件的绘制与显示。我们需要覆盖父类的逻辑，使图片可以按圆心旋转一定的度数，以表示指南针的方位。
 
 **Example 13.2. Rose.java**
 
@@ -237,15 +243,225 @@ public class Rose extends ImageView { //#{1}
 }
 {/CODE}
 
-+ Our widget has to be a subclass of View, but since our widget is an image, we get more functionality by starting from ImageView.
-+ ImageView already knows how to set an image as its content. We just specify to super which image resource to use. Note that compassrose.jpg is in our /res/drawable folder.
-+ onDraw() is the method that the layout manager calls to have each widget draw itself. The layout manager passes the Canvas to this method. This method is where you typically do any custom drawing to the canvas.
-+ Once we have the canvas, we can figure out its size.
-+ We simply rotate the entire canvas for some amount (in degrees) around its mid point.
-+ We tell super to draw the image on this rotated canvas. At this point we have our rose drawn at the proper angle.
-+ setDirection() is called by the Compass activity to update the direction of the rose based on the values that sensor manager reported.
-+ Calling invalidate() on a view marks it for redrawing, which happens later via a call to onDraw().
+% + Our widget has to be a subclass of View, but since our widget is an image, we get more functionality by starting from ImageView.
+% + ImageView already knows how to set an image as its content. We just specify to super which image resource to use. Note that compassrose.jpg is in our /res/drawable folder.
+% + onDraw() is the method that the layout manager calls to have each widget draw itself. The layout manager passes the Canvas to this method. This method is where you typically do any custom drawing to the canvas.
+% + Once we have the canvas, we can figure out its size.
+% + We simply rotate the entire canvas for some amount (in degrees) around its mid point.
+% + We tell super to draw the image on this rotated canvas. At this point we have our rose drawn at the proper angle.
+% + setDirection() is called by the Compass activity to update the direction of the rose based on the values that sensor manager reported.
+% + Calling invalidate() on a view marks it for redrawing, which happens later via a call to onDraw().
 
-At this point, your compass application is working. The compass rose should be pointing north, more or less, when the device is held upright as usual. Keep in mind that you should run this application on a physical device as the emulator doesn’t support.
++ 我们的控件必须是View的子类。不过它大体就是一张图片，可以让它继承自ImageView，得以使用现有的功能。
++ ImageView本身已有设置图片内容的方法，我们需要做的就是为它指明相应的图片。留意，compassrose.jpg文件在/res/drawable之下。
++ ``onDraw()``由Layout Manager负责调用。它会传递过来一个Canvas对象，你可以在这里执行自定义的绘制操作。
++ 已获得Canvas对象，可以计算自身的宽高。
++ 简单地以中点为圆心，旋转整个Canvas(按度数)。
++ 通知super将图片绘制到这个旋转了的Canvas上。到这里表盘就显示出来了。
++ ``setDirection()``由Compass负责调用，它会根据传感器中获得的数据调整Rose的方向。
++ 对View调用``invalidate()``，就可以要求它重绘。也就是在稍后调用``onDraw()``。
+
+
+% At this point, your compass application is working. The compass rose should be pointing north, more or less, when the device is held upright as usual. Keep in mind that you should run this application on a physical device as the emulator doesn’t support.
+
+到这里，指南针程序已经可用了。在设备横放时，表盘应大致指向北方。仿真器没有传感器的支持，因此这个程序只能在真机上运行。
+
+
+% ==Location Service==
+==Location服务==
+
+% Now that you have seen how the sensor manager works, we can look at the Location API, another system service provided by Android. Just like sensors, the Location API is supported via the Location manager. And just like sensors, we get the Location manager via a getSystemService() call.
+
+前面已经见到SensorManager的工作方式，接下来看看Location服务的API。同Sensor服务类似，使用Location服务是通过LocationManager，而且也是通过getSystemService()获取它的引用。
+
+% Once we have access to the Location service, we need to register a Location listener with it so the service can call back when there’s a change in location. Again, we’ll do this by implementing a Location listener interface.
+
+使用Location服务，我们需要传递给它一个侦听器，这一来在位置改变的时候可以回调其中的函数。同前面相似，我们在这里实现一个LocationListener接口。
+
+% If you recall from the section called “Common Steps in Using System Services”, processing GPS and other location updates can be very taxing for the battery. To minimize the battery consumption, we want to listen to location updates only while in the Running state. To do that, we’ll register for the updates in onResume() and unregister in onPause(), taking the advantage of the Activity lifecycle.
+
+//"使用系统服务的一般步骤"//一节曾提到，使用GPS服务或者其它位置操作都是非常费电的。为了尽量地节约电能，我们只在Running状态中使用Location服务。因此利用Activity生命周期的设定，将它限制在``onResume()``与``onPause()``之间。
+
+===Where Am I? Demo===
+
+% This example illustrates how to use location-based services in Android. First, we use LocationManager to figure out our current location based on the resources in the environment available to the device, such as GPS or a wireless network. Secondly, we use Geocoder to convert this location to an address.
+
+使用这个例子展示Android中位置服务的用法。首先通过LocationManager利用可用的信息源(GPS或者无线网)获取当前的位置信息，然后使用Geocoder将它转换为人类可读的地址。
+
+====The Layout====
+
+The layout for this example is trivial. Our resource file provides a TextView widget for the title and another TextView widget for the output. Since the output could be longer than the screen size, we wrap the output in a ScrollView widget.
+
+**Example 13.3. res/layout/main.xml**
+
+{CODE}
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_height="fill_parent" android:layout_width="fill_parent"
+  android:background="#fff" android:orientation="vertical">
+  <!-- #{1} -->
+  <TextView android:layout_width="wrap_content"
+    android:layout_height="wrap_content" android:layout_gravity="center"
+    android:textColor="#333" android:textSize="30dp" android:text="@string/title"></TextView>
+  <!-- #{2} -->
+  <ScrollView android:layout_height="fill_parent"
+    android:layout_width="fill_parent">
+    <!-- #{3} -->
+    <TextView android:textColor="#333" android:layout_gravity="center"
+      android:layout_height="fill_parent" android:layout_width="fill_parent"
+      android:gravity="center" android:textSize="25dp" android:text="Waiting..."
+      android:id="@+id/textOut"></TextView>
+  </ScrollView>
+</LinearLayout>
+{/CODE}
+
++ The title for our application.
++ A ScrollView to enable scrolling if the output grows beyond the size of the screen.
++ A TextView to represent the output. It will be programmatically set from the WhereAmI activity.
+
+
+====The Activity for our Location Listener====
+
+This is our main activity, which sets up the screen, connects to LocationManager, and uses the Geocoder to figure out our address. The LocationManager uses location providers, such as GPS or Network, to figure out our current location. The location is expressed as latitude and longitude values. The Geocoder searches an online database for known addresses in the vicinity of the location provided. It may come up with multiple results, some more specific than others.
+
+**Example 13.4. WhereAmI.java**
+
+{CODE}
+package com.marakana;
+
+import java.io.IOException;
+import java.util.List;
+
+import android.app.Activity;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
+
+public class WhereAmI extends Activity implements LocationListener { // 
+  LocationManager locationManager; // 
+  Geocoder geocoder; // 
+  TextView textOut; // 
+
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.main);
+
+    textOut = (TextView) findViewById(R.id.textOut);
+
+    locationManager = (LocationManager) getSystemService(LOCATION_SERVICE); // 
+    geocoder = new Geocoder(this); // 
+
+    // Initialize with the last known location
+    Location lastLocation = locationManager
+        .getLastKnownLocation(LocationManager.GPS_PROVIDER); // 
+    if (lastLocation != null)
+      onLocationChanged(lastLocation);
+  }
+
+  @Override
+  protected void onResume() { // 
+    super.onRestart();
+    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000,
+        10, this);
+  }
+
+  @Override
+  protected void onPause() { // 
+    super.onPause();
+    locationManager.removeUpdates(this);
+  }
+
+  // Called when location has changed
+  public void onLocationChanged(Location location) { // 
+    String text = String.format(
+        "Lat:\t %f\nLong:\t %f\nAlt:\t %f\nBearing:\t %f", location
+            .getLatitude(), location.getLongitude(), location.getAltitude(),
+        location.getBearing()); // 
+    textOut.setText(text);
+
+    // Perform geocoding for this location
+    try {
+      List<Address> addresses = geocoder.getFromLocation(
+          location.getLatitude(), location.getLongitude(), 10); // 
+      for (Address address : addresses) {
+        textOut.append("\n" + address.getAddressLine(0)); // 
+      }
+    } catch (IOException e) {
+      Log.e("WhereAmI", "Couldn't get Geocoder data", e);
+    }
+  }
+
+  // Methods required by LocationListener 
+  public void onProviderDisabled(String provider) {
+  }
+
+  public void onProviderEnabled(String provider) {
+  }
+
+  public void onStatusChanged(String provider, int status, Bundle extras) {
+  }
+
+}
+{/CODE}
+
++ Notice that WhereAmI implements LocationListener. This is the interface that LocationManager uses to notify us of changes to location.
+Local reference to LocationManager.
++ Local reference to Geocoder.
++ textOut is the text view to which we print our output to for the user to see.
++ We get the local reference to LocationManager by asking the context to get the location manager system service. For a reference on context, see the section called “Application Context”.
++ We create a new instance of Geocoder and pass the current context to it.
++ The Location manager memorizes its last known location. This is useful since it may take a while until we get the location lock via either a network or a GPS provider.
++ As usual, we register in onResume(), since that is the method that is called en route to Running state. We use location manager’s requestLocationUpdates() method to register for updates.
++ We unregister in onPause(), which will be called just before the activity goes into the Stopped state.
++ onLocationChanged() is the callback method called by the location manager when it detects that the location has changed.
++ We get the Location object, which contains a lot of useful information about the current location. We create a human-readable string with this info.
++ Once we have the location, we can try to "geocode" the location, a process of converting latitude and longitude to a known address.
++ If we do find known addresses for this location, we print them out.
++ Some other callback methods are required to implement the LocationListener interface. We don’t use them for this example.
+
+
+====Manifest file====
+
+The manifest file for this app is fairly standard. Notice that in order to be able to register as a location listener, we have to hold the appropriate permissions. Keep in mind that although we have GPS and Network as two most commonly used Location Providers, Android is built with extensibility in mind. In the future, we may have other types of providers as well. For that reason, Android breaks down the location permissions into abstract fine location and coarse location permissions.
+
+**Example 13.5. AndroidManifest.xml**
+
+{CODE}
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="com.marakana" android:versionCode="1" android:versionName="1.0">
+  <application android:icon="@drawable/icon" android:label="@string/app_name">
+    <activity android:name=".WhereAmI" android:label="@string/app_name">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+  </application>
+  <uses-sdk android:minSdkVersion="4" />
+  <!-- #{1} -->
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+</manifest>
+{/CODE}
+
++ Declares that this app uses location providers. The location permissions could be android.permission.ACCESS_FINE_LOCATION for a GPS provider or android.permission.ACCESS_COARSE_LOCATION for a wireless network provider.
+
+
+At this point, your WhereAmI application is complete. It illustrates how to use LocationManager to get the actual location via a specific location provider and how to convert that location into known addresses via Geocoder. An example of the result is shown in Figure 13.2, “WhereAmI”.
+
+**Figure 13.2. WhereAmI**
+
+[images/13-WhereAmI.png]
+
+
+
 
 
