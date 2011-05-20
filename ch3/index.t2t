@@ -5,7 +5,7 @@
 
 {ORGI}In this chapter, you will learn how to set up your environment for Android development. I’ll go beyond just telling you where to download the software from, but will also into some of the best practices in getting set up. I’ll look at development operating system choices as well as Android tools available. You will see the good, the bad, and the ugly of various choices of tools and platforms that you’re about to make (or someone else has already made for you).
 
-{TRAN}本章我们介绍Android 开发环境的搭建方法。这里列出了所需的各种软件的下载地址，也提供了构建开发环境的最佳实践。毕竟操作系统各有不同，开发工具也多种多样。面对诸多选择，对其长短优劣心里有数总是好的。
+{TRAN}本章介绍Android 开发环境的搭建方法。这里列出了所需的各种软件的下载地址，也提供了构建开发环境的最佳实践。毕竟操作系统各有不同，开发工具也多种多样。面对诸多选择，对其长短优劣心里有数总是好的。
 
 {ORGI}By the end of this chapter, you will have your entire development environment setup. You’ll be able to write a Hello World application, build it, and run it on the emulator (or physical device, if you want).
 

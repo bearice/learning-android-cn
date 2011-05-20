@@ -33,7 +33,7 @@
 
 % To get any system service, issue the getSystemService() call. This returns a Manager object representing that system service, which you then use to access the service. Most system services work on some sort of publish/subscribe mechanism. In other words, you generally register your app for notifications from that service and provide your own callbacks methods that the service will invoke when an event happens. To do this in Java, create a Listener that implements an interface so that the service can call the callback methods.
 
-使用系统服务，就调用``getSystemService()``。它返回一个表示系统服务的Manager对象，随后凭它就可以访问系统服务了。系统服务大多都是发布/订阅的接口，使用起来大约就是准备一个回调函数，将你的程序注册到相应的系统服务，然后等它的通知。在Java中的通行做法是，实现一个内含回调函数的侦听器(Listener)，将它传递给系统服务。
+使用系统服务，就调用``getSystemService()``。它返回一个表示系统服务的Manager对象，随后凭它就可以访问系统服务了。系统服务大多都是发布/订阅的接口，使用起来大约就是准备一个回调函数，将你的程序注册到相应的系统服务，然后等它的通知。在Java中的通行做法是，实现一个内含回调函数的侦听器(Listener)，并把它传递给系统服务。
 
 % Keep in mind that requesting notifications from a system service can be costly in terms of the battery usage. For example, getting a GPS signal or processing sensor updates takes a lot of energy from the device. To preserve the battery, we typically want to be doing the work of processing updates only when the user is looking at the activity itself. In terms of the Activity lifecycle (see the section called “Activity Lifecycle”), this means we want to get the notifications only while in the Running state (see the section called “Running State”).
 
@@ -60,7 +60,7 @@
 % Index [1], the pitch:: The amount of rotation around the X axis from the front to the left and then the around the back toward the right. 
 % Index [2], the roll: The amount of rotation around the Y axis from the vertical position to the left and then the around the bottom toward the right.
 
-- 下标[0]，方位角(azimuth)：在水平面上偏离Z轴的角度。
+- 下标[0]，方位角(azimuth)：在水平面上偏离Z轴的角度，顺时针。
 - 下标[1]，横摇(pitch)：在水平方向偏离X轴的角度。
 - 下标[2]，纵摇(roll)：在垂直方向偏离Y轴的角度。
 
@@ -79,7 +79,7 @@
 
 % The main Compass activity sets the Rose as its only widget on the screen. It also registers with SensorManager to listen to sensor events, and updates the Rose orientation accordingly.
 
-指南针的主界面里只有一个控件，那就是表盘。它也将自己注册给SensorManager，监听传感器的事件，调整表盘的角度。
+指南针的主界面里只有一个控件，那就是表盘(Rose)。它也将自己注册给SensorManager，监听传感器的事件，调整表盘的角度。
 
 **Example 13.1. Compass.java**
 
@@ -173,8 +173,8 @@ public class Compass extends Activity implements SensorEventListener { //#{1}
 % + We are interested in the first element of the array of new values reported.
 % + Once we have the new orientation, we update our Rose widget to rotate accordingly.
 
-+ Compass需要监听来自传感器的事件，因此需要提供SensorEventListener接口的实现。
-+ 定义几个私有变量，分别表示传感器(sensor)对象，SensorManager与表盘。
++ Compass会监听来自传感器的事件，因此需要提供SensorEventListener接口的实现。
++ 定义几个私有变量，分别表示传感器对象(sensor)，SensorManager与表盘(rose)。
 + 初始化sensor是个一次性的操作，因此我们把它放在``onCreate()``中执行。
 + 设置此Activity的状态为全屏。
 + 创建一个Rose控件的实例，这是我们自定义的控件。
@@ -272,25 +272,27 @@ public class Rose extends ImageView { //#{1}
 
 % Now that you have seen how the sensor manager works, we can look at the Location API, another system service provided by Android. Just like sensors, the Location API is supported via the Location manager. And just like sensors, we get the Location manager via a getSystemService() call.
 
-前面已经见到SensorManager的工作方式，接下来看看Location服务的API。同Sensor服务类似，使用Location服务是通过LocationManager，而且也是通过getSystemService()获取它的引用。
+前面已对SensorManager的工作方式有所了解，接下来看下Location服务的API。同Sensor服务类似，使用Location服务是通过LocationManager，而且也是通过getSystemService()获取它的引用。
 
 % Once we have access to the Location service, we need to register a Location listener with it so the service can call back when there’s a change in location. Again, we’ll do this by implementing a Location listener interface.
 
-使用Location服务，我们需要传递给它一个侦听器，这一来在位置改变的时候可以回调其中的函数。同前面相似，我们在这里实现一个LocationListener接口。
+使用Location服务，我们需要传递给它一个侦听器(Listener)，这一来在位置改变的时候可以作出响应。同前面相似，我们在这里实现一个LocationListener接口。
 
 % If you recall from the section called “Common Steps in Using System Services”, processing GPS and other location updates can be very taxing for the battery. To minimize the battery consumption, we want to listen to location updates only while in the Running state. To do that, we’ll register for the updates in onResume() and unregister in onPause(), taking the advantage of the Activity lifecycle.
 
-//"使用系统服务的一般步骤"//一节曾提到，使用GPS服务或者其它位置操作都是非常费电的。为了尽量地节约电能，我们只在Running状态中使用Location服务。因此利用Activity生命周期的设定，将它限制在``onResume()``与``onPause()``之间。
+//"使用系统服务的一般步骤"//一节曾提到，使用GPS服务或者其它位置操作都是非常费电的。为尽量地节约电能，我们只在Running状态中使用Location服务。因此利用Activity生命周期的设定，将它限制在``onResume()``与``onPause()``之间。
 
 ===Where Am I? Demo===
 
 % This example illustrates how to use location-based services in Android. First, we use LocationManager to figure out our current location based on the resources in the environment available to the device, such as GPS or a wireless network. Secondly, we use Geocoder to convert this location to an address.
 
-使用这个例子展示Android中位置服务的用法。首先通过LocationManager利用可用的信息源(GPS或者无线网)获取当前的位置信息，然后使用Geocoder将它转换为人类可读的地址。
+使用这个例子展示Android中位置服务的用法。首先通过LocationManager利用可用的信息源(GPS或者无线网)获取当前的位置信息，然后使用Geocoder将它转换为人类可读的地理地址。
 
 ====The Layout====
 
-The layout for this example is trivial. Our resource file provides a TextView widget for the title and another TextView widget for the output. Since the output could be longer than the screen size, we wrap the output in a ScrollView widget.
+% The layout for this example is trivial. Our resource file provides a TextView widget for the title and another TextView widget for the output. Since the output could be longer than the screen size, we wrap the output in a ScrollView widget.
+
+本例的Layout不是我们关注的重点。里面只有一个表示标题的TextView控件，和一个表示输出的TextView控件。其中输出可能会比较长，因此把它包在一个ScrollView里。
 
 **Example 13.3. res/layout/main.xml**
 
@@ -315,14 +317,21 @@ The layout for this example is trivial. Our resource file provides a TextView wi
 </LinearLayout>
 {/CODE}
 
-+ The title for our application.
-+ A ScrollView to enable scrolling if the output grows beyond the size of the screen.
-+ A TextView to represent the output. It will be programmatically set from the WhereAmI activity.
+% + The title for our application.
+% + A ScrollView to enable scrolling if the output grows beyond the size of the screen.
+% + A TextView to represent the output. It will be programmatically set from the WhereAmI activity.
+
++ 程序的标题。
++ 输出可能会比较长，甚至超过屏幕的尺寸。因此，通过ScrollView为它加一个滚动条。
++ 表示输出的TextView，``WhereAmI``界面中唯一的动态部分。
 
 
-====The Activity for our Location Listener====
+% ====The Activity for our Location Listener====
+====作为LocationListener的Activity====
 
-This is our main activity, which sets up the screen, connects to LocationManager, and uses the Geocoder to figure out our address. The LocationManager uses location providers, such as GPS or Network, to figure out our current location. The location is expressed as latitude and longitude values. The Geocoder searches an online database for known addresses in the vicinity of the location provided. It may come up with multiple results, some more specific than others.
+% This is our main activity, which sets up the screen, connects to LocationManager, and uses the Geocoder to figure out our address. The LocationManager uses location providers, such as GPS or Network, to figure out our current location. The location is expressed as latitude and longitude values. The Geocoder searches an online database for known addresses in the vicinity of the location provided. It may come up with multiple results, some more specific than others.
+
+这就是我们唯一的Activity。我们将在这里初始化界面，连接到LocationManager，然后使用Geocoder检索我们的地理地址。LocationManager可以通过不同的Location信息源(比如GPS或者网络)来获得我们的当前位置，以经纬度的格式返回。Geocoder以此检索在线的位置数据库，即可获得当前位置的地理地址。检索的结果可能有多个，精度不一。
 
 **Example 13.4. WhereAmI.java**
 
@@ -342,10 +351,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
-public class WhereAmI extends Activity implements LocationListener { // 
-  LocationManager locationManager; // 
-  Geocoder geocoder; // 
-  TextView textOut; // 
+public class WhereAmI extends Activity implements LocationListener { // #{1}
+  LocationManager locationManager; // #{2}
+  Geocoder geocoder; // #{3}
+  TextView textOut; // #{4}
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -354,43 +363,43 @@ public class WhereAmI extends Activity implements LocationListener { //
 
     textOut = (TextView) findViewById(R.id.textOut);
 
-    locationManager = (LocationManager) getSystemService(LOCATION_SERVICE); // 
-    geocoder = new Geocoder(this); // 
+    locationManager = (LocationManager) getSystemService(LOCATION_SERVICE); // #{5}
+    geocoder = new Geocoder(this); // #{6}
 
     // Initialize with the last known location
     Location lastLocation = locationManager
-        .getLastKnownLocation(LocationManager.GPS_PROVIDER); // 
+        .getLastKnownLocation(LocationManager.GPS_PROVIDER); // #{7}
     if (lastLocation != null)
       onLocationChanged(lastLocation);
   }
 
   @Override
-  protected void onResume() { // 
+  protected void onResume() { // #{8}
     super.onRestart();
     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000,
         10, this);
   }
 
   @Override
-  protected void onPause() { // 
+  protected void onPause() { // #{9}
     super.onPause();
     locationManager.removeUpdates(this);
   }
 
   // Called when location has changed
-  public void onLocationChanged(Location location) { // 
+  public void onLocationChanged(Location location) { // #{10}
     String text = String.format(
         "Lat:\t %f\nLong:\t %f\nAlt:\t %f\nBearing:\t %f", location
             .getLatitude(), location.getLongitude(), location.getAltitude(),
-        location.getBearing()); // 
+        location.getBearing()); // #{11}
     textOut.setText(text);
 
     // Perform geocoding for this location
     try {
       List<Address> addresses = geocoder.getFromLocation(
-          location.getLatitude(), location.getLongitude(), 10); // 
+          location.getLatitude(), location.getLongitude(), 10); // #{12}
       for (Address address : addresses) {
-        textOut.append("\n" + address.getAddressLine(0)); // 
+        textOut.append("\n" + address.getAddressLine(0)); // #{13}
       }
     } catch (IOException e) {
       Log.e("WhereAmI", "Couldn't get Geocoder data", e);
@@ -410,25 +419,43 @@ public class WhereAmI extends Activity implements LocationListener { //
 }
 {/CODE}
 
-+ Notice that WhereAmI implements LocationListener. This is the interface that LocationManager uses to notify us of changes to location.
-Local reference to LocationManager.
-+ Local reference to Geocoder.
-+ textOut is the text view to which we print our output to for the user to see.
-+ We get the local reference to LocationManager by asking the context to get the location manager system service. For a reference on context, see the section called “Application Context”.
-+ We create a new instance of Geocoder and pass the current context to it.
-+ The Location manager memorizes its last known location. This is useful since it may take a while until we get the location lock via either a network or a GPS provider.
-+ As usual, we register in onResume(), since that is the method that is called en route to Running state. We use location manager’s requestLocationUpdates() method to register for updates.
-+ We unregister in onPause(), which will be called just before the activity goes into the Stopped state.
-+ onLocationChanged() is the callback method called by the location manager when it detects that the location has changed.
-+ We get the Location object, which contains a lot of useful information about the current location. We create a human-readable string with this info.
-+ Once we have the location, we can try to "geocode" the location, a process of converting latitude and longitude to a known address.
-+ If we do find known addresses for this location, we print them out.
-+ Some other callback methods are required to implement the LocationListener interface. We don’t use them for this example.
+% + Notice that WhereAmI implements LocationListener. This is the interface that LocationManager uses to notify us of changes to location.
+% + Local reference to LocationManager.
+% + Local reference to Geocoder.
+% + textOut is the text view to which we print our output to for the user to see.
+% + We get the local reference to LocationManager by asking the context to get the location manager system service. For a reference on context, see the section called “Application Context”.
+% + We create a new instance of Geocoder and pass the current context to it.
+% + The Location manager memorizes its last known location. This is useful since it may take a while until we get the location lock via either a network or a GPS provider.
+% + As usual, we register in onResume(), since that is the method that is called en route to Running state. We use location manager’s requestLocationUpdates() method to register for updates.
+% + We unregister in onPause(), which will be called just before the activity goes into the Stopped state.
+% + onLocationChanged() is the callback method called by the location manager when it detects that the location has changed.
+% + We get the Location object, which contains a lot of useful information about the current location. We create a human-readable string with this info.
+% + Once we have the location, we can try to "geocode" the location, a process of converting latitude and longitude to a known address.
+% + If we do find known addresses for this location, we print them out.
+% + Some other callback methods are required to implement the LocationListener interface. We don’t use them for this example.
+
++ 留意WhereAmI实现了LocationListener。它是LocationManager用来通知地址变更的接口。
++ 指向LocationManager的私有变量。
++ 指向Geocoder的私有变量。
++ textOut是表示输出结果的TextView。
++ 在当前上下文通过``getSystemService()``获取LocationManager的引用。有关//当前上下文//的有关内容，可见``Application Context``一节。
++ 创建一个Geocoder的实例，将当前上下文传递给它。
++ 还需要一段时间才可以获得新的位置信息。因此LocationManager会缓存着上次得到的地址，可以减少用户的等待。
++ 同前面一样，在进入Running状态之前也就是``onResume`()``时注册到系统服务。在这里，通过``requestLocationUpdates()``订阅位置服务的更新。
++ 在离开Running状态之后也就是``onPause()``时注销。
++ ``onLocationChanged()``是LocationManager负责调用的一个回调函数，在位置信息发生变化时触发。
++ 得到了Location对象。它里面有不少有用的信息，我们格式化一下，使之容易阅读。
++ 得到Location对象，就可以检索"geocode"了，它可以将经纬度转换为实际的地址。
++ 如果得到正确的地址，就输出到textOut。
++ LocationListener接口中还有许多其它的回调方法，这里没有用到这些功能，因此留空。
 
 
-====Manifest file====
+% ====Manifest file====
+====Manifest文件====
 
-The manifest file for this app is fairly standard. Notice that in order to be able to register as a location listener, we have to hold the appropriate permissions. Keep in mind that although we have GPS and Network as two most commonly used Location Providers, Android is built with extensibility in mind. In the future, we may have other types of providers as well. For that reason, Android breaks down the location permissions into abstract fine location and coarse location permissions.
+% The manifest file for this app is fairly standard. Notice that in order to be able to register as a location listener, we have to hold the appropriate permissions. Keep in mind that although we have GPS and Network as two most commonly used Location Providers, Android is built with extensibility in mind. In the future, we may have other types of providers as well. For that reason, Android breaks down the location permissions into abstract fine location and coarse location permissions.
+
+这个app的Manifest文件也很普通。需要留意的一个地方是，要注册Location的侦听器(Listener)，必先获取相应的权限。GPS和网络是最常用的Location信息源，不过Android也预留了其它信息源的扩展接口——未来也可能有更好更精确的信息源出现。为此，Android将位置信息的权限分成了两级：精确位置(Fine Location)和近似位置(Coarse Location)。
 
 **Example 13.5. AndroidManifest.xml**
 
@@ -452,16 +479,269 @@ The manifest file for this app is fairly standard. Notice that in order to be ab
 </manifest>
 {/CODE}
 
-+ Declares that this app uses location providers. The location permissions could be android.permission.ACCESS_FINE_LOCATION for a GPS provider or android.permission.ACCESS_COARSE_LOCATION for a wireless network provider.
+% + Declares that this app uses location providers. The location permissions could be android.permission.ACCESS_FINE_LOCATION for a GPS provider or android.permission.ACCESS_COARSE_LOCATION for a wireless network provider.
+
++ 声明这个app使用了Location信息源。针对GPS，它的权限是``android.permission.ACCESS_FINE_LOCATION``；针对无线网，它的权限是``android.permission.ACCESS_COARSE_LOCATION``。
 
 
-At this point, your WhereAmI application is complete. It illustrates how to use LocationManager to get the actual location via a specific location provider and how to convert that location into known addresses via Geocoder. An example of the result is shown in Figure 13.2, “WhereAmI”.
+% At this point, your WhereAmI application is complete. It illustrates how to use LocationManager to get the actual location via a specific location provider and how to convert that location into known addresses via Geocoder. An example of the result is shown in Figure 13.2, “WhereAmI”.
+
+到这里，WhereAmI程序就已经完工了。它演示了通过LocationManager获取位置信息，并通过Geocoder将它转换为地理地址的方法。成品图如下：
 
 **Figure 13.2. WhereAmI**
 
 [images/13-WhereAmI.png]
 
 
+==Updating Yamba to Use the Location Service==
+
+The WhereAmI application was a small standalone test to make sure we can get location information. Now we’ll incorporate location information into our larger Yamba app.
+
+===Updating Our Preferences===
+
+First, the user may not want to broadcast her location to the world, so we should ask. A good place to ask would be the Preferences. And to do that, this time around, we’ll use a ListPreference property. This is somewhat different from the EditTextPreferences we’ve seen before in Chapter 7, Preferences, File System, Options Menu, and Intents, in that it requires a list of items. In fact, it requires two lists: one to display and one to use for actual values.
+
+So we’ll add couple of strings to our strings.xml file and create two new string resources: one to represent names of our location providers in a form friendly to human readers, and the other to represent their values. To do that, we’ll add the following to our strings.xml file:
+
+{CODE}
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  ...
+  <string-array name="providers">
+    <item>None, please</item>
+    <item>GPS via satellites!</item>
+    <item>Mobile Network will do</item>
+  </string-array>
+
+  <string-array name="providerValues">
+    <item>NONE</item>
+    <item>gps</item>
+    <item>network</item>
+  </string-array>
+</resources>
+{/CODE}
+
+Notice that both string arrays have the same number of elements. They basically represent name-value pairs and match each other.
+
+Now that we have the names and values for our location providers, we can update prefs.xml with that information.
+
+**Example 13.6. Updated res/xml/prefs.xml**
+
+{CODE}
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+  <EditTextPreference android:title="@string/titleUsername"
+    android:summary="@string/summaryUsername" android:key="username"></EditTextPreference>
+  <EditTextPreference android:title="@string/titlePassword"
+    android:password="true" android:summary="@string/summaryPassword"
+    android:key="password"></EditTextPreference>
+  <EditTextPreference android:title="@string/titleApiRoot"
+    android:summary="@string/summaryApiRoot" android:key="apiRoot"></EditTextPreference>
+  <ListPreference android:title="@string/titleProvider"
+    android:summary="@string/summaryProvider" android:key="provider"
+    android:entryValues="@array/providerValues" android:entries="@array/providers" />
+  <!-- #{1} -->
+  <ListPreference android:entryValues="@array/intervalValues"
+    android:summary="@string/summaryUpdaterInterval" android:title="@string/titleUpdaterInterval"
+    android:entries="@array/interval" android:key="interval"></ListPreference>
+</PreferenceScreen>
+{/CODE}
+
++ The new ListPreference displaying the names and values of various location providers that we support: GPS, network, and none at all.
+
+===Updating the Yamba Application===
+
+Now that we have the preferences supporting settings for a specific location provider the user wishes to use, we have to expose those preferences via our YambaApplication to rest of the app, namely StatusActivity.
+
+To do that, simply add a getter method to YambaApplication.java:
+
+**Example 13.7. YambaApplication.java**
+
+{CODE}
+public class YambaApplication extends Application implements
+    OnSharedPreferenceChangeListener {
+  ...
+  public static final String LOCATION_PROVIDER_NONE = "NONE";
+  ...
+  public String getProvider() {
+    return prefs.getString("provider", LOCATION_PROVIDER_NONE);
+  }
+}
+{/CODE}
+
+Now that we have support for providers in the preferences and in the Yamba app object, we’re ready to update the Status activity.
+
+===Updating the Status Activity===
+
+The Status activity is the main place where we use the location information. Just as in the WhereAmI demo, we’re going to get the Location manger by calling getSystemService() and register for location updates. We’re also going to implement the LocationListener interface, which means adding a number of new callback methods to this activity. When the location does change, we’ll update the location object, and next time around when we update our status online, we’ll have proper location information.
+
+**Example 13.8. StatusActivity.java**
+
+{CODE}
+package com.marakana.yamba8;
+
+import winterwell.jtwitter.Twitter;
+import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class StatusActivity extends BaseActivity implements OnClickListener,
+    TextWatcher, LocationListener { // 
+  private static final String TAG = "StatusActivity";
+  private static final long LOCATION_MIN_TIME = 3600000; // One hour
+  private static final float LOCATION_MIN_DISTANCE = 1000; // One kilometer
+  EditText editText;
+  Button updateButton;
+  TextView textCount;
+  LocationManager locationManager; // 
+  Location location;
+  String provider;
+
+  /** Called when the activity is first created. */
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.status);
+
+    // Find views
+    editText = (EditText) findViewById(R.id.editText);
+    updateButton = (Button) findViewById(R.id.buttonUpdate);
+    updateButton.setOnClickListener(this);
+
+    textCount = (TextView) findViewById(R.id.textCount);
+    textCount.setText(Integer.toString(140));
+    textCount.setTextColor(Color.GREEN);
+    editText.addTextChangedListener(this);
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+
+    // Setup location information
+    provider = yamba.getProvider(); // 
+    if (!YambaApplication.LOCATION_PROVIDER_NONE.equals(provider)) { // 
+      locationManager = (LocationManager) getSystemService(LOCATION_SERVICE); // 
+    }
+    if (locationManager != null) {
+      location = locationManager.getLastKnownLocation(provider); // 
+      locationManager.requestLocationUpdates(provider, LOCATION_MIN_TIME,
+          LOCATION_MIN_DISTANCE, this); // 
+    }
+
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+
+    if (locationManager != null) {
+      locationManager.removeUpdates(this);  // 
+    }
+  }
+
+  // Called when button is clicked
+  public void onClick(View v) {
+    String status = editText.getText().toString();
+    new PostToTwitter().execute(status);
+    Log.d(TAG, "onClicked");
+  }
+
+  // Asynchronously posts to twitter
+  class PostToTwitter extends AsyncTask<String, Integer, String> {
+    // Called to initiate the background activity
+    @Override
+    protected String doInBackground(String... statuses) {
+      try {
+        // Check if we have the location
+        if (location != null) { // 
+          double latlong[] = {location.getLatitude(), location.getLongitude()};
+          yamba.getTwitter().setMyLocation(latlong);
+        }
+        Twitter.Status status = yamba.getTwitter().updateStatus(statuses[0]);
+        return status.text;
+      } catch (RuntimeException e) {
+        Log.e(TAG, "Failed to connect to twitter service", e);
+        return "Failed to post";
+      }
+    }
+
+    // Called once the background activity has completed
+    @Override
+    protected void onPostExecute(String result) {
+      Toast.makeText(StatusActivity.this, result, Toast.LENGTH_LONG).show();
+    }
+  }
+
+  // TextWatcher methods
+  public void afterTextChanged(Editable statusText) {
+    int count = 140 - statusText.length();
+    textCount.setText(Integer.toString(count));
+    textCount.setTextColor(Color.GREEN);
+    if (count < 10)
+      textCount.setTextColor(Color.YELLOW);
+    if (count < 0)
+      textCount.setTextColor(Color.RED);
+  }
+
+  public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+  }
+
+  public void onTextChanged(CharSequence s, int start, int before, int count) {
+  }
+
+  // LocationListener methods
+  public void onLocationChanged(Location location) { // 
+    this.location = location;
+  }
+
+  public void onProviderDisabled(String provider) { // 
+    if (this.provider.equals(provider))
+      locationManager.removeUpdates(this);
+  }
+
+  public void onProviderEnabled(String provider) { // 
+    if (this.provider.equals(provider))
+      locationManager.requestLocationUpdates(this.provider, LOCATION_MIN_TIME,
+          LOCATION_MIN_DISTANCE, this);
+  }
+
+  public void onStatusChanged(String provider, int status, Bundle extras) { // 
+  }
+
+}
+{/CODE}
+
++ StatusActivity now implements LocationListener, the interface for callbacks from the Location manager.
++ Here we define local variables for the Location manager, Location, and our provider.
++ We get the provider from the Yamba application object, as we explained earlier. And ultimately, the user chooses the provider in the preferences.
++ We check whether the user wants us to provide her location information at all.
++ If we pass that test, we get the location information via getSystemService(). This call is relatively inexpensive even if it happens every time the method runs, because we’re just getting a reference to an already running system service.
++ Get the cached location, if the Location manager has it.
++ Register with the Location manager to receive location updates. Here, we get to specify how often we’d like to get notifications and for what kind of change in location. In our example, we care only about the general vicinity at a city level, we set these values to 1,000 meters (one kilometer) and 3,600,000 milliseconds (one hour). Note that this is just a hint to the system.
++ When this activity is no longer visible, we unregister from the Location manager and no longer receive any updates to save battery.
++ Once the user is about to update her status, we check whether we have a location. If we do, we pack it into required double array and pass it on to setMyLocation() in the Twitter object that Yamba has.
++ Now we implement the methods that Location manager calls. onLocationChanged() is called whenever there’s a change in location and provides us with the actual new Location object.
++ This method is called when the provider is no longer available. We can simply remove any updates so that we don’t waste battery.
++ When the provider we care about is made available, we can request location updates again.
++ This method is called when there’s a change with the provider in general. In this case, we ignore it.
+
+
+At this point our Yamba application supports location updates. User can set preferences to indicate what location provider to use, if any.
+
+Next we’re going to see another system service: this time the Alarm service, which we’ll use to trigger an Intent service.
 
 
 

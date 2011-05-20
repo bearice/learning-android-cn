@@ -104,7 +104,7 @@
 
 {ORGI}An important property for LinearLayout are layout_orientation and valid options are vertical or horizontal.
 
-{TRAN}LinearLayout的一个重要属性是layout_orientation。可用的选项有certical和horizontal，用以指示它是水平排列还是垂直排列。
+{TRAN}LinearLayout的一个重要属性是layout_orientation。可用的选项有Vertical和Horizontal，用以指示它是水平排列还是垂直排列。
 
 {TIP}
 {ORGI}	While Linear Layout is probably the simplest and most commonly used layout, it is not always the best choice. A good rule of thumb is that if you start to nest multiple Linear Layouts, you should probably be using another layout, such as Relative Layout. Too many nested layouts can have big consequences on the time to inflate the UI and overall CPU and battery consumption.
@@ -347,6 +347,7 @@
 {TRAN}对资源的命名，我都是按照特定的命名规范。比如titleYamba这个名字，是使用资源的用途——Activity中的标题(title)——作为前缀。后跟一个名字，Yamba。多个单词之间使用CamelCase命名法表示分隔。这样使得不同的资源容易区分，也容易查找。
 {/TIP}
 
+
 == StatusActivity Java Class ==
 
 {ORGI}Now that we have our UI designed in XML, we are ready to switch over to Java. Remember from earlier in this chapter that Android provides two ways to building user interface. One is by declaring it in XML, which is what we just did. And we got as far as we could (for now). The other one is to programmatically build it in Java. We also said earlier that the best practice is to get as far as possible in XML, and then switch over to Java.
@@ -355,20 +356,21 @@
 
 {ORGI}Our Java class for this is StatusActivity.java and the Eclipse New Project Dialog has already created the stub for this class for us. The class is part of com.marakana.yamba1 Java package, and as such is part of that directory.
 
-{TRAN}相应的Java文件是StatusActivity.java，Eclipse New Project对话框已在里面生成了类的大体框架。这个类是``com.marakana.yamba1`` package的一部分，因而肯定是在它的目录之下。
+{TRAN}Java部分对应的文件是``StatusActivity.java``，Eclipse New Project对话框已在里面生成了类的大体框架。这个类是``com.marakana.yamba1`` package的一部分，因而肯定是在它的目录之下。
+
 
 {ORGI}=== Creating your application-specific object and initialization code ===
-===创建自己的对象===
+===编写自己的对象以及初始化的相关代码===
 
 {ORGI}As with all Main Building Blocks in Android, such as Activities, Services, BroadcastReceivers and ContentProviders, you usually start by subclassing a base class provided by the Android framework, and overriding certain inherited methods. In this case, we subclass Android’s Activity class and override its onCreate() method. As you recall, activities have a certain lifecycle the section called “Activity Lifecycle”, or state machine through which they go. We as developers do not control what state the activity is in, but we do get to say what happens at a transition to a particular state. In this case, the transition we want to override is onCreate() method that is invoked by the system’s ActivityManager when the activity is first created (i.e. it goes from Starting the section called “Starting State” to Running the section called “Running State” state). This sort of programming when we subclass a system class and fill out the blanks is also known as Template pattern.
 
-{TRAN}Android程序中所有的构件(Activity、Service、BroadcastReceiver、ContentProvider等)都是继承一个Android框架中原有的类，然后重载特定的方法。在这里，我们继承的是Activity类，重载了``onCreate()``方法。前面曾提到说Activity有个精心设计的生命周期，作为指导Activity行动的一台自动机。身为开发者，我们通常不会主动地干涉Activity的状态，而是跟踪Activity状态的变更，被动地对事件做处理。这里我们重载的``onCreate()``会在Activity第一次创建时，由系统的ActivityManager负责调用。像这样继承一个基类然后重载特定的方法的编程范式，被称作Template模式。
+{TRAN}Android程序中所有的构件(如Activity、Service、BroadcastReceiver、ContentProvider)都是继承一个Android框架中提供的基类，然后重载特定的方法。在这里，我们继承Activity类，重载了``onCreate()``方法。前面曾提到说Activity有个精心设计的生命周期，作为指导Activity行动的一台自动机。身为开发者，我们通常不会主动地干涉Activity的状态，而是跟踪Activity状态的变更，被动地对事件做处理。这里我们重载的``onCreate()``会在Activity第一次创建时，由系统的ActivityManager负责调用。像这样继承一个基类然后重载特定的方法的编程范式，被称作Template模式。
 
 %TALK:  (i.e. it goes from Starting the section called “Starting State” to Running the section called “Running State” state). 很诡异的一句。
 
 {ORGI}Our onCreate(), in addition to doing some standard housekeeping, will carry out two major tasks that the application needs done just once, and done at the beginning. We’ll set up our button so it responds to clicks, and connect to the cloud.
 
-{TRAN}``onCreate()``方法还会做些杂事，处理些一次性的初始化工作。比如为按钮绑定点击事件、将程序连接到服务端等。
+{TRAN}``onCreate()``方法在基本工作之余，还会做些杂事，处理些一次性的初始化工作。比如为按钮绑定点击事件、将程序连接到服务端等。
 
 {ORGI}Notice that onCreate() take a Bundle as a parameter. This is a small amount of data that can be passed into the activity via the Intent that started it. The data provided in a Bundle is typically limited to basic data types and more complex ones need to be specially encoded. For the most part, we’re not going to be using Bundle in Yamba example as there’s no real need for us.
 

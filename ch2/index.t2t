@@ -2,10 +2,10 @@
 %
 %
 {ORGI}= The Stack =
-{TRAN}= Andorid的架构 =
+{TRAN}= Android的架构 =
 
 {ORGI}This is the 9,000-foot overview of the Android platform. Although you’re concerned primarily with writing Android applications, understanding layout of the system will help shape your understanding about what you can or cannot easily do with Android.
-{TRAN}我们将从9000英尺的高空俯瞰Android平台。你的目标可能仅仅是学习Android应用的编写方法而已，但是对Andorid的架构有所理解是绝对没有坏处的。
+{TRAN}我们将从9000英尺的高空俯瞰Android平台。你可能仅仅是想学习Android应用的编写方法，但对Andorid的架构有所理解是绝对没有坏处的。
 
 {ORGI}By the end of this chapter, you’ll understand how the whole system works, at least from the high level. 
 {TRAN}在本章最后，你将在大体上对整个系统的工作方式有所理解。
@@ -176,29 +176,29 @@
 {TRAN}=== 应用的发布 ===
 
 {ORGI}One place Android is quite different than other platforms is the distribution of the apps. On most other platforms, such as iPhone, a single vendor has the monopoly over the distribution of applications. On Android, there can be many different Android stores or markets. Each one can have its own set of policies with respect to what is allowed, how the revenue is split, and so on. As such, Android is much more of a free market space with vendors competing for business.
-{TRAN}Android 与其他平台的一个显著区别就是应用的发布机制。在大多数的平台上，例如 iPhone， 应用的发布由一个单独的提供商独揽。 而在 Android 中，可以存在很多不同的 Android 商店。 每个商店都能决定自己的发布条款和分成方式等事项。这一来，Android得以成为一个提供商之间相互竞争的自由市场。
+{TRAN}Android 与其他平台的一个显著区别就是应用的发布机制。在多数的平台上(比如iPhone)，应用的发布都由一个单独的提供商独揽。 而在 Android 中，可以存在很多不同的 Android 商店。 每家商店都可以制定自己的发布条款和分成方式。这一来，Android得以成为一个提供商之间相互竞争的自由市场。
 
 {ORGI}In practice, the biggest market currently is Android Market run by Google. It is unclear if Google’s motivation is to just seed the market space while other stores develop, or they will strive to make it a profitable venture for them.
-{TRAN}事实上，目前最大的应用市场“Android Market” 是由 Google 运营的。目前还不清楚 Google 只是希望促进和催生其他商店发展，还者是认真经营使之成为利润来源。
+{TRAN}不过，目前最大的应用市场“Android Market”是Google自己运营的。目前还不清楚Google只是希望促进和催生其他商店发展，还是希望认真经营使之成为利润来源。
 
 {ORGI}Applications can also be distributed via the web. When you download an APK file from a website by using the Browser, the application represented by the APK file automatically gets installed on your phone.
-{TRAN}应用也可以通过 Web 发布。当你使用浏览器下载一个 APK 文件时， APK 文件就能自动安装到你的手机上。
+{TRAN}应用也可以通过 Web 发布。使用浏览器下载一个 APK 文件， APK 文件即可自动安装到你的手机上。
 
 {ORGI}=== What about viruses, malware, spyware and other bad things? ===
 {TRAN}=== 关于病毒、恶意程序和其他坏东西的一点讨论 ===
 
 {ORGI}With its decentralized application distribution system, it is certainly possible for an unsuspecting user to download a malicious app and have it do bad things. There have been reports of phishing attacks via fake banking apps.
-{TRAN}由于这是一个去中心化的发布系统， 也就免不了有人利用用户的信任下载恶意软件来做坏事。目前已经有若干关于使用虚假的银行软件进行钓鱼攻击的报告。
+{TRAN}这是一个去中心化的发布系统，自然就免不了有人利用用户的信任传播恶意软件来做坏事。目前已接到通过伪造的金融应用进行钓鱼攻击(phishing attacks)的报告。
 
 {ORGI}So, Android leaves it to the market place to sort it out. Eventually, if you believe in free market, there will be stores that are more reputable and those that are less so. For example, Google polices its Android Market by removing malicious apps, such as the fake banking apps. Google relies on users to report malicious apps. Other stores may choose to do more proactive testing and raise the bar on what gets into the store in the first place.
-{TRAN}Android 吧这个问题交给市场去解决。最终，如果你信任自由化的市场，就会产生有信誉的商店和没有信誉的商店。 例如 Google 通过移除 Android Market 中的恶意软件，例如虚假的银行软件，来保证用户的安全。 Google 依赖用户来举报恶意软件。 但是其他商店可能会做更多主动检测，然后在商店的显要位置作出提示。
+{TRAN}Android把这个问题交给市场去解决。如果你了解自由市场，就知道商店的信誉是良莠不齐的。 Google通过人工移除Android Market 中的恶意软件(比如钓鱼软件)来保证用户的安全， 这需要用户的举报。 但是其他商店也可以做出更多主动检测，并给出一个明显的提示。
 
 {ORGI}== Summary ==
 {TRAN}== 总结 ==
 
 {ORGI}In this chapter, you got a big picture overview of what Android operating system comprises of and how various pieces fit together. You now understand what makes Android so complete, open and attractive to developers.
-{TRAN}在本章中，我们介绍了 Android 操作系统包括什么，以及它们是怎么形成一个有机的整体。你现在明白了是什么使得 Android 如此的完善、开放、并且对开发人员充满了吸引力。
+{TRAN}在本章中，我们介绍了 Android 操作系统的组成部分，及其结合方式。现在，你该对Android的完善、开放已有所体会，而这正是吸引开发者的魅力所在。
 
 {ORGI}In the next chapter, we’ll look at how to setup your development environment so you can quickly get up to speed. We’ll also look at a simple Hello World application and dissect it so that you get the understanding of various pieces of an application.
-{TRAN}在下一章中，我们将来探讨如何搭建你的开发环境来让你高效的完成工作。我们还将学习编写一个简单的 Hello World 应用，并且将其解剖，来帮助你了解应用的不同部分。
+{TRAN}在下一章，我们将搭建一个高效的开发环境。同时尝试编写一个简单的 Hello World 应用，然后剖析它，体会应用开发的不同方面。
 
