@@ -33,7 +33,7 @@
 
 % To get any system service, issue the getSystemService() call. This returns a Manager object representing that system service, which you then use to access the service. Most system services work on some sort of publish/subscribe mechanism. In other words, you generally register your app for notifications from that service and provide your own callbacks methods that the service will invoke when an event happens. To do this in Java, create a Listener that implements an interface so that the service can call the callback methods.
 
-使用系统服务，就调用``getSystemService()``。它返回一个表示系统服务的Manager对象，随后凭它就可以访问系统服务了。系统服务大多都是发布/订阅的接口，使用起来大约就是准备一个回调函数，将你的程序注册到相应的系统服务，然后等它的通知。在Java中的通行做法是，实现一个内含回调函数的侦听器(Listener)，并把它传递给系统服务。
+使用系统服务，就调用``getSystemService()``。它返回一个表示系统服务的Manager对象，随后凭它就可以访问系统服务了。系统服务大多都是发布/订阅的接口，使用起来大约就是准备一个回调方法，将你的程序注册到相应的系统服务，然后等它的通知。在Java中的通行做法是，实现一个内含回调方法的侦听器(Listener)，并把它传递给系统服务。
 
 % Keep in mind that requesting notifications from a system service can be costly in terms of the battery usage. For example, getting a GPS signal or processing sensor updates takes a lot of energy from the device. To preserve the battery, we typically want to be doing the work of processing updates only when the user is looking at the activity itself. In terms of the Activity lifecycle (see the section called “Activity Lifecycle”), this means we want to get the notifications only while in the Running state (see the section called “Running State”).
 
@@ -60,9 +60,9 @@
 % Index [1], the pitch:: The amount of rotation around the X axis from the front to the left and then the around the back toward the right. 
 % Index [2], the roll: The amount of rotation around the Y axis from the vertical position to the left and then the around the bottom toward the right.
 
-- 下标[0]，方位角(azimuth)：在水平面上偏离Z轴的角度，顺时针。
-- 下标[1]，横摇(pitch)：在水平方向偏离X轴的角度。
-- 下标[2]，纵摇(roll)：在垂直方向偏离Y轴的角度。
+- 下标[0]，方位角(azimuth)：垂直于Z轴，沿Y轴正方向顺时针旋转的角度。
+- 下标[1]，横摇(pitch)：垂直于Y轴，沿Z轴正方向顺时针旋转的角度。
+- 下标[2]，纵摇(roll)：垂直于Y轴，沿X轴正方向顺时针旋转的角度。
 
 
 % For the Compass demo, we are interested only in the first element, i.e., the azimuth. The data returned by each sensor has a different meaning, and you should look up the particulars in the documentation at http://d.android.com/reference/android/hardware/SensorManager.html.
@@ -441,9 +441,9 @@ public class WhereAmI extends Activity implements LocationListener { // #{1}
 + 在当前上下文通过``getSystemService()``获取LocationManager的引用。有关//当前上下文//的有关内容，可见``Application Context``一节。
 + 创建一个Geocoder的实例，将当前上下文传递给它。
 + 还需要一段时间才可以获得新的位置信息。因此LocationManager会缓存着上次得到的地址，可以减少用户的等待。
-+ 同前面一样，在进入Running状态之前也就是``onResume`()``时注册到系统服务。在这里，通过``requestLocationUpdates()``订阅位置服务的更新。
++ 同前面一样，在进入Running状态之前也就是``onResume`()``时注册到系统服务。在这里，通过``requestLocationUpdates()``订阅Location服务的更新。
 + 在离开Running状态之后也就是``onPause()``时注销。
-+ ``onLocationChanged()``是LocationManager负责调用的一个回调函数，在位置信息发生变化时触发。
++ ``onLocationChanged()``是LocationManager负责调用的一个回调方法，在位置信息发生变化时触发。
 + 得到了Location对象。它里面有不少有用的信息，我们格式化一下，使之容易阅读。
 + 得到Location对象，就可以检索"geocode"了，它可以将经纬度转换为实际的地址。
 + 如果得到正确的地址，就输出到textOut。
@@ -493,15 +493,23 @@ public class WhereAmI extends Activity implements LocationListener { // #{1}
 [images/13-WhereAmI.png]
 
 
-==Updating Yamba to Use the Location Service==
+%==Updating Yamba to Use the Location Service==
+==用上Location服务，重构Yamba==
 
-The WhereAmI application was a small standalone test to make sure we can get location information. Now we’ll incorporate location information into our larger Yamba app.
+% The WhereAmI application was a small standalone test to make sure we can get location information. Now we’ll incorporate location information into our larger Yamba app.
 
-===Updating Our Preferences===
+WhereAmI程序只是用来演示Location服务使用方法的小样例。接下来，我们将Location服务应用到Yamba里面。
 
-First, the user may not want to broadcast her location to the world, so we should ask. A good place to ask would be the Preferences. And to do that, this time around, we’ll use a ListPreference property. This is somewhat different from the EditTextPreferences we’ve seen before in Chapter 7, Preferences, File System, Options Menu, and Intents, in that it requires a list of items. In fact, it requires two lists: one to display and one to use for actual values.
+% ===Updating Our Preferences===
+===更新首选项===
 
-So we’ll add couple of strings to our strings.xml file and create two new string resources: one to represent names of our location providers in a form friendly to human readers, and the other to represent their values. To do that, we’ll add the following to our strings.xml file:
+% First, the user may not want to broadcast her location to the world, so we should ask. A good place to ask would be the Preferences. And to do that, this time around, we’ll use a ListPreference property. This is somewhat different from the EditTextPreferences we’ve seen before in Chapter 7, Preferences, File System, Options Menu, and Intents, in that it requires a list of items. In fact, it requires two lists: one to display and one to use for actual values.
+
+在将用户的位置信息广播出去之前，我们需要事先征得用户本人的同意。这不只是个人偏好，更牵涉到个人隐私。首选项就是询问用户本人意愿的一个好地方。在这里，我们可以使用ListPreference。它可以提供一列选项，同时为每个选项对应一个值。
+
+% So we’ll add couple of strings to our strings.xml file and create two new string resources: one to represent names of our location providers in a form friendly to human readers, and the other to represent their values. To do that, we’ll add the following to our strings.xml file:
+
+为此我们在``strings.xml``中添加两列string资源：一列给用户看，表示选项的正文；一列表示每一选项对应的值。修改后的``string.xml``文件如下：
 
 {CODE}
 <?xml version="1.0" encoding="utf-8"?>
@@ -521,9 +529,13 @@ So we’ll add couple of strings to our strings.xml file and create two new stri
 </resources>
 {/CODE}
 
-Notice that both string arrays have the same number of elements. They basically represent name-value pairs and match each other.
+% Notice that both string arrays have the same number of elements. They basically represent name-value pairs and match each other.
 
-Now that we have the names and values for our location providers, we can update prefs.xml with that information.
+留意这两列string资源是一一对应的，因此其下的条目数相等。
+
+% Now that we have the names and values for our location providers, we can update prefs.xml with that information.
+
+已经有了选项的名与值，接下来修改``prefs.xml``。
 
 **Example 13.6. Updated res/xml/prefs.xml**
 
@@ -547,13 +559,21 @@ Now that we have the names and values for our location providers, we can update 
 </PreferenceScreen>
 {/CODE}
 
-+ The new ListPreference displaying the names and values of various location providers that we support: GPS, network, and none at all.
+% + The new ListPreference displaying the names and values of various location providers that we support: GPS, network, and none at all.
 
-===Updating the Yamba Application===
++ 新加的ListPreference提供了三个选项：通过GPS、通过网络、不跟踪位置。
 
-Now that we have the preferences supporting settings for a specific location provider the user wishes to use, we have to expose those preferences via our YambaApplication to rest of the app, namely StatusActivity.
 
-To do that, simply add a getter method to YambaApplication.java:
+% ===Updating the Yamba Application===
+===重构YambaApplication===
+
+% Now that we have the preferences supporting settings for a specific location provider the user wishes to use, we have to expose those preferences via our YambaApplication to rest of the app, namely StatusActivity.
+
+已经有了具体的选项条目可供用户选择，我们还需要将这一选项的值暴露在YambaApplication里面，好让应用的其它部分也可以访问它，尤其是StatusActivity。
+
+% To do that, simply add a getter method to YambaApplication.java:
+
+在``YambaApplication.java``里面简单添加一个getter方法即可：
 
 **Example 13.7. YambaApplication.java**
 
@@ -569,11 +589,16 @@ public class YambaApplication extends Application implements
 }
 {/CODE}
 
-Now that we have support for providers in the preferences and in the Yamba app object, we’re ready to update the Status activity.
+% Now that we have support for providers in the preferences and in the Yamba app object, we’re ready to update the Status activity.
 
-===Updating the Status Activity===
+getter函数准备就绪，接下来重构StatusActivity即可。
 
-The Status activity is the main place where we use the location information. Just as in the WhereAmI demo, we’re going to get the Location manger by calling getSystemService() and register for location updates. We’re also going to implement the LocationListener interface, which means adding a number of new callback methods to this activity. When the location does change, we’ll update the location object, and next time around when we update our status online, we’ll have proper location information.
+% ===Updating the Status Activity===
+===重构StatusActivity===
+
+% The Status activity is the main place where we use the location information. Just as in the WhereAmI demo, we’re going to get the Location manger by calling getSystemService() and register for location updates. We’re also going to implement the LocationListener interface, which means adding a number of new callback methods to this activity. When the location does change, we’ll update the location object, and next time around when we update our status online, we’ll have proper location information.
+
+StatusActivity是位置信息。同WhereAmI一样，我们仍调用LocationManager的``getSystemService()``，并注册到Location服务订阅其更新。也同样实现一个LocationListener接口，也就意味着需要在Activity里面添加几个回调方法，好在位置变化时得到新的location对象。到下次更新状态的时候，即可在这里看到我们的位置信息。
 
 **Example 13.8. StatusActivity.java**
 
@@ -598,14 +623,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class StatusActivity extends BaseActivity implements OnClickListener,
-    TextWatcher, LocationListener { // 
+    TextWatcher, LocationListener { // #{1}
   private static final String TAG = "StatusActivity";
   private static final long LOCATION_MIN_TIME = 3600000; // One hour
   private static final float LOCATION_MIN_DISTANCE = 1000; // One kilometer
   EditText editText;
   Button updateButton;
   TextView textCount;
-  LocationManager locationManager; // 
+  LocationManager locationManager; // #{2}
   Location location;
   String provider;
 
@@ -631,14 +656,14 @@ public class StatusActivity extends BaseActivity implements OnClickListener,
     super.onResume();
 
     // Setup location information
-    provider = yamba.getProvider(); // 
-    if (!YambaApplication.LOCATION_PROVIDER_NONE.equals(provider)) { // 
-      locationManager = (LocationManager) getSystemService(LOCATION_SERVICE); // 
+    provider = yamba.getProvider(); // #{3}
+    if (!YambaApplication.LOCATION_PROVIDER_NONE.equals(provider)) { // #{4}
+      locationManager = (LocationManager) getSystemService(LOCATION_SERVICE); // #{5}
     }
     if (locationManager != null) {
-      location = locationManager.getLastKnownLocation(provider); // 
+      location = locationManager.getLastKnownLocation(provider); // #{6}
       locationManager.requestLocationUpdates(provider, LOCATION_MIN_TIME,
-          LOCATION_MIN_DISTANCE, this); // 
+          LOCATION_MIN_DISTANCE, this); // #{7}
     }
 
   }
@@ -648,7 +673,7 @@ public class StatusActivity extends BaseActivity implements OnClickListener,
     super.onPause();
 
     if (locationManager != null) {
-      locationManager.removeUpdates(this);  // 
+      locationManager.removeUpdates(this);  // #{8} 
     }
   }
 
@@ -666,7 +691,7 @@ public class StatusActivity extends BaseActivity implements OnClickListener,
     protected String doInBackground(String... statuses) {
       try {
         // Check if we have the location
-        if (location != null) { // 
+        if (location != null) { // #{9}
           double latlong[] = {location.getLatitude(), location.getLongitude()};
           yamba.getTwitter().setMyLocation(latlong);
         }
@@ -703,45 +728,59 @@ public class StatusActivity extends BaseActivity implements OnClickListener,
   }
 
   // LocationListener methods
-  public void onLocationChanged(Location location) { // 
+  public void onLocationChanged(Location location) { // #{10}
     this.location = location;
   }
 
-  public void onProviderDisabled(String provider) { // 
+  public void onProviderDisabled(String provider) { // #{11}
     if (this.provider.equals(provider))
       locationManager.removeUpdates(this);
   }
 
-  public void onProviderEnabled(String provider) { // 
+  public void onProviderEnabled(String provider) { // #{12}
     if (this.provider.equals(provider))
       locationManager.requestLocationUpdates(this.provider, LOCATION_MIN_TIME,
           LOCATION_MIN_DISTANCE, this);
   }
 
-  public void onStatusChanged(String provider, int status, Bundle extras) { // 
+  public void onStatusChanged(String provider, int status, Bundle extras) { // #{13}
   }
 
 }
 {/CODE}
 
-+ StatusActivity now implements LocationListener, the interface for callbacks from the Location manager.
-+ Here we define local variables for the Location manager, Location, and our provider.
-+ We get the provider from the Yamba application object, as we explained earlier. And ultimately, the user chooses the provider in the preferences.
-+ We check whether the user wants us to provide her location information at all.
-+ If we pass that test, we get the location information via getSystemService(). This call is relatively inexpensive even if it happens every time the method runs, because we’re just getting a reference to an already running system service.
-+ Get the cached location, if the Location manager has it.
-+ Register with the Location manager to receive location updates. Here, we get to specify how often we’d like to get notifications and for what kind of change in location. In our example, we care only about the general vicinity at a city level, we set these values to 1,000 meters (one kilometer) and 3,600,000 milliseconds (one hour). Note that this is just a hint to the system.
-+ When this activity is no longer visible, we unregister from the Location manager and no longer receive any updates to save battery.
-+ Once the user is about to update her status, we check whether we have a location. If we do, we pack it into required double array and pass it on to setMyLocation() in the Twitter object that Yamba has.
-+ Now we implement the methods that Location manager calls. onLocationChanged() is called whenever there’s a change in location and provides us with the actual new Location object.
-+ This method is called when the provider is no longer available. We can simply remove any updates so that we don’t waste battery.
-+ When the provider we care about is made available, we can request location updates again.
-+ This method is called when there’s a change with the provider in general. In this case, we ignore it.
+% + StatusActivity now implements LocationListener, the interface for callbacks from the Location manager.
+% + Here we define local variables for the Location manager, Location, and our provider.
+% + We get the provider from the Yamba application object, as we explained earlier. And ultimately, the user chooses the provider in the preferences.
+% + We check whether the user wants us to provide her location information at all.
+% + If we pass that test, we get the location information via getSystemService(). This call is relatively inexpensive even if it happens every time the method runs, because we’re just getting a reference to an already running system service.
+% + Get the cached location, if the Location manager has it.
+% + Register with the Location manager to receive location updates. Here, we get to specify how often we’d like to get notifications and for what kind of change in location. In our example, we care only about the general vicinity at a city level, we set these values to 1,000 meters (one kilometer) and 3,600,000 milliseconds (one hour). Note that this is just a hint to the system.
+% + When this activity is no longer visible, we unregister from the Location manager and no longer receive any updates to save battery.
+% + Once the user is about to update her status, we check whether we have a location. If we do, we pack it into required double array and pass it on to setMyLocation() in the Twitter object that Yamba has.
+% + Now we implement the methods that Location manager calls. onLocationChanged() is called whenever there’s a change in location and provides us with the actual new Location object.
+% + This method is called when the provider is no longer available. We can simply remove any updates so that we don’t waste battery.
+% + When the provider we care about is made available, we can request location updates again.
+% + This method is called when there’s a change with the provider in general. In this case, we ignore it.
 
++ 令``StatusActivity``实现``LocationListener``，也就是供LocationManager回调的接口。
++ 定义几个私有变量，分别表示LocationManager、Location对象与位置信息源(Provider)。
++ 获取YambaApplication对象提供的位置信息源(Provider)。使用哪个信息源由用户在首选项中决定。
++ 检查用户是否愿意发布自己的位置信息。
++ 如果检查通过，就使用getSystemService()获取位置信息。这个调用只是获得现有系统服务的引用，因此它的代价并不是很高昂。
++ 如果可以，获取缓存中的位置信息。
++ 注册到LocationManager，订阅位置的更新。在这里，我们可以为位置变化指明一个时间间隔以及位置间距。我们只关心城市级别的位置变化，因此将间距的值定为一千米，时间间隔定为一小时(3,600,000微秒)。留意这只是给系统的一个提示，而非强制。
++ 在用户发布消息时，检查当前是否有位置信息存在。如果有，就把它放在一个double类型的数组里，传给Twitter对象的``setMyLocation()``方法。
++ 实现LocationManager触发的回调方法，``onLocationChanged()``。它在位置变化时触发，以一个新的Location对象作为参数。
++ 这个方法在位置信息源不可用时触发。我们可以在这里注销订阅，以节约电能。
++ 在位置信息源可用时，重新订阅位置信息的更新。
++ 这个方法在位置信息源变化时触发，在此留空。
 
-At this point our Yamba application supports location updates. User can set preferences to indicate what location provider to use, if any.
+% At this point our Yamba application supports location updates. User can set preferences to indicate what location provider to use, if any.
 
-Next we’re going to see another system service: this time the Alarm service, which we’ll use to trigger an Intent service.
+到这里，Yamba已经实现了位置更新的功能。用户可以设置首选项，按自己的意愿选择位置信息源，或者关闭这个功能。
 
+% Next we’re going to see another system service: this time the Alarm service, which we’ll use to trigger an Intent service.
 
+接下来看下另一个系统服务：Alarm服务，我们将通过它来触发Intent服务。
 

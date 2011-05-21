@@ -505,7 +505,7 @@ public class TimelineActivity3 extends Activity {
 
 % Instead of creating a new TimelineAdapter that is a subclass of SimpleCursorAdapter and overriding its bindView() method, we could also attach the business logic directly to the existing SimpleCursorAdapter. This approach is more efficient because we are not replacing what bindView() already does and we do not require a separate custom adapter class.
 
-除去派生一个TimelineAdapter再重载``bindView()``方法之外，我们可以直接为SimpleCursorAdapter添加业务逻辑。这样能够保留原先的``bindView()``所做的工作，而且省了一个类，更加简便。
+除去派生一个TimelineAdapter再重载``bindView()``之外，我们也可以直接为SimpleCursorAdapter添加业务逻辑。这样既能保留原先的``bindView()``所做的工作，又省了一个类，更加简便。
 
 % To attach business logic to an existing SimpleCursorAdapter, use its setViewBinder() method. We will need to supply the method with an implementation of ViewBinder. ViewBinder is an interface that specifies setViewValue(), where the actual binding of a particular date element to particular view happens.
 
