@@ -51,11 +51,12 @@
 首先创建一个资源文件``prefs.xml``——它用来声明首选项界面的内容。创建它的最简单方法就是使用Eclipse的New Android XML工具：可以选择File→New→Android XML File，也可以点击菜单栏上的[images/a-plus.png]按钮。
 
 **Figure 7.1. New Android XML File**
+
 [images/07-NewAndroidXMLFile.png]
 
 % The key is to give the new file the name, in this case prefs.xml and to choose Preference for the type of resource. The tool should automatically suggest that this new file should be created in /res/xml folder and that the root element for the XML file should be PreferenceScreen. Just like discussed before in the section called “Alternative Resources”, we could create alternative versions of this same resource by applying various qualifiers such as screen size and orientation, language and region, etc.
 
-输入文件的名字，也就是``prefs.xml``，选择资源类型为Preference。工具缺省将文件放在``/res/xml``目录下边，且其根节点为``PreferenceScreen``。前面``Alternative Resources``一节中提到，我们可以伟同一资源设置多个不同的资源文件，以适应不同的屏幕尺寸、语言及区域等参数的需要。
+输入文件的名字，也就是``prefs.xml``，选择资源类型为Preference。工具缺省将文件放在``/res/xml``目录下边，且其根节点为``PreferenceScreen``。前面``Alternative Resources``一节中提到，我们可以为同一资源设置多个不同的资源文件，以适应不同的屏幕尺寸、语言及区域等参数的需要。
 
 {NOTE}
 % We’re using Eclipse tools where applicable to get the job done quicker. If you were to use another tool, you’d have to create this file manually and put it in the right folder.
@@ -118,6 +119,7 @@
 要查看实际的xml代码，可以单击窗口地下的标签。
 
 **Figure 7.2. Prefs.xml in Developer-friendly view**
+
 [images/07-prefs_xml.png]
 
 它的内容大致如下：

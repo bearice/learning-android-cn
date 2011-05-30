@@ -7,11 +7,11 @@
 
 % In this chapter, you will learn how to create selection widgets, such as a ListView. But this isn’t just a chapter about user interface elements. We are continuing to deepen our understanding of data from the previous chapter by learning how to read data from the database of statuses and simply output it on the screen as scrollable text first. You will then learn about Adapters in order to connect your database directly with the list. You will create a custom adapter in order to be able to implement some additional functionality. You will link this new activity with your main activity so that the user can both post and read tweets.
 
-在本章，你将学到选择性控件(比如``ListView``)的创建方法。但是这里讨论的重点绝对不在用户界面，而在于进一步巩固我们在上一章中对“数据”的理解，前面是简单地读取数据再输出到屏幕，到这里改为使用Adapter直接将数据库与List绑定在一起。你可以创建一个自己的Adapter，从而添加额外的功能。在这里我们新建一个界面，并将其作为用户发送/阅读消息的主界面。
+在本章，你将学到选择性控件(比如``ListView``)的创建方法。但是这里讨论的重点绝对不在用户界面，而在于进一步巩固我们在上一章中对“数据”的理解——前面是简单地读取数据再输出到屏幕，到这里改为使用Adapter直接将数据库与List绑定在一起。你可以创建一个自己的Adapter，从而添加额外的功能。在此，我们新建一个界面，并将它作为用户发送/阅读消息的主界面。
 
 % By the end of this chapter, your app will be able to post new tweets, as well as pull them from Twitter, store them in local database, and let the user read the statuses in a nice and efficient UI. At that point, your app will have three activities and a service.
 
-在前面我们已经实现了发送消息、从Twitter读取消息、缓存在本地数据库等功能，在本章结束，它将拥有一个美观高效的UI允许用户阅读消息。到这里，你的程序将拥有三个Activity和一个Service。
+前面我们已经实现了发送消息、从Twitter读取消息、缓存在本地数据库等功能，到本章结束，将再实现一个美观高效的UI允许用户阅读消息。到这里，你的程序已拥有三个Activity和一个Service。
 
 
 ==TimelineActivity==
@@ -107,7 +107,7 @@ ScrollView通常不需要使用Java代码控制其行为，因此无需id。
 
 % And just as before, whenever we create a new Java class that is one of those main building blocks—such as Activities, Services, Broadcast Receivers, and Content Providers—we first subclass a base class provided by the Android framework. In case of Activities, that class is Activity.
 
-就像前面一样，我们创建的类只要是基本构件——不管Activity，Service，Broadcast Reciever还是Content Provider——就肯定是基于Android框架提供的基类派生出来的子类。对Activity而言，其基类即``Activity``。
+同前面一样，我们创建的类只要是基本构件——不管Activity，Service，Broadcast Reciever还是Content Provider——就肯定是基于Android框架提供的基类派生出来的子类。对Activity而言，其基类即``Activity``。
 
 % The method we almost universally override in any activity is onCreate(). This is a great place for us to initialize the database. The flip side of the coin is onDestroy(), a good place to clean up anything that we create in onCreate(). In this case, we close the database in onDestroy(). Since we’d like to have the data as fresh as possible, we put the code for querying the database and outputting the data in onResume(), the method called every time this activity is brought up front. Here’s what our code looks like:
 
@@ -181,7 +181,7 @@ public class TimelineActivity1 extends Activity { // #{1}
 % + We use String.format() to format each line of the output. In this example, as we chose TextView for our widget to display the data, we can only display text, in other words, formatted strings. In the later iteration of this code, we’ll improve on this.
 % + We finally append that new line of output to our text view textTimeline so user gets to see it on the screen.
 
-+ 这是个Activity，因此它继承自Android框架提供的``Activity``类。
++ 这是个Activity，因此继承自Android框架提供的``Activity``类。
 + 我们需要访问数据库以得到Timeline的相关数据，而``onCreate()``正是连接数据库的好地方。
 + 通过dbHelper打开数据库文件之后，我们需要它的``getReadableDatabase()``或``getWritableDatabase()``才可以得到实际的数据库对象。在这里我们只需读取Timeline的相关数据，因此按只读方式打开数据库。
 + 我们得记着关闭数据库并释放资源。数据库是在``onCreate()``中打开，因此可以在``onDestroy()``中关闭。注意``onDestroy()``只有在系统清理资源时才被调用。
@@ -250,11 +250,11 @@ public class TimelineActivity1 extends Activity { // #{1}
 
 % We could have also used ListActivity as the parent class for our TimelineActivity. ListActivity is an activity that has a ListView. Either approach would work, but we choose to subclass Activity and create ListView separately to provide step-by-step, incremental learning.
 
-ListActivity即含有一个ListView的Activty，我们完全拿它作为TimelineActivity的基类。在这里我们选择独立实现自己的Activity，再给它加上ListView，是出于学习的考虑。
+ListActivity就是含有一个ListView的Activty，我们完全可以拿它作为TimelineActivity的基类。在此我们独立实现自己的Activity，再给它加上ListView，是出于学习的考虑。
 
 % ListActivity is slightly easier to use in cases where there the builtin ListView is the only widget in the activity. ListActivity also makes it really easy to assign an existing array of elements to its list via the XML binding. However, since we are using a Cursor for data and not an array (because our data comes from the database), and since we do have an additional TextView for the scrollview’s title, the simplicity of ListActivity in this case is outweighed by customization we require.
 
-如果Activity中只有一个ListView，使用ListActivity可以稍稍简化下代码。有XML绑定，为ListActivity添加元素也轻而易举。不过在这里我们使用的数据源是Cursor而非数组(因为我们的数据来自数据库)，而且在前面我们也添加过一个TextView作为ScrollView的标题，已经有了一定程度的自定义，换用ListActivity不合适。
+如果Activity里只有一个ListView，使用ListActivity可以稍稍简化下代码。有XML绑定，为ListActivity添加元素也轻而易举。不过在这里使用的数据源是Cursor而非数组(因为我们的数据来自数据库)，先前也添加过一个TextView作为ScrollView的标题，已经有了一定程度的自定义，换用ListActivity就前功尽弃了。
 
 %TALK: "ListActivity also makes it really easy to assign an existing array of elements to its list via the XML binding."有疑问，为它绑定一个数组，为什么是"via the XML binding"?
 
@@ -264,11 +264,11 @@ ListActivity即含有一个ListView的Activty，我们完全拿它作为Timeline
 
 % There’s one more XML file to take care of. While timeline.xml describes the entire activity, we also need to specify what a single row of data looks like—tht is, a single line item on the screen that will show information such as who said what and when.
 
-还有一个XML文件需要考虑。有``timeline.xml``描述整个Activity的布局，我们也需要描述单行数据的显示方式——也就是在屏幕上显示的单条消息，谁在什么时间说了什么。
+还有一个XML文件需要考虑。``timeline.xml``描述整个Activity的布局，我们也需要描述单行数据的显示方式——也就是屏幕上显示的单条消息，谁在什么时间说了什么。
 
 % The easiest way to do that is to create another XML file just for that row. To do that, as for any new XML file, we use the Android New XML File dialog window: File→New→Android New XML File. Let’s name this file row.xml and select Layout for the type.
 
-最简单的方法就是给这些行单独创建一个XML文件。同前面新建的XML文件一样，选择File→New→Android New XML File打开Android New XML File对话框，命名为row.xml，type一项选择Layout。
+最简单的方法是给这些行单独创建一个XML文件。同前面新建的XML文件一样，选择File→New→Android New XML File打开Android New XML File对话框，命名为row.xml，type一项选择Layout。
 
 % For this layout, we chose one LinearLayout going vertically and having two lines. The first line consists of the user and timestamp, and the second contains the actual status message. Notice that the first line uses another LinearLayout to position the user and timestamp horizontally next to each other.
 
@@ -276,7 +276,7 @@ ListActivity即含有一个ListView的Activty，我们完全拿它作为Timeline
 
 % The row of data in the ListView is represented by a custom layout defined in row.xml file.
 
-ListView中单行的布局在文件``row.xml``中定义。
+ListView中单行的Layout定义在文件``row.xml``。
 
 
 % ===Creating an Adapter in TimelineActivity.java===
@@ -284,11 +284,12 @@ ListView中单行的布局在文件``row.xml``中定义。
 
 % Now that we have the XML files sorted out, we are ready to update the Java code. First we need to create the adapter. Adapters generally come in two flavors: those that represent array data and those that represent cursor data. Since our data is coming from the database, we are going to use the cursor-based adapter. One of the simplest of those is SimpleCursorAdapter.
 
-现在我们已经有了相应的XML文件，接下来修改Java代码，把Adapter创建出来。Adapter通常有两种形式：表示来自数组的数据，或者表示来自Cursor的数据。在这里我们的数据来自数据库，因此选择基于Cursor的Adapter。其中最简单的当数``SimpleCursorAdapter``。
+已经有了相应的XML文件，接下来修改Java代码，把Adapter创建出来。Adapter通常有两种形式：一种基于数组(Array)，一种基于Cursor。这里我们的数据来自数据库，因此选择基于Cursor的Adapter。而其中最简单的又顶数``SimpleCursorAdapter``。
 
 % SimpleCursorAdapter requires us to describe a single row of data (which we do in row.xml), the data (a cursor in our case) and the mapping for a single record of data to the single row in the list. The last parameter maps each cursor column to a view in the list.
 
-``SimpleCursorAdapter``需要我们给出单行数据显示方式的描述（在row.xml中已经做好了），数据（在这里是一个Cursor），以及单个record到List中单行的映射方法。最后的这个参数将Cursor的每列映射为List中的一个View。
+``SimpleCursorAdapter``需要我们给出单行数据的显示方式（这在row.xml中已经做好了）、数据（在这里是一个Cursor）
+、以及record到List中单行的映射方法。最后的这个参数负责将Cursor的每列映射为List中的一个View。
 
 **Example 10.5. TimelineActivity.java, version 2**
 {CODE}
@@ -372,11 +373,11 @@ public class TimelineActivity2 extends Activity {
 
 % TimelineAdapter is our custom adapter. Although SimpleCursorAdapter did a straightforward mapping of data in the database to views on the screen, we had an issue with the timestamp. The job of TimelineAdapter is to inject some business logic to convert Unix timestamp to relative time. We can discover that the method in SimpleCursorAdapter`that creates a displayable view from input data is `bindView(), so we’ll override that method and ask it to massage the data before it is displayed.
 
-TimelineAdapter即我们自定义的Adapter。虽说SimpleCursorAdapter映射起数据来倒也直白，但是我们在这里有个时间戳（timestamp）需要特殊处理。TimelineAdapter的工作即与之有关：加入将Unix时间戳转换为相对时间的业务逻辑。我们可以知道，``SimpleCursorAdapter``是在``bindView()``调用中处理View的显示，因此我们将重载这个方法，在数据显示出来之前处理一下。
+TimelineAdapter就是我们自定义的Adapter。虽说SimpleCursorAdapter映射起数据来倒也直白，但是我们在这里还有个时间戳（timestamp）需要特殊处理。这也属于TimelineAdapter的工作：加入业务逻辑，将Unix时间戳转换为相对时间。可知``SimpleCursorAdapter``是在``bindView()``里面处理View的显示，因此重载这个方法，在数据显示之前处理一下即可。
 
 % Typically, if you are not sure what method to override, look at the online documentation for that particular system class that you are modifying. In this case, that’d be http://developer.android.com/reference/android/widget/SimpleCursorAdapter.html.
 
-一般来说，若不清楚类里需要重载的函数是哪个，看下相关的官方文档即可。在这里，可以参阅http://developer.android.com/reference/android/widget/SimpleCursorAdapter.html。
+一般来讲，若不清楚类里需要重载的函数是哪个，查阅相关的官方文档即可。在这里，可以参阅http://developer.android.com/reference/android/widget/SimpleCursorAdapter.html。
 
 **Example 10.6. TimelineAdapter.java**
 {CODE}
@@ -423,19 +424,19 @@ public class TimelineAdapter extends SimpleCursorAdapter { // #{1}
 % + Next, we find the specific TextView in the row.xml file.
 % + Finally, we set the value of textCreatedAt to the relative time since the timestamp. To do this, we use Android SDK method DateUtils.getRelativeTimeSpanString().
 
-+ 创建我们自定义的Adapter。基于Android提供的Adapter派生一个新类，这里我们选择前面用到的SimpleCursorAdapter。
++ 创建我们自定义的Adapter。基于Android提供的Adapter派生一个新类，这里选择前面用到的SimpleCursorAdapter。
 + 跟上个例子一样，这个常量用以指明数据库中我们感兴趣的列。
 + 这个常量用以指明数据列对应View的ID。
 + 因为是新定义的类，因此需要一个构造函数。在这里仅仅通过super调用父类的构造函数即可。
 + 这里只重载了一个方法，即``bindView()``。这个方法在映射每行数据到View时调用，Adapter的主要工作在这里进行了。要重用SimpleCursorAdapter原有的映射操作(数据到View)，记得先调用super.bindView()。
 + 覆盖默认针对timestamp的映射操作，需要先得到数据库中timestamp的值。
-+ 然后找到对应的TextView，其定义在``row.xml``。
++ 然后找到对应的TextView，它的定义在``row.xml``。
 + 最后，依据timestamp的值设置``textCreatedAt``的值为相对时间。通过``DateUtils.getRelativeTimeSpanString()``。
 
 
 % At this point, we can further simplify our TimelineActivity class, because we moved some of the adapter details to TimelineAdapter.
 
-前面将Adapter相关的一些细节移入了``TimelineAdapter``，因此我们可以进一步简化``TimelineActivity``类。
+前面将Adapter相关的一些细节移入了``TimelineAdapter``，因此可以进一步简化``TimelineActivity``类。
 
 **Example 10.7. TimelineActivity.java, version 3**
 {CODE}
@@ -505,7 +506,7 @@ public class TimelineActivity3 extends Activity {
 
 % Instead of creating a new TimelineAdapter that is a subclass of SimpleCursorAdapter and overriding its bindView() method, we could also attach the business logic directly to the existing SimpleCursorAdapter. This approach is more efficient because we are not replacing what bindView() already does and we do not require a separate custom adapter class.
 
-除去派生一个TimelineAdapter再重载``bindView()``之外，我们也可以直接为SimpleCursorAdapter添加业务逻辑。这样既能保留原先的``bindView()``所做的工作，又省了一个类，更加简便。
+除去派生一个TimelineAdapter再重载``bindView()``之外，我们也可以直接为SimpleCursorAdapter添加业务逻辑。这样既能保留原先的``bindView()``所做的工作，又省去一个类，更加简便。
 
 % To attach business logic to an existing SimpleCursorAdapter, use its setViewBinder() method. We will need to supply the method with an implementation of ViewBinder. ViewBinder is an interface that specifies setViewValue(), where the actual binding of a particular date element to particular view happens.
 
@@ -517,7 +518,7 @@ public class TimelineActivity3 extends Activity {
 
 % In our final iteration of TimelineAdapter, we create a custom ViewBinder as a constant and attach it to the stock SimpleCursorAdapter.
 
-如下即针对``TimelineAdapter``的最后一轮迭代，我们实现一个自定义的``ViewBinder``作为常量，并把它交给``SimpleCursorAdapter``。
+如下即针对``TimelineAdapter``的最后一轮迭代，在此实现一个自定义的``ViewBinder``作为常量，并把它交给``SimpleCursorAdapter``。
 
 **Example 10.8. TimelineActivity.java with ViewBinder**
 {CODE}
@@ -577,7 +578,7 @@ public class TimelineActivity3 extends Activity {
 
 % Now that we have the TimelineActivity, it would make sense to make it "the main" activity for Yamba application. After all, users are more likely to want to check what their friends are doing than to update their own status.
 
-好，现在我们有了``TimelineActivity``，大可让它作为Yamba程序的“主界面”。毕竟比起自言自语，用户更喜欢关注朋友的动态。
+现在有了``TimelineActivity``，大可让它作为Yamba程序的“主界面”。毕竟比起自言自语，用户更喜欢关注朋友的动态。
 
 % To do that, we need to update the manifest file. As usual, we’ll list TimelineActivity within the <activity> element in the AndroidManifest.xml file, just as we added preference activity to the manifest file in the section called “Update Manifest File”:
 
@@ -646,7 +647,7 @@ public class TimelineActivity3 extends Activity {
 
 % Now, when the user runs our application, the Timeline screen will show up first. But unless the user knows she should set up the preferences and start the service, there will be no data and very little hand holding telling her what to do.
 
-好，现在用户启动我们的程序就会首先看到Timeline界面。但是用户必须先设置个人选项并启动Service，否则就没有消息显示。这很容易让人摸不着头脑。
+现在用户启动程序就会首先看到Timeline界面。但是用户必须先设置个人选项并启动Service，否则就没有消息显示。这很容易让人摸不着头脑。
 
 % One solution to that would be to check whether preferences exist, and if they do not, redirect the user to the Preference activity with a message what to do next.
 
@@ -700,11 +701,11 @@ protected void onCreate(Bundle savedInstanceState) {
 
 % While we’re at it, instead of having Start Service and Stop Service menu buttons, it would be nice to provide just one button that toggles between Start and Stop. To do that, we’ll change our menu and add onMenuOpened() to the base activity to dynamically update the title and images for this toggle item.
 
-在这个地方分别提供开/关两个按钮，总不如只留一个按钮做开关更好。因此需要修改菜单，并为``BaseActivity``添加一个``onMenuOpened()``方法用以动态控制按钮文本以及图标的变化。
+在这个地方分别提供开/关两个按钮，不如只留一个按钮做开关。因此需要修改菜单，并为``BaseActivity``添加一个``onMenuOpened()``方法来动态控制按钮文本以及图标的变化。
 
 % First, we’ll update the menu.xml file to include our new toggle menu item. At the same time, we’ll remove the Start Service and Stop Service items because our toggle feature makes them obsolete.
 
-首先修改//munu.xml//文件，添加新的菜单项，也就是开关按钮。这时原先启动/关闭Service的两个按钮已经没必要了，删除即可。
+首先修改//munu.xml//文件，添加新的菜单项，也就是开关按钮。到这里原先启动/关闭Service的两个按钮已经没必要了，删除即可。
 
 **Example 10.10. res/menu/menu.xml[]**
 {CODE}

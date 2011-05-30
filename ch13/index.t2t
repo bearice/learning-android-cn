@@ -24,7 +24,7 @@
 
 % To build this example, we’ll create an activity that will get the Sensor service and register for updates from a particular sensor. Next, we’ll build the Rose that will rotate on the screen based on the sensor readings.
 
-在例子中，我们先创建一个Activity，由它来访问Sensor服务，订阅来自传感器的输出。然后自定义一个表盘控件(Rose)，使之可以依据从传感器得到的数据旋转一定的角度。
+在例子中，我们先创建一个Activity，由它来访问Sensor服务，订阅来自传感器的输出。然后自定义一个表盘控件(Rose)，使之可以依据传感器端得到的数据旋转一定的角度。
 
 %NOTE: Compass Rose,表盘。翻成“玫瑰”就笑话大了。
 
@@ -33,7 +33,7 @@
 
 % To get any system service, issue the getSystemService() call. This returns a Manager object representing that system service, which you then use to access the service. Most system services work on some sort of publish/subscribe mechanism. In other words, you generally register your app for notifications from that service and provide your own callbacks methods that the service will invoke when an event happens. To do this in Java, create a Listener that implements an interface so that the service can call the callback methods.
 
-使用系统服务，就调用``getSystemService()``。它返回一个表示系统服务的Manager对象，随后凭它就可以访问系统服务了。系统服务大多都是发布/订阅的接口，使用起来大约就是准备一个回调方法，将你的程序注册到相应的系统服务，然后等它的通知。在Java中的通行做法是，实现一个内含回调方法的侦听器(Listener)，并把它传递给系统服务。
+使用系统服务，就调用``getSystemService()``。它返回一个表示系统服务的Manager对象，随后凭它就可以访问系统服务了。系统服务大多都是发布/订阅的接口，使用起来大约就是准备一个回调方法，将你的程序注册到相应的系统服务，然后等它的通知。而在Java中的通行做法是，实现一个内含回调方法的侦听器(Listener)，并把它传递给系统服务。
 
 % Keep in mind that requesting notifications from a system service can be costly in terms of the battery usage. For example, getting a GPS signal or processing sensor updates takes a lot of energy from the device. To preserve the battery, we typically want to be doing the work of processing updates only when the user is looking at the activity itself. In terms of the Activity lifecycle (see the section called “Activity Lifecycle”), this means we want to get the notifications only while in the Running state (see the section called “Running State”).
 
@@ -192,7 +192,7 @@ public class Compass extends Activity implements SensorEventListener { //#{1}
 {NOTE}
 % The way a device reports sensor data can be very erratic, coming at uneven intervals. There are ways to suggest to the system how frequently we’d like the sensor updates, but these are just suggestions and not a guarantee. Also, sensors are not supported by the emulator, so to really test your application, you’ll need a physical device with support for orientation sensor. Most Android phones have that support.
 
-传感器输出的数据流可能是不稳定的，接到数据的时间间隔不可预知。我们可以为传感器提供一个建议的时间间隔，但只是建议，不是强制。而且仿真器没有提供传感器的支持，因此要测试这个程序就需要一台拥有方向传感器的真机。好在多数Android手机都有这一功能。
+传感器输出的数据流可能是不稳定的，接到数据的时间间隔不可预知。我们可以为传感器提供一个建议的时间间隔，但只是建议，不是强制。另外仿真器没有提供传感器的支持，要测试这个程序就需要一台拥有方向传感器的真机。好在多数Android手机都有这一功能。
 {/NOTE}
 
 % ===Custom Rose Widget===
@@ -252,7 +252,7 @@ public class Rose extends ImageView { //#{1}
 % + setDirection() is called by the Compass activity to update the direction of the rose based on the values that sensor manager reported.
 % + Calling invalidate() on a view marks it for redrawing, which happens later via a call to onDraw().
 
-+ 我们的控件必须是View的子类。不过它大体就是一张图片，可以让它继承自ImageView，得以使用现有的功能。
++ 我们的控件必须是View的子类。它大体就是一张图片，因此可以让它继承自ImageView，得以使用现有的功能。
 + ImageView本身已有设置图片内容的方法，我们需要做的就是为它指明相应的图片。留意，compassrose.jpg文件在/res/drawable之下。
 + ``onDraw()``由Layout Manager负责调用。它会传递过来一个Canvas对象，你可以在这里执行自定义的绘制操作。
 + 已获得Canvas对象，可以计算自身的宽高。
@@ -272,7 +272,7 @@ public class Rose extends ImageView { //#{1}
 
 % Now that you have seen how the sensor manager works, we can look at the Location API, another system service provided by Android. Just like sensors, the Location API is supported via the Location manager. And just like sensors, we get the Location manager via a getSystemService() call.
 
-前面已对SensorManager的工作方式有所了解，接下来看下Location服务的API。同Sensor服务类似，使用Location服务是通过LocationManager，而且也是通过getSystemService()获取它的引用。
+前面已对SensorManager的工作方式有所了解，接下来看下Location服务的API。同Sensor服务类似，Location服务是通过LocationManager进行管理，而且也是通过getSystemService()获取它的引用。
 
 % Once we have access to the Location service, we need to register a Location listener with it so the service can call back when there’s a change in location. Again, we’ll do this by implementing a Location listener interface.
 
@@ -778,9 +778,421 @@ public class StatusActivity extends BaseActivity implements OnClickListener,
 
 % At this point our Yamba application supports location updates. User can set preferences to indicate what location provider to use, if any.
 
-到这里，Yamba已经实现了位置更新的功能。用户可以设置首选项，按自己的意愿选择位置信息源，或者关闭这个功能。
+到这里，Yamba已经实现了位置更新的功能。用户可以设置首选项，按自己的意愿选择位置信息源，也可以关闭这个功能。
 
 % Next we’re going to see another system service: this time the Alarm service, which we’ll use to trigger an Intent service.
 
-接下来看下另一个系统服务：Alarm服务，我们将通过它来触发Intent服务。
+接下来看下另一个系统服务：Alarm服务，我们将通过它来触发IntentService。
+
+
+==IntentService==
+
+% Now that we understand how system services work, we can use another service concept to substantially simplify our Updater service. If you recall, our Updater service is an always-on, always-running service that periodically goes to the cloud and pulls down the latest timeline updates. Since by default a service runs in the same thread as the User Interface (i.e., runs on the UI thread), we had to create a separate thread called Updater within the Updater service that is responsible for the actual network connection. We then started this thread in the service’s onCreate() and onStartCommand() methods. We ran it forever until onDestroy() got called. However, our Updater thread would sleep between the updates for some amount of time. All this worked well and we explained it all in Chapter 8, Services. But there’s a simpler way to accomplish this task.
+
+我们已对系统服务的工作方式有所了解，接下来可以利用系统服务的有关特性，简化UpdaterService的实现。回忆下前面的内容：UpdaterService会一直运行，定期从服务端抓取timeline的更新。由于Service默认与UI在同一个线程(或者说，都在UI线程中执行)中执行，为避免网络操作造成界面的响应不灵，我们需要新建一个Updater线程，并将UpdaterService放在里面独立执行。然后在Service的``onCreate()``与``onStartCommand()``中让线程开始，并一直执行下去，直到``onDestroy()``为止。另外，Updater会在两次更新之间休眠一段时间。这是第八章所讲的内容，但在这里，我们将介绍更简便的实现方法。
+
+% An IntentService is a subclass of Service and is also activated by a startService() intent. It differs from a regular service by running on its own worker thread, so it doesn’t block our precious UI thread. Also, once it’s done, it’s done. This means it runs only once, but we will use an Alarm later to run it periodically. Any call to the intent’s startService() will recreate it.
+
+IntentService是Service的一个子类，也是通过``startService()``发出的intent激活。与一般Service的不同在于，它独立在一个工人线程(worker thread)中执行，因此不会阻塞UI线程。另一点，它一旦执行完毕，生命周期也就结束了。它只能执行一次，不过只要接到``startService()``发出的Intent，它就会新建一个生命周期，从而实现重新执行。在此，我们可以利用Alarm实现定期执行。
+
+% Unlike a regular service, we don’t override onCreate(), onStartCommand(), onDestroy(), and onBind(), but rather a new onHandleIntent() method. This method is where we want to put our code that goes online and handles the network updates. Also, unlike a regular Service, an IntentService has a default constructor that needs to be provided.
+
+同一般的Service不同，我们不需要重载``onCreate()``、``onStartCommand()``、``onDestroy()``及``onBind()``，而是重载一个``onHandleIntent()``方法。网络操作的相关代码就放在这里。另外IntentService需要我们重载一个构造函数，这也是与一般Service不同的地方。
+
+% In short, instead of creating a separate thread and delaying network updates in regular Service, we can simplify our code by using an IntentService to run status updates on its worker thread. Now we just need something to periodically wake up our IntentService so it knows it needs to handle the updating job. For that, we’ll use the Alarm manager, another system service.
+
+简言之，除了创建一个独立线程使用普通的Service之外，我们可以使用IntentService在它自己的工人线程中实现同样的功能，而且更简单。到现在剩下的只是定期唤醒它，这就引出了AlarmManager，另一个系统服务。
+
+% The key to Intent Services is the onHandleIntent() method, a block of code that will run on a separate thread.
+
+以上的原理就在于，IntentService的``onHandleIntent()``会在独立的线程中执行。
+
+**Example 13.9. UpdaterService.java based on IntentService**
+{CODE}
+package com.marakana.yamba8;
+
+import android.app.IntentService;
+import android.content.Intent;
+import android.util.Log;
+
+public class UpdaterService1 extends IntentService { // #{1}
+  private static final String TAG = "UpdaterService";
+
+  public static final String NEW_STATUS_INTENT = "com.marakana.yamba.NEW_STATUS";
+  public static final String NEW_STATUS_EXTRA_COUNT = "NEW_STATUS_EXTRA_COUNT";
+  public static final String RECEIVE_TIMELINE_NOTIFICATIONS = "com.marakana.yamba.RECEIVE_TIMELINE_NOTIFICATIONS";
+
+  public UpdaterService1() { // #{2}
+    super(TAG);
+
+    Log.d(TAG, "UpdaterService constructed");
+  }
+
+  @Override
+  protected void onHandleIntent(Intent inIntent) { // #{3}
+    Intent intent;
+    Log.d(TAG, "onHandleIntent'ing");
+    YambaApplication yamba = (YambaApplication) getApplication();
+    int newUpdates = yamba.fetchStatusUpdates();
+    if (newUpdates > 0) { // #{4}
+      Log.d(TAG, "We have a new status");
+      intent = new Intent(NEW_STATUS_INTENT);
+      intent.putExtra(NEW_STATUS_EXTRA_COUNT, newUpdates);
+      sendBroadcast(intent, RECEIVE_TIMELINE_NOTIFICATIONS);
+    }
+  }
+}
+{/CODE}
+
+% + We now subclass IntentService instead of its parent Service.
+% + A default constructor is needed. This a good place to give your service a name, which can be relevant for example in TraceView, to be able to identify various threads.
+% + This is the key method. The work inside of it takes place on a separate worker thread and doesn’t interfere with the main UI thread.
+% + The rest of the code in this section broadcasts the change as described in the section called “Broadcasting Intents”.
+
++ 将基类设为IntentService。
++ 这里需要一个构造函数。可以在这里给Service一个命名，以便于在观测工具(比如TraceView)中，辨认相应的线程。
++ 这是关键的方法。其中的代码会在独立的工人线程中执行，因此不会影响到主UI线程的响应。
++ 下面将所做的变化广播出去，具体可见"Broadcasting Intents"一节。
+
+%TALK: "Broadcasting Intent"需改为中文。
+
+% At this point, our service is updated. An easy way to test it would be to change the Start/Stop Service menu item to a Refresh button. To do that, update your menu.xml file to have this new item, and change its handling in our BaseActivity class.
+
+如此，我们更新了原先的Service。要测试它，不妨先把Start/Stop Service的按钮改为Refresh按钮。为此需要修改``menu.xml``添加这个新条目，然后在BaseActivity类中修改它的处理方法。
+
+**Example 13.10. res/xml/menu.xml**
+{CODE}
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+  ...
+  <item android:title="@string/titleRefresh" android:id="@+id/itemRefresh"
+    android:icon="@android:drawable/ic_menu_rotate"></item>
+</menu>
+{/CODE}
+
+% I’ve replaced itemToggle with itemRefresh so that the names make more sense. We must also add the appropriate string to the strings.xml file.
+
+把``itemToggle``改为``itemRefresh``，这样更靠谱些。同时必须更新``string.xml``中对应的条目。
+
+% Now, we need to update our BaseActivity.java file to handle this new Refresh button. To do that, we change the appropriate case statement in onOptionsItemSelected(). Additionally, we can now remove onMenuOpened() altogether, since we no longer need to change the state of that toggle button—it doesn’t exist any more.
+
+接下来修改``BaseActivity.java``文件，添加这个按钮的处理方法，也就是修改``onOptionsItemSelected()``中对应的case语句。同时``onMenuOpened()``已经没有用处了，删掉即可。
+
+**Example 13.11. BaseActivity.java with support for Refresh button**
+{CODE}
+public class BaseActivity extends Activity {
+  ...
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+
+    switch (item.getItemId()) {
+    ...
+    case R.id.itemRefresh:
+      startService(new Intent(this, UpdaterService.class)); // #{1}
+      break;
+    ...
+    }
+    return true;
+  }
+  ...
+}
+{/CODE}
+
+% + We simply fire off an intent to start our Updater service.
+
++ 简单地发送一个Intent，启动UpdaterService。
+
+% So our options menu now has a Refresh button that will start a service and have it update the status data in the background. We can use this button to test whether this feature works well.
+
+这样选项菜单里就多了一个Refresh按钮，可以启动一个Service让它在后台更新消息。测试的话，点击这个按钮就好。
+
+% Another way to accomplish the same same functionality would have been to use an AsyncTask. In fact, AsyncTask would probably have been slightly more appropriate in this case from a design point of view, to keep all the functionality at the UI level, but we’ve already discussed it in the section called “Threading in Android”. In this case, we wanted to demonstrate quickly how an IntentService is started, and as you can see, it works just like any other service.
+
+实现同样的功能还有一个选择，那就是AsyncTask，它使得相关功能放在UI层面(不需要线程)即可全部实现。在设计层面讲，使用AsyncTask甚至可能比IntentService更加合适。前面我们曾提到过一次AsyncTask，但当时讨论的重点在Android的线程机制；在这里，我们讨论的重点又在系统服务的用法。读者对此应有所了解。
+
+%TALK: 在此意译，感觉大体意思是“AsyncTask是个有用的东西，但是机缘不巧没来的及说它”。
+
+% Next we want to have our Updater service triggered periodically. To do that, we’ll use the Alarm manager.
+
+接下来需要做的，就是定时触发UpdaterService。因此引入AlarmManager。
+
+===Alarms===
+
+% The previous reincarnation of our Updater service had a regular service that was always running in a loop, where it pulled network updates, then slept for some amount of time and and looped again. With IntentService, we turned the process around. Our Updater service now runs only once when fired up by the startService() intent. So, now we need a way to have something fire these intents every so often.
+
+在重构之前，UpdaterService是一个普通的Service，一直处于运行状态，每执行一次网络操作就休眠一段时间然后循环；重构之后改用了IntentService，每收到startService()发出的Intent只会执行一次，随即结束。因此，我们需要一个办法定期发送Intent来启动它。
+
+% Android comes with yet another system service just for that. The Alarm service, represented by the AlarmManager class, lets you schedule certain things to happen at certain times. The time can be recurring, so that makes it easy to have our service be started every so often. And the event that happens is an intent, or more precisely a PendingIntent.
+
+这就引出了Android的另一个系统服务——Alarm服务。它由AlarmManager控制，允许你在一定时间之后触发某操作。它可以是一次结束，也可以是周期重复，因此可以利用它来定时启动我们的Service。Alarm服务通知的事件都是以Intent形式发出，或者更准确一点，以PendingIntent的形式。
+
+%NOTE: PendingIntent在第四五章似乎提到过，留意。
+
+====PendingIntent====
+
+% A PendingIntent is a combination of an intent with an action to be executed on it. This is typically used for future intents that you are passing to someone else. Create a Pending Intent via one of the static methods in the PendingIntent class. Since there are only handful of ways to send an intent, there are only a handful of static methods to create Pending Intents along with their actions. If you recall, you typically use an intent to start an activity via startActivity(), start a service via startService(), or send a broadcast via sendBroadcast(). So to create a Pending intent that will execute startService() with our intent in the future, we call the getService() static method.
+
+PendingIntent是Intent与某操作的组合。一般是把它交给他人，由他人负责发送，并在未来执行那项操作。发送Intent的方法并不多，创建PendingIntent的方法也是如此——只有PendingIntent类中的几个静态方法，在创建的同时也将相关的操作绑定了。回忆一下，同为发送Intent，启动Activity靠startActivity()，启动Service靠startService()，发送广播靠sendBroadcast()，而创建对应于startService()操作的PendingIntent，靠它的静态方法getService()。
+
+% Now that we know how to leave an intent for someone to execute later and how to tell an Alarm service to do that over and over periodically, we need to choose where to implement this feature. One good place is our existing Boot Receiver. But before we do that, we’ll add another preference option to our preferences
+
+已经知道了如何交代他人发送Intent，也知道了如何通过Alarm服务实现定期执行。接下来就是找个合适的地方，将两者结合起来。而这个地方就是BootReceiver。
+
+在编写相关的代码之前，我们先增加一条首选项：
+
+% ===Adding Interval to Preferences===
+===添加Interval选项===
+
+**Example 13.12. strings.xml with arrays for interval options**
+{CODE}
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  ...
+
+  <!-- #{1} -->
+  <string-array name="interval">
+    <item>Never</item>
+    <item>Fifteen minutes</item>
+    <item>Half hour</item>
+    <item>An hour</item>
+    <item>Half day</item>
+    <item>Day</item>
+  </string-array>
+
+  <!-- #{2} -->
+  <string-array name="intervalValues">
+    <item>0</item>
+    <item>900000</item>
+    <item>1800000</item>
+    <item>3600000</item>
+    <item>43200000</item>
+    <item>86400000</item>
+  </string-array>
+</resources>
+{/CODE}
+
+% + These will be the names of options that show up in the list.
+% + These will be their corresponding values.
+
++ 不同的选项名。
++ 选项名对应的值。
+
+
+% + Now that we have these arrays, we can update prefs.xml to add our list of intervals.
+
+有了这两列数组，接下来修改prefs.xml添加Interval(时间间隔)选项。
+
+**Example 13.13. prefs.xml with support for interval preference setting**
+
+{CODE}
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+  ...
+  <!-- #{1} -->
+  <ListPreference android:entryValues="@array/intervalValues"
+    android:summary="@string/summaryUpdaterInterval"
+    android:title="@string/titleUpdaterInterval"
+    android:entries="@array/interval" android:key="interval" />
+</PreferenceScreen>
+{/CODE}
+
+% + This is the list preference. It shows as a list of entities as represented by android:entities. The value associated with it comes from android:entityValues.
+
++ 这个选项条目是ListPreference。它显示一列单选选项，其中的文本由android:entries表示，对应的值由android:entryValues表示。
+
+%TALK: 原文错误：entityValues该是entryValues，entities该是entries。
+
+% Now we are ready to update the Boot receiver and add the Alarm service alarms.
+
+接下来修改BootReceiver，添加Alarm服务相关的代码。
+
+% ===Updating Boot Receiver===
+===修改BootReceiver===
+
+% If you recall from the section called “BootReceiver”, a Boot Receiver wakes up every time the device is booted up. So far, our Boot Receiver just starts our Updater service. That was fine when the Updater service was always on and running. But now, it would cause only a one-time execution of the Updater.
+
+回忆下前面的"BootReceiver"一节。BootReceiver在设备开机时唤醒，先前我们利用这一特性，在这里启动UpdaterService，而UpdaterService将一直处于运行状态。但是到现在，UpdaterService会一次性退出，这样已经不再适用了。
+
+% What we can do instead is use the Alarm service to periodically fire intents to start our Updater service. To do that, we’ll get the reference to the Alarm manager, create a Pending intent to be started each time, and set up the interval at which to start the updates. As our Pending intent is to start a service, we’ll use PendingIntent.getService() call, as described in the section called “Pending Intents”.
+
+适用的是，使用Alarm服务定时发送Intent启动UpdaterService。为此，我们需要得到AlarmManager的引用，创建一个PendingIntent负责启动UpdaterService，并设置一个时间间隔。要PendingIntent启动Service，就调用PendingIntent.getService()。
+
+**Example 13.14. BootReceiver.java updated with Alarm service calls to periodically start Updater service**
+{CODE}
+package com.marakana.yamba8;
+
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+
+public class BootReceiver extends BroadcastReceiver {
+
+  @Override
+  public void onReceive(Context context, Intent callingIntent) {
+
+    // Check if we should do anything at boot at all
+    long interval = ((YambaApplication) context.getApplicationContext())
+        .getInterval(); // #{1}
+    if (interval == YambaApplication.INTERVAL_NEVER)  // #{2}
+      return;
+
+    // Create the pending intent
+    Intent intent = new Intent(context, UpdaterService.class);  // #{3}
+    PendingIntent pendingIntent = PendingIntent.getService(context, -1, intent,
+        PendingIntent.FLAG_UPDATE_CURRENT); // #{4}
+
+    // Setup alarm service to wake up and start service periodically
+    AlarmManager alarmManager = (AlarmManager) context
+        .getSystemService(Context.ALARM_SERVICE); // #{5}
+    alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, System
+        .currentTimeMillis(), interval, pendingIntent); // #{6}
+
+    Log.d("BootReceiver", "onReceived");
+  }
+
+}
+{/CODE}
+
+% + Our Yamba application has a simple getter method to return the value of the interval preference.
+% + We check user’s preference to set how often to check for network updates. A value of INTERVAL_NEVER (zero) means not to check for updates at all.
+% + This is the intent that will run to start our Updater service.
+% + Here we wrap that intent with the action to start a service and get a new Pending intent. The value of -1 is for a request code that is currently not being used. The flag in the final argument indicates that whether this intent already exists. We need just to update it and not recreate it.
+% + We get the reference to AlarmManager via the usual getSystemService() call.
+% + setInexactRepeating() specifies that we’d like this pending intent to be sent repeatedly, but we’re not concerned with being exactly on time. The ELAPSED_REALTIME flag will keep the alarm from waking up the phone just to run the updates. The other parameters are the current time as the start time for this alarm, our desired interval, and the actual Pending intent to execute when the alarm runs.
+
+
++ ``YambaApplication``对象中有个简单的getter方法，可以返回interval选项的值。
++ 检查用户设置，如果interval的值为``INTERVAL_NEVER``(零)，那就不检查更新。
++ 这个Intent负责启动UpdaterService。
++ 将Intent与启动Service的操作绑定起来，创建新的PendingIntent。``-1``表示没有使用requestCode。最后一个参数表示这个Intent是否已存在，我们不需要重新创建Intent，因此仅仅更新(update)当前已有的Intent。
++ 通过``getSystemService()``获取AlarmManager的引用。
++ ``setInexactRepeating()``表示这个PendingIntent将被重复发送，但并不关心时间精确与否。ELAPSED_REALTIME表示Alarm仅在设备活动时有效，而在待机时暂停。后面的参数分别指Alarm的开始时间、interval、以及将要执行的PendingIntent。
+
+
+% You can now install our application on a device (and thus install the updated Boot Receiver), then reboot the device. Once the device starts, the logcat should indicate that the Boot receiver ran and started the Updater service by posting a Pending intent to the Alarm service.
+
+接下来可以将我们的程序安装在设备上(这就安装了更新BootReceiver)，并重启设备。在设备开机时，logcat即可观察到BootReceiver启动，并通过Alarm服务启动了UpdaterService。
+
+
+% ==Sending Notifications==
+==发送通知==
+
+% Here’s an opportunity to introduce yet another system service—this time the Notification service. We worked hard to have our Updater service run in the background and get the latest status updates, but what’s the point of all this work if the user is not made aware that there’s something new to look at? A standard Android UI approach to this would be to post a notification to the notification bar up at the top of the screen. To do that, we use Notification system service.
+
+到这里再体验一个系统服务——那就是Notification服务。前面我们花了大功夫让UpdaterService在后台运行，并定期抓取消息的最新更新。但是如果用户压根注意不到它，那么这些工作还有什么意义？Android的标准解决方案就是，在屏幕顶部的通知栏弹出一个通知。而实现这一功能，需要用到Notification服务。
+
+% We’re going to make the Updater service responsible for posting the notifications, since it is the part of the app that knows of new statuses in the first place. To do that, we’ll get the reference to the system Notification service, create a new Notification object, and update it with the latest information. The notification itself will contain a Pending Intent so that when the user clicks on it, it takes the user to Timeline Activity to view the latest status updates.
+
+收到新消息，由UpdaterService首先得知，因此我们把通知的功能加入到UpdaterService里面：先获取Notification服务的引用，创建一个Notification对象，然后将收到消息的相关信息作为通知交给它。而Notification对象本身带有一个PendingIntent，当用户点击通知的时候，可以将界面转到TimelineActivity。
+
+**Example 13.15. UpdaterService.java with Notifications**
+
+{CODE}
+package com.marakana.yamba8;
+
+import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.util.Log;
+
+public class UpdaterService extends IntentService {
+  private static final String TAG = "UpdaterService";
+
+  public static final String NEW_STATUS_INTENT = "com.marakana.yamba.NEW_STATUS";
+  public static final String NEW_STATUS_EXTRA_COUNT = "NEW_STATUS_EXTRA_COUNT";
+  public static final String RECEIVE_TIMELINE_NOTIFICATIONS = "com.marakana.yamba.RECEIVE_TIMELINE_NOTIFICATIONS";
+
+  private NotificationManager notificationManager; // #{1}
+  private Notification notification; // #{2}
+
+  public UpdaterService() {
+    super(TAG);
+
+    Log.d(TAG, "UpdaterService constructed");
+  }
+
+  @Override
+  protected void onHandleIntent(Intent inIntent) {
+    Intent intent;
+    this.notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE); // #{3}
+    this.notification = new Notification(android.R.drawable.stat_notify_chat,
+        "", 0); // #{4}
+
+    Log.d(TAG, "onHandleIntent'ing");
+    YambaApplication yamba = (YambaApplication) getApplication();
+    int newUpdates = yamba.fetchStatusUpdates();
+    if (newUpdates > 0) {
+      Log.d(TAG, "We have a new status");
+      intent = new Intent(NEW_STATUS_INTENT);
+      intent.putExtra(NEW_STATUS_EXTRA_COUNT, newUpdates);
+      sendBroadcast(intent, RECEIVE_TIMELINE_NOTIFICATIONS);
+      sendTimelineNotification(newUpdates); // #{5}
+    }
+  }
+
+  /**
+   * Creates a notification in the notification bar telling user there are new
+   * messages
+   *
+   * @param timelineUpdateCount
+   *          Number of new statuses
+   */
+  private void sendTimelineNotification(int timelineUpdateCount) {
+    Log.d(TAG, "sendTimelineNotification'ing");
+    PendingIntent pendingIntent = PendingIntent.getActivity(this, -1,
+        new Intent(this, TimelineActivity.class),
+        PendingIntent.FLAG_UPDATE_CURRENT); // #{6}
+    this.notification.when = System.currentTimeMillis(); // #{7}
+    this.notification.flags |= Notification.FLAG_AUTO_CANCEL; // #{8}
+    CharSequence notificationTitle = this
+        .getText(R.string.msgNotificationTitle); // #{9}
+    CharSequence notificationSummary = this.getString(
+        R.string.msgNotificationMessage, timelineUpdateCount);
+    this.notification.setLatestEventInfo(this, notificationTitle,
+        notificationSummary, pendingIntent); // #{10}
+    this.notificationManager.notify(0, this.notification);
+    Log.d(TAG, "sendTimelineNotificationed");
+  }
+
+}
+{/CODE}
+
+% + This is just our local reference to the NotificationManager class, which is our access to the Notification system service.
+% + We create a class-global Notification object and update it each time there’s something new to notify our listeners about.
+% + We obtain the reference to the Notification service via the usual getSystemService() call.
+% + We create the notification object that we’ll reuse later. For now, we just specify the standard icon to use with our notification, and leave the text and timestamp to be updated later when we are about to post this notification.
+% + We call our private sendTimelineNotification() method once we know there are new statuses to notify the user of.
+% + This Pending intent will be kicked off when user checks the notification in the notification bar and clicks on the actual notification item. In this case, we want to take the user to the Timeline activity, so we create an intent for that.
+% + We’re now updating the data for the most recent notification. This is the timestamp when it happened.
+% + This flag tells the Notification manager to cancel this notification as soon as the user clicks on it. The notification will be removed from the notification bar at that point.
+% + Here, we get the title and summary to go into the notification from our strings.xml file. Notice that the summary has parameters, so that we can use String.format() to update the actual number of new statuses.
+
+% + Finally, we tell the Notification manager to post this notification. In this case, we do not need the ID, so we specify zero. An ID can be used to refer to a notification later, usually in order to cancel it.
+
++ 指向NotificationManager的局部引用，也就通过它来访问Notification系统服务。
++ 创建一个Notification对象供类成员访问，每得到新消息需要发送通知时就更新它。
++ 调用``getSystemService()``获取Notification服务。
++ 创建Notification对象，在稍后使用。在这里先给它指明一个图标，至于通知的文本和timestamp则暂时留空。
++ 私有方法``sendTimelineNotification()``，在得到新消息时调用它发送通知。
++ 当用户收到通知并点击通知条目时，切换到Timeline界面，这个PendingIntent也随之销毁。 
++ 更新Notification对象的相关信息。这里是最新消息的timestamp。
++ 要求NotificationManager在用户点击时关闭这项通知，届时通知栏将不再显示这项通知。
++ 为Notification对象提供标题(title)与简介(summary)，都是取自``string.xml``中的字符串。留意``R.string.msgNotificationMessage``里面留了一个参数，表示新消息的数目，因此我们可以使用``String.format()``。
++ 最后，要求NotificationManager发送这条通知。在这里，我们不需要通知的ID，因此留0。ID可以用来作为引用Notification对象的标志符，通常用来关闭一个通知。
+
+
+% ==Summary==
+==总结==
+
+% At this point you have seen a few system services: Sensor, Location, Alarm, and Notification. There are a few more services provided by Android. You may have noticed that most of them have a lot of similarities, an hopefully you have started extrapolating certain patterns. We have also used this chapter to somewhat simplify our Updater service and introduce IntentServices and PendingIntents.
+
+到这里，我们已经观察了几个系统服务：Sensor服务、Location服务、Alarm服务以及Notification服务。除此之外，Android还提供了很多其它的系统服务，篇幅所限未能提及。但你可以留意到它们之间的共性，有一些自己的总结。另外，我们在重构UpdaterService时，也用到了``IntentService``与``PendingIntent``。
+
+
+
 

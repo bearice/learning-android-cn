@@ -146,7 +146,7 @@
 {TRAN}== 第三部分: Android Service ==
 
 {ORGI}This part introduces background services. By the end of this section, your Yamba application will be able to periodically connect to the cloud and pull down your friends' status updates.
-{TRAN}这部分介绍Service(后台服务)的相关知识。 在本章结束，Yamba将能够定期访问服务端，即时更新朋友的消息。
+{TRAN}这部分介绍Service(后台服务)的相关知识。 到本章结束，Yamba将能够定期访问服务端，即时更新朋友的消息。
 
 {ORGI}=== Android Services ===
 {TRAN}=== Android Service ===
@@ -273,10 +273,10 @@
 {TRAN}=== Intent Service, Alarms, Notifications ===
 
 {ORGI}It turns out that some of the cool features Android services provide can make our Updater service much simpler. So we’ll refactor our code, yet again. This time, we’ll introduce Intent Services that respond to Intents. But we’re going to need something to fire off these intents on regular basis, and for that we’ll use the Alarm service. Additionally, we’ll add a feature to notify the user of new updates by putting a notification in the notification bar. For that, we’ll use the Notification service. All this will prove to be a substantially more elegant solution to our Updater service need.
-{TRAN}我们可以看到Android内置了一些很酷的Service，用好可以简化UpdaterService的实现。所以再次重构代码吧。在这里我们引入Intent Service用来专门处理Intent请求。还需要有人来触发Intent请求，因此引入Alarm Service。另外我们还会使用到Notification Service，好在系统托盘(Notification Area)显示提示信息。经过重构，我们将得到一个更优雅的UpdaterService实现。
+{TRAN}我们可以看到Android内置了一些很酷的Service，用好可以简化UpdaterService的实现。所以再次重构代码吧。在这里我们引入Intent Service来专门处理Intent请求。还需要有人来触发Intent请求，因此引入Alarm Service。另外我们还会使用到Notification Service，好在系统托盘(Notification Area)显示提示信息。经过重构，我们将得到一个更优雅的UpdaterService实现。
 
 {ORGI}== Summary ==
 {TRAN}== 总结 ==
 
 {ORGI}This chapter is intended as a road map for the next eight chapters. By the end of all these iterations, you will have built a medium-size Android app from scratch. Even more, you will understand various constructs and how to put them together into a meaningful whole. The hope is that you’ll start developing a way of ``thinking`` in Android.
-{TRAN}本章可作为后面八章的铺垫。经过一轮轮的迭代，你可以完成一个中等规模的Android应用。更重要的是，你可以在这过程中体会到程序各部分的意义，以及将其合而为一的方法。或者说，这就是体会到Android开发中的“思维方式”。
+{TRAN}本章可作为后面八章的铺垫。经过一轮轮的迭代，你可以完成一个中等规模的Android应用。更重要的是，你可以在这过程中体会到程序不同部分的意义，以及将其合而为一的方法。或者说，这就是体会到Android开发中的“思维方式”。

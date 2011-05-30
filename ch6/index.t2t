@@ -5,111 +5,111 @@
 %= Android User Interface =
 = Android 用户界面 =[ch6]
 
-{ORGI}In this chapter, you will learn how to build user interface in Android. You will create your first Activity. You will learn how to create an XML layout for it, and how to connect it to Java. You will learn about Views (a.k.a. widgets) and Layouts. You will learn how to handle events in Java, such as a button click. Additionally, you’ll add the support for twitter-like API into your project as an external jar so your app can make web service calls to the cloud.  
+% In this chapter, you will learn how to build user interface in Android. You will create your first Activity. You will learn how to create an XML layout for it, and how to connect it to Java. You will learn about Views (a.k.a. widgets) and Layouts. You will learn how to handle events in Java, such as a button click. Additionally, you’ll add the support for twitter-like API into your project as an external jar so your app can make web service calls to the cloud.  
 
-{TRAN}本章介绍Android中用户界面的构建方法。我们将在这里创建第一个Activity作为实例，体验如何使用XML描述界面布局，以及在Java中引用它的方法。随后介绍View(又称Widget，控件)和Layout的概念，以及如何在Java中捕获事件(比如单击按钮)。另外，还需要在这里导入一个三方的jar文件，从而获得访问微博服务的API。
+本章介绍Android中用户界面的构建方法。我们将在这里创建第一个Activity作为实例，体验如何使用XML描述界面布局，以及在Java中引用它的方法。随后介绍View(又称Widget，控件)和Layout的概念，以及如何在Java中捕获事件(比如单击按钮)。另外，还需要在这里导入一个三方的jar文件，从而获得访问微博服务的API。
 
 %TALK: Widget能否翻译成“控件”？若与"App Widget"同时保留原文，容易让读者混淆。感觉后者可以翻译成“小部件”。 -fleuria
 
-{ORGI}By the end of this chapter, you will have written your own Twitter-like Android app. The app will feature a single screen that will prompt user for current status update, and post that update online.
+% By the end of this chapter, you will have written your own Twitter-like Android app. The app will feature a single screen that will prompt user for current status update, and post that update online.
 
-{TRAN}到本章结束，你就有了一个自己编写的微博应用。暂时它只有一个界面，允许用户输入消息并发布到网上。
+到本章结束，你就有了一个自己编写的微博应用。暂时它只有一个界面，允许用户输入消息并发布到网上。
 
 %== Two Ways to Create User Interface ==
 == 创建用户界面的两种方法 ==
 
-{ORGI}There are two ways to create user interface (UI) in Android. One is declarative and the other one is programmatic. They are quite different but often used together to get the job done.
+% There are two ways to create user interface (UI) in Android. One is declarative and the other one is programmatic. They are quite different but often used together to get the job done.
 
-{TRAN}Android提供了两种风格可供我们创建用户界面(UI)：一种是声明风格，另一种是编程风格。它们之间的差别不小，但是我们想做好界面，往往离不开它们的相互配合。
+Android提供了两种风格可供我们创建用户界面(UI)：一种是声明风格，另一种是编程风格。它们之间的差别不小，但是我们想做好界面，往往离不开它们的相互配合。
 
-{ORGI}=== Declarative User Interface ===
-{TRAN}=== 声明风格的用户界面===
+% === Declarative User Interface ===
+=== 声明风格的用户界面===
 
-{ORGI}Declarative approach involves using XML to declare what the UI will look like. It is similar to creating a web page using HTML. You write tags and specify elements to appear on your screen. If you ever hand-coded an HTML page, you did pretty much the same work as creating an Android screen.
+% Declarative approach involves using XML to declare what the UI will look like. It is similar to creating a web page using HTML. You write tags and specify elements to appear on your screen. If you ever hand-coded an HTML page, you did pretty much the same work as creating an Android screen.
 
-{TRAN}声明风格就是使用XML来声明UI的外观。通过标签表示显示出来的相应元素，这与使用HTML编写网页是很相似的。若是以前写过HTML页面，编写声明式的Android界面也很快就能上手。
+声明风格就是使用XML来声明UI的外观。通过标签表示显示出来的相应元素，这与使用HTML编写网页是很相似的。若是以前写过HTML页面，编写声明式的Android界面也很快就能上手。
 
-{ORGI}The advantages of declarative user interface are that you can use what-you-see-is-what-you-get (WYSIWYG) tools. Some of these tools ship with Eclipse Android Development Tools (ADT) extension, others come from third parties. Additionally, XML is fairly human readable and event people unfamiliar with the Android platform and framework can readily determine what the intent of the user interface is.
+% The advantages of declarative user interface are that you can use what-you-see-is-what-you-get (WYSIWYG) tools. Some of these tools ship with Eclipse Android Development Tools (ADT) extension, others come from third parties. Additionally, XML is fairly human readable and event people unfamiliar with the Android platform and framework can readily determine what the intent of the user interface is.
 
-{TRAN}声明风格的好处就是，便于使用所见及所得(WYSIWYG)工具——有些来自Eclipse Android Development Tools(ADT)的扩展，有些来自第三方。另外一个好处是，XML是易于人类阅读的，即使你不熟悉Android的平台与框架，也可以大致看得明白。
+声明风格的好处就是，便于使用所见及所得(WYSIWYG)工具——有些来自Eclipse Android Development Tools(ADT)的扩展，有些来自第三方。另外一个好处是，XML是易于人类阅读的，即使你不熟悉Android的平台与框架，也可以大致看得明白。
 
-{ORGI}The disadvantages of declarative UI approach are that you can only get so far with XML. XML is great for declaring the look and feel of your user interface, but that doesn’t provide a good way of handling user input. That’s where programmatic approach comes in.
+% The disadvantages of declarative UI approach are that you can only get so far with XML. XML is great for declaring the look and feel of your user interface, but that doesn’t provide a good way of handling user input. That’s where programmatic approach comes in.
 
-{TRAN}声明风格的缺点是也正在XML本身。描述界面的外观样式，XML自是再合适不过，但是响应外部事件、处理用户交互它就无能为力了。而这就是引入编程风格的理由。
+声明风格的缺点是也正在XML本身。描述界面的外观样式，XML自是再合适不过，但是响应外部事件、处理用户交互它就无能为力了。而这就是引入编程风格的理由。
 
-{ORGI}=== Programmatic User Interface ===
-{TRAN}=== 编程风格的用户界面 ===
+% === Programmatic User Interface ===
+=== 编程风格的用户界面 ===
 
-{ORGI}Programmatic user interface involves writing Java code to develop UI. For anyone who ever did any Java AWT or Java Swing development, Android is pretty much the same in that respect. It is also similar to many other UI toolkits in other languages as well.
+% Programmatic user interface involves writing Java code to develop UI. For anyone who ever did any Java AWT or Java Swing development, Android is pretty much the same in that respect. It is also similar to many other UI toolkits in other languages as well.
 
-{TRAN}编程风格的用户界面就是使用Java代码来编写UI，做过Java AWT或者Java Swing开发的同学对此肯定不会陌生。这跟其它语言中提供的UI库也区别不大。
+编程风格的用户界面就是使用Java代码来编写UI，做过Java AWT或者Java Swing开发的同学对此肯定不会陌生。这跟其它语言中提供的UI库也区别不大。
 
-{ORGI}Basically, if you want to create a button programmatically, you have to declare the button variable, create an instance of it, add it to a container that is to contain this button, and set any button properties that may make sense, such as color, text, text size, background, and so on. You would probably also want to declare what the button does once the button is clicked, so that’s another piece of code. All in all, you end up writing quite a few lines of Java.
+% Basically, if you want to create a button programmatically, you have to declare the button variable, create an instance of it, add it to a container that is to contain this button, and set any button properties that may make sense, such as color, text, text size, background, and so on. You would probably also want to declare what the button does once the button is clicked, so that’s another piece of code. All in all, you end up writing quite a few lines of Java.
 
-{TRAN}假如你想通过编写代码的方式创建一个按钮，一般就需要声明一个按钮变量、获得按钮的实例、添加到容器里面，然后设置相应的属性——颜色、文本、文本大小、背景颜色等等不一而足。你也希望对按钮的点击事件做些响应，因此还需要添加额外的逻辑。这样一来二去，敲出来的代码是很可观的。
+假如你想通过编写代码的方式创建一个按钮，一般就需要声明一个按钮变量、获得按钮的实例、添加到容器里面，然后设置相应的属性——颜色、文本、文本大小、背景颜色等等不一而足。你也希望对按钮的点击事件做些响应，因此还需要添加额外的逻辑。这样一来二去，敲出来的代码是很可观的。
 
-{ORGI}Everything you can do declaratively, you can also do programmatically. But additionally, Java also allows you to specify what happens when that button is actually clicked. This is the main advantage of programmatic approach to user interface.
+% Everything you can do declaratively, you can also do programmatically. But additionally, Java also allows you to specify what happens when that button is actually clicked. This is the main advantage of programmatic approach to user interface.
 
-{TRAN}理论上讲，声明式风格能做到的，编程风格也都能做到。但是通过Java代码，你能够为按钮的点击事件作出响应——这才是编程风格的主要优点。
+理论上讲，声明式风格能做到的，编程风格也都能做到。但是通过Java代码，你能够为按钮的点击事件作出响应——这才是编程风格的主要优点。
 
-{ORGI}=== The Best of Both Worlds ===
-{TRAN}=== 各取所长 ===
+% === The Best of Both Worlds ===
+=== 各取所长 ===
 
-{ORGI}So which approach to use? The best practice is to use both. You would use declarative (XML) approach to declare everything about the user interface that is static, such as the layout of the screen, all the widgets, etc. You would then switch to programmatic (Java) approach to define what goes on when user interacts with various widgets of the user interface. In other words, you’d use XML to declare what the "button" looks like, and Java to specify what it does.
+% So which approach to use? The best practice is to use both. You would use declarative (XML) approach to declare everything about the user interface that is static, such as the layout of the screen, all the widgets, etc. You would then switch to programmatic (Java) approach to define what goes on when user interacts with various widgets of the user interface. In other words, you’d use XML to declare what the "button" looks like, and Java to specify what it does.
 
-{TRAN}好，那我应该选择哪种风格？好的选择是两者皆用：使用声明风格(XML)表示用户界面中的静态元素，比如页面布局、控件摆放等；同时使用编程风格(Java)来定义控件对用户操作的响应。换种说法，就是使用XML描述它的"样子"，而使用Java定义它的"操作"。
+好，那我应该选择哪种风格？好的选择是两者皆用：使用声明风格(XML)表示用户界面中的静态元素，比如页面布局、控件摆放等；同时使用编程风格(Java)来定义控件对用户操作的响应。换种说法，就是使用XML描述它的"样子"，而使用Java定义它的"操作"。
 
 {NOTE}
-{ORGI}	Note that there are two approaches to developing the actual user interface, but at the end of the day, all the XML is actually "inflated" into Java memory space as if you actually wrote Java code. So, it’s only Java code that runs.
+% 	Note that there are two approaches to developing the actual user interface, but at the end of the day, all the XML is actually "inflated" into Java memory space as if you actually wrote Java code. So, it’s only Java code that runs.
 
-{TRAN}虽然两种做法风格迥异，但是到最后XML终究还是要"解析"到Java的运行环境中才可以显示出来。实际运行的只有Java代码。
+虽然两种做法风格迥异，但是到最后XML终究还是要"解析"到Java的运行环境中才可以显示出来。实际运行的只有Java代码。
 {/NOTE}
 
 
 %== Views and Layouts ==
 == View与Layout ==
 
-{ORGI}Android organizes its UI elements into layouts and views. Everything you see, such as a button, label, or text box, is a view. Layouts organize views, such as grouping together a button and label or a group of them.
+% Android organizes its UI elements into layouts and views. Everything you see, such as a button, label, or text box, is a view. Layouts organize views, such as grouping together a button and label or a group of them.
 
-{TRAN}Android通过Layout与View机制组织UI中元素的显示。View就是屏幕上显示的所有控件——比如按钮、标签、文本框等等。而Layout用来安排View的排列，比如它可以将一组按钮或标签排成一行或者一列。
+Android通过Layout与View机制组织UI中元素的显示。View就是屏幕上显示的所有控件——比如按钮、标签、文本框等等。而Layout用来安排View的排列，比如它可以将一组按钮或标签排成一行或者一列。
 
 **Figure 6.1. Layouts and Views relationship**
 	[images/06-LayoutsAndViews.png]
 
 {NOTE}
-{ORGI}	Don’t confuse widgets in Android UI with App Widgets - miniature application views that can be embedded in other applications (such as the Home screen application). Here, we are referring to widgets as views in our activities.
+% 	Don’t confuse widgets in Android UI with App Widgets - miniature application views that can be embedded in other applications (such as the Home screen application). Here, we are referring to widgets as views in our activities.
 
-{TRAN}不要将Android UI中的控件(Widget)与应用程序小部件(App Widget)相混淆，后者是指可以嵌入到其它应用程序(如主屏幕程序)里面显示的小程序。而这里我们谈到的控件(Widget)，是指Acitivity中的View。
+不要将Android UI中的控件(Widget)与应用程序小部件(App Widget)相混淆，后者是指可以嵌入到其它应用程序(如主屏幕程序)里面显示的小程序。而这里我们谈到的控件(Widget)，是指Acitivity中的View。
 {/NOTE}
 
-{ORGI}So, a layout can contain other children. Those children can furthermore be layouts themselves allowing for complex user interface structure.
+% So, a layout can contain other children. Those children can furthermore be layouts themselves allowing for complex user interface structure.
 
-{TRAN}可以把Layout看作是容纳一些子元素的容器。这些子元素可以是View，也可以是Layout本身，这样可以方便组合出复杂的用户界面。
+可以把Layout看作是容纳一些子元素的容器。这些子元素可以是View，也可以是Layout本身，这样可以方便组合出复杂的用户界面。
 
-{ORGI}A layout is responsible for allocating space for each child. Different layouts use different approach to laying out their child widgets.
+% A layout is responsible for allocating space for each child. Different layouts use different approach to laying out their child widgets.
 
-{TRAN}Layout为每个子元素安排位置，不同的Layout提供不同的安置方法。
+Layout为每个子元素安排位置，不同的Layout提供不同的安置方法。
 
 %NOTE: 当心，这个allocating space不是“申请内存”，而是老老实实的“申请(放置的)空间”。 -fleuria
 
-{ORGI}There are couple of main layouts that we use more frequently than others, such as Linear Layout, Table Layout, Frame Layout, Relative Layout, and Absolute Layout.
+% There are couple of main layouts that we use more frequently than others, such as Linear Layout, Table Layout, Frame Layout, Relative Layout, and Absolute Layout.
 
-{TRAN}Android框架中内置的Layout各种各样，不过常用的大约也就这几个：LinearLayout, TableLayout, FrameLayout, RelativeLayout和AbsoluteLayout。
+Android框架中内置的Layout各种各样，不过常用的大约也就这几个：LinearLayout, TableLayout, FrameLayout, RelativeLayout和AbsoluteLayout。
 
 === LinearLayout ===
 
-{ORGI}LinearLayout is one of the simplest and most common layouts. It simply lays out its children next to each other, either horizontally or vertically. The order of children matters. As LinearLayout asks its children for how much space they need, it allocates desired space to each child in the order they are added. So, if an "older" child comes along and asks for all the space on the screen, there won’t be much left for the subsequent widgets in this layout.
+% LinearLayout is one of the simplest and most common layouts. It simply lays out its children next to each other, either horizontally or vertically. The order of children matters. As LinearLayout asks its children for how much space they need, it allocates desired space to each child in the order they are added. So, if an "older" child comes along and asks for all the space on the screen, there won’t be much left for the subsequent widgets in this layout.
 
-{TRAN}LinearLayout是最简单的Layout之一，只是简单地纵向或者横向排列它的子元素。它会按顺序计算每个子元素需要的空间，如果一个“较早加入的”元素占据了整个屏幕的大小，后面的元素就显示不出来了。因此子元素的顺序很重要。
+LinearLayout是最简单的Layout之一，只是简单地纵向或者横向排列它的子元素。它会按顺序计算每个子元素需要的空间，如果一个“较早加入的”元素占据了整个屏幕的大小，后面的元素就显示不出来了。因此子元素的顺序很重要。
 
-{ORGI}An important property for LinearLayout are layout_orientation and valid options are vertical or horizontal.
+% An important property for LinearLayout are layout_orientation and valid options are vertical or horizontal.
 
-{TRAN}LinearLayout的一个重要属性是layout_orientation。可用的选项有Vertical和Horizontal，用以指示它是水平排列还是垂直排列。
+LinearLayout的一个重要属性是layout_orientation。可用的选项有Vertical和Horizontal，用以指示它是水平排列还是垂直排列。
 
 {TIP}
-{ORGI}	While Linear Layout is probably the simplest and most commonly used layout, it is not always the best choice. A good rule of thumb is that if you start to nest multiple Linear Layouts, you should probably be using another layout, such as Relative Layout. Too many nested layouts can have big consequences on the time to inflate the UI and overall CPU and battery consumption.
+% 	While Linear Layout is probably the simplest and most commonly used layout, it is not always the best choice. A good rule of thumb is that if you start to nest multiple Linear Layouts, you should probably be using another layout, such as Relative Layout. Too many nested layouts can have big consequences on the time to inflate the UI and overall CPU and battery consumption.
 
-{TRAN}虽说LinearLayout可能是最简单也最常用的Layout，但它并不总是最好的选择。一条经验是，一旦你想嵌套多个LinearLayout，那就换用别的Layout吧，比如RelativeLayout之类。Layout如果嵌套的太深，可能会浪费较多的CPU时间，电池的续航也会因此而受到影响。
+虽说LinearLayout可能是最简单也最常用的Layout，但它并不总是最好的选择。一条经验是，一旦你想嵌套多个LinearLayout，那就换用别的Layout吧，比如RelativeLayout之类。Layout如果嵌套的太深，可能会浪费较多的CPU时间，电池的续航也会因此而受到影响。
 
 %NOTE: “a good rule of thumb”是个俚语， "经验之谈."的意思
 
@@ -117,87 +117,87 @@
 
 === TableLayout===
 
-{ORGI}TableLayout lays out its children in a table. TableLayout consists of only other TableRow widgets. TableRow represents a row in a table and can contain other UI widgets. TableRow widgets are laid out next to each other horizontally, sort of like LinearLayout with horizontal orientation.
+% TableLayout lays out its children in a table. TableLayout consists of only other TableRow widgets. TableRow represents a row in a table and can contain other UI widgets. TableRow widgets are laid out next to each other horizontally, sort of like LinearLayout with horizontal orientation.
 
-{TRAN}TableLayout将其子元素布局在一个表格之中。TableLayout只接纳TableRow作为自己的子元素，表示表格中的一行，下面可以容纳其它子元素。TableRow水平地排列它的子元素，这同水平排列的LinearLayout很像。
+TableLayout将其子元素布局在一个表格之中。TableLayout只接纳TableRow作为自己的子元素，表示表格中的一行，下面可以容纳其它子元素。TableRow水平地排列它的子元素，这同水平排列的LinearLayout很像。
 
-{ORGI}For those familiar with HTML, Table Layout is similar to <table> element, while Table Row is similar to the <tr> element. Where as in HTML we also have <td> to represent each cell in the table, in Android the columns are determined dynamically based on the number of views we add to a table row.
+% For those familiar with HTML, Table Layout is similar to <table> element, while Table Row is similar to the <tr> element. Where as in HTML we also have <td> to represent each cell in the table, in Android the columns are determined dynamically based on the number of views we add to a table row.
 
-{TRAN}熟悉HTML的同学可能会有同感，TableLayout接近于<table>标签，而TableRow接近于<tr>标签。不过Android中并没有<td>的对应物，每一行的列数由TableRow的子元素的个数动态决定。
+熟悉HTML的同学可能会有同感，TableLayout接近于<table>标签，而TableRow接近于<tr>标签。不过Android中并没有<td>的对应物，每一行的列数由TableRow的子元素的个数动态决定。
 
-{ORGI}An important property for TableLayout is stretch_columns indicating index of column to stretch to fill out available space. You can also use * to stretch all columns.
+% An important property for TableLayout is stretch_columns indicating index of column to stretch to fill out available space. You can also use * to stretch all columns.
 
-{TRAN}TableLayout的一个重要属性是stretch_columns，可以用它来展开列号对应的列来占据可用的空间。也可以通过*来展开所有的列。
+TableLayout的一个重要属性是stretch_columns，可以用它来展开列号对应的列来占据可用的空间。也可以通过*来展开所有的列。
 
 === FrameLayout ===
 
-{ORGI}FrameLayout places its children on top of each other so that latest child is covering the previous, like a deck of cards. This layout policy is useful for tabs, for example. FrameLayout is also used as placeholder for other widgets to be added to it programmatically at some later point in time.
+% FrameLayout places its children on top of each other so that latest child is covering the previous, like a deck of cards. This layout policy is useful for tabs, for example. FrameLayout is also used as placeholder for other widgets to be added to it programmatically at some later point in time.
 
-{TRAN}FrameLayout将其下的子元素相互覆盖起来，就像一副扑克牌，只留一个显示在外面。它可以用于标签的实现，也可以作为以后要用的控件的临时存放地。
+FrameLayout将其下的子元素相互覆盖起来，就像一副扑克牌，只留一个显示在外面。它可以用于标签的实现，也可以作为以后要用的控件的临时存放地。
 
 === RelativeLayout ===
 
-{ORGI}RelativeLayout lays out its children relative to each other. As such, it is very powerful as it doesn’t require you to nest unnecessary layouts in order to achieve certain look. At the same time, using RelativeLayout can minimize total number of widgets that need to be drawn thus improving the overall performance of you application. Having said that, RelativeLayout requires each of its child views to have an ID set so that we can position it relatively to other children.
+% RelativeLayout lays out its children relative to each other. As such, it is very powerful as it doesn’t require you to nest unnecessary layouts in order to achieve certain look. At the same time, using RelativeLayout can minimize total number of widgets that need to be drawn thus improving the overall performance of you application. Having said that, RelativeLayout requires each of its child views to have an ID set so that we can position it relatively to other children.
 
-{TRAN}RelativeLayout实现子元素的相对布局。它十分强大，不需要嵌套就可以实现复杂的布局，同时还可以减少使用的控件的数量，从而提高程序的整体性能。RelativeLayout需要我们为它的每个子元素提供一个ID，你可以单独设置它们的相对位置。
+RelativeLayout实现子元素的相对布局。它十分强大，不需要嵌套就可以实现复杂的布局，同时还可以减少使用的控件的数量，从而提高程序的整体性能。RelativeLayout需要我们为它的每个子元素提供一个ID，你可以单独设置它们的相对位置。
 
 === AbsoluteLayout ===
 
-{ORGI}AbsoluteLayout positions its children at absolute coordinates on the screen. It is the favorite layout for WYSIWYG tools that automatically generate your UI. While very simple, it is not very flexible. Your user interface would look good on one particular screen but as soon as the screen size, orientation, or density changes, AbsoluteLayout would not be able to adjust.
+% AbsoluteLayout positions its children at absolute coordinates on the screen. It is the favorite layout for WYSIWYG tools that automatically generate your UI. While very simple, it is not very flexible. Your user interface would look good on one particular screen but as soon as the screen size, orientation, or density changes, AbsoluteLayout would not be able to adjust.
 
-{TRAN}AbsoluteLayout可以为它的子元素设置一个屏幕上的绝对位置。这个Layout简单易懂，对所见及所得工具来说是再好用不过。缺点就是不那么灵活，在某个屏幕上显示很好的界面，换个不同大小、宽高、分辨率的屏幕可能就不能正常显示了。
+AbsoluteLayout可以为它的子元素设置一个屏幕上的绝对位置。这个Layout简单易懂，对所见及所得工具来说是再好用不过。缺点就是不那么灵活，在某个屏幕上显示很好的界面，换个不同大小、宽高、分辨率的屏幕可能就不能正常显示了。
 
 %== Starting Yamba Project ==
 == 启动Yamba项目 ==
 
-{ORGI}We are about to start our Yamba project. So, fire up your Eclipse and click on File→New→Android Project.
+% We are about to start our Yamba project. So, fire up your Eclipse and click on File→New→Android Project.
 
-{TRAN}接下来开始编写Yamba。打开你的Eclipse，选择File→New→Android Project。
+接下来开始编写Yamba。打开你的Eclipse，选择File→New→Android Project。
 
-{ORGI}You will get a dialog window asking you about your new Android project. Let’s explain again all the different fields that are significant.
+% You will get a dialog window asking you about your new Android project. Let’s explain again all the different fields that are significant.
 
-{TRAN}然后出现一个对话框，要求你输入有关新项目的各种信息。其中重要的条目如下：
+然后出现一个对话框，要求你输入有关新项目的各种信息。其中重要的条目如下：
 
 //Project Name//
-{ORGI}The name under which Eclipse organizes our project. Is is a good idea if the project name doesn’t have any spaces in it - makes it easier to access from the command line later. Enter Yamba here.
+% The name under which Eclipse organizes our project. Is is a good idea if the project name doesn’t have any spaces in it - makes it easier to access from the command line later. Enter Yamba here.
 
-{TRAN}这是Eclipse项目的名字。出于方便以后使用命令行的考虑，最好不要在项目名里夹带空格。输入``Yamba``。
+这是Eclipse项目的名字。出于方便以后使用命令行的考虑，最好不要在项目名里夹带空格。输入``Yamba``。
 
 //Contents//
-{ORGI}Leave this as is, set to creating a new project since that’s what we’re intending to do.
+% Leave this as is, set to creating a new project since that’s what we’re intending to do.
 
-{TRAN}保留默认选项也就是``creating a new project``，不需要修改。
+保留默认选项也就是``creating a new project``，不需要修改。
 
 //Build Target//
-{ORGI}The type of Android system we are intending to run this application on. This could be any Android platform, either standard or proprietary. I’m assuming we’re working with Android 2.3 (API level 9) and thus will choose Android 2.3.
+% The type of Android system we are intending to run this application on. This could be any Android platform, either standard or proprietary. I’m assuming we’re working with Android 2.3 (API level 9) and thus will choose Android 2.3.
 
-{TRAN}目标平台的版本。不分标准版还是定制版，只要是Android平台即可。前面我们既已定下将Android 2.3 (API level 9)作为目标平台，在这里就选择``Android 2.3``。
+目标平台的版本。不分标准版还是定制版，只要是Android平台即可。前面我们既已定下将Android 2.3 (API level 9)作为目标平台，在这里就选择``Android 2.3``。
 
 %NOTE：最新2.3.1（API Level 9）已过时，2.3的最新版本是2.3.3（API Level 10）。 -elephas
 
 //Application name//
-{ORGI}Simply a plain text name of your application. It can be any text. For our app, feel free to enter Yamba.
+% Simply a plain text name of your application. It can be any text. For our app, feel free to enter Yamba.
 
-{TRAN}应用程序的名字。要求是纯文本，内容可以是任何有效字符。在这里输入``Yamba``即可。
+应用程序的名字。要求是纯文本，内容可以是任何有效字符。在这里输入``Yamba``即可。
 
 //Package name//
-{ORGI}A Java package, and as such it needs to adhere to Java package naming convention. In a nutshell, you want to use the reverse of your domain name for your package. I’m going to use com.marakana.yamba here.
+% A Java package, and as such it needs to adhere to Java package naming convention. In a nutshell, you want to use the reverse of your domain name for your package. I’m going to use com.marakana.yamba here.
 
-{TRAN}为项目的Java package命名，自然得遵循Java package的命名规范，也就是逆序的域名形式。在这里使用``com.marakana.yamba``。
+为项目的Java package命名，自然得遵循Java package的命名规范，也就是逆序的域名形式。在这里使用``com.marakana.yamba``。
 
 //Create Activity//
-{ORGI}An option to create an activity as part of this project. You can leave it checked. For the activity name, we must adhere to Java class naming convention. That simply means use upper CamelCase convention. I’m going to enter StatusActivity here
+% An option to create an activity as part of this project. You can leave it checked. For the activity name, we must adhere to Java class naming convention. That simply means use upper CamelCase convention. I’m going to enter StatusActivity here
 
-{TRAN}是否为项目默认创建一个Activity。保留默认的选中即可。Activity的名字必须遵循Java类的命名规范，也就是CamelCase命名法。在此输入``StatusActivity``。
+是否为项目默认创建一个Activity。保留默认的选中即可。Activity的名字必须遵循Java类的命名规范，也就是CamelCase命名法。在此输入``StatusActivity``。
 
 //Min SDK Version//
-{ORGI}Represents the minimum version of Android SDK that is installed on the device in order to be able to run this particular application. Typically, this number will correspond to the API level that you picked for your target, in our case Android 9. However, if the app doesn’t depend on latest-greatest API or is capable of scaling gracefully to lower API, you should rethink this number. In our case, the app will be able to work on API level 4 (Android 1.6). So, enter 4 here. This is good because we can distribute our app to way more people than if minimum was Android 2.3.
+% Represents the minimum version of Android SDK that is installed on the device in order to be able to run this particular application. Typically, this number will correspond to the API level that you picked for your target, in our case Android 9. However, if the app doesn’t depend on latest-greatest API or is capable of scaling gracefully to lower API, you should rethink this number. In our case, the app will be able to work on API level 4 (Android 1.6). So, enter 4 here. This is good because we can distribute our app to way more people than if minimum was Android 2.3.
 
-{TRAN}表示支持平台的最低版本。一般这个数字与前面的API Level是相互对应的，不过你的应用若并没有高版本API的依赖，那就可以降低这个数字。我们的应用最低可以在API Level 4(Android 1.6)上运行，因此输入``4``。一个较低的API Level有助于提高兼容性，从而允许更多的用户使用它。
+表示支持平台的最低版本。一般这个数字与前面的API Level是相互对应的，不过你的应用若并没有高版本API的依赖，那就可以降低这个数字。我们的应用最低可以在API Level 4(Android 1.6)上运行，因此输入``4``。一个较低的API Level有助于提高兼容性，从而允许更多的用户使用它。
 
-{ORGI}Click on Finish. You should have Yamba project now appear in your Package Explorer in Eclipse.
+% Click on Finish. You should have Yamba project now appear in your Package Explorer in Eclipse.
 
-{TRAN}单击Finish。即可在Eclipse的Package Explorer里面见到一个新的项目，也就是Yamba。
+单击Finish。即可在Eclipse的Package Explorer里面见到一个新的项目，也就是Yamba。
 
 **Figure 6.2. New Project Dialog**
 	[images/06-NewProjectDialog.png]
@@ -207,18 +207,18 @@
 %== StatusActivity Layout ==
 == StatusActivity Layout ==
 
-{ORGI}Let’s start by designing the user interface for our screen where we’ll enter the new status and click a button to update it.
-{TRAN}接下来开始设计一个用户界面，用户可以在里面输入新消息并发布。
+% Let’s start by designing the user interface for our screen where we’ll enter the new status and click a button to update it.
+接下来开始设计一个用户界面，用户可以在里面输入新消息并发布。
 
-{ORGI}By default, Eclipse created a file called main.xml under res/layout folder. For consistency purposes, we should rename this file to status.xml to match our StatusActivity. To rename a file in Eclipse, right-click on it, choose Refactor→Rename… and enter new name. Eclipse is somewhat smart about renaming files and does more than just change the name. It also offers to lookup all the places where this file is referred from and update those references as well. While this feature works well when renaming a Java file, it is not fully automatic with XML files. So, renaming this file requires us to change the line in Java where we refer to it via the R class. To do that, in your StatusActivity’s onCreate(), change setContentView(R.layout.main); to setContentView(R.layout.status);.
+% By default, Eclipse created a file called main.xml under res/layout folder. For consistency purposes, we should rename this file to status.xml to match our StatusActivity. To rename a file in Eclipse, right-click on it, choose Refactor→Rename… and enter new name. Eclipse is somewhat smart about renaming files and does more than just change the name. It also offers to lookup all the places where this file is referred from and update those references as well. While this feature works well when renaming a Java file, it is not fully automatic with XML files. So, renaming this file requires us to change the line in Java where we refer to it via the R class. To do that, in your StatusActivity’s onCreate(), change setContentView(R.layout.main); to setContentView(R.layout.status);.
 
 
-{TRAN}Eclipse默认会在``res/layout``下创建一个``main.xml``文件。出于一致性的考虑，我们将把它的名字改为``status.xml``以对应StatusActivity。在Eclipse中重命名一个文件，就右键点击它，选择//Refactor→Rename…//，输入新名字即可。Eclipse在重命名时会智能地做些同步工作，使所有引用到这个文件的地方保持一致。这在更新Java文件时可以做到完全自动，但对XML文件就不那么尽善尽美了。修改一个XML文件名，我们还需要手工修改Java代码中引用R class的相关部分。比如在这里，就需要将``onCreate()``里的``setContentView(R.layout.main)``修改为``setContentView(R.layout.status)``。
+Eclipse默认会在``res/layout``下创建一个``main.xml``文件。出于一致性的考虑，我们将把它的名字改为``status.xml``以对应StatusActivity。在Eclipse中重命名一个文件，就右键点击它，选择//Refactor→Rename…//，输入新名字即可。Eclipse在重命名时会智能地做些同步工作，使所有引用到这个文件的地方保持一致。这在更新Java文件时可以做到完全自动，但对XML文件就不那么尽善尽美了。修改一个XML文件名，我们还需要手工修改Java代码中引用R class的相关部分。比如在这里，就需要将``onCreate()``里的``setContentView(R.layout.main)``修改为``setContentView(R.layout.status)``。
 
 %TALK: "So, renaming this file requires us to change the line in Java where we refer to it via the R class." 很绕的一句。
 
-{ORGI}This screen will have four components:
-{TRAN}这个界面分为四部分：
+% This screen will have four components:
+这个界面分为四部分：
 
 % - Title at the top of the screen. This will be a TextView widget.
 % - Big text area to type our 140-character status update. We’ll use EditText widget for this purpose.
@@ -230,9 +230,9 @@
 - 更新状态的按钮，Button控件。
 - 一个容纳以上所有控件的Layout，它负责将这些控件垂直排开。在此选用前面提到的常用Layout之一——LinearLayout。
 
-{ORGI}The source code for our StatusActivity layout looks like this:
+% The source code for our StatusActivity layout looks like this:
 
-{TRAN}StatusActivity的源码大致如下：
+StatusActivity的源码大致如下：
 
 **Example 6.1. res/layout/status.xml**
 
@@ -264,64 +264,64 @@
 </LinearLayout>
 {/CODE}
 
-{ORGI}This code was generated by Eclipse Graphical Layout. This is the part of Android Development Tools (ADT) for Eclipse plugin that helps you work with Android-specific XML files. Since ADT knows that you are working on a UI layout, it opens status.xml in Graphical Layout mode. You can also view the raw XML by choosing status.xml tab at the bottom of this window. That will give you the XML source code for this screen, as displayed above.
+% This code was generated by Eclipse Graphical Layout. This is the part of Android Development Tools (ADT) for Eclipse plugin that helps you work with Android-specific XML files. Since ADT knows that you are working on a UI layout, it opens status.xml in Graphical Layout mode. You can also view the raw XML by choosing status.xml tab at the bottom of this window. That will give you the XML source code for this screen, as displayed above.
 
-{TRAN}以上代码由Eclipse Graphical Layout自动生成，它是作为Eclipse插件的Android Development Tools(ADT)的一部分，即编辑Android中XML文件的辅助工具。ADT可以辨认出这是在编辑用户界面的Layout，因此按照Graphical Layout模式打开status.xml，很方便就可以生成上述的代码。
+以上代码由Eclipse Graphical Layout自动生成，它是作为Eclipse插件的Android Development Tools(ADT)的一部分，即编辑Android中XML文件的辅助工具。ADT可以辨认出这是在编辑用户界面的Layout，因此按照Graphical Layout模式打开status.xml，很方便就可以生成上述的代码。
 
 **Figure 6.3. Graphical Layout mode for status.xml**
 	[images/06-GraphicalLayout.png]
 
-{ORGI}Although we discussed the basic meaning of these XML resources in a previous chapter, there are some details in the code that you should know more about, which we’ll examine in the following section.
+% Although we discussed the basic meaning of these XML resources in a previous chapter, there are some details in the code that you should know more about, which we’ll examine in the following section.
 
-{TRAN}在前面的章节里，我们已对这些XML资源的概念略有提及，但是代码中存在的细节仍是需要在后面慢慢体会的。
+在前面的章节里，我们已对这些XML资源的概念略有提及，但是代码中存在的细节仍是需要在后面慢慢体会的。
 
-{ORGI}=== Important Widget Properties ===
-{TRAN}===控件的常用属性===
+% === Important Widget Properties ===
+===控件的常用属性===
 
-{ORGI}The properties you are most likely to use regularly are:
+% The properties you are most likely to use regularly are:
 
-{TRAN}一般来讲，这就是最常用的几个属性：
+一般来讲，这就是最常用的几个属性：
 
 **layout_height and layout_width**
 
-{ORGI}Defines how much space this widget is asking from its parent layout to display itself. While you could enter a value in pixels, inches, or similar, that is not a good practice. Since your application could run on many different devices with various screen sizes, you want to use relative size for your components, not absolute. So, best practice would be to use either fill_parent or wrap_content for the value. fill_parent means that your widget wants all the available space from its parent. wrap_content means that it only requires as much space as it needs to display its own content. Note that in API Level 8 and higher, fill_parent has been renamed to match_parent.
+% Defines how much space this widget is asking from its parent layout to display itself. While you could enter a value in pixels, inches, or similar, that is not a good practice. Since your application could run on many different devices with various screen sizes, you want to use relative size for your components, not absolute. So, best practice would be to use either fill_parent or wrap_content for the value. fill_parent means that your widget wants all the available space from its parent. wrap_content means that it only requires as much space as it needs to display its own content. Note that in API Level 8 and higher, fill_parent has been renamed to match_parent.
 
-{TRAN}表示控件从父元素中占据的空间。在这里可以明确给出像素、英寸等单位的值，但这样是不提倡的。你的程序需要运行在不同的设备上，它们屏幕的尺寸会有不同，因此绝对大小不如相对大小。提倡的是，在这里给出fill_parent或者wrap_content，分别表示占据父元素的所有可用空间，或者仅占据自己全部显示所需要的最小空间。留意，自API level 8开始，fill_parent改为match_parent。
+表示控件从父元素中占据的空间。在这里可以明确给出像素、英寸等单位的值，但这样是不提倡的。你的程序需要运行在不同的设备上，它们屏幕的尺寸会有不同，因此绝对大小不如相对大小。提倡的是，在这里给出fill_parent或者wrap_content，分别表示占据父元素的所有可用空间，或者仅占据自己全部显示所需要的最小空间。留意，自API level 8开始，fill_parent改为match_parent。
 
 **layout_weight**
 
-{ORGI}Layout weight is a number between 0 and 1. It implies the weight of our layout requirements. For example, if our Status EditText had default layout weight of 0, and required layout height of fill_parent, then the Update button would have been pushed out of the screen since Status, and its request for space came before the button. However, when we set Status widget’s layout weight to 1, we are saying we want all available space height-wise, but are yielding to any other widget that also may need space, such as the Update button.
+% Layout weight is a number between 0 and 1. It implies the weight of our layout requirements. For example, if our Status EditText had default layout weight of 0, and required layout height of fill_parent, then the Update button would have been pushed out of the screen since Status, and its request for space came before the button. However, when we set Status widget’s layout weight to 1, we are saying we want all available space height-wise, but are yielding to any other widget that also may need space, such as the Update button.
 
-{TRAN}表示布局的权重，0或者1。比如表示消息框的EditText控件的默认布局权重是0，设定的布局高度(layout height)是fill_parent，而且它在发送按钮之前先一步申请空间，这样发送按钮就被挤出屏幕之外而无法显示了。为了让发送按钮显示出来，我们可以把消息框的布局权重设为1，这样它依然会在高度上占据尽可能多的空间，不过如果还有其它控件，就会为它们让出合适的空间，使之可以显示。
+表示布局的权重，0或者1。比如表示消息框的EditText控件的默认布局权重是0，设定的布局高度(layout height)是fill_parent，而且它在发送按钮之前先一步申请空间，这样发送按钮就被挤出屏幕之外而无法显示了。为了让发送按钮显示出来，我们可以把消息框的布局权重设为1，这样它依然会在高度上占据尽可能多的空间，不过如果还有其它控件，就会为它们让出合适的空间，使之可以显示。
 
 **layout_gravity**
-{ORGI}Specifies how this particular widget is positioned within its layout, both horizontally and vertically. Values could be top, center, left, and so on. Notice the difference between this property and gravity below. For example, if you have a widget that has width set to fill_parent, trying to center it wouldn’t do much since it’s already taking all available space. However, if our title TextView had width set to wrap_content, centering it with layout_gravity would generate desired results.
+% Specifies how this particular widget is positioned within its layout, both horizontally and vertically. Values could be top, center, left, and so on. Notice the difference between this property and gravity below. For example, if you have a widget that has width set to fill_parent, trying to center it wouldn’t do much since it’s already taking all available space. However, if our title TextView had width set to wrap_content, centering it with layout_gravity would generate desired results.
 
-{TRAN}指明这一控件在布局中所在的水平位置或垂直位置，可选的值为top、center、left等。若把某控件的宽度设为fill_parent，再给它一个center的水平位置显然是没有意义的。不过把控件的宽度设为wrap_content，再给它一个center的layout_gravity就令它居中。需要注意的是这个属性与下面``gravity``的区别。
+指明这一控件在布局中所在的水平位置或垂直位置，可选的值为top、center、left等。若把某控件的宽度设为fill_parent，再给它一个center的水平位置显然是没有意义的。不过把控件的宽度设为wrap_content，再给它一个center的layout_gravity就令它居中。需要注意的是这个属性与下面``gravity``的区别。
 
 **gravity**
-{ORGI}Specifies how the content of this widget is positioned within the widget itself. It is commonly confused with layout_gravity. Which one to use will depend on size of your widget and desired look. For example, if our title TextView had width fill_parent, then centering it with gravity would work but centering it with layout_gravity wouldn’t do anything.
+% Specifies how the content of this widget is positioned within the widget itself. It is commonly confused with layout_gravity. Which one to use will depend on size of your widget and desired look. For example, if our title TextView had width fill_parent, then centering it with gravity would work but centering it with layout_gravity wouldn’t do anything.
 
-{TRAN}指定控件的内容在这个控件中的位置。人们很容易将它与layout_gravity相混淆，实际上它们的应用场景不同。比如，我们作为标题的TextView的宽度设为fill_parent，那么设置它的``layout_gravity``就没有用处，不过将其gravity设为center可以让它的文字居中。
+指定控件的内容在这个控件中的位置。人们很容易将它与layout_gravity相混淆，实际上它们的应用场景不同。比如，我们作为标题的TextView的宽度设为fill_parent，那么设置它的``layout_gravity``就没有用处，不过将其gravity设为center可以让它的文字居中。
 
 **text**
-{ORGI}Not all widgets have this property, but many do, such as Button, EditText, and TextView. It simply specifies the text for the widget. Now, it is not a good practice to just enter the text because than your layout will only work in one locale/language. Best practice is to define all text in strings.xml resource and refer to particular string via this notation: @string/titleStatusUpdate.
+% Not all widgets have this property, but many do, such as Button, EditText, and TextView. It simply specifies the text for the widget. Now, it is not a good practice to just enter the text because than your layout will only work in one locale/language. Best practice is to define all text in strings.xml resource and refer to particular string via this notation: @string/titleStatusUpdate.
 
-{TRAN}不是所有控件都有这个属性，但它十分常见，比如Button、EditText和TextView。它指定控件中的文本。但是在这里直接输入文本是不被提倡的，因为这样就限制了程序的语言环境。好的做法是将所有的文本放到string.xml资源文件里，按照``@string/titleStatusUpdate``这样的形式引用它。
+不是所有控件都有这个属性，但它十分常见，比如Button、EditText和TextView。它指定控件中的文本。但是在这里直接输入文本是不被提倡的，因为这样就限制了程序的语言环境。好的做法是将所有的文本放到string.xml资源文件里，按照``@string/titleStatusUpdate``这样的形式引用它。
 
 **id**
-{ORGI}id is simply the unique identifier for this particular widget in particular layout resource file. Not every widget needs an id and I recommend removing id’s if not needed to minimize clutter. But widgets that we’ll later need to manipulate from Java do need id’s. Id has the following format: @+id/someName where someName is whatever you want to call your widget. My naming convention is to use type followed by name, so @+id/buttonUpdateStatus for example.
+% id is simply the unique identifier for this particular widget in particular layout resource file. Not every widget needs an id and I recommend removing id’s if not needed to minimize clutter. But widgets that we’ll later need to manipulate from Java do need id’s. Id has the following format: @+id/someName where someName is whatever you want to call your widget. My naming convention is to use type followed by name, so @+id/buttonUpdateStatus for example.
 
-{TRAN}id是控件在layout资源文件中的唯一标识符。id对控件而言不是强制的，我也建议尽量少用id以减少重名的机会。但是在Java中需要引用控件的话，id是必须的。Id的格式为: @+id/someName，其中someName就是对应widget的名称。我个人的命名习惯是在名字前面加上类型，比如@+id/buttonUpdateStatus这样。
+id是控件在layout资源文件中的唯一标识符。id对控件而言不是强制的，我也建议尽量少用id以减少重名的机会。但是在Java中需要引用控件的话，id是必须的。Id的格式为: @+id/someName，其中someName就是对应widget的名称。我个人的命名习惯是在名字前面加上类型，比如@+id/buttonUpdateStatus这样。
 
 === Strings Resource ===
 
-{ORGI}Android tries hard to keep data in separate files. So, layouts are defined in their own resources, and all text values (such as button text, title text, etc.) should be defined in their own file called strings.xml. This later allows you to provide multiple versions of strings resources to be used for various languages, such as English, Japanese, or Russian.
+% Android tries hard to keep data in separate files. So, layouts are defined in their own resources, and all text values (such as button text, title text, etc.) should be defined in their own file called strings.xml. This later allows you to provide multiple versions of strings resources to be used for various languages, such as English, Japanese, or Russian.
 
-{TRAN}Android精细地划分了不同文件的职责，布局可以在它的资源文件中给出定义，所有的文本值（按钮的文本、标题等）也都独立到了string.xml文件之中。这一来为程序提供多语言版本(英语、日语、俄语等)也就容易了许多，只需要提供另一个string资源文件即可。
+Android精细地划分了不同文件的职责，布局可以在它的资源文件中给出定义，所有的文本值（按钮的文本、标题等）也都独立到了string.xml文件之中。这一来为程序提供多语言版本(英语、日语、俄语等)也就容易了许多，只需要提供另一个string资源文件即可。
 
-{ORGI}Here’s what our strings.xml file looks like at this point:
-{TRAN}现在string.xml的内容大致如下：
+% Here’s what our strings.xml file looks like at this point:
+现在string.xml的内容大致如下：
 
 **Example 6.2. res/values/strings.xml**
 
@@ -338,63 +338,63 @@
 </resources>
 {/CODE}
 
-{ORGI}That this is simply a set of name/value pairs.
-{TRAN}其实就是一组键值对。
+% That this is simply a set of name/value pairs.
+其实就是一组键值对。
 
 {TIP}
-{ORGI}	I use a certain naming convention for my resource names. Let’s look at titleYamba, for example. First, I prefix the resource with the name of what it is, in this case a title of the activity. Secondly, I give it a name, Yamba. This naming convention helps later on keep many different resources sorted in a easy to find way. Finally, I use CamelCase for my names while some may prefer to use underscores to separate words.
+% 	I use a certain naming convention for my resource names. Let’s look at titleYamba, for example. First, I prefix the resource with the name of what it is, in this case a title of the activity. Secondly, I give it a name, Yamba. This naming convention helps later on keep many different resources sorted in a easy to find way. Finally, I use CamelCase for my names while some may prefer to use underscores to separate words.
 
-{TRAN}对资源的命名，我都是按照特定的命名规范。比如titleYamba这个名字，是使用资源的用途——Activity中的标题(title)——作为前缀。后跟一个名字，Yamba。多个单词之间使用CamelCase命名法表示分隔。这样使得不同的资源容易区分，也容易查找。
+对资源的命名，我都是按照特定的命名规范。比如titleYamba这个名字，是使用资源的用途——Activity中的标题(title)——作为前缀。后跟一个名字，Yamba。多个单词之间使用CamelCase命名法表示分隔。这样使得不同的资源容易区分，也容易查找。
 {/TIP}
 
 
-== StatusActivity Java Class ==
+==StatusActivity类==
 
-{ORGI}Now that we have our UI designed in XML, we are ready to switch over to Java. Remember from earlier in this chapter that Android provides two ways to building user interface. One is by declaring it in XML, which is what we just did. And we got as far as we could (for now). The other one is to programmatically build it in Java. We also said earlier that the best practice is to get as far as possible in XML, and then switch over to Java.
+% Now that we have our UI designed in XML, we are ready to switch over to Java. Remember from earlier in this chapter that Android provides two ways to building user interface. One is by declaring it in XML, which is what we just did. And we got as far as we could (for now). The other one is to programmatically build it in Java. We also said earlier that the best practice is to get as far as possible in XML, and then switch over to Java.
 
-{TRAN}现在已经有了设计好的XML界面，接下来转到Java这边。本章的开头曾提到构建用户界面有两种方式：一种使用XML的声明风格界面，也正是我们前面所做的；另一种是使用Java的编程风格。而最佳实践是尽可能多地使用XML来描述界面，到最后使用Java专门处理外部交互。
+现在已经有了设计好的XML界面，接下来转到Java这边。本章的开头曾提到构建用户界面有两种方式：一种使用XML的声明风格界面，也正是我们前面所做的；另一种是使用Java的编程风格。而最佳实践是尽可能多地使用XML来描述界面，到最后使用Java专门处理外部交互。
 
-{ORGI}Our Java class for this is StatusActivity.java and the Eclipse New Project Dialog has already created the stub for this class for us. The class is part of com.marakana.yamba1 Java package, and as such is part of that directory.
+% Our Java class for this is StatusActivity.java and the Eclipse New Project Dialog has already created the stub for this class for us. The class is part of com.marakana.yamba1 Java package, and as such is part of that directory.
 
-{TRAN}Java部分对应的文件是``StatusActivity.java``，Eclipse New Project对话框已在里面生成了类的大体框架。这个类是``com.marakana.yamba1`` package的一部分，因而肯定是在它的目录之下。
+Java部分对应的文件是``StatusActivity.java``，Eclipse New Project对话框已在里面生成了类的大体框架。这个类是``com.marakana.yamba1`` package的一部分，因而肯定是在它的目录之下。
 
 
-{ORGI}=== Creating your application-specific object and initialization code ===
+% === Creating your application-specific object and initialization code ===
 ===编写自己的对象以及初始化的相关代码===
 
-{ORGI}As with all Main Building Blocks in Android, such as Activities, Services, BroadcastReceivers and ContentProviders, you usually start by subclassing a base class provided by the Android framework, and overriding certain inherited methods. In this case, we subclass Android’s Activity class and override its onCreate() method. As you recall, activities have a certain lifecycle the section called “Activity Lifecycle”, or state machine through which they go. We as developers do not control what state the activity is in, but we do get to say what happens at a transition to a particular state. In this case, the transition we want to override is onCreate() method that is invoked by the system’s ActivityManager when the activity is first created (i.e. it goes from Starting the section called “Starting State” to Running the section called “Running State” state). This sort of programming when we subclass a system class and fill out the blanks is also known as Template pattern.
+% As with all Main Building Blocks in Android, such as Activities, Services, BroadcastReceivers and ContentProviders, you usually start by subclassing a base class provided by the Android framework, and overriding certain inherited methods. In this case, we subclass Android’s Activity class and override its onCreate() method. As you recall, activities have a certain lifecycle the section called “Activity Lifecycle”, or state machine through which they go. We as developers do not control what state the activity is in, but we do get to say what happens at a transition to a particular state. In this case, the transition we want to override is onCreate() method that is invoked by the system’s ActivityManager when the activity is first created (i.e. it goes from Starting the section called “Starting State” to Running the section called “Running State” state). This sort of programming when we subclass a system class and fill out the blanks is also known as Template pattern.
 
-{TRAN}Android程序中所有的构件(如Activity、Service、BroadcastReceiver、ContentProvider)都是继承一个Android框架中提供的基类，然后重载特定的方法。在这里，我们继承Activity类，重载了``onCreate()``方法。前面曾提到说Activity有个精心设计的生命周期，作为指导Activity行动的一台自动机。身为开发者，我们通常不会主动地干涉Activity的状态，而是跟踪Activity状态的变更，被动地对事件做处理。这里我们重载的``onCreate()``会在Activity第一次创建时，由系统的ActivityManager负责调用。像这样继承一个基类然后重载特定的方法的编程范式，被称作Template模式。
+Android程序中所有的构件(如Activity、Service、BroadcastReceiver、ContentProvider)都是继承一个Android框架中提供的基类，然后重载特定的方法。在这里，我们继承Activity类，重载了``onCreate()``方法。前面曾提到说Activity有个精心设计的生命周期，作为指导Activity行动的一台自动机。身为开发者，我们通常不会主动地干涉Activity的状态，而是跟踪Activity状态的变更，被动地对事件做处理。这里我们重载的``onCreate()``会在Activity第一次创建时，由系统的ActivityManager负责调用。像这样继承一个基类然后重载特定的方法的编程范式，被称作Template模式。
 
 %TALK:  (i.e. it goes from Starting the section called “Starting State” to Running the section called “Running State” state). 很诡异的一句。
 
-{ORGI}Our onCreate(), in addition to doing some standard housekeeping, will carry out two major tasks that the application needs done just once, and done at the beginning. We’ll set up our button so it responds to clicks, and connect to the cloud.
+% Our onCreate(), in addition to doing some standard housekeeping, will carry out two major tasks that the application needs done just once, and done at the beginning. We’ll set up our button so it responds to clicks, and connect to the cloud.
 
-{TRAN}``onCreate()``方法在基本工作之余，还会做些杂事，处理些一次性的初始化工作。比如为按钮绑定点击事件、将程序连接到服务端等。
+``onCreate()``方法在基本工作之余，还会做些杂事，处理些一次性的初始化工作。比如为按钮绑定点击事件、将程序连接到服务端等。
 
-{ORGI}Notice that onCreate() take a Bundle as a parameter. This is a small amount of data that can be passed into the activity via the Intent that started it. The data provided in a Bundle is typically limited to basic data types and more complex ones need to be specially encoded. For the most part, we’re not going to be using Bundle in Yamba example as there’s no real need for us.
+% Notice that onCreate() take a Bundle as a parameter. This is a small amount of data that can be passed into the activity via the Intent that started it. The data provided in a Bundle is typically limited to basic data types and more complex ones need to be specially encoded. For the most part, we’re not going to be using Bundle in Yamba example as there’s no real need for us.
 
-{TRAN}留意``onCreate()``有个Bundle类型的参数。它表示启动这一Activity的Intent所附带的少量数据。Bundle只能存储基本类型，复杂的数据需要自己编码。不过话说回来，在Yamba中我们并无使用Bundle的特殊需求，也就没有使用它。
+留意``onCreate()``有个Bundle类型的参数。它表示启动这一Activity的Intent所附带的少量数据。Bundle只能存储基本类型，复杂的数据需要自己编码。不过话说回来，在Yamba中我们并无使用Bundle的特殊需求，也就没有使用它。
 
-{ORGI}Keep in mind that whenever you override a method, you first want to make a call to the original method provided by the parent. That’s why we have super.onCreate() call here.
+% Keep in mind that whenever you override a method, you first want to make a call to the original method provided by the parent. That’s why we have super.onCreate() call here.
 
-{TRAN}永远记住：不论何时，只要重载一个方法，就先调用父类中原先的方法。而这里的做法就是``super.onCreate()``。
+永远记住：不论何时，只要重载一个方法，就先调用父类中原先的方法。而这里的做法就是``super.onCreate()``。
 
-{ORGI}So, once you subclass the framework’s class, override the appropriate method, and call super’s method in it, you are still back at status quo - your code does the same thing the original class did. But now we have a placeholder where we can add our own code.
+% So, once you subclass the framework’s class, override the appropriate method, and call super’s method in it, you are still back at status quo - your code does the same thing the original class did. But now we have a placeholder where we can add our own code.
 
-{TRAN}这一来保留了父类的逻辑。我们可以将自己的逻辑放在后面，但并不希望从零做起。
+这一来保留了父类的逻辑。我们可以将自己的逻辑放在后面，但并不希望从零做起。
 
-{ORGI}The very first thing we typically do in activity’s onCreate() is to load the UI from the XML file and inflate it into the Java memory space. In other words, we write some Java code that opens up our XML layout file, parses it, and for each element in XML it creates a corresponding Java object in our memory space. For each attribute of a particular XML element, this code will set that attribute on our Java object. This process is called inflating from XML and the line of code that does all this is setContentView(R.layout.status);.  Remember that R class is the automatically generated set of pointers that helps connect the world of Java to our world of XML and other resources in /res folder. Similarly, R.layout.status points to our /res/layout/status.xml file.
+% The very first thing we typically do in activity’s onCreate() is to load the UI from the XML file and inflate it into the Java memory space. In other words, we write some Java code that opens up our XML layout file, parses it, and for each element in XML it creates a corresponding Java object in our memory space. For each attribute of a particular XML element, this code will set that attribute on our Java object. This process is called inflating from XML and the line of code that does all this is setContentView(R.layout.status);.  Remember that R class is the automatically generated set of pointers that helps connect the world of Java to our world of XML and other resources in /res folder. Similarly, R.layout.status points to our /res/layout/status.xml file.
 
-{TRAN}``onCreate()``所做最基本的工作之一就是，读取XML文件并将UI投射到Java中。也就是编写Java代码读取并解析XML文件，为XML中表示的每个元素创建一个对应的Java对象，这被称作UI的“投射”(inflating)。而这一步的所有代码，全在``setContentView(R.layout.status);`` 这一句。R文件是Eclipse自动生成的资源文件，作为Java与其它资源文件之间的牵线人，储存着一些辅助性质的指针。比如，R.layout.status就是指向``/res/layout/status.xml``文件的指针。
+``onCreate()``所做最基本的工作之一就是，读取XML文件并将UI投射到Java中。也就是编写Java代码读取并解析XML文件，为XML中表示的每个元素创建一个对应的Java对象，这被称作UI的“投射”(inflating)。而这一步的所有代码，全在``setContentView(R.layout.status);`` 这一句。R文件是Eclipse自动生成的资源文件，作为Java与其它资源文件之间的牵线人，储存着一些辅助性质的指针。比如，R.layout.status就是指向``/res/layout/status.xml``文件的指针。
 
-{ORGI}This method setContentView() does a lot of work, in other words. It reads the XML file, parses it, creates all the appropriate Java objects to correspond to XML elements, sets object properties to correspond to XML attributes, sets up parent/child relationships between objects and overall inflates the entire view. At the end of this one line, our screen is ready for drawing.
+% This method setContentView() does a lot of work, in other words. It reads the XML file, parses it, creates all the appropriate Java objects to correspond to XML elements, sets object properties to correspond to XML attributes, sets up parent/child relationships between objects and overall inflates the entire view. At the end of this one line, our screen is ready for drawing.
 
-{TRAN}显而易见，``setContentView()``做了很多工作。读取文件、解析XML、创建对应XML元素的Java对象、设置对象的属性、处理对象的从属关系、投射整个View。等它执行完毕，界面就可以重绘了。
+显而易见，``setContentView()``做了很多工作。读取文件、解析XML、创建对应XML元素的Java对象、设置对象的属性、处理对象的从属关系、投射整个View。等它执行完毕，界面就可以重绘了。
 
-{ORGI}Your objects are not the only ones that define methods and respond to external stimuli. Android’s user interface objects do that too. Thus, you can tell your Button to execute certain code when its clicked. To do that, you need to define a method named onClick() and put the code there that you want executed. You also have to run the setOnClickListener method on the Button. You pass this as an argument to setOnClickListener because your object is where you define onClick().
+% Your objects are not the only ones that define methods and respond to external stimuli. Android’s user interface objects do that too. Thus, you can tell your Button to execute certain code when its clicked. To do that, you need to define a method named onClick() and put the code there that you want executed. You also have to run the setOnClickListener method on the Button. You pass this as an argument to setOnClickListener because your object is where you define onClick().
 
-{TRAN}添加处理外部事件的响应函数，不一定需要额外派生一个类。Android的UI对象对此已做考虑。比如，想让某按钮处理点击事件，你可以定义一个方法``onClick()``，然后调用setOnClickListener，将this传给它，因为``onClick()``的定义正在这个对象里面。
+添加处理外部事件的响应函数，不一定需要额外派生一个类。Android的UI对象对此已做考虑。比如，想让某按钮处理点击事件，你可以定义一个方法``onClick()``，然后调用setOnClickListener，将this传给它，因为``onClick()``的定义正在这个对象里面。
 
 **Example 6.3. StatusActivity.java, version 1**
 
@@ -440,66 +440,87 @@ public class StatusActivity1 extends Activity implements OnClickListener { // {#
 }
 {/CODE}
 
-{ORGI}
-+ To make StatusActivity capable of being a button listener, it needs to implement OnClickListener interface.
-+ Find views inflated from the XML layout and assign them to Java variables.
-+ Register the button to notify this i.e. StatusActivity when it gets clicked on.
-+ Connect to the online service that supports Twitter API. At this point, we hard code the username and password.
-+ The method that is called when button is clicked, as part of OnClickListener interface.
-+ Make the web service API call to the cloud to update our status.
-{TRAN}
-+ 为了让StatusActivity也能做一个按钮的监听器，它需要实现OnClickListener接口。
-+ 查找从XML中展开的View并赋值到Java变量中。
-+ 注册Button以便在它按下时通知到StatusActivity。
+% + To make StatusActivity capable of being a button listener, it needs to implement OnClickListener interface.
+% + Find views inflated from the XML layout and assign them to Java variables.
+% + Register the button to notify this i.e. StatusActivity when it gets clicked on.
+% + Connect to the online service that supports Twitter API. At this point, we hard code the username and password.
+% + The method that is called when button is clicked, as part of OnClickListener interface.
+% + Make the web service API call to the cloud to update our status.
+
++ 要让StatusActivity捕获按钮的事件，因此为它实现一个OnClickListener接口。
++ 找到对应的View。
++ 将这个按钮注册，使它按下时能够通知到StatusActivity。
 + 连接到支持Twitter API的在线服务。在这里我们姑且将用户名与密码硬编码上去。
-+ 作为OnClickListener接口的一部分，当Button按下时调用的方法。
-+ 让网络服务API调用远程端以更新我们的状态。
++ 连接到Twitter API的服务端。在这里，我们硬编码了用户名与密码。
++ OnClickListener接口的实现部分，表示按钮按下时调用的方法。
++ 调用Twitter的API，将消息更新到服务端。
 
-=== Compiling Code and Building Your Projects: Saving Files ===
-{ORGI}Once you make changes to your files, Java or XML, make sure you save them before moving on. Eclipse builds your project automagically every time you choose File→Save or press Ctrl-S. So, it is important to save files and make sure you do not move to another file until the current file is fine. You will know your file is fine if there are no little red x symbols in your code and the project builds successfully. Since Java depends on XML and vice versa, moving to another file while the current one is broken just makes it even more difficult to find errors.
-{TRAN}一旦你更改了你的文件，不论是Java还是XML，都需要在切换代码前确定你保存了它们。Eclipse会在每次你选择File→Save或者按下Ctrl-S时自动生成项目。所以保存文件很重要，确保你在切换到别的文件前将当前文件检查妥当。当你发现代码中没有任何红色的x标记时，你可以确信文件没有问题，项目成功生成。因为Java与XML相互依赖，当前文件未完成就移动到另一个文件会使得更难察觉出错误。
 
-{ORGI}Java errors are typically easy to find since the little red x in the code navigates you straight down to the line number where the error occurred. By putting your mouse right on that error, Eclipse will tell you what the error is and it will also offer you some possible fixes. This feature of Eclipse is very useful and is analogous to spell checker in a word processor.
-{TRAN}Java错误通常可以通过代码中的红色的x标记简单的找到，它将直接指引你到错误发生的行号。当你将鼠标刚好指向那个错误时，Eclipse就能告诉你发生了什么错误，并且还会为你提供些修改建议。Eclipse的这个功能十分有用，它很类似于文字处理软件中的拼写检查器。
+% === Compiling Code and Building Your Projects: Saving Files ===
+===保存文件：同时构建项目===
+
+% Once you make changes to your files, Java or XML, make sure you save them before moving on. Eclipse builds your project automagically every time you choose File→Save or press Ctrl-S. So, it is important to save files and make sure you do not move to another file until the current file is fine. You will know your file is fine if there are no little red x symbols in your code and the project builds successfully. Since Java depends on XML and vice versa, moving to another file while the current one is broken just makes it even more difficult to find errors.
+
+对文件做过更改，不管是Java文件还是XML文件，都得记着保存它们。在点击File->Save或按下Ctrl-S时，Eclipse都会自动重新构建项目。因此在保存一个文件并确保无误之前，最好不要修改其它文件，以免引入别的错误。若项目构建失败，代码中会出现红色的x标志，可以凭此判断这个文件中是否有错误存在。Java与XML相互依赖，修改起来若不顾顺序，同时修改又同时保存，一次正确还好，出现错误的话只会让错误更难寻找。
+
+%TALK: "move to another file"意思很含糊。在这里不是指“移动文件到另个地方”，而是“转移注意力，编辑另个文件”。
+
+% Java errors are typically easy to find since the little red x in the code navigates you straight down to the line number where the error occurred. By putting your mouse right on that error, Eclipse will tell you what the error is and it will also offer you some possible fixes. This feature of Eclipse is very useful and is analogous to spell checker in a word processor.
+
+有代码中红色的x标志在，Java中的错误一般还比较容找到。只要将鼠标移向那个错误标志，Eclipse即可告诉你错误的类型、位置，以及可能的修复方法。Eclipse的这一功能堪比文字处理工具中的拼写检查，十分有用。
 
 **Figure 6.4. Tracing Java Errors**
-	[images/06-TracingJavaErrors.png]
 
-=== Adding jtwitter.jar Library ===
-{ORGI}We are connecting to the the online service that implements Twitter-compatible API in our application. This connection is done via a series of web service calls. Since Android uses standard Java networking capabilities, there’s not much new in Android with respect to web services than we already have in Java. So, as such, there’s little value in reinventing the wheel.
-{TRAN}在我们的应用程序中，使用了和Twitter兼容的API来连接到在线服务。这种连接通过一系列网络服务调用来完成。因为Android使用了标准Java的网络能力，在Android中使用网络服务同在Java相比不需要知道新知识。所以，这里没有重复造轮子的必要。
+[images/06-TracingJavaErrors.png]
 
-{ORGI}To make our life with web services and Twitter API easier, we’re going to use a third-party library, jtwitter.jar, provided by Winterwell Associates. This library provides a simple Java class to interact with the online service and abstracts all the intricacies of making network calls and passing the data back and forth. If no one has been kind enough to provide a high-level library like jtwitter for what we want to do, we could always use standard Java networking libraries to get the job done. It would just have been more work.
-{TRAN}为了更方便地使用网络服务和Twitter API，我们将选择由Winterwell Associaties提供的第三方类库jtwitter.jar。这个库提供了简单的Java类同在线服务交互，并抽象了所有的网络调用和来来往往地数据传输。如果没有人像jtwitter那样十分慷慨地提供满足我们需求的高级库，我们就只能使用标准Java网络库来完成任务。这只会带来更繁重的任务。
+% === Adding jtwitter.jar Library ===
+===添加库jtwitter.jar===
+
+% We are connecting to the the online service that implements Twitter-compatible API in our application. This connection is done via a series of web service calls. Since Android uses standard Java networking capabilities, there’s not much new in Android with respect to web services than we already have in Java. So, as such, there’s little value in reinventing the wheel.
+
+我们的程序需要连接到服务端访问Twitter的API服务，免不了一系列的网络操作。Android拥有Java标准的网络编程接口，因此Java中的许多网络服务可以直接拿来，而没有重复发明轮子的必要。
+
+% To make our life with web services and Twitter API easier, we’re going to use a third-party library, jtwitter.jar, provided by Winterwell Associates. This library provides a simple Java class to interact with the online service and abstracts all the intricacies of making network calls and passing the data back and forth. If no one has been kind enough to provide a high-level library like jtwitter for what we want to do, we could always use standard Java networking libraries to get the job done. It would just have been more work.
+
+为更方便地使用网络服务和Twitter API，我们选用了Winterwell Associaties的三方库jtwitter.jar。它提供了一个简单的类，使得与Twitter服务端之间的交互变得十分方便。不过，如果没有jtwitter这样的三方库怎么办？我们大可使用Java内置的网络库来封装一个自己的实现，只是稍麻烦些罢了。
 
 {NOTE}
-{ORGI}	The jtwitter.jar library provided with this code has been slightly modified from the official Winterwell version to make it work in Yamba project.
-{TRAN}	为了让jtwitter.jar能在Yamba项目里正常工作，这里该类库中的代码和Winterwell官方版本相比有稍许改动。
+% 	The jtwitter.jar library provided with this code has been slightly modified from the official Winterwell version to make it work in Yamba project.
+
+便于应用到Yamba，这里的jtwitter.jar已略作改动。
+
 {/NOTE}
 
-{ORGI}Once you download this library, you can put it inside your project in Eclipse. You can simply drag the jtwitter.jar file and drop it in the root of your Eclipse project in Package Manager window. This makes the file part of the project, but our Java code is still unable to locate it.
-{TRAN}只要下载了这个类库，就可以放到你的Eclipse工程中。你只需简单的拖拽jtwitter.jar文件到该Eclipse工程的Package Manager窗口上。这将使文件成为该工程的一部分，不过我们的Java代码还是不能定位到它上。
+% Once you download this library, you can put it inside your project in Eclipse. You can simply drag the jtwitter.jar file and drop it in the root of your Eclipse project in Package Manager window. This makes the file part of the project, but our Java code is still unable to locate it.
 
-{ORGI}Java searches for all the classes in its classpath. To add it to the classpath, right-click on your project, select Properties and you will get a Properties for Yamba dialog window. Select Java Build Path and choose Libraries tab. In there, click on Add JARs… and locate your jtwitter.jar file. This will add this JAR file to your projects classpath.
-{TRAN}Java在它的classpath内搜索所有的类。要把类库增加到classpath里，右键单击你的工程，选择Properties，你将会打开Yamba项目的属性对话框窗口。选择Java Build Path并选择Libraries页。在这里单击Add JARs… 并定位到你的jtwitter.jar文件。这将添加该JAR文件到你的工程classpath里。
+下载完毕，即可将它加入你的Eclipse项目。需要做的就是打开这个Eclipse项目，把这个文件拖放到Package Manager窗口的根目录之下。这样它就成为了项目的一部分，但我们的Java代码依然不可以访问它。
+
+% Java searches for all the classes in its classpath. To add it to the classpath, right-click on your project, select Properties and you will get a Properties for Yamba dialog window. Select Java Build Path and choose Libraries tab. In there, click on Add JARs… and locate your jtwitter.jar file. This will add this JAR file to your projects classpath.
+
+Java在classpath中搜索它所有的类。要让我们的代码可以访问这个三方库，就需要将他的地址添加到classpath。右击你的项目，选择Properties打开Yamba的属性对话框。找到Java Build Path，选择Libraries页面。在这里单击Add JARs…，找到jtwitter.jar文件，加入即可。
 
 **Figure 6.5. Properties for Yamba project in Eclipse where we add the jtwitter.jar file.**
 	[images/06-PropertiesForYamba.png]
 
-=== Updating Manifest File for Internet Permission ===
-{ORGI}Before this application can work, we must ask user to grant us right to use the internet. The way Android manages security is by specifying permissions needed for certain dangerous operations. User then must explicitly grant those permissions to each application when he/she installs the application first time around. User must grant all or no permissions that the application asks for - there’s no middle ground. Also, user is not prompted about permissions upon upgrading an existing app.
-{TRAN}在应用程序能工作前，我们必须寻求用户的互联网访问权限。Android安全管理的方法是为危险操作单独指定需求权限。当第一次安装某个应用程序时，用户必须显式的对其授予一定权限。对应用程序要求的权限，用户只能授予全部或根本不授权——没有折中的余地。另外，当升级已经存在的应用时，用户不会被提醒授权问题。
+
+% === Updating Manifest File for Internet Permission ===
+===更新Manifest文件，获取Internet权限===
+
+% Before this application can work, we must ask user to grant us right to use the internet. The way Android manages security is by specifying permissions needed for certain dangerous operations. User then must explicitly grant those permissions to each application when he/she installs the application first time around. User must grant all or no permissions that the application asks for - there’s no middle ground. Also, user is not prompted about permissions upon upgrading an existing app.
+
+这个程序要正常工作，不能没有Internet的访问权限。Android的安全机制要求为可能的危险操作指明所需的权限。在用户安装应用程序时，必须明确地授予它一定的权限。对应用程序所要求的权限，用户只能全部授予，抑或全部拒绝——没有折中的余地。随后在升级已有应用时，就不再需要用户授权了。
 
 {NOTE}
-{ORGI}	Since we are running this application in debug mode and installing it via USB cable, Android doesn’t prompt us for permissions like it would the end user. However, we still must specify that the application requires certain permissions.
-{TRAN}	当我们在通过USB线缆安装并在调试模式运行应用程序时，Android不会提醒我们权限问题。然而我们仍然必须指定应用程序所需要的权限。
+% 	Since we are running this application in debug mode and installing it via USB cable, Android doesn’t prompt us for permissions like it would the end user. However, we still must specify that the application requires certain permissions.
+
+对通过USB安装、以debug模式运行的程序而言，Android不会询问权限的问题。但是应用要发布，我们就必须为应用程序指明它所需的权限。
 {/NOTE}
 
-{ORGI}In this case, we want to ask user to grant this application the use of INTERNET permission. We need internet in order to connect to the online service. So, open up AndroidManifest.xml file by double-clicking on it. Note that Eclipse typically opens this file in a WYSIWYG editor with many tabs on the bottom. As always, you can make most of the changes to this file via this interface, but since Eclipse tools are limited and sometimes buggy, we prefer to go straight into the XML view of this file. So, choose the right-most tab in the bottom that says AnddroidManifest.xml and add <uses-permission android:name="android.permission.INTERNET" /> element within the <manifest> block.
-{NOTE}在本例中，我们想要询问用户授权INTENET权限给这个应用程序。为了连接到在线服务，我们需要互联网。所以双击打开AndroidManifest.xml文件。注意到Eclipse通常用带有多标签页的所见即所得编辑器打开它。一直以来，我们对这个文件的大部分改动都通过这个界面完成。所以，选择底部最右边，总被称为“AnndroidManifest.xml”的页，在<manifest>块内添加<uses-permission android:name="android.permission.INTERNET" />元素。
+% In this case, we want to ask user to grant this application the use of INTERNET permission. We need internet in order to connect to the online service. So, open up AndroidManifest.xml file by double-clicking on it. Note that Eclipse typically opens this file in a WYSIWYG editor with many tabs on the bottom. As always, you can make most of the changes to this file via this interface, but since Eclipse tools are limited and sometimes buggy, we prefer to go straight into the XML view of this file. So, choose the right-most tab in the bottom that says AnddroidManifest.xml and add <uses-permission android:name="android.permission.INTERNET" /> element within the <manifest> block.
+
+在这里，我们要求访问网络服务，因此需要用户为它授予INTERNET的访问权限。双击打开AndroidManifest.xml文件，Eclipse通常会按照WYSIWYG的形式打开它。同前面一样，在这个界面中即可完成绝大部分的工作，但是Eclipse的这一功能并不完整，灵活性也差强人意，我们不如直接修改源文件。因此，选择最右边显示"AndroidManifest.xml"的标签，将``<uses-permission android:name="android.permission.INTERNET" />``加入``<manifest>``元素之下。
 
 **Example 6.4. AndroidManifest.xml**
-
 {CODE}
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -520,131 +541,176 @@ public class StatusActivity1 extends Activity implements OnClickListener { // {#
 </manifest>
 {/CODE}
 
-{ORGI}
-+ Defines the <uses-permission> element for INTERNET permission.
-{TRAN}
-+ 为INTERNET权限定义了<uses-permission>元素。
+% + Defines the <uses-permission> element for INTERNET permission.
++ 定义<uses-permission>元素，申请INTERNET权限。
 
-== Logging in Android ==
 
-{ORGI}Android offers a system-wide logging capability. You can log from anywhere in your code by calling Log.d(TAG, message), where TAG and message are some strings. TAG should be a tag that is meaningful to you given your code. Typically, tag would be the name of your app, your class or some module. Good practice is to define TAG as a Java constant for your entire class, such as:
-{TRAN}Android提供了系统级日志能力。你可以在代码的任何位置做记录，只需要调用Log.d(TAG, message)，这里TAG和message是字符串。TAG应该是能够标识代码、具有意义的标签。通常，标签可以是应用的名称，类名或者模块名。如何定义TAG的一个好建议是，在类内部为其定义一个Java常量，例如：
+==Android的日志机制 ==
+
+% Android offers a system-wide logging capability. You can log from anywhere in your code by calling Log.d(TAG, message), where TAG and message are some strings. TAG should be a tag that is meaningful to you given your code. Typically, tag would be the name of your app, your class or some module. Good practice is to define TAG as a Java constant for your entire class, such as:
+
+Android拥有一套系统级的日志机制。在代码的任何位置，都可以调用``Log.d(TAG, message)``来记录日志。其中的TAG与message都是字符串。TAG是一个标志，通常按照应用的名称、类名、模块名取名字。好习惯是，在类中专门为它定义一个常量，比如：
 
 {CODE}
 private static final String TAG = "StatusActivity";
 {/CODE}
 
 {TIP}
-{ORGI}	Before your code will compile, you need to import Log class. Eclipse has a useful feature under Source→Organize Imports, or Ctrl+O for short. Usually, this feature will automatically organize your import statements. However, in case of Log, there is usually a conflict because there are multiple classes with name Log. This is where you have to use your common sense and figure it out. In this case, the ambiguity is between Android Log and Apache Log classes, so choice should be easy.
-{TRAN}	在你编译代码之前，你需要导入Log类。Eclipse有个不错的功能可以通过Source→Organize Imports或者快捷键Ctrl+O调用，这个功能将自动的组织import语句。然而，对于Log类来说，导入常常会产生冲突，因为许多类都叫Log。这时候你需要按照直觉做出选择。在这个例子里，Android Log和Apache Log类会发生冲突，所以做出判断还是很容易的。
+% 	Before your code will compile, you need to import Log class. Eclipse has a useful feature under Source→Organize Imports, or Ctrl+O for short. Usually, this feature will automatically organize your import statements. However, in case of Log, there is usually a conflict because there are multiple classes with name Log. This is where you have to use your common sense and figure it out. In this case, the ambiguity is between Android Log and Apache Log classes, so choice should be easy.
+
+在编译之前需要确保已经import了Log类。有关import，Eclipse有个快捷功能可用，那就是选择Source→Organize Imports或按下Ctrl+O，Eclipse即可自动组织代码中的import语句。但是对Log类来说有一点需要注意，那就是它的名字比较常见，也就比较容易产生冲突。这时就需要靠自己的直觉做选择，辨认出正确的import语句。比如在这里，选择Android Log类还是Apache Log类，是很明显的事情。
 {/TIP}
 
 {WARNING}
-{ORGI}	Eclipse’s Organize Imports tool can sometimes lead to hard-to-find problems. For example, if your project doesn’t have R.java generated (which could easily happen because there’s an earlier problem with one of XML resources) then Organize Imports will import android.R class. This other R class is part of Android framework and has the same name as your local R class, making it hard to notice. So, if you have many compilation errors around your references to R resources, check that android.R is not imported.
-{TRAN}	Eclipse Organize Imports工具有时候会导致难以查找的错误。例如，如果你的工程没有生成R.java（这通常源于之前某个XML资源的问题），那么Organize Imports将导入android.R类。这是另一个包含在Android框架中的R类，并且他
+% 	Eclipse’s Organize Imports tool can sometimes lead to hard-to-find problems. For example, if your project doesn’t have R.java generated (which could easily happen because there’s an earlier problem with one of XML resources) then Organize Imports will import android.R class. This other R class is part of Android framework and has the same name as your local R class, making it hard to notice. So, if you have many compilation errors around your references to R resources, check that android.R is not imported.
+
+Eclipse的Organize Imports工具有时可能会造成难以查找的错误。比如，有时你的工程还没有生成R.java文件，Organize Imports工具就自动插入了一句import android.R，这是因为Android框架中也有个R类与你的R类重名。因此若看到R资源文件相关的编译错误，不妨检查下是不是把android.R也给import了。
+
+%TALK: "which could easily happen because there’s an earlier problem with one of XML resources"含义未明，求助 -fleuria
+
 {/WARNING}
 
-{ORGI}Note that Log takes different severity levels. .d() is for debug level. You can also specify .e() for Error, .w() for warning, .i() for info. There’s also .wtf() severity level for errors that should never happen. It stands for What a Terrible Failure, in case your wondered. Eclipse color-codes log messages based on their severity level.
-{TRAN}留意到日志类拥有不同的级别。.d()是调试级别。你还能指定.e()表示错误，.w()表示警告，.i()表示信息。还有个.wtf()级别表示根本不该发生的错误。有趣的是，它是指What a Terrible Failure（多么糟糕的失败）。Eclipse给不同级别的日志信息加上各种颜色标识。
+% Note that Log takes different severity levels. .d() is for debug level. You can also specify .e() for Error, .w() for warning, .i() for info. There’s also .wtf() severity level for errors that should never happen. It stands for What a Terrible Failure, in case your wondered. Eclipse color-codes log messages based on their severity level.
+
+日志拥有多个级别：``.d()``表示调试，``.e()``表示错误、``.w()``表示警告(warning)、``.i()``表示信息(info)。有趣的是，还有个``.wtf()``表示“不该发生的错误”，它的字面意思是“What a Terrible Failure”。Eclipse会按照不同的颜色显示不同级别的日志。
+
+(译者注：在英文社区中，"WTF"是很常见的调侃用语，原意指"What The Fuck"。``.wtf()``这个方法可以视为Android框架的一个小幽默)
+
 
 === LogCat ===
-{ORGI}The Android system log is outputted to LogCat. LogCat is a standardized system-wide logging mechanism. LogCat is readily available to all Java and C/C++ code. The developer can easily view the logs and filter their output based on severity, such as debug, info, warning, or error, or based on custom-defined tags. As with most things in Android development, there are two ways to view the LogCat: via Eclipse or via the command line.
-{TRAN}Android系统日志通过LogCat输出。LogCat是标准的系统级日志机制。它可被Java或C/C++代码访问。开发者能轻松地浏览日志，并根据记录的级别过滤输出，例如调试、信息、警告或错误，或者也可以用户自定义过滤标签。作为Android开发的重要组成部分，有两种浏览LogCat的方式：通过Eclipse或命令行。
 
+% The Android system log is outputted to LogCat. LogCat is a standardized system-wide logging mechanism. LogCat is readily available to all Java and C/C++ code. The developer can easily view the logs and filter their output based on severity, such as debug, info, warning, or error, or based on custom-defined tags. As with most things in Android development, there are two ways to view the LogCat: via Eclipse or via the command line.
 
-=== LogCat from Eclipse DDMS Perspective ===
-{ORGI}To view logcat in Eclipse, you need to open the LogCat View. It is typically available in DDMS perspective to which you can switch by clicking on DDMS in top-right corner of Eclipse [images/icon_ddms.png] or by going to Window→Open Perspective→DDMS in the Eclipse menu.
+Android系统中的日志都是输出到LogCat。它是一套标准的系统日志机制，可在Java或者C/C++中使用。通过它，开发者可以阅读/过滤程序中输出的日志。在Android开发中，访问LogCat有两种方式：通过Eclipse，或者通过命令行。
 
-{ORGI}DDMS stands for Dalvik Debug Monitor Server. DDMS is the connection between your application running on the device and your development environment, such as Eclipse.
-{TRAN}DDMS指的是Dalvik Debug Monitor Server。它将运行于设备上的应用程序同Eclipse这样的开发环境连接了起来。
+% === LogCat from Eclipse DDMS Perspective ===
+===访问LogCat：通过Eclipse的DDMS===
+
+% To view logcat in Eclipse, you need to open the LogCat View. It is typically available in DDMS perspective to which you can switch by clicking on DDMS in top-right corner of Eclipse [images/icon_ddms.png] or by going to Window→Open Perspective→DDMS in the Eclipse menu.
+
+在Eclipse中访问LogCat，需要打开LogCat View，它一般在DDMS中。单击右上角的DDMS按钮[images/06-icon_ddms.png]，或者选择菜单Window→Open Perspective→DDMS。
+
+% DDMS stands for Dalvik Debug Monitor Server. DDMS is the connection between your application running on the device and your development environment, such as Eclipse.
+
+DDMS指Dalvik Debug Monitor Server，它可以将运行于设备上的应用程序与Eclipse这样的开发环境连接起来。
 
 **Figure 6.6. LogCat in Eclipse**
 	[images/06-logcat.png]
 
-{ORGI}You can define filters for LogCat as well. Click on the little green plus button and LogCat Filter dialog will come up. You can define a filter based on TAG, severity, or process id. This will create another window within LogCat showing you only the log entries that match your filter.
-{TRAN}你能为LogCat定义过滤器。单击绿色加号按钮就会出现LogCat过滤窗口。你可以基于TAG或进程id定义过滤器。它将创建单独的LogCat窗口显示符合过滤条件的日志。
+% You can define filters for LogCat as well. Click on the little green plus button and LogCat Filter dialog will come up. You can define a filter based on TAG, severity, or process id. This will create another window within LogCat showing you only the log entries that match your filter.
+
+可以在LogCat中设置过滤规则。单击绿色加号按钮，调出LogCat Filter对话框，然后就可以根据TAG、日志等级或进程id设置过滤规则了。过滤所得的结果显示在另一个窗口中。
 
 **Figure 6.7. LogCat Filter**
 	[images/06-logcat-filter.png]
 
-{Note}
-{ORGI}	DDMS may not show up for in the top right corner right away if you haven’t used it before. If that’s the case, go to Window→Open Perspective and choose DDMS there. From there on, it should show in your window tab as well.
-{TRAN}	如果你还没用过DDMS，那么它可能不会出现于Eclipse的右上角。出现了这种情况，访问Window→Open Perspective菜单并选择DDMS。设置完毕后，就会将窗口标签设置好。
+{NOTE}
+% 	DDMS may not show up for in the top right corner right away if you haven’t used it before. If that’s the case, go to Window→Open Perspective and choose DDMS there. From there on, it should show in your window tab as well.
+
+如果你还没有使用过DDMS，那么Eclipse的右上角可能会没有它的按钮。出现这种情况的话，可以访问菜单Window→Open Perspective并选择DDMS。随后它的按钮就会显示出来了。
 {/NOTE}
 
-=== LogCat from command line ===
-{ORGI}Just like all the tools, anything you can do in Eclipse, you can do from command line as well. To view logcat, open up your terminal window and type:
-{TRAN}就像所有的工具一样，任何在Eclipse里可以做的，在命令行里也可以做。要浏览日志，打开终端并输入以下命令：
+% === LogCat from command line ===
+===访问LogCat：通过命令行===
+
+% Just like all the tools, anything you can do in Eclipse, you can do from command line as well. To view logcat, open up your terminal window and type:
+
+同前面的所有工具无异，Eclipse中可以做的，在命令行中也同样可以。访问LogCat，可以打开控制台，输入：
 
 {CODE}
 [user:~]> adb logcat
 {/CODE}
 
-{ORGI}This will give you the tail of current logcat and will be updated as your device keeps generating log entries. You can also filter log entries on command line, but the syntax is not the most intuitive. To only see StatusActivity-tagged entries, you specify StatusActivity:*, meaning you want all severity levels for this tag. However, you also have to specify what you don’t want to see. To do that, you add *:S, meaning silence all other tags. The following command line illustrates that:
-{TRAN}它将为你裁剪出当前logcat的内容，并当设备产生新日志时实时更新。你也能在命令行过滤日志，但是命令可能不那么方便。想只看StatusActivity标签的项，你只需指定StatusActivity:*，也就是说你想该标签所有级别的日志。同时，你还可以指定你不想看到的内容。要这么做，加上*:S，就是指过滤所有其他的标签。下面的命令行做出例子说明：
+% This will give you the tail of current logcat and will be updated as your device keeps generating log entries. You can also filter log entries on command line, but the syntax is not the most intuitive. To only see StatusActivity-tagged entries, you specify StatusActivity:*, meaning you want all severity levels for this tag. However, you also have to specify what you don’t want to see. To do that, you add *:S, meaning silence all other tags. The following command line illustrates that:
+
+它可以显示出LogCat的最新输出，并在收到新日志时实时更新。你也可以过滤日志，只是它的语法可能没那么直观。比如想查看标记为StatusActivity的日志条目，就用``StatusActivity:*``作为过滤，其中的``*``表示接受所有级别的日志。当然也可以设置过滤将不希望见到的部分忽略，如``*:S``，表示不显示其它标志的日志。命令如下：
 
 {CODE}
 [user:~]> adb logcat StatusActivity:* *:S
 {/CODE}
 
 {TIP}
-{ORGI}	I find it useful to keep a command line window open with adb logcat running in it at all times. This makes it easy for me to quickly see what’s going on with my app and is certainly much faster than switching to DDMS perspective in Eclipse.
-{TRAN}	我发现总是保持一个运行着adb logcat的命令行窗口将会很有用处。对我来说它将方便地迅速跟踪应用状态，而且会比在Eclipse里切换到DDMS perspective要快得多。
+% 	I find it useful to keep a command line window open with adb logcat running in it at all times. This makes it easy for me to quickly see what’s going on with my app and is certainly much faster than switching to DDMS perspective in Eclipse.
+
+个人经验，在开发中一直运行着一个adb logcat的命令行窗口是很有用的。这样可以方便地跟踪程序的状态，而且比起切换到Eclipse的DDMS界面，这要快的多。
 {/TIP}
 
-== Threading in Android ==
-{ORGI}A thread is a sequence of instructions executed in order. Although each CPU can only process one instruction at a time, most operating systems are capable of handling multiple threads on multiple CPUs, or interleaving them on a single CPU. Different threads need different priorities, so the operating system determines how much time to give each one if they have to share a CPU.
-{TRAN}线程是一串按顺序执行的指令。尽管每个CPU一次只能处理一条指令，大部分操作系统都能在不同的处理器里同时处理多条线程，或者轮流地在单个CPU上执行它们。不同的线程拥有不同的优先级，所以操作系统决定了给每个线程共享多长时间的CPU。
+% == Threading in Android ==
+==Android的线程机制==
 
-{ORGI}Android operating system is based on Linux and as such is fully capable of running multiple threads at the same time. However, you as application developer need to be aware how applications use threads in order to design your application properly.
-{TRAN}Android操作系统基于Linux，因此拥有同时运行多线程的能力。然而作为开发者的你，需要清楚如何为应用程序安排线程，使得你能较适合妥当的设计应用程序。
+% A thread is a sequence of instructions executed in order. Although each CPU can only process one instruction at a time, most operating systems are capable of handling multiple threads on multiple CPUs, or interleaving them on a single CPU. Different threads need different priorities, so the operating system determines how much time to give each one if they have to share a CPU.
 
-=== Single Thread ===
-{ORGI}By default, an Android application runs on a single thread. Single threaded application run all commands in serially, meaning the next command is not completed until the previous one is done. Another way of saying the same thing is that each call is blocking.
-{TRAN}默认情况下，Android应用程序运行于单线程下。单线程应用程序顺序执行所有命令，也就是说之前命令未完成前，下一命决不会执行。换句话说，每个调用都是阻塞的。
+一个线程就是一个连续的指令序列。每个CPU一次只能处理一条指令，不过大部分操作系统都支持在多个CPU中同时执行多个线程，也支持在单个CPU中轮流执行多个线程。不同的线程拥有不同的优先级，操作系统以此为依据，安排线程的调度。
+
+% Android operating system is based on Linux and as such is fully capable of running multiple threads at the same time. However, you as application developer need to be aware how applications use threads in order to design your application properly.
+
+Android操作系统建基于Linux，这就获得了多线程的支持。作为开发者要开发正确的程序，就需要对应用程序使用线程的方法有所了解。
+
+% === Single Thread ===
+===单线程===
+
+% By default, an Android application runs on a single thread. Single threaded application run all commands in serially, meaning the next command is not completed until the previous one is done. Another way of saying the same thing is that each call is blocking.
+
+Android程序默认运行在单线程之下。单线程顺序执行所有的操作，这一操作完成之前，下一个操作绝不会执行。这一行为被称作“阻塞”(blocking)。
 
 **Figure 6.8. Single Threaded Execution**
 	[images/06-Threads-Single.png]
 
-{ORGI}This single thread is also known as the UI (as in User Interface) thread since that’s the thread that processes all the user interface commands as well. The UI thread is responsible for drawing all the elements on the screen as well as processing all the user events, such as touches of the screen, clicks on the button, and so on.
-{TRAN}这个单线程也被称为UI（指用户界面）线程，因为该线程也处理所有的用户界面命令。UI线程在屏幕上绘制出所有的元素，同时还需要处理每个用户事件，例如触摸屏幕、点击按钮等等。
+% This single thread is also known as the UI (as in User Interface) thread since that’s the thread that processes all the user interface commands as well. The UI thread is responsible for drawing all the elements on the screen as well as processing all the user events, such as touches of the screen, clicks on the button, and so on.
 
-{ORGI}The problem with running StatusActivity on the single thread is our network call to update the our status. As with all network calls, the time it takes to execute is outside of our control. Our call to twitter.updateStatus() is subject to all the network availability and latency issues. We don’t know if the user is on the super fast WiFi connection, or is using a much slower protocol to connect to the cloud. In other words, our application cannot respond until the network call is completed.
-{TRAN}让StatusActivity运行于单线程上会在通过网络调用更新状态时出现毛病。因为所有的网络调用，需要耗费的执行时间是我们无法控制的。调用twitter.updateStatus()需要适应与所有的网络情况。我们不知道用户是否连接上了非常快的WiFI或者只是使用了较慢的连接方式。换句话说，应用程序调用网络未完毕前，界面将一直失去响应。
+这个线程也被称作UI线程，意思是程序中用户界面的相关操作都在这里执行。除处理所有UI元素的渲染之外，事件的响应也由它负责。比如触摸屏幕、点击按钮等等。
+
+% The problem with running StatusActivity on the single thread is our network call to update the our status. As with all network calls, the time it takes to execute is outside of our control. Our call to twitter.updateStatus() is subject to all the network availability and latency issues. We don’t know if the user is on the super fast WiFi connection, or is using a much slower protocol to connect to the cloud. In other words, our application cannot respond until the network call is completed.
+
+让StatusActivity在单线程中运行会遇到一个问题，那就是执行网络操作时，用户界面会响应不灵。这是因为阻塞在网络操作上的时间是不可预知的。我们不知道用户的网络接入方式是快速的WiFi，还是慢速的GPRS，因此在调用``twitter.updateStatus()``时，必须考虑延时的问题。
 
 {NOTE}
-{ORGI}	Android system will offer to kill any application that is not responding within a certain time period, typically around five seconds for activities. This is known as Application Not Responding dialog, or ANR for short.
-{TRAN}	Android系统将杀死任何有一段时间未响应的应用程序，对Activity来说，通常是5秒。这将弹出应用程序未响应对话框，或者简称为ANR。
+%Android system will offer to kill any application that is not responding within a certain time period, typically around five seconds for activities. This is known as Application Not Responding dialog, or ANR for short.
+
+程序若长时间无响应(一般是五秒)，Android系统会自动弹出一个对话框，询问是否将该程序所在的进程杀死。这个对话框就是Application Not Responding，简称ANR。
 {/NOTE}
 
 **Figure 6.9. Application Not Responding**
 	[images/06-ANR.png]
 
-=== Multithreaded Execution ===
-{ORGI}A much better solution is to have the potentially long operations run on a separate thread. When multiple tasks run on multiple threads at the same time, the operating system slices the available CPU so that no one task dominates the execution. The result is that appears that multiple tasks are running in parallel at the same time.
-{TRAN}更好的解决方案是将可能耗时较长的操作放在另外的线程中进行。当多任务运行同时在多线程上时，操作系统会划分CPU时间，这样不会有任务独占。这样就好像多个任务在同时并行地执行。
+% === Multithreaded Execution ===
+===多线程执行===
+
+% A much better solution is to have the potentially long operations run on a separate thread. When multiple tasks run on multiple threads at the same time, the operating system slices the available CPU so that no one task dominates the execution. The result is that appears that multiple tasks are running in parallel at the same time.
+
+与在单线程中阻塞相比，更好的做法是让程序运行在多个线程之中。有系统负责分配CPU时间，几个线程仿佛在同一时刻同时运行。这样可以避免某线程独占计算资源。
 
 **Figure 6.10. Multithreaded Execution**
 	[images/06-Threads-Multi.png]
 
-{ORGI}In our example, we could put the actual network call of updating our status in the cloud in a separate thread. That way our main UI thread will not block while we’re waiting for the network and the application will appear much more responsive. We tend to talk of the main thread as running in the foreground and the additional threads as running in the background. They’re really all equal in status, alternating execution on the device’s CPU, but from the point of view of the user, the main thread is in the foreground because it deals with the UI.
-{TRAN}在本例中，我们可将每个更新状态的远程网络调用放在单独的线程里。这样我们的主线程将不会在我们等待网络时阻塞，应用程序会更能够响应。我们倾向于认为主线程运行于前台，而额外的线程则运行于后台。它们实际上从状态上看是平等的，也就是指在设备CPU上执行机会是平等的，但是从用户角度来看，主线程在前台，因为它和UI相关。
+% In our example, we could put the actual network call of updating our status in the cloud in a separate thread. That way our main UI thread will not block while we’re waiting for the network and the application will appear much more responsive. We tend to talk of the main thread as running in the foreground and the additional threads as running in the background. They’re really all equal in status, alternating execution on the device’s CPU, but from the point of view of the user, the main thread is in the foreground because it deals with the UI.
 
-{ORGI}There are multiple ways of accomplishing multithreading. Java has a class Thread that allows for many of these operations. We could certainly use any of the regular Java features to handle putting the network call in the background.
-{TRAN}要使用多线程有很多种方式。Java有线程类来实现这种操作。我们可以明确地使用任何原本地Java功能在后台处理网络调用。
+在例子中，我们将网络操作的相关代码放到独立的线程里面。这一来我们的主线程可以避免网络操作上的阻塞，用户界面不会响应不灵。按惯例，我们一般认为主线程是运行于前台，而其它的线程都是运行于后台。这是因为前端的用户界面运行在主线程。但在调度上，它们都是平等的。
 
-{ORGI}However, one of the problems that we’d run into by using standard Java Thread class is that another thread is not allowed to update the elements in the main UI thread. This make sense since to update the UI thread we would need to synchronize with the current state of its objects and that would be a job on its own.
-{TRAN}然而，有个问题是，使用了标准Java类将使得其他线程不能更新主UI线程中的元素。这将在需要同步当前对象状态出现，而这需要自己着手解决。
+% There are multiple ways of accomplishing multithreading. Java has a class Thread that allows for many of these operations. We could certainly use any of the regular Java features to handle putting the network call in the background.
 
-{ORGI}In addition to standard Java threading support, Android provides a utility class AsyncTask specifically designed for this purpose.
-{TRAN}除了标准Java线程支持的以外，Android还提供了特别设计用来解决这个问题的工具类AsyncTask
+使用多线程的方法有很多，Java的Thread类是其中之一。使用Thread类，就是使用Java的原生特性。
+
+% However, one of the problems that we’d run into by using standard Java Thread class is that another thread is not allowed to update the elements in the main UI thread. This make sense since to update the UI thread we would need to synchronize with the current state of its objects and that would be a job on its own.
+
+但这里有一点，那就是Java线程不可以直接访问其它线程的私有数据，比如UI线程中的控件。这样考虑是为了避免一些同步问题。
+
+%TALK: "This make sense since to update the UI thread we would need to synchronize with the current state of its objects and that would be a job on its own." 这句很别扭，上文意译为“这样可以避免一些同步问题”只说了前半句，丢失了一些意思。
+
+% In addition to standard Java threading support, Android provides a utility class AsyncTask specifically designed for this purpose.
+
+为弥补这点不足，也作为Java标准的线程机制的补充，Android提供了一个AsyncTask类。
+
 
 === AsyncTask === 
-{ORGI}AsyncTask is an Android mechanism created to aid in handling long operations that need to report to UI thread. To take advantage of this class, we need to crate a new subclass of AsyncTask and implement doInBackground(), onProgressUpdate(), and onPostExecute() methods. In other words, we are to fill out the blanks for what to do in the background, what to do when there’s some progress and what to do when done with this task.
-{TRAN}AsyncTask是Android中创建辅助需要处理长时间操作并通知到UI线程的机制。想利用这个类，我们需要创建AsyncTask的子类并实现doInBackground()，onProgressUpdate()和onPostExecute()方法。换句话说，我们要补上要在后台做的事情，当正在处理时要做的事情和当任务完成后要做的事情。
 
-{ORGI}We’ll extend our earlier example with an asynchronous posting to the cloud. The first part of the example is very similar to the code in Example 6.3, “StatusActivity.java, version 1” but it hands off the posting to the asynchronous thread. A new AsyncTask does the posting in the background.
-{TRAN}我们将为之前的例子添加异步提交到远程的功能。本例中的首要部分和例子6.3的代码"StatusActivity.java, version 1"很类似，只不过需要在异步线程上处理提交任务。而新的AsyncTask实例会在后台做提交操作。
+% AsyncTask is an Android mechanism created to aid in handling long operations that need to report to UI thread. To take advantage of this class, we need to crate a new subclass of AsyncTask and implement doInBackground(), onProgressUpdate(), and onPostExecute() methods. In other words, we are to fill out the blanks for what to do in the background, what to do when there’s some progress and what to do when done with this task.
+
+既要避免长时间的阻塞，又要访问UI线程的私有数据，那该怎么办？使用Android内置的``AsyncTask``(异步任务)机制。要使用它，我们需要派生一个``AsyncTask``的子类，并重载``doInBackground()``与``onPostExecute()``两个方法。这两个方法里面就是后台执行的相关代码：任务进行时的操作，以及任务完成时的操作。
+
+% We’ll extend our earlier example with an asynchronous posting to the cloud. The first part of the example is very similar to the code in Example 6.3, “StatusActivity.java, version 1” but it hands off the posting to the asynchronous thread. A new AsyncTask does the posting in the background.
+
+例6.5是使用AsyncTask修改过的代码，实现异步发布到服务端。它的开头部分与例6.3相似，不同在于它是使用了异步任务，而非阻塞在网络操作上。
 
 **Example 6.5. StatusActivity.java, version 2**
 
@@ -723,50 +789,45 @@ public class StatusActivity2 extends Activity implements OnClickListener {
 }
 {/CODE}
 
-{ORGI}
-+ The PostToTwitter class in this case is an inner class of StatusActivity. It also subclasses AsyncTask. Notice the use of Java generics to describe the data types that this AsyncTask will use in its methods. We’ll refer to these three types below. The first data type is used by doInBackground, the second by onProgressUpdate, and the third by onPostExecute
-{TRAN}
-+ 本例中，PostToTwitter类是一个StatusActivity的内部类。它也是AsyncTask的子类。注意这里为Java泛型指定的数据类型，这些会是在AsyncTask的方法中用到的。我们指定了三种类型。第一个数据类型用于doInBackground，第二个用于onProgressUpdate，第三个则用于onPostExecute。
+% + The PostToTwitter class in this case is an inner class of StatusActivity. It also subclasses AsyncTask. Notice the use of Java generics to describe the data types that this AsyncTask will use in its methods. We’ll refer to these three types below. The first data type is used by doInBackground, the second by onProgressUpdate, and the third by onPostExecute
+% + doInBackground() is the callback that specifies the actual work to be done on the separate thread, as if it’s executing in the background. The argument String... is the first of the three data types that we defined in the list of generics for this inner class above. The fact that it’s followed by three dots indicates that this is an array of Strings and you have to declare it that way even though you want to pass only a single status.
+% + onProgressUpdate() is called whenever there’s progress in the task execution. The progress should be reported from the doInBackground() call. In this case, we do not have a meaningful progress to report. In another example, such as file download for instance, this could report the percentage of completion or amount of data downloaded thus far. The actual data type, in this case Integer refers to the second argument in the generics definition of this class.
+% + onPostExecute() is called when our task is completed. This is our callback method to update the user interface and tell the user that task is done. In this particular case, we are using Toast feature of Android UI to show a quick message on the screen. Notice that Toast uses makeText() static method to make the actual toast message. Also, do not forget the call show() on the toast, otherwise your message will never be displayed and there won’t even be any errors - a hard bug to find. The argument that this method gets is the value that doInBackground() returns, in this case a String. This also corresponds to the third generics datatype in the class definition.
+% + Once we have out AsyncTask setup, we can use it. To use it, we simply instantiate it and call execute() on it. The argument that we pass in is what goes into doInBackground() call. Note that in this case we are passing a single String that is being converted into a String array in the actual method later on. This is the use of Java’s variable number of arguments feature.
 
-{ORGI}
-+ doInBackground() is the callback that specifies the actual work to be done on the separate thread, as if it’s executing in the background. The argument String... is the first of the three data types that we defined in the list of generics for this inner class above. The fact that it’s followed by three dots indicates that this is an array of Strings and you have to declare it that way even though you want to pass only a single status.
-{TRAN}
-+ doInBackground()是指定需要在单独的线程中完成的确切任务的回调函数，就像是在后台执行一般。参数String...是该内部类的泛型列表中指定的三种数据类型中的第一个。事实上附上的三个点号指示了这会是一个字符串数组，而且就算你只传递了一个参数，也必须要这么申明。
++ ``PostToTwitter``是``StatusActivity``的内部类，也是``AsyncTask``的子类。留意后面的三个类型参数，它们决定着下面函数的类型：第一个类型参数与``doInBackground()``相关，第二个与``onPostExecute()``相关，第三个与``onPostExecute()``相关。
++ ``doInBackground()``是个回调方法，表示异步执行的网络操作，就像执行在后台一样。它的参数``String...``来自前面声明中的第一个类型参数，后面的三个``.``表示它接纳多个字符串作为参数，即使只用到一个字符串也必须如此。
++ ``onProgressUpdate()``在任务进度更新时触发，其中的“进度”由``doInBackground()``负责更新。一个应用样例是，下载工具显示已完成的百分比。但在这里没有显示进度信息的必要，因此留空。
++ ``onPostExecute()``在任务完成时触发。我们可以在这个回调方法里面更新用户界面，显示任务完成。这里我们应用Android的Toast机制，在屏幕上弹出一条消息。调用Toast的静态方法``makeText()``，创建一条Toast消息，然后调用``show()``才能显示出来。这与前面的第三个类习惯参数相关。
++ 设置``AsyncTask``完毕，接下来使用它：简单创建一个实例，然后调用``execute()``即可。它的参数会原样传给``doInBackground()``。留意，这是个可变参数，因此单个字符串会被转化为字符串数组的形式。
 
-{ORGI}
-+ onProgressUpdate() is called whenever there’s progress in the task execution. The progress should be reported from the doInBackground() call. In this case, we do not have a meaningful progress to report. In another example, such as file download for instance, this could report the percentage of completion or amount of data downloaded thus far. The actual data type, in this case Integer refers to the second argument in the generics definition of this class.
-{TRAN}
-+ onProgressUpdate()当有该任务执行时调用。这个进程应当由doInBackground()调用。在本例中，我们没有需要报告的进程。在另一个例子中，例如文件下载实例，可以报告完成进度或者当前下载数据量。该参数类型在本例中是整数，也就是该类泛型定义里的第二个参数。
 
-{ORGI}
-+ onPostExecute() is called when our task is completed. This is our callback method to update the user interface and tell the user that task is done. In this particular case, we are using Toast feature of Android UI to show a quick message on the screen. Notice that Toast uses makeText() static method to make the actual toast message. Also, do not forget the call show() on the toast, otherwise your message will never be displayed and there won’t even be any errors - a hard bug to find. The argument that this method gets is the value that doInBackground() returns, in this case a String. This also corresponds to the third generics datatype in the class definition.
-{TRAN}
-+ onPostExecute()当任务完成调用。这是更新用户界面、告知用户任务完成的回调方法。在这个例子中，我们使用Android UI的Toast特性来向屏幕显示一个简要消息。注意到Toast使用makeText()静态方法实现简要消息。同样地，不要忘了给Toast实例调用show()，否则你的消息将永远不会显示，甚至都不会有任何错误——这是一个很难发现的Bug。这个方法的参数是doInBackground()返回类型，本例中是字符串。这也对应于类定义的第三个泛型数据类型。
+% At this point, when user clicks on Update Status button, our activity will create a separate thread using AsyncTask and place the actual network operation on that thread. When done, the AsyncTask will update the main UI thread by popping up a Toast message to tell the user that operation either succeeded or failed. This approach makes our application much more responsive and user should never get "Application Not Responding: Force Close or Wait" message again, as shown in Figure 6.9, “Application Not Responding”.
 
-{ORGI}
-+ Once we have out AsyncTask setup, we can use it. To use it, we simply instantiate it and call execute() on it. The argument that we pass in is what goes into doInBackground() call. Note that in this case we are passing a single String that is being converted into a String array in the actual method later on. This is the use of Java’s variable number of arguments feature.
-{TRAN}
-+ 一旦设定好了AsyncTask，我们就能用他了。要用它，我们简单地实例化一个对象并调用其execute()方法。我们传递的参数会传递给doInBackground()调用。注意本例中，我们传递的单个字符串会被转换成字符串数组。这就是Java可变长参数特性的使用方法。
+到这里用户只要单击``Upate Status``按钮，Activity即可隐式地创建出一个独立的线程，在里面执行异步任务中的网络操作。到任务结束时，``AsyncTask``会弹出一个Toast显示任务的成功与否。这样可以避免应用程序长时间的阻塞，也可以避免用户见到讨厌的``Application Not Responding: Force Close or Wait``对话框。
 
-{ORGI}At this point, when user clicks on Update Status button, our activity will create a separate thread using AsyncTask and place the actual network operation on that thread. When done, the AsyncTask will update the main UI thread by popping up a Toast message to tell the user that operation either succeeded or failed. This approach makes our application much more responsive and user should never get "Application Not Responding: Force Close or Wait" message again, as shown in Figure 6.9, “Application Not Responding”.
-{TRAN}在此时，用户点击更新状态按钮时，我们的Activity会使用AsyncTask创建单独的线程，并在该线程里处理网络操作。完毕后，AsyncTask将更新主UI线程，用Toast弹出消息告知用户操作成功或失败。这种方法使得我们的应用程序响应性更好，用户将再也不会遇到在Figure 6.9所示的”应用程序停止响应：请强行关闭或等待“的消息。
 
 **Figure 6.11. StatusActivity, Part 1**
 	[images/06-StatusActivity-1.png]
 
-== Other UI Events ==
+%== Other UI Events ==
+==其它UI事件==
 
-{ORGI}So far, you have seen how to handle the click events by implementing OnClickListener and providing the onClick() method so that when the button is clicked this method is invoked. Imagine that we want to provide a little counter telling user how many characters are still available on the input from the maximum of 140. To do that, we need another type of listener.
-{TRAN}到目前为止，你已经了解了如何通过实现OnClickListener并提供当按钮按下时调用的onClick()方法来处理点击事件。想象下我们想提供一个计数器来告知用户还能输入多少字符就会达到最多140字符的限制。为了实现这个，我们还需要其他种类的监听器。
+% So far, you have seen how to handle the click events by implementing OnClickListener and providing the onClick() method so that when the button is clicked this method is invoked. Imagine that we want to provide a little counter telling user how many characters are still available on the input from the maximum of 140. To do that, we need another type of listener.
 
-{ORGI}Android provids many different listeners for various events, such as touch, click, and so on. In this case, we’re going to use TextWatcher to watch for text changes on the edit text field. Steps for this listener are similar to the steps for OnClickListener and are similar to many other listeners.
-{TRAN}Android为各类事件提供了许多不同的监听器，例如触摸、点击等等。在这个例子中，我们将使用TextWatcher监视文本编辑区域的文本变化。使用这个监听器的方法和使用OnClickListener等其他监听器的方法类似。
+前面我们已经看过了通过实现一个``OnClickListener``提供``onClick()``，从而捕获点击事件的方法。接下来思考下，输入框的最大字符限制是140，我们该怎样统计已输入字符的个数？这就需要用到另一个侦听器(Listener)。
 
-{ORGI}From users stand point, we’ll add another TextView to our layout to indicate the number of characters still available to type. This text will change color, from green to yellow and red as user approaches the limit.
-{TRAN}从用户角度来看，我们将增加另外的TextView到布局上，以指示仍可输入的字符数。该文本将能改变颜色，从绿色到黄色再到红色来表示输入到达限制的程度。
+% Android provids many different listeners for various events, such as touch, click, and so on. In this case, we’re going to use TextWatcher to watch for text changes on the edit text field. Steps for this listener are similar to the steps for OnClickListener and are similar to many other listeners.
 
-{ORGI}From Java point of view, we’ll implement TextWatcher and attach it to our text field where the user is typing the actual text. The TextWatcher methods will be invoked as user changes the text and based on the amount of text entered we’ll update the counter.
-{TRAN}从Java的角度来看，我们将实现TextWatcher并附加到用户输入的文本区域。TextWatcher将在用户改变文本时调用，并会根据输入的文本更新计数器。
+Android为不同的事件(如触摸、点击等)提供了不同的侦听器。在这里，我们需要用到的是``TextWatcher``来监视文本框中文本的变化，步骤与``OnClickListener``大同小异。实际上，各种侦听器的用法都是很相似的。
+
+% From users stand point, we’ll add another TextView to our layout to indicate the number of characters still available to type. This text will change color, from green to yellow and red as user approaches the limit.
+
+从用户的角度来看，界面上多了一个TextView显示仍可输入的字符数。它的颜色会随着字数的减少而变化，从绿到黄，最后红色表示输入到达限制。
+
+% From Java point of view, we’ll implement TextWatcher and attach it to our text field where the user is typing the actual text. The TextWatcher methods will be invoked as user changes the text and based on the amount of text entered we’ll update the counter.
+
+从Java的角度来看，我们需要实现一个``TextWatcher``来监视文本框的变化。它会在用户更改文本的时候触发，并根据字数的变化更新计数器。
 
 **Example 6.6. res/layout/status2.xml**
 
@@ -803,18 +864,16 @@ public class StatusActivity2 extends Activity implements OnClickListener {
 </LinearLayout>
 {/CODE}
 
-{TRAN}
-+ New TextView that represents the count of how many characters are still available for user to type. We start at 140 and then go down as user enters text.
-{ORGI}
-+ 用来表示用户还能输入多少字符的另一个TextView。我们从140开始并随着用户文本的输入往下倒数。
 
-{TRAN}
-The following version of Status Activity implements the TextWatcher interface, and the new methods in this example appear at the end of the class. Initially the text of the counter is in green color to indicate we can keep on typing. As we approach the maximum, the text turns yellow and eventually becomes red to indicate we are beyond the maximum message size.
-{ORGI}
-随后的StatusActivity实现了TextWatcher接口，本例中的新方法出现与该类的最后。文本计数器初始化为绿色表明我们能尽情输入。当我们趋近于最大值的过程里，文本会转为黄色并最终变为红色，表明我们达到了最大消息长度。
+% + New TextView that represents the count of how many characters are still available for user to type. We start at 140 and then go down as user enters text.
++ 显示仍可输入字符数的``TextView``。其初始值为``140``，随着用户输入的增加而减少。
+
+
+% The following version of Status Activity implements the TextWatcher interface, and the new methods in this example appear at the end of the class. Initially the text of the counter is in green color to indicate we can keep on typing. As we approach the maximum, the text turns yellow and eventually becomes red to indicate we are beyond the maximum message size.
+
+下面的``StatusActivity``实现了``TextWatcher``接口，新加入的方法列在后面。TextView初始为绿色，表示还可以继续输入；随着字数增长，它会变成黄色，表示字数接近上限；最后变成红色，表示已经达到了字数限制。
 
 **Example 6.7. StatusActivity.java, final version**
-
 {CODE}
 package com.marakana.yamba1;
 
@@ -918,136 +977,117 @@ public class StatusActivity extends Activity implements OnClickListener,
 }
 {/CODE}
 
-{ORGI}
-+ We declare that StatusActivity now implements TextWatcher. This means we need to actually provide the implementation for this interface, which we do later on in this class.
+% + We declare that StatusActivity now implements TextWatcher. This means we need to actually provide the implementation for this interface, which we do later on in this class.
+% + textCount is our text view that we defined in the layout above.
+% + First, we need to find the textCount in the inflated layout.
+% + We set the initial text to 140 since that’s the maximum length of a status message in our app. Note that TextView takes text as value, so we convert a number to text here.
+% + The textCount field will dynamically change color based on how much text is left to type. In this case, we start with green. Notice that Color class is part of Android framework and not Java. In other words, we’re using android.graphics.Color and not java.awt.Color. Color.GREEN is one of the few colors defined as a constant in this class. More on colors in the next section.
+% + Here we attach the TextWatcher to our editText field. In other words, editText will call TextWatcher instance, in this case this which refers to this object itself.
+% + afterTextChanged() is one of the methods provided by the TextWatcher interface. This method is called whenever the text changes in the view that this TextWatcher is watching. In our case, whenever user changes the underlying text in editText, this method is invoked with the current text.
+% + Here we do some math to figure out how many characters are left given the 140 character limit.
+% + Next, based on the availability of the text, we update the color of the counter. So, if more than 10 characters are available, we are still in the green. Fewer than 10 means we are approaching the limit, thus yellow color. If we are pass the limit of 140 characters, the counter turns red.
 
-+ textCount is our text view that we defined in the layout above.
+% + This method is called just before the actual text replacement is completed. In this case, we don’t need this method, but as part of implementing the TextWatcher interface, we must provide its implementation, event though its empty.
+% + Similarly, we are not using onTextChanged() in this case, but must provide its blank implementation.
 
-+ First, we need to find the textCount in the inflated layout.
++ 使``StatusActivity``实现``TextWatcher``接口，并在后面提供这个接口的实现。
++ ``textCount``是我们新加入的TextView。
++ 找到``textCount``的引用。
++ 设置初始值为``140``，表示最大字符数限制。留意TextView的值只能是字符串，因此执行类型转换。
++ ``textCount``会随着字符数的变化而改变颜色，在这里初始化为绿色。留意，颜色都是以常量的形式定义在Android的框架中，而不是Java类库的一部分。我们用的是``android.graphics.Color``，而不是``java.awt.Color``。Color.Green是这个对象中定义的一个常量。
++ 将``TextWatcher``绑定到文本框``editText``，``editText``在内容发生变化时，就会调用到``TextWatcher``的实例。
++ ``afterTextChanged()``是TextWatcher接口定义的一个方法。它在自己所监视的文本框的内容发生变化时触发，以当前的文本为参数。在这里，只要用户修改了自己的输入，它就会被触发一次。
++ 做点数学，计算出当前可输入的字符数。
++ 然后根据可输入的字符数，设置``textCount``的颜色。如果字符数大于10，就是绿色；大于零小于十，黄色；等于零，红色。
++ 在文本修改之前触发。我们并不需要这个方法，但它作为``TextWatcher``的一部分不可以省略，因此留空。
++ 同上，我们不需要这个方法，因此留空。
 
-+ We set the initial text to 140 since that’s the maximum length of a status message in our app. Note that TextView takes text as value, so we convert a number to text here.
-
-+ The textCount field will dynamically change color based on how much text is left to type. In this case, we start with green. Notice that Color class is part of Android framework and not Java. In other words, we’re using android.graphics.Color and not java.awt.Color. Color.GREEN is one of the few colors defined as a constant in this class. More on colors in the next section.
-
-+ Here we attach the TextWatcher to our editText field. In other words, editText will call TextWatcher instance, in this case this which refers to this object itself.
-
-+ afterTextChanged() is one of the methods provided by the TextWatcher interface. This method is called whenever the text changes in the view that this TextWatcher is watching. In our case, whenever user changes the underlying text in editText, this method is invoked with the current text.
-
-+ Here we do some math to figure out how many characters are left given the 140 character limit.
-
-+ Next, based on the availability of the text, we update the color of the counter. So, if more than 10 characters are available, we are still in the green. Fewer than 10 means we are approaching the limit, thus yellow color. If we are pass the limit of 140 characters, the counter turns red.
-
-+ This method is called just before the actual text replacement is completed. In this case, we don’t need this method, but as part of implementing the TextWatcher interface, we must provide its implementation, event though its empty.
-
-+ Similarly, we are not using onTextChanged() in this case, but must provide its blank implementation.
-
-{TRAN}
-+ 我们申明StatusActivity现在能够实现TextWatcher。这意味着我们需要提供该接口的实现，随后将在该类里给出。
-
-+ textCount是在之前的布局里定义的TextView。
-
-+ 首先，我们需要在展开的布局中找到textCount。
-
-+ 我们设置初始文本为140，因为这是应用里状态消息的最大长度。注意到TextView需要将文本作为值，因此我们在这里将数字转换为了文本。
-
-+ textCount区域将根据可以输入的文本数动态改变颜色。在本例里，我们从绿色开始。注意到Color类是Android框架的一部分，而与Java无关。换句话说，我们要用android.graphics.Color而不是java.awt.Color。Color.GREEN是一些该类里预定义的颜色。更多关于颜色的说明会在下节给出。
-
-+ 这里我们附加TextWatcher到editText区域。换句话说editText将调用TextWatcher实例，本例中这将指向该对象自身。
-
-+ afterTextChanged()是TextWatcher接口提供的方法。当View中的TextWatcher监视的文本发生改变时调用这个方法。在我们的例子里，当用户改变了editText的文本，这个方法就会调用。
-
-+ 这里我们做一点点数学计算，算出达到140限制还剩下多少字符。
-
-+ 下一步，根据文本剩余输入长度，我们更新计数器的颜色。所以，如果超过10个字符可以输入，我们就仍然保持绿色。少于10个意味着我们将达到限制，也就是显示黄色。如果我们达到了140字符限制，计数器变为红色。
-
-+ 这个方法仅于文本替换完成前调用。在这个例子里，我们不需要这个方法，但是作为TextWatcher接口实现的一部分，我们必须提供它的实现，尽管这里是空的。
-
-+ 类似的，我们也不用onTextChanged()方法，但是还是得提供一个空的实现。
 
 **Figure 6.12. StatusActivity, Part 1**
 	[images/06-StatusActivity-2.png]
 
+
 == Adding Color & Graphics ==
 
-{ORGI}Our application works well, but it’s a bit dull looking. A little bit of color and graphics could go along way. Android offers a lot of support to make your application snazzy. We’re going to see some basics here.
-{TRAN}我们的应用程序运作良好，但是看起来有沉闷。加上一点色彩和图片能更好点。Android提供了很多支持是你的应用程序更加时髦。我们先来学习点基本知识。
+% Our application works well, but it’s a bit dull looking. A little bit of color and graphics could go along way. Android offers a lot of support to make your application snazzy. We’re going to see some basics here.
+我们的应用程序运作良好，但是看起来有沉闷。加上一点色彩和图片能更好点。Android提供了很多支持是你的应用程序更加时髦。我们先来学习点基本知识。
 
 === Adding Images ===
-{ORGI}For starters, we want to add a background to our screen. This background is going to be some kind of graphics file. In Android, most images go to a resource folder called drawable. You may notice that you already have three folders with such name:
-{TRAN}对于初学者，我们先来为界面加上背景。背景也是一些图片文件。在Android里，大部分的图像放在叫做drawable的资源文件夹里。你可能注意到你已经有了三个文件夹，它们分别叫做：
+% For starters, we want to add a background to our screen. This background is going to be some kind of graphics file. In Android, most images go to a resource folder called drawable. You may notice that you already have three folders with such name:
+对于初学者，我们先来为界面加上背景。背景也是一些图片文件。在Android里，大部分的图像放在叫做drawable的资源文件夹里。你可能注意到你已经有了三个文件夹，它们分别叫做：
 
-{ORGI}
+% 
 - /res/drawable-hdpi for devices with high density screens
 - /res/drawable-mdpi for devices with medium density screens
 - /res/drawable-ldpi for devices with low density screens
-{TRAN}
+
 - /res/drawable-hdpi 用于有较高分辨率屏幕的设备
 - /res/drawable-mdpi 用于有中等分辨率屏幕的设备
 - /res/drawable-ldpi 用于有较低分辨率屏幕的设备
 
-{ORGI}
+% 
 We are going to create another drawable folder called just /res/drawable. To do that, right-click on the res folder and choose New→Folder. For name, enter drawable. You can now put your graphics that are independent of screen density in this folder. We’re going to assume you found some cool background graphics and that you saved it in there under the name background.png. While Android supports many different file formats, PNG is preferred since to the once-controversial GIF standard because PNG is lossless and doesn’t require any patent licenses.
-{TRAN}
+
 我们将新建另一个仅称为/res/drawable的文件夹。要这么做，右键单击res文件夹并选择New→Folder。输入名称为drawable。你现在能将与设备分辨率无关的图片放入到这个文件夹里。我们会假设你已经找到些不错的背景图片并且保存为background.png。Android虽然可以支持多种文件格式，但选择PNG格式比一度引起过争议的GIF更好，因为PNG是无损的而且不需要专利许可。
 
 {TIP}
-{ORGI}	While PNG officially stands for Portable Network Graphics, it is also commonly known as PNG’s Not Gif to reflect its departure from controversial GIF standard.
-{TRAN}	PNG官方的全称是便携网络图形（Portable Network Graphics），而广为所知的PNG‘s Not Gif则反映了它和有争议的GIF标准的分歧。
+% 	While PNG officially stands for Portable Network Graphics, it is also commonly known as PNG’s Not Gif to reflect its departure from controversial GIF standard.
+	PNG官方的全称是便携网络图形（Portable Network Graphics），而广为所知的PNG‘s Not Gif则反映了它和有争议的GIF标准的分歧。
 {/TIP}
 
-{ORGI}Remember that all resources are being "watched" by Eclipse, and the moment we put something in there, Eclipse will use Android SDK tools to update the R class automatically. That means that at this point, we’ll have a reference R.drawable.background available to us if we wanted to use this resource from Java. But we’re not.
-{TRAN}记住所有的资源都被Eclipse实时“监视”着，在我们放入某些东西的瞬间，Eclipse就会用Android SDK工具自动更新R类。也就是说在这个时候，我们就可以在我们想在Java中使用这个资源时引用R.drawablw.background了。不过我们这里不在Java中引用。
+% Remember that all resources are being "watched" by Eclipse, and the moment we put something in there, Eclipse will use Android SDK tools to update the R class automatically. That means that at this point, we’ll have a reference R.drawable.background available to us if we wanted to use this resource from Java. But we’re not.
+记住所有的资源都被Eclipse实时“监视”着，在我们放入某些东西的瞬间，Eclipse就会用Android SDK工具自动更新R类。也就是说在这个时候，我们就可以在我们想在Java中使用这个资源时引用R.drawablw.background了。不过我们这里不在Java中引用。
 
-{ORGI}We are going to update our status activity layout file res/layout/status.xml next. Our goal is to have this background be the background of the entire screen. To do that, we’ll update the top layout in our file and set it’s background to point to this new background PNG file. To do that, we have to open the status.xml layout. Now we have two ways of adding the background to the top layout.
-{TRAN}下一步，我们将更新StatusActivity布局文件res/layout/status.xml。我们的目标是在整个界面的背景里使用该背景图片。要实现这个，我们将更新文件中的顶层布局，并设置背景为新的背景PNG文件。为了这么做，我们需要打开status.xml布局文件。现在我们有两种将背景加载到顶层布局的方法。
+% We are going to update our status activity layout file res/layout/status.xml next. Our goal is to have this background be the background of the entire screen. To do that, we’ll update the top layout in our file and set it’s background to point to this new background PNG file. To do that, we have to open the status.xml layout. Now we have two ways of adding the background to the top layout.
+下一步，我们将更新StatusActivity布局文件res/layout/status.xml。我们的目标是在整个界面的背景里使用该背景图片。要实现这个，我们将更新文件中的顶层布局，并设置背景为新的背景PNG文件。为了这么做，我们需要打开status.xml布局文件。现在我们有两种将背景加载到顶层布局的方法。
 
 === Using WYSIWYG Editor In Eclipse ===
-{ORGI}One way is to do it using the WYSIWYG tool that Eclipse provides. In this tool, we need to first select the main layout. We may have hard time selecting it since many other components are in front of it. The red border tells you what view or layout is selected at a time.
-{TRAN}一个方式是使用Eclipse提供的所见即所得工具。在此工具中，我们需要先选择主布局。由于上面有很多其他组件，可能我们开始会觉得很难选择。而红色边框告诉了你你正选择了哪个Layout或View。
+% One way is to do it using the WYSIWYG tool that Eclipse provides. In this tool, we need to first select the main layout. We may have hard time selecting it since many other components are in front of it. The red border tells you what view or layout is selected at a time.
+一个方式是使用Eclipse提供的所见即所得工具。在此工具中，我们需要先选择主布局。由于上面有很多其他组件，可能我们开始会觉得很难选择。而红色边框告诉了你你正选择了哪个Layout或View。
 
-{ORGI}Another way of selecting it is to open up your Outline view in Eclipse and selecting the top element there. This view may or may not be currently visible in your Eclipse, depending on how you arranged many windows that are available. One sure way to get Outline view is to go to Window→Show View→Outline and open it up that way. Once you get this view opened, you can select the top layout, in this case our LinearLayout. You will know it’s selected if a red border is around your entire activity.
-{TRAN}另一种选择方式是在Eclipse里打开你的Outline View，并选择顶层元素。这个View可能在Eclipse里可见或不可见，决定于你如何安排多窗口。一种获得Outline View的有效方式是到Window→Show View→Outline并打开它。一旦你得到了这个打开的View，你就可以选择顶级布局，在本例中是LinearLayout。当红色的边框围绕在整个Activity上，你便能知道你选中了它。
+% Another way of selecting it is to open up your Outline view in Eclipse and selecting the top element there. This view may or may not be currently visible in your Eclipse, depending on how you arranged many windows that are available. One sure way to get Outline view is to go to Window→Show View→Outline and open it up that way. Once you get this view opened, you can select the top layout, in this case our LinearLayout. You will know it’s selected if a red border is around your entire activity.
+另一种选择方式是在Eclipse里打开你的Outline View，并选择顶层元素。这个View可能在Eclipse里可见或不可见，决定于你如何安排多窗口。一种获得Outline View的有效方式是到Window→Show View→Outline并打开它。一旦你得到了这个打开的View，你就可以选择顶级布局，在本例中是LinearLayout。当红色的边框围绕在整个Activity上，你便能知道你选中了它。
 
-{ORGI}Next, you want to open up the Properties view in Eclipse. Again, this view may already be opened or may not be. If it’s not visible as a window in Eclipse, go to Window→Show View→Other and under General section pick Properties. This will open up a view in which you can change various properties for this particular view.
-{TRAN}下一步，你需要Eclipse的打开Properties view。同样地，这个View也可能已经打开或尚未打开。如果在Eclipse中不可见，去Window→Show View→Other并在General选项中选取Properties。这将打开一个你可以改变特定View的多种属性的View。
+% Next, you want to open up the Properties view in Eclipse. Again, this view may already be opened or may not be. If it’s not visible as a window in Eclipse, go to Window→Show View→Other and under General section pick Properties. This will open up a view in which you can change various properties for this particular view.
+下一步，你需要Eclipse的打开Properties view。同样地，这个View也可能已经打开或尚未打开。如果在Eclipse中不可见，去Window→Show View→Other并在General选项中选取Properties。这将打开一个你可以改变特定View的多种属性的View。
 
-{ORGI}The property we want to modify is background. You can now click on the little … button which will bring up Reference Chooser dialog. In this dialog, choose Drawable→background.
-{TRAN}我们想要修改的属性是background。你可以点击…按钮打开选择资源引用的对话框。在这个对话框中，选择Drawable→background。
+% The property we want to modify is background. You can now click on the little … button which will bring up Reference Chooser dialog. In this dialog, choose Drawable→background.
+我们想要修改的属性是background。你可以点击…按钮打开选择资源引用的对话框。在这个对话框中，选择Drawable→background。
 
 **Figure 6.13. Reference Chooser**
 	[images/06-ReferenceChooser.png]
 
-{ORGI}This will set the background of your top layout to @drawable/background. As you recall, this is the way that one XML resource refers to another resource. In this case, our status.xml layout is referring to the background.png drawable. Notice that we do not use extensions when referring to other file resources. Android figures out best file format automatically, in case there are files with same name but of different extension.
-{TRAN}这将为你的顶层布局设置背景为@drawable/background。这是一种在XML资源里引用另一个资源的方式。在本例中，我们的status.xml布局引用了background.png drawable。注意到我们没有在引用其他资源时使用扩展名。Android会在出现相同名字不同扩展名时，自动选择最合适的文件类型。
+% This will set the background of your top layout to @drawable/background. As you recall, this is the way that one XML resource refers to another resource. In this case, our status.xml layout is referring to the background.png drawable. Notice that we do not use extensions when referring to other file resources. Android figures out best file format automatically, in case there are files with same name but of different extension.
+这将为你的顶层布局设置背景为@drawable/background。这是一种在XML资源里引用另一个资源的方式。在本例中，我们的status.xml布局引用了background.png drawable。注意到我们没有在引用其他资源时使用扩展名。Android会在出现相同名字不同扩展名时，自动选择最合适的文件类型。
 
 **Figure 6.14. Eclipse Graphical Layout Editor**
 	[images/06-LayoutWYSIWYGEditor.png]
 
 === Updating Directly in XML Code ===
-{ORGI}Another approach is always to go straight into the XML code and make changes there. Remember that everything you can do with Eclipse tools, you can also do in plain text editor. To switch to XML code view, select the tab status.xml in the bottom of the window, next to Layout tab. This will open up your file with standard XML editor.
-{TRAN}另一种办法是直接修改XML代码。记住，所有用Eclipse工具所做的事情，在纯文本编辑器内也能做。要切换到XML代码视图，选择窗口底部的标签页status.xml，在Layout标签页后。这将会用标准XML编辑器打开文件。
+% Another approach is always to go straight into the XML code and make changes there. Remember that everything you can do with Eclipse tools, you can also do in plain text editor. To switch to XML code view, select the tab status.xml in the bottom of the window, next to Layout tab. This will open up your file with standard XML editor.
+另一种办法是直接修改XML代码。记住，所有用Eclipse工具所做的事情，在纯文本编辑器内也能做。要切换到XML代码视图，选择窗口底部的标签页status.xml，在Layout标签页后。这将会用标准XML编辑器打开文件。
 
-{ORGI}In this case, to add background resource to our entire activity we simply add android:background="@drawable/background" to our to `<LinearLayout> element.
-{TRAN}在本例中，想要增加背景资源到整个Activity上，我们只需简单的加上add android:background="@drawable/background"到<LinearLayout>元素内就可以了。
+% In this case, to add background resource to our entire activity we simply add android:background="@drawable/background" to our to `<LinearLayout> element.
+在本例中，想要增加背景资源到整个Activity上，我们只需简单的加上add android:background="@drawable/background"到<LinearLayout>元素内就可以了。
 
-{ORGI}From now on, we’re going to be making changes in XML code directly since it’s much simpler to explain. Also, the WYSIWYG Editor can only do so much and often you run into its limitations.
-{TRAN}从现在开始，我们将直接修改XML代码，这样子能够很方便的作出说明。而所见即所得编辑器只能完成一些任务，而且常常会使你受到局限。
+% From now on, we’re going to be making changes in XML code directly since it’s much simpler to explain. Also, the WYSIWYG Editor can only do so much and often you run into its limitations.
+从现在开始，我们将直接修改XML代码，这样子能够很方便的作出说明。而所见即所得编辑器只能完成一些任务，而且常常会使你受到局限。
 
 === Adding Color ===
-{ORGI}We now have the background for the entire screen, but what about the actual text box that user types the text to? The current design is stock. We could improve on it by adding some color and transparency to it.
-{TRAN}现在我们有了屏幕背景，但是用户输入文本框呢？当前设计还只是个现成的。我们可以增加些颜色和透明度来改进界面。
+% We now have the background for the entire screen, but what about the actual text box that user types the text to? The current design is stock. We could improve on it by adding some color and transparency to it.
+现在我们有了屏幕背景，但是用户输入文本框呢？当前设计还只是个现成的。我们可以增加些颜色和透明度来改进界面。
 
-{ORGI}Android uses the standard RGB color set but it also optionally expands it with an Alpha channel. So, you can express color as RGB or ARGB where A is the amount of transparency, R is the amount of red, G is for green and B stands for blue color. The combination of these three colors and optional transparency gives you every conceivable color from white to black, and from opaque to fully transparent! That’s the whole point of ARGB. Of course, the granularity isn’t exactly what Monet would be happy with; each value has only 256 possibilities.
-{TRAN}Android使用Standard RGB颜色配置，并拥有可选的Alpha通道扩展。所以你能用RGB或ARGB描述颜色，其中A指透明度分量，R指红色分量，G指绿色分量，B则指蓝色。三种颜色和一个可选透明度的组合能给你从白到黑、从不透明到完全透明的所有可以表示的颜色。这就是ARGB的所有知识。当然，精确度可能没有那么令人满意，每个值只有256种可能。
+% Android uses the standard RGB color set but it also optionally expands it with an Alpha channel. So, you can express color as RGB or ARGB where A is the amount of transparency, R is the amount of red, G is for green and B stands for blue color. The combination of these three colors and optional transparency gives you every conceivable color from white to black, and from opaque to fully transparent! That’s the whole point of ARGB. Of course, the granularity isn’t exactly what Monet would be happy with; each value has only 256 possibilities.
+Android使用Standard RGB颜色配置，并拥有可选的Alpha通道扩展。所以你能用RGB或ARGB描述颜色，其中A指透明度分量，R指红色分量，G指绿色分量，B则指蓝色。三种颜色和一个可选透明度的组合能给你从白到黑、从不透明到完全透明的所有可以表示的颜色。这就是ARGB的所有知识。当然，精确度可能没有那么令人满意，每个值只有256种可能。
 
-{ORGI}Amounts of each can be represented either as values between 0 and 255, or using Hexadecimal system as values between 0 and FF. So, the actual values values can be AARRGGBB where each letter can be replaced with a value between 0 and F. There’s also a shorter version ARGB where for each value, it is repeated so that each two digits are the same. For example, #3A9F is the same as #33AA99FF and corresponds to #33 for alpha, #AA for red, #99 for green and #FF for blue. Notice that we use # symbol in front of hexadecimal values to distinguish them from decimal values.
-{TRAN}每一项的表示方法是0到255的值，或者是十六进制形式的从0到FF。所以确切值格式是AARRGGBB，其中每一个字母都可以用0到F的数代替。同时还有较短的ARGB格式，即重复相同的两个数字字符。例如，#3A9F和#33AA99FF相同，对应的#33是Alpha，#AA是红色，#99是绿色而#FF是蓝色。注意到我们在十六进制数前使用了#符号来将它们同十进制数区分开来。
+% Amounts of each can be represented either as values between 0 and 255, or using Hexadecimal system as values between 0 and FF. So, the actual values values can be AARRGGBB where each letter can be replaced with a value between 0 and F. There’s also a shorter version ARGB where for each value, it is repeated so that each two digits are the same. For example, #3A9F is the same as #33AA99FF and corresponds to #33 for alpha, #AA for red, #99 for green and #FF for blue. Notice that we use # symbol in front of hexadecimal values to distinguish them from decimal values.
+每一项的表示方法是0到255的值，或者是十六进制形式的从0到FF。所以确切值格式是AARRGGBB，其中每一个字母都可以用0到F的数代替。同时还有较短的ARGB格式，即重复相同的两个数字字符。例如，#3A9F和#33AA99FF相同，对应的#33是Alpha，#AA是红色，#99是绿色而#FF是蓝色。注意到我们在十六进制数前使用了#符号来将它们同十进制数区分开来。
 
-{ORGI}So, we could update the background of our EditText element to be #cfff, which is somewhat transparent white color.
-{TRAN}所以，我们更新EditText元素的背景为#cfff，也就是一种透明的白色。
+% So, we could update the background of our EditText element to be #cfff, which is somewhat transparent white color.
+所以，我们更新EditText元素的背景为#cfff，也就是一种透明的白色。
 
-{ORGI}Next, we can also update the color of the title text by changing the textColor property for that TextView. A good color would be white, for example. One way to specify white would be #fff but another way would be to enter @android:color/white. The android: part of that statement refers to Android operating system set of resources, in this case a predefined color white.
-{TRAN}接下来，我们还能通过改变Text'View的textColor属性修改Title文本颜色。一个好注意会是白色。一种指定白色的方式是#fff，而另一种方式则是输入@android:color/white。android: 申明了这是指向Android操作系统的资源引用，在这里是已预定义的白色。
+% Next, we can also update the color of the title text by changing the textColor property for that TextView. A good color would be white, for example. One way to specify white would be #fff but another way would be to enter @android:color/white. The android: part of that statement refers to Android operating system set of resources, in this case a predefined color white.
+接下来，我们还能通过改变Text'View的textColor属性修改Title文本颜色。一个好注意会是白色。一种指定白色的方式是#fff，而另一种方式则是输入@android:color/white。android: 申明了这是指向Android操作系统的资源引用，在这里是已预定义的白色。
 
 **Example 6.8. res/layout/status.xml**
 
@@ -1085,69 +1125,68 @@ We are going to create another drawable folder called just /res/drawable. To do 
 </LinearLayout>
 {/CODE}
 
-{ORGI}
 + We set the background of the main layout to point to background.png file in /res/drawable/ directory.
 + We set the color of the title text to point to color defined in system color resource white.
 + We set the background of the edit text area to be a transparent white by specifying #cfff for color using hexadecimal ARGB value.
 
-{TRAN}
+
 + 我们设置主要布局的背景成指向/res/drawable/目录下的background.png。
 + 我们设置标题文本颜色为指向系统资源中定义的白色。
 + 我们设置editText区域的背景通过十六进制ARGB形式的颜色值#cfff指定为透明白色。
 
-{ORGI}At this point you’ve seen multiple ways to specify color of couple of different properties of various views in your activity. There are many properties and many different widgets that Android offers. You should be able to extrapolate from this how to set other properties and make your application UI look exactly the way you want.
-{TRAN}这里你已经看到了不同多种View指定颜色的方式。Android为多种不同的控件提供了多种属性。你应该能够从这里总结出如何设置其他的属性来使你的应用程序界面显得和你想要的一致。
+% At this point you’ve seen multiple ways to specify color of couple of different properties of various views in your activity. There are many properties and many different widgets that Android offers. You should be able to extrapolate from this how to set other properties and make your application UI look exactly the way you want.
+这里你已经看到了不同多种View指定颜色的方式。Android为多种不同的控件提供了多种属性。你应该能够从这里总结出如何设置其他的属性来使你的应用程序界面显得和你想要的一致。
 
 == Alternative Resources ==
 
-{ORGI}Android supports multiple competing sets of resources. For example, you could have multiple versions of strings.xml file or status.xml layout, or background.png image. The reason why you would want multiple versions of same resource is to have best version be used in given circumstances. We have discussed this in the section called “Adding Images”.
-{TRAN}Android支持多资源设置的方法。例如你可以有多个版本的strings.xml文件或status.xml布局或者background.xml图像。如此的理由是你会想要在多版本相同资源中根据环境选择最好的版本。我们已在“添加图片”这一节讨论过。
+% Android supports multiple competing sets of resources. For example, you could have multiple versions of strings.xml file or status.xml layout, or background.png image. The reason why you would want multiple versions of same resource is to have best version be used in given circumstances. We have discussed this in the section called “Adding Images”.
+Android支持多资源设置的方法。例如你可以有多个版本的strings.xml文件或status.xml布局或者background.xml图像。如此的理由是你会想要在多版本相同资源中根据环境选择最好的版本。我们已在“添加图片”这一节讨论过。
 
-{ORGI}Imagine that your application is used in another country with different language. In that case, you could provide strings.xml version specifically for that language. Or imagine that user runs your application on a different device, with different screen that has more pixels. In that case, you’d want versions of your images specific for this screen pixel density. Similarly, user may simply rotate the device from portrait to landscape mode. While our application will redraw properly, there are further enhancements we could do to the layout of the UI given orientation of the screen.
-{TRAN}想象下你的应用程序在别的国家别的语言里使用。在这种情况下，你可以提供特定语言的strings.xml。或者想象下用户在不同设备上运行应用程序，有着不同像素的屏幕。在这种情况下，你需要多种版本的特定屏幕分辨率图片。类似地，用户会简单地旋转设备，从portrait模式到landscape模式。我们的应用程序将重绘，这里我们可以进一步增强用户界面布局使之适应不同旋转。
+% Imagine that your application is used in another country with different language. In that case, you could provide strings.xml version specifically for that language. Or imagine that user runs your application on a different device, with different screen that has more pixels. In that case, you’d want versions of your images specific for this screen pixel density. Similarly, user may simply rotate the device from portrait to landscape mode. While our application will redraw properly, there are further enhancements we could do to the layout of the UI given orientation of the screen.
+想象下你的应用程序在别的国家别的语言里使用。在这种情况下，你可以提供特定语言的strings.xml。或者想象下用户在不同设备上运行应用程序，有着不同像素的屏幕。在这种情况下，你需要多种版本的特定屏幕分辨率图片。类似地，用户会简单地旋转设备，从portrait模式到landscape模式。我们的应用程序将重绘，这里我们可以进一步增强用户界面布局使之适应不同旋转。
 
-{ORGI}Android provides for all these cases in an elegant way. Basically, you simply need to create alternative folders for specific constraints. For example, our standard layout files go into /res/layout folder. Well, if we wanted to provide an alternative layout to be used specifically in landscape mode, we’d simply create a new file /res/layout-land/status.xml. And if you wanted to provide translated version of your strings.xml file to be used for users that are in French part of Canada, you’d put it in file called res/values-fr-rCA/strings.xml.
-{TRAN}Android为所有这些情况用一种优雅的方式给解决了。基本上，你只简单地为特定环境创建文件夹即可。例如，我们的标准布局文件在/res/layout文件夹。好的，如果我们要提供当用户处于landscape模式下的特别布局，我们只需要创建新文件/res/layout-land/status.xml。如果我们想要提供用于加拿大法语区的strings.xml翻译版本，你只需要把翻译的字符串放进res/values-fr-rCA/strings.xml中。
+% Android provides for all these cases in an elegant way. Basically, you simply need to create alternative folders for specific constraints. For example, our standard layout files go into /res/layout folder. Well, if we wanted to provide an alternative layout to be used specifically in landscape mode, we’d simply create a new file /res/layout-land/status.xml. And if you wanted to provide translated version of your strings.xml file to be used for users that are in French part of Canada, you’d put it in file called res/values-fr-rCA/strings.xml.
+Android为所有这些情况用一种优雅的方式给解决了。基本上，你只简单地为特定环境创建文件夹即可。例如，我们的标准布局文件在/res/layout文件夹。好的，如果我们要提供当用户处于landscape模式下的特别布局，我们只需要创建新文件/res/layout-land/status.xml。如果我们想要提供用于加拿大法语区的strings.xml翻译版本，你只需要把翻译的字符串放进res/values-fr-rCA/strings.xml中。
 
-{ORGI}As you see from these couple of examples, the way alternative resources work is by specifying the qualifiers in the name of the resource folder. In case of French Canadian strings, Android knows that the first qualifier -fr refers to language and second qualifier -rCA specifies that the region is Canada. In both cases, we use Two-letter ISO codes to specify the country. So in this case, if the user is in Quebec for instance, and her device is configured to favor French language, Android will look for string resources in /res/values-fr-rCA/strings.xml file. If it doesn’t find a specific resource, it will fall back to default /res/values/strings.xml file. Also, if the user in France, Android in this case will use default resource since our French Canadian qualifiers do not match French for France.
-{TRAN}就像你在这些例子里看到的，多资源机制通过资源文件夹名字包含的标识来指定。在加拿大法语字符串例子中，Android知道第一个标识符-fr指的是语言而第二个表识符-rCA指的是加拿大地区。在两个标识符里，我们使用两字符ISO代码指定地区。所以本例中，当用户在魁北克省时，而且她的设备配置成了法语优先，那么Android将在/res/values-fr-rCA/strings.xml里查找字符串资源。如果没有找到指定资源，它就会回退到默认的/res/values/strings.xml文件。同样地，如果用户在法国，Android在本例中还是将使用默认资源，因为加拿大法语表识符不和法国的法语匹配。
+% As you see from these couple of examples, the way alternative resources work is by specifying the qualifiers in the name of the resource folder. In case of French Canadian strings, Android knows that the first qualifier -fr refers to language and second qualifier -rCA specifies that the region is Canada. In both cases, we use Two-letter ISO codes to specify the country. So in this case, if the user is in Quebec for instance, and her device is configured to favor French language, Android will look for string resources in /res/values-fr-rCA/strings.xml file. If it doesn’t find a specific resource, it will fall back to default /res/values/strings.xml file. Also, if the user in France, Android in this case will use default resource since our French Canadian qualifiers do not match French for France.
+就像你在这些例子里看到的，多资源机制通过资源文件夹名字包含的标识来指定。在加拿大法语字符串例子中，Android知道第一个标识符-fr指的是语言而第二个表识符-rCA指的是加拿大地区。在两个标识符里，我们使用两字符ISO代码指定地区。所以本例中，当用户在魁北克省时，而且她的设备配置成了法语优先，那么Android将在/res/values-fr-rCA/strings.xml里查找字符串资源。如果没有找到指定资源，它就会回退到默认的/res/values/strings.xml文件。同样地，如果用户在法国，Android在本例中还是将使用默认资源，因为加拿大法语表识符不和法国的法语匹配。
 
-{ORGI}Using qualifiers you can create alternative resources for languages and regions, screen sizes and orientations, device input modes (touch screen, stylus), keyboard or no keyboard, and so on. But how do you know what this naming convention for resource folder names is? The easiest tool is to use the New Android XML File dialog in Eclipse. To open New Android File dialog, choose File→New…→Android XML File from the Eclipse menu.
-{TRAN}通过使用表识符，你可以为语言和地域、屏幕大小、屏幕旋转、设备输入模式（触摸屏、手写笔）、是否有键盘等情况创建多资源。但是你怎么知道文件夹资源名字要转换为什么呢？最方便的工具就是使用Eclipse的New Android XML File对话框。要打开New Android File对话框，在Eclipse菜单中选择File→New…→Android XML File。
+% Using qualifiers you can create alternative resources for languages and regions, screen sizes and orientations, device input modes (touch screen, stylus), keyboard or no keyboard, and so on. But how do you know what this naming convention for resource folder names is? The easiest tool is to use the New Android XML File dialog in Eclipse. To open New Android File dialog, choose File→New…→Android XML File from the Eclipse menu.
+通过使用表识符，你可以为语言和地域、屏幕大小、屏幕旋转、设备输入模式（触摸屏、手写笔）、是否有键盘等情况创建多资源。但是你怎么知道文件夹资源名字要转换为什么呢？最方便的工具就是使用Eclipse的New Android XML File对话框。要打开New Android File对话框，在Eclipse菜单中选择File→New…→Android XML File。
 
 **Figure 6.15. Alternative Resources with New Android XML File Dialog**
 	[images/06-AlternativeResources.png]
 
 == Optimizing User Interface ==
 
-{ORGI}User interface is one of the most expensive parts of a typical Android application. To create a simple screen, your application has to inflate the XML from resources. For each element, it has to create a new Java object and assign its properties to it. Then it needs to draw each widget on the screen. All this takes many computing cycles.
-{TRAN}对于典型的应用程序来说，用户界面是最耗费资源的部分。创建一个简单的界面，你的应用程序需要从资源中展开XML文件。对于每个元素，需要创建新的Java类并指定它的属性。然后需要在屏幕上绘制每个控件。全部工作需要耗费大量机器周期。
+% User interface is one of the most expensive parts of a typical Android application. To create a simple screen, your application has to inflate the XML from resources. For each element, it has to create a new Java object and assign its properties to it. Then it needs to draw each widget on the screen. All this takes many computing cycles.
+对于典型的应用程序来说，用户界面是最耗费资源的部分。创建一个简单的界面，你的应用程序需要从资源中展开XML文件。对于每个元素，需要创建新的Java类并指定它的属性。然后需要在屏幕上绘制每个控件。全部工作需要耗费大量机器周期。
 
-{ORGI}Given all this, it is worth keeping in mind few optimization points. You may want to try to limit number of widgets you have on the screen. This is specially true when you are using nested layouts to achieve desired look. This can sometimes get out of control and if you are nesting unnecessary objects in a loop (say, displaying rows of data on the screen), then the number of widgets quickly explodes and your user interface becomes sluggish.
-{TRAN}告诉过所有这些，值得留意一些优化点。你需要限制在屏幕上的Widget的数量。当你需要使用嵌套布局来实现需要的界面时十分重要。如果你在代码循环中嵌套了些没有必要的类时，就会导致失控（比如，在屏幕上显示一行数据），然后控件的数量便会急剧增加，你的用户界面会变得迟钝。
+% Given all this, it is worth keeping in mind few optimization points. You may want to try to limit number of widgets you have on the screen. This is specially true when you are using nested layouts to achieve desired look. This can sometimes get out of control and if you are nesting unnecessary objects in a loop (say, displaying rows of data on the screen), then the number of widgets quickly explodes and your user interface becomes sluggish.
+告诉过所有这些，值得留意一些优化点。你需要限制在屏幕上的Widget的数量。当你需要使用嵌套布局来实现需要的界面时十分重要。如果你在代码循环中嵌套了些没有必要的类时，就会导致失控（比如，在屏幕上显示一行数据），然后控件的数量便会急剧增加，你的用户界面会变得迟钝。
 
-{ORGI}Generally, you want your structure to be flat instead of deep. You can accomplish this by replacing nested layouts with relative layouts.
-{TRAN}一般来说，你需要保持结构平整而不是过深。你可以通过用RelativeLayout替换嵌套布局解决这个问题。
+% Generally, you want your structure to be flat instead of deep. You can accomplish this by replacing nested layouts with relative layouts.
+一般来说，你需要保持结构平整而不是过深。你可以通过用RelativeLayout替换嵌套布局解决这个问题。
 
 === Hierarchy Viewer ===
-{ORGI}There’s a very useful tool that ships with Android SDK called Hierarchy Viewer. Go ahead and start it - it is in your SDK/tools directory.
-{TRAN}Android SDK中的一个非常有用的工具称为Hierarchy Viewer。过去启动它 - 它就在你的SDK/tools目录下。
+% There’s a very useful tool that ships with Android SDK called Hierarchy Viewer. Go ahead and start it - it is in your SDK/tools directory.
+Android SDK中的一个非常有用的工具称为Hierarchy Viewer。过去启动它 - 它就在你的SDK/tools目录下。
 
-{ORGI}Hierarchy Viewer allows you to attach to any Android device, emulator or physical phone. You can then introspect the structure of the current view. It shows you all the widgets currently loaded in memory, their relationship to each other, and all their properties. You can introspect not just your screens but screens of any application on your device. This is also a good way to see how some other applications are structured.
-{TRAN}Hierarchy Viewer允许你附加到任何Android设备、模拟器或物理手机上。你能查看当前View的结构。它展示了所有加载在内存中的Widget，它们之间的相互关系和所有的属性。除了自己编写的界面，你还能检查设备上任意应用程序的界面。这也是查看其他应用程序结构的好方式。
+% Hierarchy Viewer allows you to attach to any Android device, emulator or physical phone. You can then introspect the structure of the current view. It shows you all the widgets currently loaded in memory, their relationship to each other, and all their properties. You can introspect not just your screens but screens of any application on your device. This is also a good way to see how some other applications are structured.
+Hierarchy Viewer允许你附加到任何Android设备、模拟器或物理手机上。你能查看当前View的结构。它展示了所有加载在内存中的Widget，它们之间的相互关系和所有的属性。除了自己编写的界面，你还能检查设备上任意应用程序的界面。这也是查看其他应用程序结构的好方式。
 
 **Figure 6.16. Hierarchy Viewer**
 	[images/06-HierarchyViewer.png]
 
 == Summary ==
-{ORGI}By the end of this section, you should have your application run and look like Figure 6.17, “StatusActivity”. It should also successfully post your tweets to your twitter account. You can verify it is working by logging into the online service of your choice that supports Twitter API, such as yamba.marakana.com using the same username/password as hard coded in the application.
-{TRAN}在本节最后，你应该运行起你的应用程序，看起来就像Figure 6.17那样。它应该能成功发布你的推到Twitter账户上。你能通过登陆到你所选择的支持Twitter API的线上服务来检查工作，例如yamban.marakana.com在应用程序里使用了相同的硬编码用户名/密码。
+% By the end of this section, you should have your application run and look like Figure 6.17, “StatusActivity”. It should also successfully post your tweets to your twitter account. You can verify it is working by logging into the online service of your choice that supports Twitter API, such as yamba.marakana.com using the same username/password as hard coded in the application.
+在本节最后，你应该运行起你的应用程序，看起来就像Figure 6.17那样。它应该能成功发布你的推到Twitter账户上。你能通过登陆到你所选择的支持Twitter API的线上服务来检查工作，例如yamban.marakana.com在应用程序里使用了相同的硬编码用户名/密码。
 
 **Figure 6.17. StatusActivity**
 	[images/06-StatusActivity-3.png]
 
-{ORGI}The following illustrates what we have done so far as part of the design outlined in Figure 5.4, “Yamba Design Diagram”:
-{TRAN}在Figure 5.4, “Yamba Design Diagram”中的示意图展示了我们到目前为止的设计蓝图。
+% The following illustrates what we have done so far as part of the design outlined in Figure 5.4, “Yamba Design Diagram”:
+在Figure 5.4, “Yamba Design Diagram”中的示意图展示了我们到目前为止的设计蓝图。
 
 Figure 6.18. Yamba Completion
 	[images/06-Yamba-1.png]
