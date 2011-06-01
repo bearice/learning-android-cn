@@ -292,7 +292,7 @@ StatusActivity的源码大致如下：
 
 % Layout weight is a number between 0 and 1. It implies the weight of our layout requirements. For example, if our Status EditText had default layout weight of 0, and required layout height of fill_parent, then the Update button would have been pushed out of the screen since Status, and its request for space came before the button. However, when we set Status widget’s layout weight to 1, we are saying we want all available space height-wise, but are yielding to any other widget that also may need space, such as the Update button.
 
-表示布局的权重，0或者1。比如表示消息框的EditText控件的默认布局权重是0，设定的布局高度(layout height)是fill_parent，而且它在发送按钮之前先一步申请空间，这样发送按钮就被挤出屏幕之外而无法显示了。为了让发送按钮显示出来，我们可以把消息框的布局权重设为1，这样它依然会在高度上占据尽可能多的空间，不过如果还有其它控件，就会为它们让出合适的空间，使之可以显示。
+表示布局的权重，0或者1。比如消息框对应的EditText控件的默认布局权重是0，设定的布局高度(layout height)是fill_parent，而且它在发送按钮之前先一步申请空间，这样发送按钮就被挤出屏幕之外而无法显示了。为了让发送按钮显示出来，我们可以把消息框的布局权重设为1，这样它依然会在高度上占据尽可能多的空间，不过如果还有其它控件，就会为它们让出合适的空间，使之可以显示。
 
 **layout_gravity**
 % Specifies how this particular widget is positioned within its layout, both horizontally and vertically. Values could be top, center, left, and so on. Notice the difference between this property and gravity below. For example, if you have a widget that has width set to fill_parent, trying to center it wouldn’t do much since it’s already taking all available space. However, if our title TextView had width set to wrap_content, centering it with layout_gravity would generate desired results.
@@ -307,7 +307,7 @@ StatusActivity的源码大致如下：
 **text**
 % Not all widgets have this property, but many do, such as Button, EditText, and TextView. It simply specifies the text for the widget. Now, it is not a good practice to just enter the text because than your layout will only work in one locale/language. Best practice is to define all text in strings.xml resource and refer to particular string via this notation: @string/titleStatusUpdate.
 
-不是所有控件都有这个属性，但它十分常见，比如Button、EditText和TextView。它指定控件中的文本。但是在这里直接输入文本是不被提倡的，因为这样就限制了程序的语言环境。好的做法是将所有的文本放到string.xml资源文件里，按照``@string/titleStatusUpdate``这样的形式引用它。
+不是所有控件都有这个属性，但它十分常见，比如Button、EditText和TextView。它指定控件显示的文本。但是在这里直接输入文本是不被提倡的，因为这样就限制了程序的语言环境。好的做法是将所有的文本放到string.xml资源文件里，按照``@string/titleStatusUpdate``这样的形式引用它。
 
 **id**
 % id is simply the unique identifier for this particular widget in particular layout resource file. Not every widget needs an id and I recommend removing id’s if not needed to minimize clutter. But widgets that we’ll later need to manipulate from Java do need id’s. Id has the following format: @+id/someName where someName is whatever you want to call your widget. My naming convention is to use type followed by name, so @+id/buttonUpdateStatus for example.
@@ -318,7 +318,7 @@ id是控件在layout资源文件中的唯一标识符。id对控件而言不是�
 
 % Android tries hard to keep data in separate files. So, layouts are defined in their own resources, and all text values (such as button text, title text, etc.) should be defined in their own file called strings.xml. This later allows you to provide multiple versions of strings resources to be used for various languages, such as English, Japanese, or Russian.
 
-Android精细地划分了不同文件的职责，布局可以在它的资源文件中给出定义，所有的文本值（按钮的文本、标题等）也都独立到了string.xml文件之中。这一来为程序提供多语言版本(英语、日语、俄语等)也就容易了许多，只需要提供另一个string资源文件即可。
+Android精细地划分了文件的职责：布局在资源文件中给出了定义，文本值（按钮的文本、标题等）也都独立到string.xml文件之中。这一来为程序提供多语言版本(英语、日语、俄语等)也就容易了许多，只需要提供另一个string资源文件即可。
 
 % Here’s what our strings.xml file looks like at this point:
 现在string.xml的内容大致如下：
@@ -339,12 +339,12 @@ Android精细地划分了不同文件的职责，布局可以在它的资源文�
 {/CODE}
 
 % That this is simply a set of name/value pairs.
-其实就是一组键值对。
+就是一组键值对。
 
 {TIP}
 % 	I use a certain naming convention for my resource names. Let’s look at titleYamba, for example. First, I prefix the resource with the name of what it is, in this case a title of the activity. Secondly, I give it a name, Yamba. This naming convention helps later on keep many different resources sorted in a easy to find way. Finally, I use CamelCase for my names while some may prefer to use underscores to separate words.
 
-对资源的命名，我都是按照特定的命名规范。比如titleYamba这个名字，是使用资源的用途——Activity中的标题(title)——作为前缀。后跟一个名字，Yamba。多个单词之间使用CamelCase命名法表示分隔。这样使得不同的资源容易区分，也容易查找。
+对资源的命名，我都是按照特定的命名规范。比如titleYamba这个名字，是按资源的用途——Activity中的标题(title)——作为前缀。后跟一个名字，Yamba。多个单词之间使用CamelCase命名法表示分隔。这样使得不同的资源容易区分，也容易查找。
 {/TIP}
 
 
@@ -640,7 +640,7 @@ DDMS指Dalvik Debug Monitor Server，它可以将运行于设备上的应用程�
 
 % A thread is a sequence of instructions executed in order. Although each CPU can only process one instruction at a time, most operating systems are capable of handling multiple threads on multiple CPUs, or interleaving them on a single CPU. Different threads need different priorities, so the operating system determines how much time to give each one if they have to share a CPU.
 
-一个线程就是一个连续的指令序列。每个CPU一次只能处理一条指令，不过大部分操作系统都支持在多个CPU中同时执行多个线程，也支持在单个CPU中轮流执行多个线程。不同的线程拥有不同的优先级，操作系统以此为依据，安排线程的调度。
+一个线程就是一个连续的指令序列。每个CPU一次只能处理一条指令，不过大部分操作系统都支持在单个CPU中轮流执行多个线程，也支持在多个CPU中同时执行多个线程。不同的线程拥有不同的优先级，操作系统以此为依据，安排线程的调度。
 
 % Android operating system is based on Linux and as such is fully capable of running multiple threads at the same time. However, you as application developer need to be aware how applications use threads in order to design your application properly.
 
@@ -685,7 +685,7 @@ Android程序默认运行在单线程之下。单线程顺序执行所有的操�
 
 % In our example, we could put the actual network call of updating our status in the cloud in a separate thread. That way our main UI thread will not block while we’re waiting for the network and the application will appear much more responsive. We tend to talk of the main thread as running in the foreground and the additional threads as running in the background. They’re really all equal in status, alternating execution on the device’s CPU, but from the point of view of the user, the main thread is in the foreground because it deals with the UI.
 
-在例子中，我们将网络操作的相关代码放到独立的线程里面。这一来我们的主线程可以避免网络操作上的阻塞，用户界面不会响应不灵。按惯例，我们一般认为主线程是运行于前台，而其它的线程都是运行于后台。这是因为前端的用户界面运行在主线程。但在调度上，它们都是平等的。
+在例子中，我们将网络操作的相关代码放到独立的线程里面。这样我们的主线程可以避免阻塞在网络操作上，用户界面不会响应不灵。按惯例，我们一般认为主线程是运行于前台，而其它的线程都是运行于后台。这是因为前端的用户界面运行于主线程。但在调度上，它们都是平等的。
 
 % There are multiple ways of accomplishing multithreading. Java has a class Thread that allows for many of these operations. We could certainly use any of the regular Java features to handle putting the network call in the background.
 
@@ -706,7 +706,7 @@ Android程序默认运行在单线程之下。单线程顺序执行所有的操�
 
 % AsyncTask is an Android mechanism created to aid in handling long operations that need to report to UI thread. To take advantage of this class, we need to crate a new subclass of AsyncTask and implement doInBackground(), onProgressUpdate(), and onPostExecute() methods. In other words, we are to fill out the blanks for what to do in the background, what to do when there’s some progress and what to do when done with this task.
 
-既要避免长时间的阻塞，又要访问UI线程的私有数据，那该怎么办？使用Android内置的``AsyncTask``(异步任务)机制。要使用它，我们需要派生一个``AsyncTask``的子类，并重载``doInBackground()``与``onPostExecute()``两个方法。这两个方法里面就是后台执行的相关代码：任务进行时的操作，以及任务完成时的操作。
+既要避免长时间的阻塞，又要访问UI线程的私有数据，那该怎么办？使用Android内置的``AsyncTask``(异步任务)机制。要使用它，我们需要派生一个``AsyncTask``的子类，并重载``doInBackground()``与``onPostExecute()``两个方法。这两个方法里面分别对应后台执行的相关代码：任务进行时的操作，以及任务完成时的操作。
 
 % We’ll extend our earlier example with an asynchronous posting to the cloud. The first part of the example is very similar to the code in Example 6.3, “StatusActivity.java, version 1” but it hands off the posting to the asynchronous thread. A new AsyncTask does the posting in the background.
 
@@ -815,7 +815,7 @@ public class StatusActivity2 extends Activity implements OnClickListener {
 
 % So far, you have seen how to handle the click events by implementing OnClickListener and providing the onClick() method so that when the button is clicked this method is invoked. Imagine that we want to provide a little counter telling user how many characters are still available on the input from the maximum of 140. To do that, we need another type of listener.
 
-前面我们已经看过了通过实现一个``OnClickListener``提供``onClick()``，从而捕获点击事件的方法。接下来思考下，输入框的最大字符限制是140，我们该怎样统计已输入字符的个数？这就需要用到另一个侦听器(Listener)。
+前面我们已经看过了通过实现一个``OnClickListener``提供``onClick()``从而捕获点击事件的方法。接下来思考下，输入框的最大字符限制是140，我们该怎样统计已输入字符的个数？这就需要用到另一个侦听器(Listener)。
 
 % Android provids many different listeners for various events, such as touch, click, and so on. In this case, we’re going to use TextWatcher to watch for text changes on the edit text field. Steps for this listener are similar to the steps for OnClickListener and are similar to many other listeners.
 
@@ -1007,90 +1007,117 @@ public class StatusActivity extends Activity implements OnClickListener,
 	[images/06-StatusActivity-2.png]
 
 
-== Adding Color & Graphics ==
+% == Adding Color & Graphics ==
+==图片与色彩==
 
 % Our application works well, but it’s a bit dull looking. A little bit of color and graphics could go along way. Android offers a lot of support to make your application snazzy. We’re going to see some basics here.
-我们的应用程序运作良好，但是看起来有沉闷。加上一点色彩和图片能更好点。Android提供了很多支持是你的应用程序更加时髦。我们先来学习点基本知识。
+
+我们的程序运行良好，但它的外观仍略显粗糙，不太好看。这时可以利用Android的相关特性，为程序添加一些图片和色彩。
 
 === Adding Images ===
+
 % For starters, we want to add a background to our screen. This background is going to be some kind of graphics file. In Android, most images go to a resource folder called drawable. You may notice that you already have three folders with such name:
-对于初学者，我们先来为界面加上背景。背景也是一些图片文件。在Android里，大部分的图像放在叫做drawable的资源文件夹里。你可能注意到你已经有了三个文件夹，它们分别叫做：
 
-% 
-- /res/drawable-hdpi for devices with high density screens
-- /res/drawable-mdpi for devices with medium density screens
-- /res/drawable-ldpi for devices with low density screens
+先给界面加上背景图片。在Android中，多数图片都是放在一个名为``drawable``的资源文件夹中。可以留意，我们有三个这样的文件夹：
 
-- /res/drawable-hdpi 用于有较高分辨率屏幕的设备
-- /res/drawable-mdpi 用于有中等分辨率屏幕的设备
-- /res/drawable-ldpi 用于有较低分辨率屏幕的设备
+% - /res/drawable-hdpi for devices with high density screens
+% - /res/drawable-mdpi for devices with medium density screens
+% - /res/drawable-ldpi for devices with low density screens
 
-% 
-We are going to create another drawable folder called just /res/drawable. To do that, right-click on the res folder and choose New→Folder. For name, enter drawable. You can now put your graphics that are independent of screen density in this folder. We’re going to assume you found some cool background graphics and that you saved it in there under the name background.png. While Android supports many different file formats, PNG is preferred since to the once-controversial GIF standard because PNG is lossless and doesn’t require any patent licenses.
+- /res/drawable-hdpi 用于较高分辨率的设备
+- /res/drawable-mdpi 用于中等分辨率的设备
+- /res/drawable-ldpi 用于较低分辨率的设备
 
-我们将新建另一个仅称为/res/drawable的文件夹。要这么做，右键单击res文件夹并选择New→Folder。输入名称为drawable。你现在能将与设备分辨率无关的图片放入到这个文件夹里。我们会假设你已经找到些不错的背景图片并且保存为background.png。Android虽然可以支持多种文件格式，但选择PNG格式比一度引起过争议的GIF更好，因为PNG是无损的而且不需要专利许可。
+% We are going to create another drawable folder called just /res/drawable. To do that, right-click on the res folder and choose New→Folder. For name, enter drawable. You can now put your graphics that are independent of screen density in this folder. We’re going to assume you found some cool background graphics and that you saved it in there under the name background.png. While Android supports many different file formats, PNG is preferred since to the once-controversial GIF standard because PNG is lossless and doesn’t require any patent licenses.
+
+我们新建另一个文件夹，名为``/res/drawable``。右键单击``res``文件夹，选择``New→Folder``，输入名称为``drawable``。然后把分辨率无关的图片都放在这里即可。假定你已经找到了不错的背景图，并保存为``background.png``。Android支持多种图片格式，但我们在这里优先选择PNG格式而非GIF，这是因为PNG是无损格式，而且不需要专利许可。
 
 {TIP}
 % 	While PNG officially stands for Portable Network Graphics, it is also commonly known as PNG’s Not Gif to reflect its departure from controversial GIF standard.
-	PNG官方的全称是便携网络图形（Portable Network Graphics），而广为所知的PNG‘s Not Gif则反映了它和有争议的GIF标准的分歧。
+
+PNG官方的全称是``Portable Network Graphics``。它也常常被人称作``PNG's Not Gif``，从这里可以看出它与GIF的分道扬镳。
 {/TIP}
 
 % Remember that all resources are being "watched" by Eclipse, and the moment we put something in there, Eclipse will use Android SDK tools to update the R class automatically. That means that at this point, we’ll have a reference R.drawable.background available to us if we wanted to use this resource from Java. But we’re not.
-记住所有的资源都被Eclipse实时“监视”着，在我们放入某些东西的瞬间，Eclipse就会用Android SDK工具自动更新R类。也就是说在这个时候，我们就可以在我们想在Java中使用这个资源时引用R.drawablw.background了。不过我们这里不在Java中引用。
+
+留意，所有的资源文件都被Eclipse“监视”着，在我们加入新资源的同时，Eclipse就会利用Android SDK工具自动更新R类。像刚才我们新加入了一个图片，R类中就多了一项``R.drawablw.background``。随后就可以在Java中引用它了。
 
 % We are going to update our status activity layout file res/layout/status.xml next. Our goal is to have this background be the background of the entire screen. To do that, we’ll update the top layout in our file and set it’s background to point to this new background PNG file. To do that, we have to open the status.xml layout. Now we have two ways of adding the background to the top layout.
-下一步，我们将更新StatusActivity布局文件res/layout/status.xml。我们的目标是在整个界面的背景里使用该背景图片。要实现这个，我们将更新文件中的顶层布局，并设置背景为新的背景PNG文件。为了这么做，我们需要打开status.xml布局文件。现在我们有两种将背景加载到顶层布局的方法。
 
-=== Using WYSIWYG Editor In Eclipse ===
+不过我们不是在Java中引用它。要将背景图铺到整个界面上，就更改顶层布局，将它的背景置为这个新加入的PNG文件。接下来要修改的是``StatusActivity``的布局文件``res/layout/status.xml``。有两种方法：
+
+% === Using WYSIWYG Editor In Eclipse ===
+====使用Eclipse的所见即所得编辑器====
+
 % One way is to do it using the WYSIWYG tool that Eclipse provides. In this tool, we need to first select the main layout. We may have hard time selecting it since many other components are in front of it. The red border tells you what view or layout is selected at a time.
-一个方式是使用Eclipse提供的所见即所得工具。在此工具中，我们需要先选择主布局。由于上面有很多其他组件，可能我们开始会觉得很难选择。而红色边框告诉了你你正选择了哪个Layout或View。
+
+第一种方法是使用Eclipse的所见即所得工具。使用它，我们需要先选择主布局。其中列的组件比较多，因此选起来可能会费些力气。红色边框表示当前选择的Layout或者View。
 
 % Another way of selecting it is to open up your Outline view in Eclipse and selecting the top element there. This view may or may not be currently visible in your Eclipse, depending on how you arranged many windows that are available. One sure way to get Outline view is to go to Window→Show View→Outline and open it up that way. Once you get this view opened, you can select the top layout, in this case our LinearLayout. You will know it’s selected if a red border is around your entire activity.
-另一种选择方式是在Eclipse里打开你的Outline View，并选择顶层元素。这个View可能在Eclipse里可见或不可见，决定于你如何安排多窗口。一种获得Outline View的有效方式是到Window→Show View→Outline并打开它。一旦你得到了这个打开的View，你就可以选择顶级布局，在本例中是LinearLayout。当红色的边框围绕在整个Activity上，你便能知道你选中了它。
+
+选择的主布局另一种方式是使用Eclipse的Outline视图，选择顶层元素。Outline这个视图的显示与否，与你Eclipse中窗口的个人设置有关。保险的方式是选择``Window→Show View→Outline``，这一定可以打开它。进入这个视图，选择顶层布局，在这里是我们的``LinearLayout``。若有红色边框围着整个Activity，那就表示选择对了。
 
 % Next, you want to open up the Properties view in Eclipse. Again, this view may already be opened or may not be. If it’s not visible as a window in Eclipse, go to Window→Show View→Other and under General section pick Properties. This will open up a view in which you can change various properties for this particular view.
-下一步，你需要Eclipse的打开Properties view。同样地，这个View也可能已经打开或尚未打开。如果在Eclipse中不可见，去Window→Show View→Other并在General选项中选取Properties。这将打开一个你可以改变特定View的多种属性的View。
+
+接下来打开Eclipse的Properties视图。同Outline视图一样，它也不一定显示在外面。这时可以选择``Window→Show View→Other``，然后在``General``下选择Properties即可。这样可以打开一个视图，提供各种属性的设置。
 
 % The property we want to modify is background. You can now click on the little … button which will bring up Reference Chooser dialog. In this dialog, choose Drawable→background.
-我们想要修改的属性是background。你可以点击…按钮打开选择资源引用的对话框。在这个对话框中，选择Drawable→background。
+
+我们想要修改的属性是background。你可以点击``…``按钮打开Reference Chooser对话框，然后选择``Drawable→background``。
 
 **Figure 6.13. Reference Chooser**
 	[images/06-ReferenceChooser.png]
 
 % This will set the background of your top layout to @drawable/background. As you recall, this is the way that one XML resource refers to another resource. In this case, our status.xml layout is referring to the background.png drawable. Notice that we do not use extensions when referring to other file resources. Android figures out best file format automatically, in case there are files with same name but of different extension.
+
 这将为你的顶层布局设置背景为@drawable/background。这是一种在XML资源里引用另一个资源的方式。在本例中，我们的status.xml布局引用了background.png drawable。注意到我们没有在引用其他资源时使用扩展名。Android会在出现相同名字不同扩展名时，自动选择最合适的文件类型。
+
+设置顶层布局的``background``属性为``@drawable/background``。回想下，这正是在资源文件中引用其它资源文件的方式。放在这里，就是``status.xml``引用了drawable中的``background.png``文件。留意在引用其它文件的时候，我们不需要写扩展名。遇到名字相同但扩展名不同时，Android会自动检查出最合适的扩展名。
 
 **Figure 6.14. Eclipse Graphical Layout Editor**
 	[images/06-LayoutWYSIWYGEditor.png]
 
-=== Updating Directly in XML Code ===
+% === Updating Directly in XML Code ===
+====直接修改XML代码====
+
 % Another approach is always to go straight into the XML code and make changes there. Remember that everything you can do with Eclipse tools, you can also do in plain text editor. To switch to XML code view, select the tab status.xml in the bottom of the window, next to Layout tab. This will open up your file with standard XML editor.
+
 另一种办法是直接修改XML代码。记住，所有用Eclipse工具所做的事情，在纯文本编辑器内也能做。要切换到XML代码视图，选择窗口底部的标签页status.xml，在Layout标签页后。这将会用标准XML编辑器打开文件。
 
+第二种办法是直接修改XML代码。记住，凡是Eclipse工具能做的事情，纯文本编辑器也都能做。在窗口底部，``Layout``标签之右，就是``status.xml``标签。选择它即可切换到XML的文本编辑器。
+
 % In this case, to add background resource to our entire activity we simply add android:background="@drawable/background" to our to `<LinearLayout> element.
-在本例中，想要增加背景资源到整个Activity上，我们只需简单的加上add android:background="@drawable/background"到<LinearLayout>元素内就可以了。
+
+为整个Activity添加背景资源，我们只在``<LinearLayout>``中简单加上``android:background="@drawable/background"``即可。
 
 % From now on, we’re going to be making changes in XML code directly since it’s much simpler to explain. Also, the WYSIWYG Editor can only do so much and often you run into its limitations.
-从现在开始，我们将直接修改XML代码，这样子能够很方便的作出说明。而所见即所得编辑器只能完成一些任务，而且常常会使你受到局限。
 
-=== Adding Color ===
+相比使用所见即所得工具所需的步骤，直接修改XML显然要清晰的多。从现在开始，我们将直接修改XML代码，毕竟所见即所得的灵活性有限。
+
+% === Adding Color ===
+===设置颜色===
+
 % We now have the background for the entire screen, but what about the actual text box that user types the text to? The current design is stock. We could improve on it by adding some color and transparency to it.
-现在我们有了屏幕背景，但是用户输入文本框呢？当前设计还只是个现成的。我们可以增加些颜色和透明度来改进界面。
+
+现在界面有了背景图，但是文本框呢？依然乏善可陈。接下来为它设置下颜色，同时添加透明效果。
 
 % Android uses the standard RGB color set but it also optionally expands it with an Alpha channel. So, you can express color as RGB or ARGB where A is the amount of transparency, R is the amount of red, G is for green and B stands for blue color. The combination of these three colors and optional transparency gives you every conceivable color from white to black, and from opaque to fully transparent! That’s the whole point of ARGB. Of course, the granularity isn’t exactly what Monet would be happy with; each value has only 256 possibilities.
-Android使用Standard RGB颜色配置，并拥有可选的Alpha通道扩展。所以你能用RGB或ARGB描述颜色，其中A指透明度分量，R指红色分量，G指绿色分量，B则指蓝色。三种颜色和一个可选透明度的组合能给你从白到黑、从不透明到完全透明的所有可以表示的颜色。这就是ARGB的所有知识。当然，精确度可能没有那么令人满意，每个值只有256种可能。
+
+Android使用标准的RGB颜色，也有可选的Alpha项。因此你可以使用RGB或ARGB两种方式描述颜色，其中A表示透明度，R表示红色，G表示绿色，B表示蓝色。每个值都在0~255之间，通过它们的混合，即可调和出各种不同的颜色，以及不同的透明度。这些颜色的数目当然是有限的，这一点可能会让莫奈这样的大画家不高兴，但对电子设备来讲，这已经绰绰有余了。
 
 % Amounts of each can be represented either as values between 0 and 255, or using Hexadecimal system as values between 0 and FF. So, the actual values values can be AARRGGBB where each letter can be replaced with a value between 0 and F. There’s also a shorter version ARGB where for each value, it is repeated so that each two digits are the same. For example, #3A9F is the same as #33AA99FF and corresponds to #33 for alpha, #AA for red, #99 for green and #FF for blue. Notice that we use # symbol in front of hexadecimal values to distinguish them from decimal values.
-每一项的表示方法是0到255的值，或者是十六进制形式的从0到FF。所以确切值格式是AARRGGBB，其中每一个字母都可以用0到F的数代替。同时还有较短的ARGB格式，即重复相同的两个数字字符。例如，#3A9F和#33AA99FF相同，对应的#33是Alpha，#AA是红色，#99是绿色而#FF是蓝色。注意到我们在十六进制数前使用了#符号来将它们同十进制数区分开来。
+
+0到255之间的值，换成十六进制就是0到FF。表示颜色的话，一般还是十六进制用的多。格式是AARRGGBB，其中的每个字符都是0到F之间的数字。这一格式有一种简化形式，那就是ARGB，其中每个字符表示重复的两个字符。比如#3A9F与#33AA99FF相同，对应的Alpha为#33、红为#AA、绿为#99、蓝为#FF。可以留意这里的``#``符号，我们通过它表示这是个十六进制数，与十进制做区别。
 
 % So, we could update the background of our EditText element to be #cfff, which is somewhat transparent white color.
-所以，我们更新EditText元素的背景为#cfff，也就是一种透明的白色。
+
+好，更新EditText的background属性为#cfff，表示背景色为半透明的白色。
 
 % Next, we can also update the color of the title text by changing the textColor property for that TextView. A good color would be white, for example. One way to specify white would be #fff but another way would be to enter @android:color/white. The android: part of that statement refers to Android operating system set of resources, in this case a predefined color white.
-接下来，我们还能通过改变Text'View的textColor属性修改Title文本颜色。一个好注意会是白色。一种指定白色的方式是#fff，而另一种方式则是输入@android:color/white。android: 申明了这是指向Android操作系统的资源引用，在这里是已预定义的白色。
+
+也可以修改``textColor``属性更改TextView的文本颜色。比如我们觉得白色不错，可以把它设置为``#fff``，也可以输入``@android:color/white``引用操作系统内置的资源定义，也就是白色。
 
 **Example 6.8. res/layout/status.xml**
-
 {CODE}
 <?xml version="1.0" encoding="utf-8"?>
 
@@ -1129,64 +1156,90 @@ Android使用Standard RGB颜色配置，并拥有可选的Alpha通道扩展。�
 + We set the color of the title text to point to color defined in system color resource white.
 + We set the background of the edit text area to be a transparent white by specifying #cfff for color using hexadecimal ARGB value.
 
-
-+ 我们设置主要布局的背景成指向/res/drawable/目录下的background.png。
-+ 我们设置标题文本颜色为指向系统资源中定义的白色。
-+ 我们设置editText区域的背景通过十六进制ARGB形式的颜色值#cfff指定为透明白色。
++ 设置主布局的背景为/res/drawable/目录下的``background.png``。
++ 设置标题文本的颜色为系统资源定义中的白色。
++ 设置文本框的背景为透明白色，十六进制格式，也就是#cfff。
 
 % At this point you’ve seen multiple ways to specify color of couple of different properties of various views in your activity. There are many properties and many different widgets that Android offers. You should be able to extrapolate from this how to set other properties and make your application UI look exactly the way you want.
+
 这里你已经看到了不同多种View指定颜色的方式。Android为多种不同的控件提供了多种属性。你应该能够从这里总结出如何设置其他的属性来使你的应用程序界面显得和你想要的一致。
 
-== Alternative Resources ==
+
+
+% == Alternative Resources ==
+==特定的资源文件==
 
 % Android supports multiple competing sets of resources. For example, you could have multiple versions of strings.xml file or status.xml layout, or background.png image. The reason why you would want multiple versions of same resource is to have best version be used in given circumstances. We have discussed this in the section called “Adding Images”.
-Android支持多资源设置的方法。例如你可以有多个版本的strings.xml文件或status.xml布局或者background.xml图像。如此的理由是你会想要在多版本相同资源中根据环境选择最好的版本。我们已在“添加图片”这一节讨论过。
+
+Android允许你提供多组资源文件。比如，你可以提供不同版本的``strings.xml``、``status.xml``或者``background.png``，针对不同的情景选用不同的资源文件。
 
 % Imagine that your application is used in another country with different language. In that case, you could provide strings.xml version specifically for that language. Or imagine that user runs your application on a different device, with different screen that has more pixels. In that case, you’d want versions of your images specific for this screen pixel density. Similarly, user may simply rotate the device from portrait to landscape mode. While our application will redraw properly, there are further enhancements we could do to the layout of the UI given orientation of the screen.
-想象下你的应用程序在别的国家别的语言里使用。在这种情况下，你可以提供特定语言的strings.xml。或者想象下用户在不同设备上运行应用程序，有着不同像素的屏幕。在这种情况下，你需要多种版本的特定屏幕分辨率图片。类似地，用户会简单地旋转设备，从portrait模式到landscape模式。我们的应用程序将重绘，这里我们可以进一步增强用户界面布局使之适应不同旋转。
+
+假如你想让外国人使用你的应用程序，但他们的语言不同。这时你可能希望提供一个特定语言的``strings.xml``文件。或者你想让自己的应用程序跑在某设备上，但它的分辨率不一样。这时你可能希望提供一个特定的图片，来适应它的分辨率。同样，用户会旋转设备从portrait模式切换到landscape模式，我们程序的布局也需要对此作出调整。
 
 % Android provides for all these cases in an elegant way. Basically, you simply need to create alternative folders for specific constraints. For example, our standard layout files go into /res/layout folder. Well, if we wanted to provide an alternative layout to be used specifically in landscape mode, we’d simply create a new file /res/layout-land/status.xml. And if you wanted to provide translated version of your strings.xml file to be used for users that are in French part of Canada, you’d put it in file called res/values-fr-rCA/strings.xml.
-Android为所有这些情况用一种优雅的方式给解决了。基本上，你只简单地为特定环境创建文件夹即可。例如，我们的标准布局文件在/res/layout文件夹。好的，如果我们要提供当用户处于landscape模式下的特别布局，我们只需要创建新文件/res/layout-land/status.xml。如果我们想要提供用于加拿大法语区的strings.xml翻译版本，你只需要把翻译的字符串放进res/values-fr-rCA/strings.xml中。
+
+针对以上的诸多情况，Android给出了一种优雅的解决方案：只需要把特定的资源文件放到另一个文件夹里即可。比如，我们默认的布局文件在``/res/layout``目录，如果为landscape模式提供单独布局，那就新建一个文件到``/res/layout-land/status.xml``。同样，如果我们想为加拿大的用户提供法语版本，那就新建一个文件到``res/values-fr-rCA/strings.xml``。
 
 % As you see from these couple of examples, the way alternative resources work is by specifying the qualifiers in the name of the resource folder. In case of French Canadian strings, Android knows that the first qualifier -fr refers to language and second qualifier -rCA specifies that the region is Canada. In both cases, we use Two-letter ISO codes to specify the country. So in this case, if the user is in Quebec for instance, and her device is configured to favor French language, Android will look for string resources in /res/values-fr-rCA/strings.xml file. If it doesn’t find a specific resource, it will fall back to default /res/values/strings.xml file. Also, if the user in France, Android in this case will use default resource since our French Canadian qualifiers do not match French for France.
-就像你在这些例子里看到的，多资源机制通过资源文件夹名字包含的标识来指定。在加拿大法语字符串例子中，Android知道第一个标识符-fr指的是语言而第二个表识符-rCA指的是加拿大地区。在两个标识符里，我们使用两字符ISO代码指定地区。所以本例中，当用户在魁北克省时，而且她的设备配置成了法语优先，那么Android将在/res/values-fr-rCA/strings.xml里查找字符串资源。如果没有找到指定资源，它就会回退到默认的/res/values/strings.xml文件。同样地，如果用户在法国，Android在本例中还是将使用默认资源，因为加拿大法语表识符不和法国的法语匹配。
+
+如上可知，备用资源文件以它的目录名作为标识。比如加拿大的法语版本那个例子，Android可以认出第一个标志符``-fr``指"法语"，第二个标志符``-rCA``指"加拿大"，而这两个标志符都是表示地区的ISO代码。这样，加拿大魁北克省的用户只要把语言设置为法语，Android就会选用``/res/values-fr-rCA/strings.xml``文件作为字符串资源。如果没有找到这个文件，则选用默认的``/res/values/strings.xml``文件。不过，如果用户在法国且语言是法语，它仍选用默认资源文件，因为标识符中的"加拿大"与"法国"不匹配。
 
 % Using qualifiers you can create alternative resources for languages and regions, screen sizes and orientations, device input modes (touch screen, stylus), keyboard or no keyboard, and so on. But how do you know what this naming convention for resource folder names is? The easiest tool is to use the New Android XML File dialog in Eclipse. To open New Android File dialog, choose File→New…→Android XML File from the Eclipse menu.
+
 通过使用表识符，你可以为语言和地域、屏幕大小、屏幕旋转、设备输入模式（触摸屏、手写笔）、是否有键盘等情况创建多资源。但是你怎么知道文件夹资源名字要转换为什么呢？最方便的工具就是使用Eclipse的New Android XML File对话框。要打开New Android File对话框，在Eclipse菜单中选择File→New…→Android XML File。
+
+通过这些标志符，你可以针对不同的语言、地域、屏幕尺寸与角度、设备交互模式(触摸屏、手写笔)、是否使用键盘等等情景，提供特定的资源文件。但是我们又怎么知道它们对应的命名规范呢？可以使用Eclipse的New Android XML File对话框，选择`` File→New…→Android XML File ``菜单即可。
 
 **Figure 6.15. Alternative Resources with New Android XML File Dialog**
 	[images/06-AlternativeResources.png]
 
-== Optimizing User Interface ==
+
+% == Optimizing User Interface ==
+==优化用户界面==
 
 % User interface is one of the most expensive parts of a typical Android application. To create a simple screen, your application has to inflate the XML from resources. For each element, it has to create a new Java object and assign its properties to it. Then it needs to draw each widget on the screen. All this takes many computing cycles.
-对于典型的应用程序来说，用户界面是最耗费资源的部分。创建一个简单的界面，你的应用程序需要从资源中展开XML文件。对于每个元素，需要创建新的Java类并指定它的属性。然后需要在屏幕上绘制每个控件。全部工作需要耗费大量机器周期。
+
+对一般的应用程序来讲，用户界面算是最耗时的部分了。界面再简单，也免不了解析XML、初始化每个控件、绘制整个界面等等操作，其中的计算量是不可忽视的。
 
 % Given all this, it is worth keeping in mind few optimization points. You may want to try to limit number of widgets you have on the screen. This is specially true when you are using nested layouts to achieve desired look. This can sometimes get out of control and if you are nesting unnecessary objects in a loop (say, displaying rows of data on the screen), then the number of widgets quickly explodes and your user interface becomes sluggish.
+
 告诉过所有这些，值得留意一些优化点。你需要限制在屏幕上的Widget的数量。当你需要使用嵌套布局来实现需要的界面时十分重要。如果你在代码循环中嵌套了些没有必要的类时，就会导致失控（比如，在屏幕上显示一行数据），然后控件的数量便会急剧增加，你的用户界面会变得迟钝。
 
+因此写代码时，对可优化的地方多花些心思是值得的。比如限制控件的数量，使用嵌套的Layout时尤其要小心。因为这样一不小心就会让控件的使用变得不受约束，界面会变得笨重迟缓。
+
 % Generally, you want your structure to be flat instead of deep. You can accomplish this by replacing nested layouts with relative layouts.
-一般来说，你需要保持结构平整而不是过深。你可以通过用RelativeLayout替换嵌套布局解决这个问题。
+
+应尽量让界面元素的结构保持平整，而避免嵌套过深。若发现有嵌套的Layout，不妨尝试使用RelativeLayout重构一下。
+
 
 === Hierarchy Viewer ===
+
 % There’s a very useful tool that ships with Android SDK called Hierarchy Viewer. Go ahead and start it - it is in your SDK/tools directory.
-Android SDK中的一个非常有用的工具称为Hierarchy Viewer。过去启动它 - 它就在你的SDK/tools目录下。
+
+Android SKD提供了一个非常有用的工具，那就是Hierarchy Viewer。它在你的``SDK/tools``目录下，启动即可。
 
 % Hierarchy Viewer allows you to attach to any Android device, emulator or physical phone. You can then introspect the structure of the current view. It shows you all the widgets currently loaded in memory, their relationship to each other, and all their properties. You can introspect not just your screens but screens of any application on your device. This is also a good way to see how some other applications are structured.
-Hierarchy Viewer允许你附加到任何Android设备、模拟器或物理手机上。你能查看当前View的结构。它展示了所有加载在内存中的Widget，它们之间的相互关系和所有的属性。除了自己编写的界面，你还能检查设备上任意应用程序的界面。这也是查看其他应用程序结构的好方式。
+
+Hierarchy View可以用到任何Android设备、模拟器或者真机上。通过它，你可以查看当前界面的结构。它能列出内存中的所有控件，展示它们之间的关系以及各自的属性。它对设备上运行的所有程序都有效，因此也是查看他人程序结构的好方法。
 
 **Figure 6.16. Hierarchy Viewer**
 	[images/06-HierarchyViewer.png]
 
-== Summary ==
+
+% == Summary ==
+== 总结 ==
+
 % By the end of this section, you should have your application run and look like Figure 6.17, “StatusActivity”. It should also successfully post your tweets to your twitter account. You can verify it is working by logging into the online service of your choice that supports Twitter API, such as yamba.marakana.com using the same username/password as hard coded in the application.
-在本节最后，你应该运行起你的应用程序，看起来就像Figure 6.17那样。它应该能成功发布你的推到Twitter账户上。你能通过登陆到你所选择的支持Twitter API的线上服务来检查工作，例如yamban.marakana.com在应用程序里使用了相同的硬编码用户名/密码。
+
+到本章结束，你可以运行你的程序，效果如//图6.17//。它可以向twitter发布消息。测试的话，可以登录到对应的twitter账户上查看。
 
 **Figure 6.17. StatusActivity**
 	[images/06-StatusActivity-3.png]
 
 % The following illustrates what we have done so far as part of the design outlined in Figure 5.4, “Yamba Design Diagram”:
-在Figure 5.4, “Yamba Design Diagram”中的示意图展示了我们到目前为止的设计蓝图。
+
+下图展示了我们目前为止的完成部分，完整图参见//图5.4//。
 
 Figure 6.18. Yamba Completion
 	[images/06-Yamba-1.png]
