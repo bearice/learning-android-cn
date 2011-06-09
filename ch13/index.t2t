@@ -14,7 +14,7 @@
 
 % Additionally, we’re going to refactor the Yamba application to take advantage of Intent Service support. This will demonstrate how to use Alarm service and will make our Updater slightly more efficient and simpler.
 
-另外，我们会重构Yamba的代码来获得Intent服务的支持，继而引出Alarm服务，并凭借它优化Updater的实现。
+另外，我们会重构Yamba的代码来获得Intent服务的支持，继而引出Alarm服务，并凭借它们优化Updater的实现。
 
 ==Compass Demo==
 
@@ -178,7 +178,7 @@ public class Compass extends Activity implements SensorEventListener { //#{1}
 + 初始化sensor是个一次性的操作，因此我们把它放在``onCreate()``中执行。
 + 设置此Activity的状态为全屏。
 + 创建一个Rose控件的实例，这是我们自定义的控件。
-+ 这里Activity里面唯一的控件就是Rose，这与通常引用一个XML资源表示的Layout有所不同。
++ 这个Activity中唯一的控件就是Rose。这算是个特殊情况，一般而言，在这个地方多是引用XML资源表示的Layout。
 + 获得SensorManager对象。
 + 通过SensorManager对象，选择我们关心的传感器。
 + 同前面所说，在``onResume()``中将自己注册到系统服务，侦听传感器的输出。

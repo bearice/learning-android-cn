@@ -17,11 +17,11 @@
 
 % From user interface point of view preferences can be simple text values, checkboxes, selections from a pull-down menu, or similar. From data point of view, preferences is a collection of name-value pairs, also known as key-value or attribute-value pairs. The values are basic data types, such as integers, booleans, strings, and similar.
 
-在用户看来，首选项就是一些文本框、复选框、下拉菜单等等组合成的集合体；而在程序员看来，首选项是一组键值对构成的数据集，其中的值可以是整型、布尔型、字符串等等。
+在用户看来，首选项就是一些文本框、复选框、下拉菜单等等组成的集合体；而在程序员看来，首选项是一组键值对构成的数据集，其中的值可以是整型、布尔型、字符串等等。
 
 % Our micro-blogging applications needs to connect to specific server in the cloud using specific user account information. For that, Yamba needs to know username and password for that account as well as the URL of the server it’s connecting to. This URL is also knowns as API root. So, in our case, we’ll have three fields where user can enter and edit username, password and API root. This data will be stored as strings.
 
-我们的微博应用需要连接到服务端，因此用户的用户名与密码自是必须，除此还需要知道服务端的URL(或者叫API root)。可知我们在这里需要提供三个选项条目，而且都是作为字符串存储的。
+我们的微博应用需要连接到服务端，因此用户的用户名与密码自是必须，除此还需要知道服务端的URL(或者叫API root)。可知我们在这里需要提供三个选项条目，而且都是作为字符串存储。
 
 % To enable our app to handle user-specific preferences, we’d have to build a screen to enter the information, a Java code to validate and process that information, and some kind of storage mechanism to store this information.
 
@@ -74,7 +74,7 @@
 
 % Not all attributes are equally important. Typically, you will care about the following:
 
-属性有很多，但是我们关心的一般也就这几个：
+属性有很多，但是我们关心的一般也只有如下几个：
 
 % Key
 %       A unique identifier for each preference item. This is how we’ll look up particular preference later.
@@ -153,15 +153,304 @@
 
 % Like we said couple of times earlier, while Eclipse does provide a developer-friendly tools to manage XML files, you often run into certain limitations with with Eclipse. For example, we would like to hide the actual text that the user types in the password field as it’s commonly done with passwords. Android does provide support for that but Eclipse tools haven’t integrated it in there yet. Since we can always edit the XML directly, in this case we to that to add android:password="true" property to our password property. This will cause the password to be masked while user is typing it in.
 
-如前所示，编辑XML，有Eclipse提供的辅助工具可用，它们界面友好，使用方便，但有时这也限制了灵活性。比如按照惯例，我们希望在密码一栏中隐藏数据的输入，Android也提供了这一功能的支持，但是Eclipse的工具还没有跟上。这时就需要手工修改XML了，为password元素添加一个属性``android:password="true"``即可。
+如前所说，编辑XML有Eclipse提供的辅助工具可用，它们界面友好，使用方便，但有时这也限制了灵活性。比如按照惯例，我们一般希望在密码一栏中隐藏数据的输入，Android也提供了这一功能的支持，但是Eclipse中的工具还没有跟上。这时就需要手工修改XML了，为password元素添加一个属性``android:password="true"``即可。
+
+===PrefsActivity===
+
+% Now that we have the preferences defined in their own XML resource file, we can create the activity to display these preferences. You may recall from <<Activities> that every screen in an Android app is an activity. So, to display the screen where user enters username and password for their online account, we’ll create an activity to handle that screen. This activity will be a special preference-aware activity.
+
+对应首选项的XML资源文件已定义完毕，接下来为它创建一个界面。回想下，我们在``Activity``一章曾提到，Android程序中的任何一个界面都是Activity。用户需要修改选项的界面，我们就必须专门新建一个Activity。
+
+% To create an activity, we create a new Java class. To do so, in Eclipse, select your package under your src folder, right-click on the package and select New→Class. A New Java Class window will pop up. You just need to enter PrefsActivity for the Name and click Finish. This will create PrefsActivity.java file under your package in your source folder.
+
+创建Activity对应的类。在Eclipse中进入你的package，右键选择New→Class。在出现的``New Java Class``窗口中设置名字为``PrefsActivity``，点击Finish即可在项目中新建一个PrefsActivity.java文件。
+
+% Our PrefsActivity class going to be a very simple Java file. This is because we inherit from PreferenceActivity, an Android framework provided class that knows how to handle preferences.
+
+为简化首选项界面的开发，Android框架提供了一个``PreferenceActivity``类。以它为基类，我们的类可以很简单。
+
+**Example 7.2. PrefsActivity.java**
+{CODE}
+package com.marakana.yamba2;
+
+import android.os.Bundle;
+import android.preference.PreferenceActivity;
+
+public class PrefsActivity extends PreferenceActivity { // #{1}
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) { // #{2}
+    super.onCreate(savedInstanceState);
+    addPreferencesFromResource(R.xml.prefs); // #{3}
+  }
+
+}
+{/CODE}
+
+% + Unlike regular activities, PrefsActivity will subclass (i.e. extend) PreferenceActivity class.
+% + Just like any other activity, we override onCreate() method to initialize the activity.
+% + Unlike regular activities that usually call setContentView(), preference activity will set its content from the prefs.xml file via a call to addPreferencesFromResource().
+
++ 与一般的Activity不同，PrefsActivity以``PreferenceActivity``为基类。
++ 重载``onCreate()``方法做些初始化工作，这点同其它Activity一样。
++ 与其它Activity通常会调用``setContentView()``不同，这里通过调用``addPreferencesFromResource()``装载``prefs.xml``中定义的内容。
 
 
+{TIP}
+% If you didn’t want to type the long signature of onCreate() and other methods that we often have to implement or override, you could use an Eclipse tool to help you with that. While in your PrefsActivity.java and after you have added ... extends PreferenceActivity..., you can choose Source→Override/Implement Methods…. This will bring up a dialog box with appropriate selection of methods you could override or implement given that you are subclassing PreferenceActivity class. In here, you can choose onCreate() and Eclipse will insert the stub for this method into your code.
+
+如果不像打字敲``onCreate()``或其它需要重载的方法那长长的声明，大可使用Eclipse的工具代劳。假如你在编辑``PrefsActivity.java``文件，并已加上了``extends PreferenceActivity``。可以选择`` Source→Override/Implement Methods…``，然后会出现一个对话框，在里面选出需要重载的方法(这里是``onCreate()``)即可。Eclipse会为你选择的方法生成代码。
+{/TIP}
+
+% ===Update Manifest File===
+===修改Manifest文件===
+
+% Whenever we create one of these main building blocks (Activities, Services, Broadcast Receivers, Content Providers) we need to define them in AndroidManifest.xml file. In this case, we have a new PrefsActivity and we must add it to the manifest file.
+
+无论何时，只要新建了基本构件(Activity,Service,BroadcastReceiver,ContentProvider)就要修改Manifest文件添加相应的声明。在这里，我们需要将``PrefsActivity``注册到Manifest文件。
+
+% Just like with any Android XML file, opening AndroidManifest.xml in Eclipse will typically bring up the developer-friendly view of that file. In this file, you could choose Application tab, then under Application Nodes choose Add→Activity and for its Name type .PrefsActivity.
+
+同前面一样，在Eclipse中打开XML文件会默认进入Eclipse提供的图形化编辑界面。选择Application标签，然后在Application节点之下，选择``Add→Activity``，输入Name为``.PrefsActivity``。
+
+% However, we can also do this straight from the raw XML by clicking on AndroidManifest.xml tab on the bottom of this window. I find that while Eclipse is useful when it comes to creating XML files, often editing raw XML is faster and gives you much more control.
+
+当然也可以进入下边的``AndroidManifest.xml``标签直接修改XML代码。个人观感，通过Eclipse工具可以很方便地生成XML文件，而直接编辑XML代码往往速度更快，也更加灵活。
+
+{TIP}
+% When editing code in Eclipse, you can use Ctrl+Space key shortcut to invoke type-ahead feature of Eclipse. This is every useful both for XML and Java code and is context-sensitive, meaning Eclipse is smart enough to know what could possibly be entered at that point in code. Using Ctrl+Space makes your life as programmer much easier as you don’t have to remember long method names and tags, plus it helps avoid typos.
+
+在Eclipse中编辑代码时，可以使用Ctrl+Space快捷键调出Eclipse的自动完成功能。Eclipse可以感知初当前输入代码的上下文，从而预测接下来可能输入的内容。这一来程序员即可省去牢记各种方法变量的名字，也可以减少输入错误，对解放生产力是大有好处的。
+{/TIP}
+
+% So after adding our manifest file now looks like this:
+
+修改后的Manifest大致如下：
+
+**Example 7.3. AndroidManifest.xml**
+{CODE}
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  android:versionCode="1" android:versionName="1.0" package="com.marakana.yamba2">
+  <application android:icon="@drawable/icon" android:label="@string/app_name">
+
+    <activity android:name=".StatusActivity" android:label="@string/titleStatus">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+
+    <activity android:name=".PrefsActivity" android:label="@string/titlePrefs" /> <!-- #{1} -->
+
+  </application>
+  <uses-sdk android:minSdkVersion="4" />
+
+  <uses-permission android:name="android.permission.INTERNET" />
+</manifest>
+{/CODE}
+
+% + Defines the new PrefsActivity.
+
++ 新加入的PrefsActivity的声明。
 
 
+% We now have a new preference activity, but no good way of getting to it yet. We need a way to launch this new activity. For that, we use options menu.
+
+现在我们已经有了首选项界面，但仍没有办法访问它。因此在下面引入选项菜单(Options Menu)。
 
 
+% ==Options Menu==
+==选项菜单==
 
+% Options menu is an Android user interface component that provides standardized menus to applications. The menus appear at the bottom of the screen when the user presses Menu button on the device.
+
+选项菜单是Android程序中标准的菜单组件。只要用户按下设备的菜单按钮，它就可以从屏幕下方显示出来。
+
+% To add support for options menu to an application, we need to do the following:
+
+为程序添加选项菜单，我们需要：
+
+% + Create menu.xml resource where we specify what the menu consists of.
+% + Add onCreateOptionsMenu() to the activity that we want to provide this menu. This is where we inflate the menu.xml resource.
+% + Provide handling of menu events in onOptionsItemSelected().
+
++ 新建一个``menu.xml``表示菜单的内容。
++ 在菜单所在的Activity中添加一个方法``onCreateOptionsMenu()``，在里面装载``menu.xml``中的内容。
++ 在``onOptionsItemSelected()``中响应菜单的事件。
+
+
+% ===Menu Resource===
+===菜单的资源文件===
+
+% We start by defining the menus in an XML resource for the options menu. Just like with other Android XML files, we can use the little a+ icon in the Eclipse toolbar or choose File→New…→Android XML to launch New Android XML File dialog. In this dialog, for File enter menu.xml and for Type select Menu. Click Finish button and Eclipse will create a new folder /res/menu with menu.xml file in it. It will also open this file in developer-friendly view.
+
+先为选项菜单新建一个XML资源文件。同新建其它XML文件的流程一样，单击Eclipse工具栏的``a+``按钮或者选择``File→New…→Android XML``，打开New Android File对话框，在File一栏输入``menu.xml``，选Type为``Menu``，然后点击Finish，Eclipse即可在``/res/menu``目录下创建出一个新文件``menu.xml``，同时打开一个图形化的编辑界面。
+
+% In this view, you can click on Add→Item. This will add a new menu item to your menu. In the Attributes section on the right, you can see over a dozen various attributes that we can set for this menu item. Just like before, not all attributes are equally important.
+
+在这个界面中，点击``Add→Item``即可为菜单新建一条菜单项。右边的Attributes列出了可供编辑的诸多属性。同前面一样，重要的只有部分几个：
+
+**Id**
+% The unique identifier of this resource. Just as when we designed the layout in Chapter 6, Android User Interface, this identifier is typically of form @+id/someId where someId is the name that you give it. This name should contain only letters, numbers and underscore.
+
+菜单项的唯一标识符。第六章曾提到，标识符一般都是``@+id/someId``这样的格式。其中``someId``是你提供的名字，只能由字母、数字和下划线组成。
+
+**Title**
+% The tile of this menu as it will appear when displayed. Keep in mind that space on the screen is typically limited so keep the title short. Alternatively, you can provide Title condensed attribute for shorter version of the title that will be shown instead of Title if space is limited. Just like before, best practice is to define the actual text value of the title in strings.xml resource and just reference it here.
+
+菜单项显示的标题。留意屏幕的宽度往往是有限的，因此标题应尽量的短。好习惯是，在此引用``string.xml``中定义的内容。
+
+**Icon**
+The icon that shows along with the menu item’s title. While is is not required, it is a very useful visual cue from usability point of view. However, in this case it illustrates how to point to Android system resources.
+
+% The next section describes these resources in more detail.
+
+显示在菜单项上的图标。这不是必须的，但是加上对用户体验有好处。在这里，我们拿它作为例子，展示引用Android系统资源的方法。而具体细节将在下一节讨论。
+
+
+===Android System Resources===
+===Android系统资源===
+
+% Just like your application can have its resources so can Android system as well. Like most other operating systems, Android comes with some preloaded images, graphics, sound clips, and other types of resources. Recall that our app resources are in /res/. To refer to Android system resources prefix them with with android: keyword in XML, for example @android:drawable/ic_menu_preferences. If you are referring to an Android system resource from Java, then you use android.R instead the usual R reference.
+
+我们的程序都有自己的资源，Android系统也同样。Android系统中内置了许多图标、图像、音频等等各种资源文件。回想下，应用程序的资源文件都在/res/目录之下，要在XML中引用它们，只需填上地址即可；而引用系统资源，则需要为地址加一个前缀``android:``，比如``@android:drawable/ic_menu_preferences``。在Java中引用的话，可以用android.R替换掉原先的R。
+
+{TIP}
+% The actual resource files are in your SDK, inside specific platform folder. For example, if you are using Android 9 (Gingerbread), the location of the resource folder would be android-sdk/platforms/android-9/data/res/.
+
+系统的资源文件都在SDK相应平台的目录之下。比如你使用Android 9 (Gingerbread)，那它的实际地址就在``android-sdk/platforms/android-9/data/res/``。
+{/TIP}
+
+**Figure 7.3. Menu.xml in Developer-friendly view**
+
+[images/07-menu_xml.png]
+
+% The raw XML of menu.xml is shown here:
+
+``menu.xml``的源码如下：
+
+**Example 7.4. res/menu/menu.xml**
+{CODE}
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:id="@+id/itemPrefs" android:title="@string/titlePrefs"
+    android:icon="@android:drawable/ic_menu_preferences"></item>
+</menu>
+{/CODE}
+
+% As you can see, there’s just one <item> element within our <menu> element making this a single menu item menu.
+
+可见<menu>标签下只有一个<item>标签，表示菜单中只有一个菜单条目。
+
+
+% ===Update StatusActivity to Load Menu===
+===更新StatusActivity，装载菜单===
+
+% Recall that the options menu is loaded by your activity when user clicks on the Menu button on the device. First time menu button is pressed, system will call activity’s onCreateOptionsMenu() method to inflate the menu from the menu.xml resource. This process is similar to inflating user interface from layout resources that we discussed in the section called “StatusActivity Java Class”. Basically, the inflater reads the XML code and for every element, it creates a corresponding Java object and for each attribute in XML is sets that object’s properties accordingly.
+
+前面提到，菜单是在用户按下设备的菜单按钮时打开。在第一次按下菜单按钮时，系统会触发Activity的``onCreateOptionsMenu()``方法，在这里装载``menu.xml``文件中表示的菜单。这与第六章``StatusActivity类``中为Activity装载布局文件的做法有些相似。都是读取XML文件，为其中的每个XML元素创建一个Java对象，并按照XML元素的属性初始化对象。
+
+% From that point on, the menu is in memory and onCreateOptionsMenu() doesn’t get called again until the activity is destroyed. Each time user selects a menu item though, onOptionsItemSelected() gets called to process that click. We’ll talk about this in the next section.
+
+可以看出，只要Activity不被销毁，``onCreateOptionsMenu()``最多只会被触发一次。当用户选择某菜单项时，会触发``onOptionsItemSelected``，这在下一节讨论。
+
+% We need to update the StatusActivity to load up the options menu. To do that, add onCreateOptionsMenu() method to StatusActivity. This method gets called only first time when user clicks on the menu button.
+
+我们需要为Activity加入装载菜单的相关代码，为此先在加入``onCreateOptionsMenu()``方法。它将只在用户第一次按下菜单键时触发。
+
+{CODE}
+// Called first time user clicks on the menu button
+@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+  MenuInflater inflater = getMenuInflater();   // #{1} 
+  inflater.inflate(R.menu.menu, menu);         // #{2}
+  return true; // #{3}
+}
+{/CODE}
+
+% + We get the MenuInflater object from the context.
+% + Use the inflater to inflate the menu from the XML resource.
+% + We must return true for this menu to be displayed.
+
++ 获取MenuInflater对象。
++ 使用inflater对象装载XML资源文件。
++ 要让菜单显示出来，必须返回True。
+
+
+% ===Update StatusActivity to Handle Menu Events===
+===更新StatusActivity，捕获菜单事件===
+
+% We also need a way to handle various clicks on the menu items. To do that, we add another callback method, onOptionsItemSelected(). This method is called every time user clicks on a menu item.
+
+{CODE}
+// Called when an options item is clicked
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+  switch (item.getItemId()) {                              // 
+  case R.id.itemPrefs:
+    startActivity(new Intent(this, PrefsActivity.class));  // 
+  break;
+  }
+
+  return true;  // 
+}
+{/CODE}
+
++ Since the same method is called regardless which item user clicked on, we need to figure out the id of that item and based on that switch to a specific case to handle each item. At this point, we only have one menu item, but that might change in the future. Switching on item ID is a very scalable approach and will adapt nicely as our application grows in complexity.
++ startActivity() method in context allows us to launch a new activity. In this case, we are creating a new intent specifying to start PrefsActivity class.
++ Return true to consume the event here.
     
+
+{TIP}
+Just like before, you could use Eclipse shortcut Source→Override/Implement Methods to add both onCreateOptionsMenu() and onOptionsItemSelected().
+{/TIP}
+
+===Strings Resource===
+
+Our updated strings.xml now looks like this:
+
+**Example 7.5. res/values/strings.xml**
+
+{CODE}
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">Yamba 2</string>
+  <string name="titleYamba">Yamba 2</string>
+
+  <string name="hintText">Please enter your 140-character status</string>
+  <string name="buttonUpdate">Update</string>
+
+  <string name="titleStatus">Status Update</string>
+  <string name="titlePrefs">Prefs</string>
+  <string name="titleUsername">Username</string>
+  <string name="titlePassword">Password</string>
+  <string name="titleApiRoot">API Root</string>
+
+  <string name="summaryUsername">Please enter your username</string>
+  <string name="summaryPassword">Please enter your password</string>
+  <string name="summaryApiRoot">URL of Root API for your service</string>
+</resources>
+{/CODE}
+
+You should be able to run your application at this point and and see the new PrefsActivity by clicking on Menu→Prefs in StatusActivity. Try changing your username and password, then reboot your phone, restart the app, and verify that the information is still there.
+
+**Figure 7.4. PrefsActivity**
+
+[images/07-PrefsActivity-1.png]
+
+==Shared Preferences==
+
+Now that we have Preference Activity, and a way to save our username, password and the API root, it is time to make use of it. To programmatically access your preferences, we’ll use SharedPreference class provided by the Android framework.
+
+The fact that this class is called SharedPreference refers to the fact that this preference is easily accessible from anywhere in this application. So, any component of an Android application, such as Activities, Services, Broadcast Receivers, and Content Providers.
+
+In StatusActivity, add definition for prefs object globally to the class:
+
+{CODE}
+ SharedPreferences prefs;
+{/CODE}
+
 
 
 

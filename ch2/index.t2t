@@ -14,7 +14,7 @@
 {TRAN}== 概述 ==
 
 {ORGI}Android operating system is like a cake consisting of various layers. Each layer has its own characteristics and purpose. The layers are not cleanly separated but often seep into each other.
-{TRAN}Android 系统就像一个多层的蛋糕。每一层都有自己的特性和目的，不过这些层之间并没有一个明确的界限，通常是相互渗透的。
+{TRAN}Android 系统就像一个多层的蛋糕。每一层都有自己的特性和目的，不过这些层之间并没有一个明确的界限，而通常是相互渗透的。
 
 {ORGI}When you read through this, keep in mind that I am only concerned with the big picture of the entire system and will get into the nitty-gritty details of particular parts of the system later on. Figure 2.1, “Android Stack” shows the parts of the Android stack.
 {TRAN}在你阅读本章时，要注意本章仅仅是整个系统的概览，至于各部分的细节，我们将放在后面讨论。"Figure 2.1 Android Stack" 给出了 Android 系统架构的一部分。
@@ -89,13 +89,13 @@
 {TRAN}Dalvik 是一个专门为了 Android 而设计的虚拟机。它由 Dan Bornstein 和他在 Google 的团队开发。
 
 {ORGI}While the Java virtual machine (VM) was designed to be a one-size-fits-all solution, the Dalvik team felt they could do a better job by focusing strictly on mobile devices. They looked at which of the constraints specific to a mobile environment are least likely to change in the near future. One of these is battery life, and the other is processing power. Dalvik was built from ground up to address those constraints.
-{TRAN}原本的 Java 虚拟机（VM）是为了适应各种不同的环境而设计，但是 Dalvik 开发团队认为专注移动设备可以带来更好的设计。于是他们研究了移动设备上那些短时间内基本上不可能改变的制约因素，例如电池的续航能力和处理器的速度。然后针对这些因素设计了 Dalvik 。
+{TRAN}传统的Java虚拟机（JVM）是为了适应各种不同的环境而设计，强调泛用性。但Dalvik的开发团队认为专注于一个方面，可以得到更好的设计。因此他们研究了长期限制移动设备性能的制约因素，比如电池的续航能力和处理器的速度。而后针对这些因素对症下药，专门设计了Dalvik。
 
 {ORGI}Another side effect of replacing the Java VM with Dalvik VM is the licensing. While the Java language, Java tools and Java libraries are free, the Java virtual machine is not. This was more of an issue back in 2005 when the work on Dalvik started. Nowadays, there are open source alternatives to Sun’s Java VM, namely OpenJDK and Apache Harmony projects.
-{TRAN}使用 Dalvik VM 代替传统 Java VM 的另一个副作用是许可证上的。 Java 的工具和 Java 运行库都是自由的，但是 Java 虚拟机不是。在2005年的时候这对 Dalvik 来说是个大问题。不过现在，除了 Sun 的 JVM 外，也出现了其他的开源 VM，例如 [OpenJDK http://openjdk.java.net/] 和 [Apache Harmony http://harmony.apache.org/] 。
+{TRAN}使用Dalvik VM代替传统Java VM的另一个好处在于许可证。 Java语言、开发工具以及Java类库都是自由的，但Java虚拟机不是。在2005年时，这对Dalvik来讲是个大问题。不过现在，除了 Sun 的 JVM 外，也出现了其他的开源 VM，例如 [OpenJDK http://openjdk.java.net/] 和 [Apache Harmony http://harmony.apache.org/] 。
 
 {ORGI}By developing a truly open-source and license-friendly virtual machine, Android yet again provides a full-featured platform that others are encouraged to adopt for variety of devices without having to worry about the license.
-{TRAN}通过一个真正开源的且许可证友好的虚拟机，Android 再一次提供了一个全功能的开发平台，并且它鼓励第三方将其移植到不同设备上而不用担心许可证的问题。
+{TRAN}Android作为一个全功能的开发平台，一个真正开源且许可证友好的虚拟机不可或缺。它鼓励人们移植到不同平台，而不用担心许可证问题。
 
 {ORGI}=== Android and Java ===
 {TRAN}=== Android 与 Java ===
@@ -104,19 +104,19 @@
 		[images/02-DalvikJava.png]
 
 {ORGI}In Java, you write your Java source file, you compile it into a Java byte code using Java compiler and you run this byte code on the Java Virtual Machine. In Android things are different. You still write the Java source file and you still compile it to Java byte code using the same Java compiler. But at that point, you recompile it once again using Dalvik compiler to Dalvik byte code. It is Dalvik byte code that is then executed on Dalvik virtual machine.
-{TRAN}在 Java 里，你编写 Java 源文件，使用 Java 编译器编译成字节码然后在 JVM 上运行。但是在 Android 中并非如此。虽然你仍然需要写 Java 源代码然后编译成字节码，但是此时需要使用 Dalvik 编译器吧 Java 字节码编译成 Dalvik 字节码。真正在 Dalvik 虚拟机里执行的是 Dalvik 字节码。
+{TRAN}在平常的Java开发中，都是编写Java代码，然后通过Java编译器编译成字节码，最后在JVM上运行。但在Android中并非如此。相同的是仍需编写Java代码然后编译为字节码，但Dalvik编译器在执行前，会将Java字节码重新编译为Dalvik字节码。到最后真正执行的是Dalvik字节码。
 
 {ORGI}=== Important ===
 {TRAN}=== 重要提示 ===
 
 {ORGI}It may sound like you have to do a lot more work with Android when it comes to Java. However, all these compilation steps are automated by tools such as Eclipse or ant and you never notice the additional steps.
-{TRAN}和 Java 相比，你似乎需要为 Android 做很多额外的事情。但是事实上这些复杂的步骤都可以被 Eclipse 或者 ant 这样的工具自动完成的，而你几乎不会感觉到这些步骤的存在。
+{TRAN}提及Java，像是有很多工作需要做。但实际上许多的复杂步骤都可以由Eclipse或者ant这样的工具自动完成，而你几乎不会感觉到这些步骤存在。
 
 {ORGI}You may wonder why not compile straight from Java into the Dalvik byte code. There are couple of good reasons for that. Back in 2005 when work on Dalvik started, the Java language was going through frequent changes. But the Java byte code was more or less set in stone. So, the Android team chose to base Dalvik on Java byte code instead of Java source code.
-{TRAN}你也许想知道为什么不直接吧 Java 代码编译成 Dalvik 字节码呢? 这样做其实有很多优点。让我们回到2005年 Dalvik 项目刚刚开始时，当时 Java 的语法修改很频繁， 但是 Java 字节码基本上没有什么太大的改动。于是 Android 团队决定使用 JVM 字节码而不是 Java 源码来产生 Dalvik 代码。
+{TRAN}你也许想知道，为什么不直接把Java代码编译成Dalvik字节码呢? 这是有考虑的。让我们回到2005年 Dalvik 项目刚刚开始时，当时 Java 的语法修改很频繁， 但 Java 字节码基本上没有什么太大的改动。于是 Android 团队决定使用 JVM 字节码而不是 Java 源码来产生 Dalvik 代码。
 
 {ORGI}A side effect of this is that in theory you could write Android applications in any other language that compiles down to Java byte code. For example, you could use Python or Ruby. I say in theory because in practice you’d still need appropriate libraries that are part of the SDK to be available. But it is likely that the open source community will come up with solution to that in the future.
-{TRAN}这一来的副产品是， 理论上你可以使用任何可以编译成 Java 字节码的语言来开发 Android 应用，例如 Python 或者 Ruby 。 我说“理论上”是因为你还需要向可用的 SDK 和库。不过万能的开源社区以后可能会提供这样的解决方案。
+{TRAN}这样做的副产品是， 理论上你可以使用任何可以编译成 Java 字节码的语言来开发 Android 应用，比如 Python 或者 Ruby 。 我说“理论上”是因为你还需要可用的 SDK 和库。不过有万能的开源社区在，未来会出现一套完善的解决方案也未可知。
 
 {ORGI}Another thing to keep in mind is that Android Java is a non-standard collection of Java classes. Java typically ships in:
 {TRAN}另外需要注意的是 Android Java 并非来自标准的 Java 家族。 Java 一般分为: 
@@ -130,25 +130,25 @@
 
 
 {ORGI}Android’s Java set of libraries is closest to Java Standard Edition. The major difference is that Java libraries for user interface (AWT and Swing) have been taken out and replaced with Android-specific user interface libraries. Android also adds quite a few new features to standard Java while supporting most of Java’s standard features. So, you have most of your favorite Java libraries at your disposal, plus many new ones.
-{TRAN}Android 的 Java 类库类似于 Java 标准版，主要的区别在于 Java 类库的 GUI 接口（ AWT 和 Swing ）被替换成了 Android 专用的接口。 Android 在支持标准 Java 类库的同时还提供了若干新功能。 于是你不但能使用大多数你喜欢的已有库，而且还有很多新玩意可以使用。
+{TRAN}Android的Java类库比较接近 Java 标准版，它们的主要区别在于Java类库的GUI接口（ AWT 和 Swing ）被替换成了 Android 的专用接口。 Android在支持标准 Java 的类库之余，也提供了若干新功能。这一来你可以很快地上手Android开发。
 
 {ORGI}== App Framework ==
-{TRAN}== 应用框架 ==
+{TRAN}== 应用程序框架 ==
 
 {ORGI}The application framework is a rich environment that provides numerous services to you, the app developer, to get your job done. This is the part of the platform that is best documented and extensively covered. That is because it is this layer that enables the mass-market of developers to get creative and be empowered to create fantastic applications.
-{TRAN}应用框架是一个为开发者提供了多种服务的运行环境。这是整个 Android 平台中文档化最全面也是最完善的部分。良好的文档它可以激发广大开发人员的创意，并为他们构建优秀的应用提供有力的支持。
+{TRAN}应用程序框架是Android程序的执行环境，也是开发者的强大工具箱。另外，它也拥有Android平台中最全面最完善的文档。良好的文档它可以激发广大开发人员的创意，也可以为他们构建优秀的应用程序提供有力的支持。
 
 {ORGI}In application framework layer, you will find numerous Java libraries specifically built for Android. You will also find many services (or managers) that provide the ecosystem of capabilities your application can tap into, such as location, sensors, WiFi, telephony and so on.
-{TRAN}在应用框架层中，你能发现很多专门为了 Android 设计的库。你还将发现很多支持着应用程序所依赖的整个生态环境的服务（或者管理器），例如位置服务，传感器、WiFi、电话服务等等。
+{TRAN}在应用程序框架中，你可以发现很多为Android设计的Java库。除此之外，也有系统环境的支持，比位置、传感器、WiFi、电话等等。
 
 {ORGI}As you explore the Android application development, most of your focus will be on this part of the stack. You will get to use many of the application framework components yourself.
-{TRAN}在你学习和使用 Android 进行开发的过程中，大部分的精力都集中在这个部分。 你将用到应用框架中的很多组件来实现你的应用。
+{TRAN}在我们学习和实践Android开发中的大多时间都是与它打交道。要编写自己的应用，离不开框架中的诸多组件。
 
 {ORGI}== Applications ==
 {TRAN}== 应用程序 ==
 
 {ORGI}And finally there are applications that you and other developers create. Applications are what end users find valuable about Android. They can come pre-installed on the device or could be downloaded from one of many Android markets.
-{TRAN}架构的最上层是就你和其他开发人员创建的各种应用。 应用即 Andorid 呈现给用户的发光之处， 它可以被预先安装在系统中，也能从诸多的软件商店中下载。
+{TRAN}架构的最上层是就你和其他开发者创建的各种应用。 应用即 Andorid 呈现给用户的发光之处， 它可以是预先安装在系统中，也可以从诸多的软件商店中下载。
 
 {ORGI}=== The APK ===
 {TRAN}=== APK 文件 ===

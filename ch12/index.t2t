@@ -5,11 +5,11 @@
 
 % Take your contacts, for example. You may have a large database of contacts on your device. You can view them via the Contacts app as well as via the Dialer app. On some devices, such as HTC Android models, there may be even multiple versions of Contacts and Dialer apps available. It would not make a lot of sense to have similar data live in multiple databases.
 
-比方说，你的设备里可能已经有了一个庞大的联系人数据库。Contacts程序可以查看它们，Dialer程序也可以，有些设备(比如HTC)还供着不同版本的Contacts与Dialer。既然都需要用到联系人数据，如果它们各自使用独立数据库的话，事情就会比较麻烦。
+比方说，你的设备里可能已经有了一个庞大的联系人数据库。Contacts程序可以查看它们，Dialer程序也可以，有些设备(比如HTC)还带着不同版本的Contacts与Dialer。既然都需要用到联系人数据，如果它们各自使用独立数据库的话，事情就会比较麻烦。
 
 % Content Providers provide a way to centralize content in one place and have many different applications access it as needed. In case of the Contacts on your phone, there is actually a ContactProvider application that contains a Content Provider. Other applications access the data via this interface. The interface itself is fairly simple: it is the same insert(), update(), delete(), and query() methods we saw in Chapter 9, Database.
 
-Content Provider提供了一个统一的存储接口，允许多个程序访问同一个数据源。在联系人的这个例子里，实际上还有个应用程序扮演着数据源的角色，其它应用程序都可以通过ContentProvider这个接口读写数据。接口很简单：insert()、update()、delete()与query()，与第九章提到数据库的接口一致。
+Content Provider提供了一个统一的存储接口，允许多个程序访问同一个数据源。在联系人的这个例子里，还有个应用程序在背后扮演着数据源的角色，提供一个ContentProvider作为接口，供其它程序读写数据。接口本身很简单：insert()、update()、delete()与query()，与第九章提到数据库的接口一致。
 
 % Android uses Content Providers quite a bit internally. We already mentioned contacts. Settings is another example, and so are all your bookmarks. All the media in the system is also registered with MediaStore, a content provider that dispenses images, music, and videos in your device.
 
@@ -35,7 +35,7 @@ Android在内部没少使用Content Provider。除了前面提到的联系人，
 
 % We are going to start by creating a brand new Java class in the same package as any other classes. Its name will be StatusProvider. This class, like any of Android’s main building blocks, will subclass an Android framework class, in this case ContentProvider.
 
-新建一个Java类StatusProvider，放到同一个package之下。它与其它构件一样，都必须派生自Android框架的基类，也就是ContentProvider。
+新建一个Java类StatusProvider，放到同一个package之下。它与其它构件一样，也必须派生自Android框架的基类，也就是ContentProvider。
 
 % So in Eclipse, select your package, click on File→New→Java Class, and enter StatusProvider. Then update the class to subclass ContentProvider and organize imports (Ctrl-Shift-O) to import the appropriate Java packages. The result should look like this:
 
@@ -53,7 +53,7 @@ public class StatusProvider extends ContentProvider {
 
 % Of course this code is now broken because we need to provide implementation for many of its methods. The easiest way to do that is to click on the class name and choose "Add unimplemented methods" from the list of quick fixes. Eclipse will then create stubs, or templates, of the missing methods.
 
-当然，这段代码仍不完整，我们还需要提供几个方法的实现。最简单的方法就是单击这个类名，在quick fix列表中选择"Add unimplemented methods"，Eclipse即可自动生成所缺方法的模板。
+当然，这段代码仍不完整，我们还需要提供几个方法的实现。这里有个快捷功能，那就是单击这个类名，在quick fix列表中选择"Add unimplemented methods"，Eclipse即可自动生成所缺方法的模板。
 
 
 %=== Defining the URI ===
@@ -61,9 +61,7 @@ public class StatusProvider extends ContentProvider {
 
 % Objects within a single app can refer to each other simply by variable names, because they share an address space. But objects in different apps don’t recognize the different address spaces, so they need some other mechanism just to find each other. Android uses a A Uniform Resource Identifier, a string that identifies a specific resource, to locate a Content Provider. A URI has three or four parts, shown in Parts of a URI.
 
-在单个应用中的对象可以通过变量名来相互引用，因为他们共享了地址空间。但是在不同应用中的对象无法识别不同的地址空间，所以他们需要其他的机制找到对方。Android使用了全局资源标识符（URI），一串标识特定资源，以定位到ContentProvider的字符串。一个URI有三或四部分组成，在URI字段里说明。
-
-程序内部的不同对象可以通过变量名相互引用，因为它们共享着一个地址空间。但是不同程序的地址空间是相互隔离的，要引用对方的对象，就需要某种额外的机制。Android对此的解决方案就是全局资源标识符(URI)，使用一个字符串来表示资源的位置。每个URI由三个或四个字段组成，如下：
+程序内部的不同对象可以通过变量名相互引用，因为它们共享着同一个地址空间。但是不同程序的地址空间是相互隔离的，要引用对方的对象，就需要某种额外的机制。Android对此的解决方案就是全局资源标识符(URI)，使用一个字符串来表示资源的位置。每个URI由三个或四个字段组成，如下：
 
 **URI的字段**
 {CODE}
@@ -291,10 +289,11 @@ public Cursor query(Uri uri, String[] projection, String selection,
 + 如果不存在ID，我们简单将本方法中的参数原样交给数据库。留意，数据库的``insert()``方法有两个额外的参数，分别对应SQL语句的GROUPING和HAVING部分。ContentProvider中没有它们的对应物，因此设为null。
 + 如果存在ID，则使用ID作为WHERE语句的唯一参数，返回对应的记录。
 
+
 {NOTE}
 % 	We do not close the database here because closing the database will destroy the cursor and we still need it on the receiving end to go over the data returned by the query. One way to handle the cursor is to have the receiver manage it. Activities have a simple startManagingCursor() method for this purpose.
-	在这里我们不用关闭数据库，因为关闭数据库将毁掉游标，所以我们仍然需要保持获取，直到遍历完所有返回的数据。一种处理游标的方法是让接受数据的对象管理它。Activity有一个简单的startManagingCursor()方 法达到这个目的。
 
+关闭数据库的同时会销毁Cursor对象，因此我们在读取数据完毕之前不能关闭数据库，而Cursor对象的生存周期则需要使用者负责管理。针对这一情景，可以利用Activity的``startManagingCursor()``方法。
 {/NOTE}
 
 %=== Getting the Data Type ===
@@ -302,7 +301,7 @@ public Cursor query(Uri uri, String[] projection, String selection,
 
 % A ContentProvider must return the MIME type of the data it is returning. The MIME type is either single item, or all the records for the given URI. Earlier in this chapter we defined the single-record MIME type is as vnd.android.cursor.item/vnd.marakana.yamba.status and the directory of all statuses as vnd.android.cursor.dir/vnd.marakana.yamba.status. The call we must define, to let others retrieve the MIME type, is called getType().
 
-ContentProvider必须提供数据的MIME类型。MIME类型是针对URI而言，URI可以表示单个条目也可以表示多个条目，它们的MIME类型就是不同的。在本章前面，我们曾定义过单个条目的MIME类型``vnd.android.cursor.item/vnd.marakana.yamba.status``，而多个条目的MIME类型是``vnd.android.cursor.dir/vnd.marakana.yamba.status``。为了让他人获取相应的MIME类型，我们需要在ContentProvider中实现一个``getType()``方法。
+ContentProvider必须给出数据的MIME类型。MIME类型是针对URI而言，URI可以表示单个条目也可以表示多个条目，它们的MIME类型就是不同的。在本章前面，我们曾定义过单个条目的MIME类型``vnd.android.cursor.item/vnd.marakana.yamba.status``，而多个条目的MIME类型是``vnd.android.cursor.dir/vnd.marakana.yamba.status``。为了让他人获取相应的MIME类型，我们需要在ContentProvider中实现一个``getType()``方法。
 
 % The first part of the MIME type is either vnd.android.cursor.item or vnd.android.cursor.dir, depending on whether the type represents a specific item or all items we are referring to. The second part, vnd.marakana.yamba.status or vnd.marakana.yamba.mstatus for our app, is a combination of constant vnd followed by your company or app name and the actual content type.
 
@@ -310,11 +309,9 @@ MIME类型的第一部分可以是``vnd.android.cursor.item``或者``vnd.android
 
 % As you may recall, the URI could end with a number. If it does, that number is the ID of the specific record. If it doesn’t, the URI refers to the entire collection.
 
-前面提到，URI的结尾可能是数字。如果是，那这个数字就是某个记录的ID。如果不是，则表示URI指向多条记录。
+前面提过URI的结尾可能会是数字。如果是，那这个数字就是某个记录的ID。如果不是，则表示URI指向多条记录。
 
 % The following source shows the implementation of getType() as well as the getId() helper method that we’ve already used several times.
-
-随后所附的源代码展示了getType()和我们之前就已经多次调用过的getId() helper方法的实现。
 
 下面的代码展示了``getType()``的实现，以及前面用过多次的辅助方法``getId()``：
 
@@ -356,9 +353,7 @@ private long getId(Uri uri) {
 
 % As with any major building block, we want to define our Content Provider in the Android Manifest XML file. Notice that in this case the android:authorities property specifies the URI authority authorized to access this content provider. Typically, this authority would be your Content Provider class—which we use here—or your package.
 
-如同其他的主要构件一样，我们需要在Android Manifest XML文件里定义这个Content Provider。注意到本例中android:authorities属性表明了需要访问这个ContentProvider的URI权限。典型地这个授权会是你的ContentProvider类名和其所在的包。
-
-同其它主要构件一致，我们需要将这个ContentProvider注册到Manifest文件中。注意，这里的``android:authorities``定义了URI的典据(authority)，也就是访问这个ContentProvider的凭据。一般来说，这个典据就是ContentProvider的类名，或者类所在的package名。在此我们使用前者。
+同其它主要构件一致，我们需要将这个ContentProvider注册到Manifest文件中。注意，这里的``android:authorities``定义了URI的典据(authority)，也就是访问这个ContentProvider的凭据。一般来说，这个典据就是ContentProvider的类名，或者类所在的package名。在此我们选择前者。
 
 {CODE}
 <application>
@@ -371,34 +366,41 @@ private long getId(Uri uri) {
 
 % At this point our content provider is complete and we are ready to use it in other building blocks of Yamba. But since our application already centralizes all data access in a StatusData object that is readily accessible via YambaApplication, we don’t really have a good use for this content provider within the same application. Besides, content providers mostly make sense when we want to expose the data to another application.
 
-此时我们的ContentProvider就全部完成了，并且我们这就可以在Yamba的其他构件里使用它。但是因为我们应用程序已经集中所有的数据存储于StatusData对象，并且它已经可以通过Yamba应用程序访问，我们不必的在同一个应用程序中使用这个ContentProvider（= =！）。通常当我们想暴露数据给其他应用程序时，ContentProvider才会更管用。
-
-到这里，我们的ContentProvider就已全部完成，接下来就可以在其它构件里使用它了。不过目前为止，各构件访问数据库的操作仍统一在YambaApplication中的StatusData对象上，似乎这个ContentProvider还派不上什么用场。但要为其它应用程序提供数据，那就离不开ContentProvider了。
+到这里，我们的ContentProvider就已全部完成，接下来就可以在其它构件里使用它了。不过目前为止，各构件访问数据库的操作仍统一在YambaApplication中的StatusData对象上，似乎这个ContentProvider还派不上什么用场。但要为其它应用程序提供数据的话，就离不开ContentProvider了。
 
 
 %== Using Content Providers Through Widgets ==
-== 将ContentProvider运用到Widget中 ==
+== 在小部件中使用ContentProvider ==
 
 % As mentioned before, Content Providers mostly make sense when you want to expose the data to other applications. It is a good practice to always think of your application as part of a larger Android ecosystem and, as such, a potential provider of useful data to other applications.
-就像在之前提到过的，ContentProvider一般在我们想暴露数据给其他应用程序时会很有用。总是把自己的应用程序当作为庞大Android生态系统的一部分是种很好的态度，也就是说，需要一个ContentProvider提供给其他应用程序。
+
+如前面所说，ContentProvider的作用是为其它应用程序提供数据。在自给自足之外，将自己融入到Android的生态系统会是更好的态度。其它应用程序若需要我们的数据，就可以通过ContentProvider索取。
 
 % To demonstrate how Content Providers can be useful, we’ll create a Home screen widget. We’re not using the term widget here as in a synonym for Android’s View class, but as a useful embedded service for the Home screen to offer.
-为了演示ContentProvider的用处，我们将创建一个主屏幕Widget。我们这里不是指Android中View类的Widget，而是指主屏幕中嵌入的实用服务。
+
+接下来我们将新建一个小部件(widget)，用来演示ContentProvider的作用。这里的"小部件"跟View类的俗称"控件"不是一回事，它可以挂在主屏幕上，提供一些快捷功能。
+
+(译者注："小部件"与"控件"的英文原文都是widget，很容易让人混淆)
 
 % Android typically ships with a few Home screen widgets. You can access them by going to your home screen, long-pressing on it to pull up an Add to Home Screen dialog, and choosing Widgets. Widgets that come with Android include Alarm Clock, Picture Frame, Power Controls, Music, and Search. Our goal is to create our own Yamba Widget that the user will be able to add to the Home screen.
-Android通常自带了一些主屏幕Widget。你可以在主屏幕上加入它们，长按主屏幕来弹出增加到主屏幕对话框，并选择Widget。Android内建的Widget有时钟、相框、能源控制、音乐和搜索等。我们的目标是创建我们自己的Yamba Widget，让用户能自行添加到主屏幕上。
+
+Android通常自带着一些小部件，比如时钟、相框、电源控制、音乐播放器与搜索框等等。
+它们一般显示在主屏幕上，你也可以通过``Add to Home Screen``对话框将它们添加到主屏幕。本节的目标就是创建一个Yamba小部件，使之可以挂在主屏幕上。
 
 % The Yamba Widget will be simple, displaying just the latest status update. To create it, we’ll create a new YambaWidget Class that subclasses AppWidgetProviderInfo. We’ll also have to register the widget with the manifest file.
-Yamba Widget将是简洁的，仅仅展示最近的状态更新。要创建它，我们将新建一个继承于AppWidgetProviderInfo类的YambaWidget类。同时我们将注册这个Widget到Manifest文件里。
 
+Yamba小部件不会太复杂，仅仅展示最近的消息更新即可。为创建它，我们将以``AppWidgetProviderInfo``为基类，新建一个YambaWidget类，最后把它注册到Manifest文件里。
 
 %=== Implementing the YambaWidget class ===
 === 实现YambaWidget类 ===
+
 % YambaWidget is the main class for our widget. It is a subclass of AppWidgetProvider, a special system class that makes widgets. This class itself is a subclass of BroadcastReceiver, so our Yamba Widget is automatically a broadcast receiver. Basically, whenever our widget is updated, deleted, enabled, or disabled, we’ll get a broadcast intent with that information. So this class inherits the onUpdate(), onDeleted(), onEnabled(), onDisabled(), and onReceive() callbacks. We can override any of these, but typically we care mostly about the updates and general broadcasts we receive.
-YambaWidget是我们这个Widget的主类。它是一个用来构建Widget的特殊系统类AppWidgetProvider的子类。而该类自身又是BroadcastReceiver的一个子类，所以我们的YambaWidget自然也是一个BroadcastReceiver。基本上，不论我们的Widget是更新、删除、启用还是关闭，我们都会得到包含着相关信息的Broadcast Indent。所以该类继承了onUpdate(), onDeleted(), onEnabled(),onDisabled()和onReceive()回调方法。我们可以重载它们，但是通常我们关心的是更新和我们接受到的原始广播。
+
+YambaWidget就是这个小部件所对应的类，它以AppWidgetProvider为基类。后者是Android框架为创建小部件所专门提供的一个类，它本身是BroadcastReceiver的子类，因此YambaWidget自然也算是一个BroadcastReceiver。在小部件更新、删除、启动、关闭时，我们都会相应地收到一个BroadcastIndent。因此，这个类继承着``onUpdate()``、``onDeleted()``、``onEnabled()``、``onDisabled()``和``onReceive()``几个回调方法，我们可以重载它们。在这里，只重载``onUpdate()``和``onReceive()``即可。
 
 % Now that we understand the overall design of the widget framework, here’s how we implement it.
-现在我们明白了Widget框架的大体设计，这里是我们如何来实现它的例子：
+
+现在对小部件的设计已有大致了解，下面是具体实现：
 
 Example 12.1. YambaWidget.java
 {CODE}
@@ -415,102 +417,103 @@ import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-public class YambaWidget extends AppWidgetProvider { //#1
+public class YambaWidget extends AppWidgetProvider { // {#1}
   private static final String TAG = YambaWidget.class.getSimpleName();
 
   @Override
   public void onUpdate(Context context, AppWidgetManager appWidgetManager,
-      int[] appWidgetIds) { //#2
+      int[] appWidgetIds) { // {#2}
     Cursor c = context.getContentResolver().query(StatusProvider.CONTENT_URI,
-        null, null, null, null); //#3
+        null, null, null, null); // {#3}
     try {
-      if (c.moveToFirst()) { //#4
-        CharSequence user = c.getString(c.getColumnIndex(StatusData.C_USER)); //#5
+      if (c.moveToFirst()) { {//#4}
+        CharSequence user = c.getString(c.getColumnIndex(StatusData.C_USER)); // {#5}
         CharSequence createdAt = DateUtils.getRelativeTimeSpanString(context, c
             .getLong(c.getColumnIndex(StatusData.C_CREATED_AT)));
         CharSequence message = c.getString(c.getColumnIndex(StatusData.C_TEXT));
 
         // Loop through all instances of this widget
-        for (int appWidgetId : appWidgetIds) { //#5
+        for (int appWidgetId : appWidgetIds) { // {#6}
           Log.d(TAG, "Updating widget " + appWidgetId);
           RemoteViews views = new RemoteViews(context.getPackageName(),
-              R.layout.yamba_widget); //#6
-          views.setTextViewText(R.id.textUser, user); //#7
+              R.layout.yamba_widget); // {#7}
+          views.setTextViewText(R.id.textUser, user); // {#8}
           views.setTextViewText(R.id.textCreatedAt, createdAt);
           views.setTextViewText(R.id.textText, message);
           views.setOnClickPendingIntent(R.id.yamba_icon, PendingIntent
               .getActivity(context, 0, new Intent(context,
                   TimelineActivity.class), 0));
-          appWidgetManager.updateAppWidget(appWidgetId, views); //#8
+          appWidgetManager.updateAppWidget(appWidgetId, views); // {#9}
         }
       } else {
         Log.d(TAG, "No data to update");
       }
     } finally {
-      c.close(); //#9
+      c.close(); // {#10}
     }
     Log.d(TAG, "onUpdated");
   }
 
   @Override
-  public void onReceive(Context context, Intent intent) { //#10
+  public void onReceive(Context context, Intent intent) { // {#10}
     super.onReceive(context, intent);
-    if (intent.getAction().equals(UpdaterService.NEW_STATUS_INTENT)) { //#11
+    if (intent.getAction().equals(UpdaterService.NEW_STATUS_INTENT)) { // {#11}
       Log.d(TAG, "onReceived detected new status update");
-      AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context); //#12
+      AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context); // {#12}
       this.onUpdate(context, appWidgetManager, appWidgetManager
-          .getAppWidgetIds(new ComponentName(context, YambaWidget.class))); //#13
+          .getAppWidgetIds(new ComponentName(context, YambaWidget.class))); // {#13}
     }
   }
 }
 {/CODE}
 
-% 
-- As mentioned before, our widget is a subclass of AppWidgetProvider, which itself is a BroadcastReceiver.
-- This method is called whenever our widget is to be updated, so it’s where we’ll implement the main functionality of the widget. When we register the widget with the system in the manifest file later, we’ll specify the update frequency we’d like. In our case, this method will be called about every 30 minutes.
-- We finally get to use our Content Provider. The whole purpose of this widget in this chapter is to illustrate how to use the StatusProvider that we created earlier. As you have already seen when we implemented the content provider, its API is quite similar to the SQLite database API. The main difference is that instead of passing a table name to a database object, we’re passing a Content URI to the Content Resolver. We still get back the very same Cursor object as we did with databases in Chapter 9, Database.
-- In this particular example, we care only about the very latest status update from the online service. So we position the cursor to the first element. If one exists, it’s our latest status update.
-- In the next few of lines of code, we extract data from the cursor object and store it in local variables.
-- Since the user could have multiple Yamba Widgets installed, we need to loop through them and update them all. We don’t particularly care what the appWidgetId is because we’re doing identical work to update every instance of Yamba Widget. The appWidgetId becomes an opaque handle we use to access each widget in turn.
-- The actual view representing our widget is in another process. To be precise, our widget is running inside the Home application, which acts as its host and is the process we are updating. Hence the RemoteViews constructor. The Remote Views framework is a special shared memory system designed specifically for widgets.
-- Once we have the reference to the Java memory space of our widget views in another process, we can update those views. In this case, we’re setting the status data in the row that represents our widget.
-- Once we update the remote views, the AppWidgetManager call to updateAppWidget() actually posts a message to have the system update our widget. This will happen asynchronously, but shortly after onUpdate() completes.
-- Whether or not the StatusProvider found a new status, we release the data that we might have gotten from the Content Provider. This is just a good practice.
-- The call to onReceive() is not necessary in a typical widget. But since a widget is a Broadcast Receiver, and since our Updater Service does send a broadcast when we get a new status update, this method is a good opportunity to invoke onUpdate() and get the latest status data updated on the widget.
-- We check whether the intent was the one for the new status broadcast.
-- If it was, we get the instance of AppWidgetManager for this context.
-- We then invoke onUpdate().
+% - As mentioned before, our widget is a subclass of AppWidgetProvider, which itself is a BroadcastReceiver.
+% - This method is called whenever our widget is to be updated, so it’s where we’ll implement the main functionality of the widget. When we register the widget with the system in the manifest file later, we’ll specify the update frequency we’d like. In our case, this method will be called about every 30 minutes.
+% - We finally get to use our Content Provider. The whole purpose of this widget in this chapter is to illustrate how to use the StatusProvider that we created earlier. As you have already seen when we implemented the content provider, its API is quite similar to the SQLite database API. The main difference is that instead of passing a table name to a database object, we’re passing a Content URI to the Content Resolver. We still get back the very same Cursor object as we did with databases in Chapter 9, Database.
+% - In this particular example, we care only about the very latest status update from the online service. So we position the cursor to the first element. If one exists, it’s our latest status update.
+% - In the next few of lines of code, we extract data from the cursor object and store it in local variables.
+% - Since the user could have multiple Yamba Widgets installed, we need to loop through them and update them all. We don’t particularly care what the appWidgetId is because we’re doing identical work to update every instance of Yamba Widget. The appWidgetId becomes an opaque handle we use to access each widget in turn.
+% - The actual view representing our widget is in another process. To be precise, our widget is running inside the Home application, which acts as its host and is the process we are updating. Hence the RemoteViews constructor. The Remote Views framework is a special shared memory system designed specifically for widgets.
+% - Once we have the reference to the Java memory space of our widget views in another process, we can update those views. In this case, we’re setting the status data in the row that represents our widget.
+% - Once we update the remote views, the AppWidgetManager call to updateAppWidget() actually posts a message to have the system update our widget. This will happen asynchronously, but shortly after onUpdate() completes.
+% - Whether or not the StatusProvider found a new status, we release the data that we might have gotten from the Content Provider. This is just a good practice.
+% - The call to onReceive() is not necessary in a typical widget. But since a widget is a Broadcast Receiver, and since our Updater Service does send a broadcast when we get a new status update, this method is a good opportunity to invoke onUpdate() and get the latest status data updated on the widget.
+% - We check whether the intent was the one for the new status broadcast.
+% - If it was, we get the instance of AppWidgetManager for this context.
+% - We then invoke onUpdate().
 
-- 就像之前提到的，我们的Widget是AppWidgetProvider的子类，它自己也是一个BroadcastReceiver。
-- 一旦Widget被更新，就会被调用，所以这里将实现该Widget的主要功能。当我们随后在manifest文件里注册了这个Widget到系统时，我们将指定更新频率。在这个例子里，该方法每30分钟调用一次。
-- 我们最终得以使用ContentProvider。本章中这个Widget的目的就是形象地展示如何使用我们之前创建的StatusProvider。就像我们在ContentProvider里已经实现的那样，这个API很像SQLite数据库API。主要的不同是，我们没有传递表名到数据库对象，而是传递了标识内容的URI到Content Resolver。我们将得到十分相近的Cursor对象，就像我们在第九章，数据库里做的那样。
-- 在这个特例里，我们仅关心在线服务中最近的更新。所以我们将游标移到第一个元素。如果存在，那就是最新的状态更新。
-- 后面的几行代码里，我们从游标对象中获取数据，并保存到本地变量。
-- 因为用户可能使用了多个YambaWidget，我们需要遍历它们并更新全部。我们不是很关心appWidgetId到底是什么，因为我们要做的是更新每一个YambaWidget的实例。appWidgetId在我们需要处理单个Widget时起作用。
-- View在另外的进程里展示我们的Widget。准确地说，我们的Widget在Home应用程序中运行，它作为Widget的宿主和更新操作所在的进程。Hence the RemoteViews constroctor。Remote View框架是一个特别为Widget所设计的内存共享系统。
-- 一旦在其他的进程里引用了这个Widget的Java内存空间，我们就能更新这些View。在此时，我们设置状态数据到我们的Widget。
-- 一旦我们更新了Remote View，AppWidgetManager会调用updateAppWidget()提交消息让系统更新我们的Widget。这些将是异步地，但是很快在onUpdate()结束后调用。
-- 不论StatusProvider是否发现新状态，我们都会释放ContentProvider得到的数据。这是一个好习惯。
-- 在典型的Widget实现里，调用onReceive()方法不是必要的。但是因为Widget也是BroadcastReceiver，因此当有新状态更新时，我们的更新服务会发送Broadcast，这个方法拥有恰好调用onUpdate()的时机，并且能将最新的状态数据更新到Widget上。
-- 我们检查这个Intent是否是一个新状态Broadcast。
-- 如果是的话，我们调用当前Context的AppWidgetManager实例。
-- 我们然后调用onUpdate()。
++ 如前所说，我们的小部件是``AppWidgetProvider``的子类，而``AppWidgetProvider``又是``BroadcastReceiver``的子类。
++ 此方法在小部件状态更新时触发，因此将主要功能的实现放在这里。在稍后将它注册到Manifest文件时，我们将为它的状态更新设置一个时间间隔，也就是30分钟。
++ 终于可以用上我们的ContentProvider了。在前面我们编写StatusProvider时可以体会到，它的API与SQLite数据库的API十分相似，甚至返回值也是一个Cursor。不过主要区别在于，在这里不是给出表名，而是给出URI。
++ 在这里，我们只关心服务端最新的消息更新。因此Cursor指向第一个的元素若存在，那它就是最新的消息。
++ 如下的几行代码读出Cursor对象中的数据，并储存到局部变量中。
++ 用户可以挂载多个Yamba小部件，因此需要遍历并更新所有小部件。``appWidgetId``是某个小部件的标识符，在这里我们是更新所有小部件，因此不必关心某个``appWidgetId``具体的值。
++ 我们小部件所在的View位于另一个进程中，因此使用``RemoteViews``。RemoteViews是专门为小部件设计的某种共享内存机制。
++ 得到了另一个进程地址空间中View的引用，即可更新它们。
++ 更新过RemoteViews对象，然后调用AppWidgetManager的``updateAppWidget()``方法，将发送一条消息，通知系统更新所有的小部件。这是个异步操作，不过实际执行会在``onUpdate()``之后。
++ 不管得到新消息与否，都要记得释放从ContentProvider中得到的对象。这是个好习惯。
++ 对一般的小部件来说，``onReceive()``并无必要。不过小部件既然是BroadcastReceiver，而UpdaterService在每获得一条消息时都会发一条广播。我们可以利用这个性质，在``onReceive()``中触发``onUpdate()``，实现消息的更新。
++ 如果得到新消息，获取当前上下文的``AppWidgetManager``对象。
++ 触发``onUpdate()``。
 
 
 % At this point, we have coded the Yamba Widget, and as a receiver, it will get notified periodically or when there are new updates, and it will loop through all instances of this widget on the Home screen and update them.
-这时，我们完成了YambaWidget的编码，并且作为一个Receiver，它将会定期，或者有新状态更新时得到通知，然后它将遍历所有的主屏幕上的Widget实例并更新它们。
+
+到这里，我们已经编写YambaWidget完毕。作为一个BroadcastReceiver，它会在定期或在新状态更新时得到通知，然后遍历主屏幕上所有的Yamba小部件并更新它们。
 
 % Next, we need to set up the layout for our widget.
-下一步，我们需要设计Widget的布局。
+
+接下来设计小部件的外观布局。
 
 
 %=== Creating the XML Layout ===
 === 创建XML布局 ===
+
 % The layout for the widget is fairly straightforward. Note that we’re reusing our existing row.xml file that displays status data properly in the Timeline Activity. Here, we just include it along with a little title and an icon to make it look good on the home screen.
-Widget布局非常直接。注意到我们重用了已经设定好的在特定Timeline Activity显示状态数据的row.xml文件。这里我们只用包含它，再加上一个小标题和图标，让它在主屏幕上显得好看点。
+
+小部件的外观布局很简单。留意我们在这里重用了TimelineActivity中用到的``row.xml``文件，用以表示消息的显示。另外再给它加一个小标题，在主屏幕上更醒目些。
 
 Example 12.2. res/layout/yamba_widget.xml
-
 {CODE}
 <?xml version="1.0" encoding="utf-8"?>
   <!-- #1 -->
@@ -528,25 +531,27 @@ Example 12.2. res/layout/yamba_widget.xml
 {/CODE}
 
 % 
-- We’re using Linear Layout to hold our widget together. It runs horizontally with the icon on the left and the status data on the right.
-- This is the icon, our standard Yamba icon.
-- Notice the use of <include> element. This is how we include our existing row.xml into this layout so we don’t have to duplicate the code.
+% - We’re using Linear Layout to hold our widget together. It runs horizontally with the icon on the left and the status data on the right.
+% - This is the icon, our standard Yamba icon.
+% - Notice the use of <include> element. This is how we include our existing row.xml into this layout so we don’t have to duplicate the code.
 
-- 我们使用Linear Layout组织起Widget。它水平地布局，图标在左边，而状态在右边。
-- 这就是图标，我们的标准Yamba图标。
-- 注意到我们使用了<include>元素。这就是我们如何包含之前定义的row.xml到这个布局的方法，所以我们不用复制粘贴代码。
++ 应用LinearLayout使之水平排列，图标显示在左边，消息显示在右边。
++ 小部件的图标，与Yamba的图标一致。
++ 留意我们使用了``<include>``标签。这样可以引入现有的``row.xml``文件的内容，而不必复制粘贴代码。
 
 % This layout is simple enough, but does the job for our particular needs. Next, we need to define some basic information about this widget and its behavior.
-这个布局够简单了，但是所做的正是我们需要的。下一步我们需要定义一些关于这个Widget的基本信息和行为。
+
+这个布局很简单，不过麻雀虽小，五脏俱全。接下来定义小部件的基本信息。
 
 
 %=== Creating the AppWidgetProviderInfo File ===
 === 创建AppWidgetProviderInfo文件 ===
+
 % This XML file is responsible for describing the widget. It typically specifies what layout this widget uses, how frequently it should be updated by the system, and what its size is.
-这个XML文件用于描述Widget。它通常指定Widget使用何种布局，多久由系统更新一次，和它的尺寸。
+
+这个文件用于描述小部件的基本信息。它一般用于定义小部件的布局、更新频率以及尺寸等信息。
 
 Example 12.3. res/xml/yamba_widget_info.xml
-
 {CODE}
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
@@ -556,13 +561,18 @@ Example 12.3. res/xml/yamba_widget_info.xml
 {/CODE}
 
 % In this case we are specifying that we’d like to have to have our widget updated every 30 minutes or so (1800000 milliseconds). Here, we also specify the layout to use, the title of this widget, and its size.
+
 在这个例子里指定了我们想要更新Widget的频率是每30分钟或者是这样（1800000毫秒）。这里我们还指定了所用的布局，Widget的标题和大小。
+
+在这里，我们将小部件的更新频率设为30分钟(1800000毫秒)。另外也定义了它的布局，以及标题和尺寸。
 
 
 %=== Updating the Manifest File ===
 === 更新Manifest文件 ===
+
 % Finally, we need to update the manifest file and register the widget.
-最后，我们需要更新manifest文件，注册这个Widget。
+
+最后更新Manifest文件，将这个小部件注册。
 
 {CODE}
   ...
@@ -584,25 +594,35 @@ Example 12.3. res/xml/yamba_widget_info.xml
 {/CODE}
 
 % Notice that the widget is a receiver, as we mentioned before. So, just like other broadcast receivers, we declare it within a <receiver> tag inside an <application> element. It is important to register this receiver to receive ACTION_APPWIDGET_UPDATE updates. We do that via the <intent-filter>. The <meta-data> specifies the meta information for this widget in the yamba_widget_info XML file described in the previous section.
-注意到Widget也是Receiver，就像我们之前提到的。所以就像其他BroadcastReceiver，我们用<receiver>声明它，并把它放在<application>元素内部。注册这个Receiver接受ACTION_APPWIDGET_UPDATE更新是十分必要地，而我们需要通过<intent-filter>实现。<meta-data>指定了这个Widget的元信息在yamba_widget_info XML文件里。
+
+前面提到，小部件也是个BroadcastReceiver，因此也需要一个<receiver>的声明放在<application>标签里，通过<intent-filter>筛选出感兴趣的Intent，比如ACTION_APPWIDGET_UPDATE。<meta-data>标签表示小部件的元信息定义在yamba_widget_info这个XML文件里。
 
 % That's it. We now have the widget and are ready to test it.
-就是这样。我们现在拥有了一个Widget，并且可以准备测试它了。
 
-=== Test That It Works ===
+好了。我们已经实现了一个完整的小部件，可以测试一下。
+
+% === Test That It Works ===
+===测试===
+
 % To test this widget, install your latest application on the device. Next, go to the Home screen, long-press it, and click on the Widgets choice. You should be able to navigate to the Yamba Widget at this point. After adding it to the Home screen, the widget should display the latest status update.
-要测试这个Widget，安装最新的应用程序到设备上。接着，到主屏幕上，长按它，然后点击Widget选项。在此时你应该能看到Yamba Widget。在添加到主屏幕上后，这个Widget应该会显示最新的状态更新。
+
+把它安装到设备上。进入主屏幕，长按然后点击选择小部件。在这里就可以看到Yamba小部件了。添加到主屏幕上之后，它应当显示最新的消息更新。
 
 % If your Updater Service is running, you should be able to see the latest updates show up on the Home screen. This means your widget is running properly.
-如果你的Updater Service正在运行，你应该能在主屏幕看到最近的更新显示。这也意味着你的Widget运行正常。
+
+只要你的UpdaterService还在运行，就应该看到消息会随时更新。这就证明小部件运行正常了。
+
 
 %== Summary ==
 == 总结 ==
+
 % At this point, the Yamba app is complete—congratulations! You are ready to fine-tune it, customize it, and publish it to the market.
-恭喜您！Yamba应用全部完成了！你可以准备进一步调试设计，优化设计，并发布到市场上了。
+
+恭喜，Yamba已经大工告成！你可以稍作调优，加入一些个性元素，然后就可以发布到市场去了。
 
 % Figure 12.1, “Yamba Completion” illustrates what we have done so far as part of the design outlined in Figure 5.4, “Yamba Design Diagram”.
-图表12.1，“Yamba Completion”说明了我们到目前为止在图表5.4，“Yamba Design”里所实现的设计部分。
+
+图12.1展示了我们目前为止的完成部分。届此，图5.4中的设计我们已全部实现。
 
 		Figure 12.1. Yamba Completion
 	[images/12-Yamba-7.png]

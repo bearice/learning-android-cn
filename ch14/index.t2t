@@ -6,7 +6,7 @@
 {TRAN}= Android界面描述语言 =
 
 {ORGI}Each application in Android runs in its own process. An application cannot directly access the data of another application for security reasons. However, a couple of mechanisms allow communication between applications. One such mechanism that you’ve seen throughout the book is Intents. Intents are asynchronous, meaning that you can post a message for someone to receive at some future point in time and just continue with your application.
-{TRAN}在Android中，每个应用程序运行于各自的进程里。基于安全考虑，应用程序不能直接获取其他应用程序的数据。然而，有两个机制允许在应用程序间通讯。其中一个你已经在本书中关于Intent的章节里了解过。Intent是异步的，意味着你可以提交给对方的数据，要在未来某个时间点才会接受到，但是程序本身却不会等待继续执行。
+{TRAN}在Android中，每个应用程序运行于各自的进程里。基于安全考虑，应用程序不能直接获取其他应用程序的数据。然而，有两个机制允许在应用程序间通讯。其中一个你已经在本书中关于Intent的章节里了解过。Intent是异步的，意味着你可以提交给对方的数据，要在未来某个时间点才会接受到，但是程序本身却不会因此而阻塞。
 
 {ORGI}Every once in a while we need a more direct, synchronous access to another process. There are many ways to implement this across process boundaries, and collectively they are called Interprocess Communication, or IPC for short.
 {TRAN}但有时候我们还是需要更直接，同步访问其他进程的方法。这里有许多可以跨进程的方法，它们统称未跨进程通讯，或简称IPC。

@@ -163,11 +163,10 @@ Twitter.Status status = ((YambaApplication) getApplication())
 
 %+ We now use getTwitter() method from the YambaApplication instead of keeping it locally. This way the same method can be reused by other parts of the application that need access to the cloud service.
 
-+ 现在是使用来自YambaApplication的``getTwitter()``方法，而不再是局部调用。同这一样，在其它需要访问服务端的部分也都可以使用这个方法。
++ 现在是使用来自YambaApplication的``getTwitter()``方法，而不再是局部调用。类似，其它需要访问服务端的部分也都可以使用这个方法。
 
 
 % === Updating Manifest File ===
-
 ===更新Manifest文件===
 
 % The final step is to tell our application to use YambaApplication class instead of the default Application class. To do that, we need to update the Android Manifest file and add an attribute to <application> element:
@@ -225,7 +224,7 @@ class PostToTwitter extends AsyncTask<String, Integer, String> {
 % + We the the reference to the Application object via ``getApplication()`` call in the current context. Since we have a custom YambaApplication object, we need to cast the generic Application into Yamba application.
 % + Once we have the reference to our application object, we can call its methods, such as ``getTwitter()`` method.
 
-+ 在当前上下文中调用``getApplication()``获得Application对象的引用。这里的Application对象来自我们自定义的YambaApplication，因此需要一个额外的类型转换。
++ 在当前上下文中调用``getApplication()``获取Application对象的引用。这里的Application对象来自我们自定义的YambaApplication，因此需要一个额外的类型转换。
 + 得到Application对象的引用之后即可调用其中的函数了，比如``getTwitter()``。
 
 

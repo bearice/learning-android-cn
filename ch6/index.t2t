@@ -830,7 +830,6 @@ Android为不同的事件(如触摸、点击等)提供了不同的侦听器。�
 从Java的角度来看，我们需要实现一个``TextWatcher``来监视文本框的变化。它会在用户更改文本的时候触发，并根据字数的变化更新计数器。
 
 **Example 6.6. res/layout/status2.xml**
-
 {CODE}
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Main Layout of Status Activity -->
@@ -1103,11 +1102,11 @@ PNG官方的全称是``Portable Network Graphics``。它也常常被人称作``P
 
 % Android uses the standard RGB color set but it also optionally expands it with an Alpha channel. So, you can express color as RGB or ARGB where A is the amount of transparency, R is the amount of red, G is for green and B stands for blue color. The combination of these three colors and optional transparency gives you every conceivable color from white to black, and from opaque to fully transparent! That’s the whole point of ARGB. Of course, the granularity isn’t exactly what Monet would be happy with; each value has only 256 possibilities.
 
-Android使用标准的RGB颜色，也有可选的Alpha项。因此你可以使用RGB或ARGB两种方式描述颜色，其中A表示透明度，R表示红色，G表示绿色，B表示蓝色。每个值都在0~255之间，通过它们的混合，即可调和出各种不同的颜色，以及不同的透明度。这些颜色的数目当然是有限的，这一点可能会让莫奈这样的大画家不高兴，但对电子设备来讲，这已经绰绰有余了。
+Android使用标准的RGB颜色，加上可选的Alpha项，你可以使用RGB或ARGB两种方式描述颜色。其中A表示透明度，R表示红色，G表示绿色，B表示蓝色。每个值都在0~255之间，通过它们的混合，即可调和出各种不同的颜色以及不同的透明度。颜色的数目是有限的，这一点可能会让莫奈这样的大画家不高兴，但对电子设备来说，这已经绰绰有余了。
 
 % Amounts of each can be represented either as values between 0 and 255, or using Hexadecimal system as values between 0 and FF. So, the actual values values can be AARRGGBB where each letter can be replaced with a value between 0 and F. There’s also a shorter version ARGB where for each value, it is repeated so that each two digits are the same. For example, #3A9F is the same as #33AA99FF and corresponds to #33 for alpha, #AA for red, #99 for green and #FF for blue. Notice that we use # symbol in front of hexadecimal values to distinguish them from decimal values.
 
-0到255之间的值，换成十六进制就是0到FF。表示颜色的话，一般还是十六进制用的多。格式是AARRGGBB，其中的每个字符都是0到F之间的数字。这一格式有一种简化形式，那就是ARGB，其中每个字符表示重复的两个字符。比如#3A9F与#33AA99FF相同，对应的Alpha为#33、红为#AA、绿为#99、蓝为#FF。可以留意这里的``#``符号，我们通过它表示这是个十六进制数，与十进制做区别。
+0到255之间的值，换成十六进制就是0到FF。表示颜色的话，一般还是十六进制用的多。格式是AARRGGBB，其中的每个字符都是0到F之间的数字。这一格式有一种简化形式，那就是ARGB，其中每个字符表示重复的两个字符。比如#3A9F与#33AA99FF相同，对应的Alpha为#33、红为#AA、绿为#99、蓝为#FF。可以留意这里的``#``号，它用来表示这是个十六进制数，与十进制做区别。
 
 % So, we could update the background of our EditText element to be #cfff, which is somewhat transparent white color.
 
@@ -1152,9 +1151,9 @@ Android使用标准的RGB颜色，也有可选的Alpha项。因此你可以使�
 </LinearLayout>
 {/CODE}
 
-+ We set the background of the main layout to point to background.png file in /res/drawable/ directory.
-+ We set the color of the title text to point to color defined in system color resource white.
-+ We set the background of the edit text area to be a transparent white by specifying #cfff for color using hexadecimal ARGB value.
+% + We set the background of the main layout to point to background.png file in /res/drawable/ directory.
+% + We set the color of the title text to point to color defined in system color resource white.
+% + We set the background of the edit text area to be a transparent white by specifying #cfff for color using hexadecimal ARGB value.
 
 + 设置主布局的背景为/res/drawable/目录下的``background.png``。
 + 设置标题文本的颜色为系统资源定义中的白色。
@@ -1171,11 +1170,11 @@ Android使用标准的RGB颜色，也有可选的Alpha项。因此你可以使�
 
 % Android supports multiple competing sets of resources. For example, you could have multiple versions of strings.xml file or status.xml layout, or background.png image. The reason why you would want multiple versions of same resource is to have best version be used in given circumstances. We have discussed this in the section called “Adding Images”.
 
-Android允许你提供多组资源文件。比如，你可以提供不同版本的``strings.xml``、``status.xml``或者``background.png``，针对不同的情景选用不同的资源文件。
+Android允许你提供多种资源文件。比如你可以提供不同版本的``strings.xml``、``status.xml``或者``background.png``，针对不同的情景选用不同的资源文件。
 
 % Imagine that your application is used in another country with different language. In that case, you could provide strings.xml version specifically for that language. Or imagine that user runs your application on a different device, with different screen that has more pixels. In that case, you’d want versions of your images specific for this screen pixel density. Similarly, user may simply rotate the device from portrait to landscape mode. While our application will redraw properly, there are further enhancements we could do to the layout of the UI given orientation of the screen.
 
-假如你想让外国人使用你的应用程序，但他们的语言不同。这时你可能希望提供一个特定语言的``strings.xml``文件。或者你想让自己的应用程序跑在某设备上，但它的分辨率不一样。这时你可能希望提供一个特定的图片，来适应它的分辨率。同样，用户会旋转设备从portrait模式切换到landscape模式，我们程序的布局也需要对此作出调整。
+假如你想让外国人使用你的应用程序，但他们的语言不同。这时你可能希望提供一个特定语言的``strings.xml``文件。或者你想让自己的应用程序跑在某设备上，但它的分辨率不一样，这时你可能希望提供一个特定的图片来适应它的分辨率。同样，用户会旋转设备，从portrait模式切换到landscape模式，我们程序的布局也需要对此作出调整。
 
 % Android provides for all these cases in an elegant way. Basically, you simply need to create alternative folders for specific constraints. For example, our standard layout files go into /res/layout folder. Well, if we wanted to provide an alternative layout to be used specifically in landscape mode, we’d simply create a new file /res/layout-land/status.xml. And if you wanted to provide translated version of your strings.xml file to be used for users that are in French part of Canada, you’d put it in file called res/values-fr-rCA/strings.xml.
 
@@ -1183,16 +1182,17 @@ Android允许你提供多组资源文件。比如，你可以提供不同版本�
 
 % As you see from these couple of examples, the way alternative resources work is by specifying the qualifiers in the name of the resource folder. In case of French Canadian strings, Android knows that the first qualifier -fr refers to language and second qualifier -rCA specifies that the region is Canada. In both cases, we use Two-letter ISO codes to specify the country. So in this case, if the user is in Quebec for instance, and her device is configured to favor French language, Android will look for string resources in /res/values-fr-rCA/strings.xml file. If it doesn’t find a specific resource, it will fall back to default /res/values/strings.xml file. Also, if the user in France, Android in this case will use default resource since our French Canadian qualifiers do not match French for France.
 
-如上可知，备用资源文件以它的目录名作为标识。比如加拿大的法语版本那个例子，Android可以认出第一个标志符``-fr``指"法语"，第二个标志符``-rCA``指"加拿大"，而这两个标志符都是表示地区的ISO代码。这样，加拿大魁北克省的用户只要把语言设置为法语，Android就会选用``/res/values-fr-rCA/strings.xml``文件作为字符串资源。如果没有找到这个文件，则选用默认的``/res/values/strings.xml``文件。不过，如果用户在法国且语言是法语，它仍选用默认资源文件，因为标识符中的"加拿大"与"法国"不匹配。
+从上可知，备用资源文件以它的目录名作为标识。比如加拿大的法语版本那个例子，Android可以认出第一个标志符``-fr``指"法语"，第二个标志符``-rCA``指"加拿大"，而这两个标志符都是表示地区的ISO代码。这样，加拿大魁北克省的用户只要把语言设置为法语，Android就会选用``/res/values-fr-rCA/strings.xml``文件作为字符串资源。如果没有找到这个文件，则选用默认的``/res/values/strings.xml``文件。不过，即使用户在法国且语言是法语，它仍选用默认资源文件，因为标识符中的"加拿大"与"法国"不匹配。
+
+(译者注：魁北克是加拿大唯一的法语省。)
 
 % Using qualifiers you can create alternative resources for languages and regions, screen sizes and orientations, device input modes (touch screen, stylus), keyboard or no keyboard, and so on. But how do you know what this naming convention for resource folder names is? The easiest tool is to use the New Android XML File dialog in Eclipse. To open New Android File dialog, choose File→New…→Android XML File from the Eclipse menu.
 
-通过使用表识符，你可以为语言和地域、屏幕大小、屏幕旋转、设备输入模式（触摸屏、手写笔）、是否有键盘等情况创建多资源。但是你怎么知道文件夹资源名字要转换为什么呢？最方便的工具就是使用Eclipse的New Android XML File对话框。要打开New Android File对话框，在Eclipse菜单中选择File→New…→Android XML File。
-
-通过这些标志符，你可以针对不同的语言、地域、屏幕尺寸与角度、设备交互模式(触摸屏、手写笔)、是否使用键盘等等情景，提供特定的资源文件。但是我们又怎么知道它们对应的命名规范呢？可以使用Eclipse的New Android XML File对话框，选择`` File→New…→Android XML File ``菜单即可。
+通过这些标志符，你可以针对不同的语言、地域、屏幕尺寸与角度、设备交互模式(触摸屏、手写笔)、是否使用键盘等等情景，提供特定的资源文件。但是我们又怎么知道它们对应的命名规范呢？可以参照Eclipse的New Android XML File对话框，选择`` File→New…→Android XML File ``菜单即可。
 
 **Figure 6.15. Alternative Resources with New Android XML File Dialog**
 	[images/06-AlternativeResources.png]
+
 
 
 % == Optimizing User Interface ==
@@ -1200,13 +1200,11 @@ Android允许你提供多组资源文件。比如，你可以提供不同版本�
 
 % User interface is one of the most expensive parts of a typical Android application. To create a simple screen, your application has to inflate the XML from resources. For each element, it has to create a new Java object and assign its properties to it. Then it needs to draw each widget on the screen. All this takes many computing cycles.
 
-对一般的应用程序来讲，用户界面算是最耗时的部分了。界面再简单，也免不了解析XML、初始化每个控件、绘制整个界面等等操作，其中的计算量是不可忽视的。
+对一般的应用程序来讲，用户界面算是最耗时的部分了。即使界面再简单，也免不了解析XML、初始化每个控件、绘制整个界面等等诸多操作，其中的计算量是不可忽视的。
 
 % Given all this, it is worth keeping in mind few optimization points. You may want to try to limit number of widgets you have on the screen. This is specially true when you are using nested layouts to achieve desired look. This can sometimes get out of control and if you are nesting unnecessary objects in a loop (say, displaying rows of data on the screen), then the number of widgets quickly explodes and your user interface becomes sluggish.
 
-告诉过所有这些，值得留意一些优化点。你需要限制在屏幕上的Widget的数量。当你需要使用嵌套布局来实现需要的界面时十分重要。如果你在代码循环中嵌套了些没有必要的类时，就会导致失控（比如，在屏幕上显示一行数据），然后控件的数量便会急剧增加，你的用户界面会变得迟钝。
-
-因此写代码时，对可优化的地方多花些心思是值得的。比如限制控件的数量，使用嵌套的Layout时尤其要小心。因为这样一不小心就会让控件的使用变得不受约束，界面会变得笨重迟缓。
+因此写代码时，对可优化的地方多花些心思是值得的。控件如果使用过多，对性能的影响是很大的。而使用嵌套的Layout时要尤其小心，因为这样一不小心就会让控件的使用变得不受约束，界面自然也容易变得笨重迟缓。
 
 % Generally, you want your structure to be flat instead of deep. You can accomplish this by replacing nested layouts with relative layouts.
 
@@ -1221,7 +1219,7 @@ Android SKD提供了一个非常有用的工具，那就是Hierarchy Viewer。�
 
 % Hierarchy Viewer allows you to attach to any Android device, emulator or physical phone. You can then introspect the structure of the current view. It shows you all the widgets currently loaded in memory, their relationship to each other, and all their properties. You can introspect not just your screens but screens of any application on your device. This is also a good way to see how some other applications are structured.
 
-Hierarchy View可以用到任何Android设备、模拟器或者真机上。通过它，你可以查看当前界面的结构。它能列出内存中的所有控件，展示它们之间的关系以及各自的属性。它对设备上运行的所有程序都有效，因此也是查看他人程序结构的好方法。
+Hierarchy View可以用到任何Android设备、模拟器或者真机上。它能列出内存中的所有控件，展示它们之间的关系以及各自的属性，供你查看当前界面的结构。它对设备上运行的所有程序都有效，因此也是查看他人程序结构的好方法。
 
 **Figure 6.16. Hierarchy Viewer**
 	[images/06-HierarchyViewer.png]
