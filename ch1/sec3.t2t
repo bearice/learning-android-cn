@@ -46,5 +46,5 @@ Android版本号差不多就是标志了它大版本和小版本发布的轨迹�
 
 % With that in mind, you will probably choose 1.6 or 2.0 as your minimum development target, unless you really truly need features of the latest version.
 
-对此有所了解之后，你可能会选择1.6或者2.0作为最低的目标平台。确实有必要用到新版本中新增特性的话则另当别论。
+对此有所了解之后，你可能会选择1.6或者2.0作为最低的目标平台。确实有必要用到新版本特性的话，则另当别论。
 

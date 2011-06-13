@@ -85,7 +85,7 @@
 {TRAN}=== 四种主要操作 ===
 
 {ORGI}The DbHelper class offers you a high-level interface that’s much simpler than SQL. The developers realized that most applications use databases for only four major operations, which go by the appealing acronym [CRUD http://en.wikipedia.org/wiki/Create,_read,_update_and_delete] (create, read (query), update, and delete). To fulfill these requirements, DbHelper offers:
-{TRAN}DbHelper 类提供了高层 API 来简化 SQL。 开发人员们发现绝大多数程序只适用了数据库中的四种主要操作，可以简写成 [CRUD http://en.wikipedia.org/wiki/Create,_read,_update_and_delete]  (即 添加（create）, 查询（query）, 修改（update）, 删除（delete）)。为了完成这些需求，``DbHelper`` 提供了一下方法：
+{TRAN}DbHelper 类提供了高层 API 来简化 SQL。 开发人员们发现绝大多数程序只适用了数据库中的四种主要操作，可以简写成 [CRUD http://en.wikipedia.org/wiki/Create,_read,_update_and_delete]  (即 添加（create）, 查询（query）, 修改（update）, 删除（delete）)。为了完成这些需求，``DbHelper`` 提供了以下方法：
 
 **insert()**
 {ORGI}	Inserts one or more rows into the database.
@@ -784,7 +784,7 @@ private class Updater extends Thread {
 {TRAN}此刻， Yamba 有能力从云端获取数据并存储到数据库中了。虽然仍然不能将它们现实出来，不过可以验证的是它们的确在数据库里。
 
 {ORGI}The following illustrates what we have done so far as part of the design outlined in __Figure 5.4, “Yamba Design Diagram”__:
-{TRAN} __Figure 5.4, “Yamba Design Diagram”__ 表明了目前为止我们已经完成的部分。
+{TRAN} __Figure 5.4, “Yamba Design Diagram”__ 展示了目前为止我们已经完成的部分。
 
 	Figure 9.1. Yamba Completion
 		[images/09-Yamba-4.png]

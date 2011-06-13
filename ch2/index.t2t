@@ -17,7 +17,7 @@
 {TRAN}Android 系统就像一个多层的蛋糕。每一层都有自己的特性和目的，不过这些层之间并没有一个明确的界限，而通常是相互渗透的。
 
 {ORGI}When you read through this, keep in mind that I am only concerned with the big picture of the entire system and will get into the nitty-gritty details of particular parts of the system later on. Figure 2.1, “Android Stack” shows the parts of the Android stack.
-{TRAN}在你阅读本章时，要注意本章仅仅是整个系统的概览，至于各部分的细节，我们将放在后面讨论。"Figure 2.1 Android Stack" 给出了 Android 系统架构的一部分。
+{TRAN}在你阅读本章时，要注意本章仅仅是整个系统的概览，至于各部分的细节，我们将放在后面讨论。"图2.1 Android Stack" 展示了 Android 系统架构的各部分。
 
 	Figure 2.1. Android Stack
 		[images/02-AndroidStack.png]
@@ -78,7 +78,7 @@
 
 {TIP}
 {ORGI}GNU libc, the default C library for Linux, is licensed under GPL license which requires any changes that you release publicly to be pushed back to open source community. As such, it may not be the most business-friendly open source license in case when a company wants to keep their derivative work proprietary. Bionic, on the other hand, is licensed under Apache/MIT license which doesn’t require derivative works to be open sourced.
-{TRAN}GNU libc 是 Linux 默认使用的C标准库，它使用的 GPL 协议要求任何对其所做的修改公开发布时必须开放源代码。 这样的许可证对于大多数试图保护他们私有代码的商业公司来说都是不友好的。而 Bionic 所使用的 Apache/MIT 许可证并不要求公开这些修改。
+{TRAN}GNU libc 是 Linux 默认使用的C标准库，它使用的 GPL 协议要求对其所做的任何修改在公开发布时都必须开放源代码。 这样的许可证对于大多数试图保护他们私有代码的商业公司来说都是不友好的。而 Bionic 使用的 Apache/MIT 许可证并不要求公开这些修改。
 {/TIP}
 
 

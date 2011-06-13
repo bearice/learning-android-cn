@@ -383,35 +383,45 @@ public boolean onCreateOptionsMenu(Menu menu) {
 
 % We also need a way to handle various clicks on the menu items. To do that, we add another callback method, onOptionsItemSelected(). This method is called every time user clicks on a menu item.
 
+我们还需要捕获菜单条目的点击事件。为此添加另一个回调方法，``onOptionsItemSelected()``。它在用户单击一个菜单条目时触发。
+
 {CODE}
 // Called when an options item is clicked
 @Override
 public boolean onOptionsItemSelected(MenuItem item) {
-  switch (item.getItemId()) {                              // 
+  switch (item.getItemId()) {                              // #{1}
   case R.id.itemPrefs:
-    startActivity(new Intent(this, PrefsActivity.class));  // 
+    startActivity(new Intent(this, PrefsActivity.class));  // #{2}
   break;
   }
 
-  return true;  // 
+  return true;  // #{3}
 }
 {/CODE}
 
-+ Since the same method is called regardless which item user clicked on, we need to figure out the id of that item and based on that switch to a specific case to handle each item. At this point, we only have one menu item, but that might change in the future. Switching on item ID is a very scalable approach and will adapt nicely as our application grows in complexity.
-+ startActivity() method in context allows us to launch a new activity. In this case, we are creating a new intent specifying to start PrefsActivity class.
-+ Return true to consume the event here.
+% + Since the same method is called regardless which item user clicked on, we need to figure out the id of that item and based on that switch to a specific case to handle each item. At this point, we only have one menu item, but that might change in the future. Switching on item ID is a very scalable approach and will adapt nicely as our application grows in complexity.
+% + startActivity() method in context allows us to launch a new activity. In this case, we are creating a new intent specifying to start PrefsActivity class.
+% + Return true to consume the event here.
+
++ 此方法在任意菜单条目被点击时都会触发，因此我们需要根据不同的条目ID做不同的处理。暂时这里只有一个菜单条目。不过随着程序复杂度的增长，需要添加新条目的时候，这样也是非常容易扩展的。
++ ``startActivity()``方法允许我们打开一个新的Activity。在这里，我们创建一条新的Intent，表示打开``PrefsActivity``。
++ 返回true，表示事件处理成功。
     
 
 {TIP}
-Just like before, you could use Eclipse shortcut Source→Override/Implement Methods to add both onCreateOptionsMenu() and onOptionsItemSelected().
+% Just like before, you could use Eclipse shortcut Source→Override/Implement Methods to add both onCreateOptionsMenu() and onOptionsItemSelected().
+
+同原先一样，可以使用Eclipse的快捷功能``Source→Override/Implement Methods``生成``onCreateOptionsMenu()``、``onOptionsItemSelected()``方法的声明。
 {/TIP}
 
-===Strings Resource===
+% ===Strings Resource===
+===字符串资源===
 
-Our updated strings.xml now looks like this:
+% Our updated strings.xml now looks like this:
+
+更新后的``strings.xml``大致如下：
 
 **Example 7.5. res/values/strings.xml**
-
 {CODE}
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
@@ -433,26 +443,103 @@ Our updated strings.xml now looks like this:
 </resources>
 {/CODE}
 
-You should be able to run your application at this point and and see the new PrefsActivity by clicking on Menu→Prefs in StatusActivity. Try changing your username and password, then reboot your phone, restart the app, and verify that the information is still there.
+% You should be able to run your application at this point and and see the new PrefsActivity by clicking on Menu→Prefs in StatusActivity. Try changing your username and password, then reboot your phone, restart the app, and verify that the information is still there.
+
+到这里，你已经可以查看新的选项界面了。打开程序，在消息界面中选择Menu→Prefs即可。不妨尝试更改用户名与密码的设置再重启应用程序，查看选项信息是否依然存在。
 
 **Figure 7.4. PrefsActivity**
 
 [images/07-PrefsActivity-1.png]
 
-==Shared Preferences==
 
-Now that we have Preference Activity, and a way to save our username, password and the API root, it is time to make use of it. To programmatically access your preferences, we’ll use SharedPreference class provided by the Android framework.
+% ==Shared Preferences==
+==SharedPreferences==
 
-The fact that this class is called SharedPreference refers to the fact that this preference is easily accessible from anywhere in this application. So, any component of an Android application, such as Activities, Services, Broadcast Receivers, and Content Providers.
+% Now that we have Preference Activity, and a way to save our username, password and the API root, it is time to make use of it. To programmatically access your preferences, we’ll use SharedPreference class provided by the Android framework.
 
-In StatusActivity, add definition for prefs object globally to the class:
+已经有了选项界面，也有了存储用户名、密码、API root等选项信息的办法，剩下的就是读取选项信息了。要访问选项信息的内容，就使用Android框架的``SharedPreference``类。
+
+% The fact that this class is called SharedPreference refers to the fact that this preference is easily accessible from anywhere in this application. So, any component of an Android application, such as Activities, Services, Broadcast Receivers, and Content Providers.
+
+这个类允许我们在程序的任何部分(比如Activity,Service,BroadcastReceiver,ContentProvider)中访问选项信息，这也正是SharedPreference这个名字的由来。
+
+% In StatusActivity, add definition for prefs object globally to the class:
+
+在StatusActivity中新加入一个成员prefs：
 
 {CODE}
  SharedPreferences prefs;
 {/CODE}
 
+% Now, to get the preference object, add the following to onCreate():
+
+然后在onCreate()中添加一段代码，获取SharedPreferences对象的引用。
+
+{CODE}
+@Override
+public void onCreate(Bundle savedInstanceState) {
+        ...
+        // Setup preferences
+        prefs = PreferenceManager.getDefaultSharedPreferences(this); // #{1}
+        prefs.registerOnSharedPreferenceChangeListener(this);   // #{2}
+}
+{/CODE}
+
+% + Each application has its own shared preferences that all components of this application context share. To get the instance of this SharedPreferences, we use PreferenceManager.getDefaultSharedPreferences() and pass it this as the current context for this app. The name "shared" could be confusing - it means that this preference object contains data that is shared by various parts of this application only. It doesn’t mean any of this data is shared with any other application.
+% + Preferences can and do change by the user. So we need a mechanism to notify this activity that old values are stale. To do that, we register this, meaning our StatusActivity with our shared preferences. For this to work, we’ll need to add ...implements OnSharedPreferenceChangeListener to our class definition as well as implement the required onSharedPreferenceChanged() method. This method will be explained in a bit.
+
++ 每个程序都有自己唯一的SharedPreferences对象，可供当前上下文中所有的构件访问。我们可以通过``PreferenceManager.getDefaultSharedPreferences()``来获取它的引用。名字中的"Shared"可能会让人疑惑，它是指允许在当前程序的各部分间共享，而不能与其它程序共享。
++ 选项信息可以随时为用户修改，因此我们需要提供一个机制来跟踪选项信息的变化。为此我们在StatusActivity中提供一个``OnSharedPreferenceChangeListener``接口的实现，并注册到SharedPreferences对象中。具体内容将在后面讨论。
 
 
+Now that we have username, password and API root coming from user-defined preferences, we can refactor our twitter code so it no longer hard-codes them. To do that, we add a private method to StatusActivity that is responsible for returning valid twitter object. This method lazily initializes twitter meaning if twitter exists it returns it as-is, otherwise creates it.
 
+现在用户名、密码与API root几项都已定义，。
+
+{CODE}
+private Twitter getTwitter() {
+        if (twitter == null) {  // 
+                String username, password, apiRoot;
+                username = prefs.getString("username", "");     // 
+                password = prefs.getString("password", "");
+    apiRoot = prefs.getString("apiRoot", "http://yamba.marakana.com/api");
+
+                // Connect to twitter.com
+                twitter = new Twitter(username, password);      // 
+                twitter.setAPIRootUrl(apiRoot); // 
+        }
+        return twitter;
+}
+{/CODE}
+
++ Only if twitter is null, i.e. undefined, we create it.
++ Get the username and password from the shared preference object. The first parameter in getString() is the key we assigned to each preference item, such as username and password. The second argument is the default value in case such preference is not found. Keep in mind that first time user runs your application, the preference file doesn’t exist so defaults will be used. So, if user hasn’t went to PrefsActivity to setup her preferences, this code will attempt to login with empty username and password, and thus fail. The failure however is going to happen when try try to do the actual status update because that’s how jtwitter library is designed.
++ We login to twitter service with user-defined preferences.
++ Remember that we need to update the actual service that we using by updating the API root URL for that service.
+
+Now, we don’t use twitter object directly any more, but call getTwitter() to get it instead. So, onClick() becomes like this:
+
+{CODE}
+public void onClick(View v) {
+
+        // Update twitter status
+        try {
+                getTwitter().setStatus(editText.getText().toString());
+        } catch (TwitterException e) {
+                Log.d(TAG, "Twitter setStatus failed: " + e);
+        }
+}
+{/CODE}
+
+Note that although we moved the code where we initialize our connection to the cloud, we still need the AsyncTask to deal with the fact that this call is still blocking and may take a while to complete, as it’s subject to network availability and latency.
+
+Now, as we mentioned before when updating onCreate() and registering for preference updates, we need to handle what happens when user changes username or password. By registering prefs.registerOnSharedPreferenceChangeListener(this) in onCreate() and implementing OnSharedPreferenceChangeListener, we got a callback method onSharedPreferenceChanged() that system will invoke whenever preferences change. In this method, we simply invalidate the twitter object so next time it is needed, getTwitter() will recreate it.
+
+{CODE}
+public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+        // invalidate twitter object
+        twitter = null;
+}
+{/CODE}
 
 

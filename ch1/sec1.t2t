@@ -78,4 +78,4 @@ Android是为移动设备而设计的系统。Android的开发团队在设计时
 
 % Android was designed to run on all sorts of physical devices. Android doesn’t make any assumptions about a device’s screen size, resolution, chipset, and so on. Its core is designed to be portable.
 
-支持各种不同的硬件平台也是Android的设计目标之一。Android不对屏幕尺寸、分辨率、芯片或者别的什么做任何假设。可移植性是它的原则。
+支持各种不同的硬件平台也是Android的设计目标之一。Android不对屏幕尺寸、分辨率、芯片或者其它参数做任何假设。可移植性是它的原则。
