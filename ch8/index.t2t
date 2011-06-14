@@ -4,29 +4,29 @@
 %       
 
 %= Services =
-=Service=
+= Service =
 
 % Services are among the main building blocks in Android. Unlike an activity, a service doesn’t have any user interface. It is simply a piece of code that runs in the background of your application.
 
-Service与Activity一样，同为Android的基本构件。其不同在于Service只是应用在后台执行的一段代码，而不需要提供用户界面。
+Service 与 Activity 一样，同为 Android 的基本构件。其不同在于 Service 只是应用在后台执行的一段代码，而不需要提供用户界面。
 
 % Services are used for processes that should be running independently of activities, which may come and go. Our Yamba application, for example needs to create a service to periodically connect to the cloud and check if the user has new statuses from her friends. This service will be always on, always running regardless of whether the user ever started the activity.
 
-Service独立于Activity执行，无需理会Activity的状态如何。比如我们的Yamba需要一个Service定时访问服务端检查朋友的新消息，它会一直处于运行状态，而不管用户是否开着Activity。
+Service 独立于 Activity 执行，无需理会 Activity 的状态如何。比如我们的 Yamba 需要一个 Service 定时访问服务端来检查新消息。它会一直处于运行状态，而不管用户是否开着Activity。
 
 %TALK: 第一句中"process"的译法存疑，Service和Activity默认都是在同一个进程之下，在此似乎不是特指“进程”。
 
 % Just like an activity, service has a well-defined life cycle. You as the developer get to define what happens on transitions between states. Whereas an activity’s state is managed by the runtime’s ActivityManager, service state is more controlled by intents. Essentially, whenever an Activity needs your service, it will invoke it through an intent that starts the service. An already running service can receive the start message repeatedly and at unanticipated times. You can also stop a service, which is also called destroying it.
 
-同Activity一样，Service也有着一套精心设计的生存周期，开发者可以定义其状态转换时发生的行为。Activity的状态由ActivityManager控制，而Service的状态受Intent影响。假如有个Activity需要用到你的Service了，它就会发送一个Intent通知打开这个Service(若该Service正在执行中则不受影响)。通过Intent也可以人为停止(即销毁)一个Service。
+同 Activity 一样，Service 也有着一套精心设计的生存周期，开发者可以定义其状态转换时发生的行为。Activity 的状态由 ActivityManager 控制，而 Service 的状态受 Intent 影响。假如有个 Activity 需要用到你的 Service ，它就会发送一个 Intent 通知打开这个 Service (若该 Service 正在执行中则不受影响)。通过 Intent 也可以人为停止(即销毁)一个 Service 。
 
 % A service can be bound or unbound. Bound services can provide more specific APIs to other applications via an interface called AIDL (Android Interface Definition Language). For now, we’ll focus on unbound services, where the lifecycle of a service is not tied to the lifecycle of the activities that started them. The only states for a bound services are started and stopped (destroyed).
 
-Service分为Bound Service和Unbound Service两种。Bound Service有着更灵活的API，允许通过AIDL(Android Interface Definition Language)与不同的应用进行交互。在本章，我们先研究Unbound Service，它只有两种状态：执行(Started)或停止(Stopped，或Destoyed)。而且它的生存周期与启动它的Activity无关。
+Service分为Bound Service和Unbound Service两种。Bound Service 提供了一组API，以允许其他应用通过 AIDL(Android Interface Definition Language) 与之进行交互。不过在本章中，我们主要关注的是 Unbound Service，它只有两种状态：执行( Started ) 或停止( Stopped 或 Destoyed )。而且它的生存周期与启动它的Activity无关。
 
 % In this chapter, you will create a service. The purpose of this service is to run in the background and update your app with latest timeline from the user’s Twitter account. Initially, the service will just print your friends' timeline to the log file. The service will create a separate thread, so you will learn about concurrency in this chapter as well. You will also learn about Toasts and get to understand the context in which services and 
 
-在本章你将动手创建一个Service。它在后台执行，更新用户在Twitter上最新的Timeline，并暂时输出至log文件。我们让这个Service在一个独立的线程中执行，因此也会顺便讲些并行的相关知识。除此，还有Toast的用法，以及对Service和Activity所共有的上下文也有所讲解。
+在本章你将动手创建一个 Service 。它在后台执行，获取用户在 Twitter 上最新的 Timeline ，并暂时输出至 log 文件。这个 Service 会在一个独立的线程中执行，因此本章也会顺便讲解一些关于并行程序设计的相关知识。此外，本站还会设计如何使用 Toast 向用户提示信息，对 Service 和 Activity 所共有的上下文也会有所讲解。
 
 % By the end of this chapter, you will have a working app that can both post to Twitter and periodically check what friends are up to. 
 
@@ -37,27 +37,27 @@ Service分为Bound Service和Unbound Service两种。Bound Service有着更灵�
 
 % We now have support for preferences in our StatusActivity. We also have a utility method getTwitter() to help us get the actual Twitter object that we use to connect to the online service.
 
-前面我们已在StatusActivity中实现了选项界面。现在还需要一个工具函数``getTwitter()``来获得Twitter对象，从而与服务端交互。
+前面我们已在 ``StatusActivity`` 中实现了选项界面。现在还需要一个工具函数 ``getTwitter()`` 来获得 Twitter 对象，从而与服务端交互。
 
 % It is likely that that we’ll need some of these features in other parts of our application. Instead of copying it from file to file, it would be useful if we could put this code in a separate place that is accessible to most parts of our app. Android provides just a place for that in form of Application object.
 
-到这里似乎需要用到应用其它部分的功能了，怎么办？可以复制粘贴，但不提倡这样。正确的做法是把需要重用的代码分离出来，放到一个各个部分都可以访问的地方。对Android而言，这个地方就是Application对象。
+到这里似乎需要用到应用其它部分的功能了，怎么办？可以复制粘贴，但不提倡这样。正确的做法是把需要重用的代码分离出来，放到一个各个部分都可以访问的地方。对 Android 而言，这个地方就是 Application 对象。
 
 % Application object represents the common state of your entire application. As long as any part of your application is running, the application object will be created. Most applications use the default android.app.Application class that the framework provides. However, you can implement your own instance of this object and add the common app features to it.
 
-应用一旦执行，就会随之创建一个Application对象，其中保存着程序各部分所共享的状态。Application对象的实例大多来自框架提供的基类``android.app.Application``。你也可以继承它，往里面添加自己的函数。 
+Application 对象中保存着程序各部分所共享的状态。只要程序中的任何部分在执行，这个对象都会被系统创建并维护。 大多数应用直接使用来自框架提供的基类 ``android.app.Application`` 。不过你也可以继承它，来添加自己的函数。
 
 % We are going to create our own instance of the application object and will call it YambaApplication. The steps for creating the YambaApplication class are:
 
-接下来我们创建自己的Application对象，即YambaApplication。首先：
+接下来我们实现自己的 Application 对象，即 ``YambaApplication`` 。
 
 %TALK： 此处"instance"其实是继承一个类的意思。
 
 % - Create the Java class representing YambaApplication.
 % - Register the new Application with the AndroidManifest.xml file.
 
-- 创建一个表示YambaApplication的Java类。
-- 在AndroidManifest.xml文件中注册新的Application对象。
+- 创建一个表示 ``YambaApplication`` 的 Java 类。
+- 在 ``AndroidManifest.xml`` 文件中注册新的 Application 对象。
 
 
 % === YambaApplication Class ===
@@ -65,15 +65,15 @@ Service分为Bound Service和Unbound Service两种。Bound Service有着更灵�
 
 % First, we are going to create a new Java class in the same package as the rest of our classes. We’ll call this class YambaApplication and it will extend Application base class from the framework.
 
-我们先在原package里额外定义一个Java类，即``YambaApplication``，以框架提供的``Application``作为基类。
+首先要做的是创建新类文件，这个类名为 ``YambaApplication`` ，它继承了框架中 ``Application`` 作为其基类。
 
 % Next, we’re going to move common tasks into this base object. The common tasks that we anticipate more parts of our application are going to need are getting the connection to the online service as well as reading the preference data.
 
-然后把一些通用的任务放在里边。也就是为程序各部分所重用的一些代码，比如连接到服务端或者读取配置数据。
+接下来需要把一些通用的代码移动到这个类中。通用的代码指那些可以被程序各部分所重用的代码，比如连接到服务端或者读取配置数据。
 
 % Notice that Application object has the usual onCreate() method but it also provides the onTerimante() callback as place to implement any cleanup that we may want to do. At this point we don’t have anything to cleanup, but this is a good opportunity to put some logging information so we can see when the application actually shuts down. We later may expand on this.
 
-留意``Application``对象里面除了常见的``onCreate()``，还提供了一个回调函数``onTerminate()``，用以处理程序退出时的一些清理工作。在这里我们没有什么需要清理的东西，但是借机记录一些log信息也不错，方便观察程序在何时退出。
+留意 ``Application`` 对象里面除了常见的 ``onCreate()`` ，还提供了一个 ``onTerminate()`` 接口，用于在程序退出时的进行一些清理工作。虽然在这里我们没有什么需要清理，但是借机记录一些log信息也不错，方便观察程序在何时退出。
 
 %HINT: 原文"onTerimanate"系笔误。
 
@@ -141,16 +141,16 @@ public class YambaApplication1 extends Application implements
 % + We also moved ``getTwitter()`` from StatusActivity to YambaApplication since it’s going to be used by other parts of our application as well and we want to maximize the code reuse. Notice the use of synchronized keyword here. Synchronized method in Java means that only one thread can be inside of such method at one time. This is now important since this method could be used by different threads that our application may have.
 % + ``onSharedPreferenceChanged()`` is now also part of YambaApplication stead of StatusActivity.
 
-+ YambaApplication只有作为``Application``的子类才可以作为一个可用的Application对象。留意我们在这里也把``OnSharedPreferenceChangeListener``的实现从``StatusActivity``挪到了``YambaApplication``。
-+ ``Twitter``对象和``SharedPreferences``对象在这里都成为了共享对象的一部分，而不再为StatusActivity所私有。
-+ ``onCreate()``调用于Application对象第一次创建的时候。只要应用的任何一个部分启动(比如Activity或者Service)，Application对象都会随之创建。
-+ ``onTerminate()``调用于应用结束之前，在里面可以做些清理工作。在这里我们只用来记录log。
-+ 我们也把StatusActivity的``getTwitter()``方法挪到了YambaApplication这里，因为它会为程序的其它部分所调用，这一来有利于提高代码的重用。留意下这里的synchronized关键字，Java中的synchronized方法表示此方法在同一时刻只能由一个线程执行。这很重要，因为我们的应用会在不同的线程里用到这个函数。
-+ ``onSharedPreferenceChanged``也从``StatusActivity``挪到了``YambaApplication``。
++ ``YambaApplication`` 只有作为 ``Application`` 的子类才可以作为一个合法的 Application 对象。另外你可能发现了我们在将 ``OnSharedPreferenceChangeListener`` 的实现从 ``StatusActivity`` 移动到了这里。
++ ``Twitter`` 和 ``SharedPreferences`` 在这里都成为了共享对象的一部分，而不再为 ``StatusActivity`` 所私有。
++ ``onCreate()`` 在 Application 对象第一次创建的时候调用。只要应用的任何一个部分启动(比如 Activity 或者 Service )， Application 对象都会随之创建。
++ ``onTerminate()`` 调用于应用结束之前，在里面可以做些清理工作。在这里我们只用来记录log。
++ 我们也把 ``StatusActivity`` 的 ``getTwitter()`` 方法移动到这里，因为它会为程序的其它部分所调用，这一来有利于提高代码的重用。留意下这里的 ``synchronized`` 关键字， Java 中的 ``synchronized`` 方法表示此方法在同一时刻只能由一个线程执行。这很重要，因为我们的应用会在不同的线程里用到这个函数。
++ ``onSharedPreferenceChanged()`` 也从 ``StatusActivity`` 移动到了 ``YambaApplication``。
 
 % Now that we have YambaApplication and that we have moved some responsibilities from StatusActivity to it, we can simplify StatusActivity even further:
 
-现在我们已经有了``YambaApplication``类，也转移了StatusActivity的一部分功能过来。接下来可以进一步简化StatusActivity：
+现在我们已经有了``YambaApplication``类，也转移了 ``StatusActivity`` 的一部分功能过来。接下来可以进一步简化 ``StatusActivity``：
 
 **Example 8.2. StatusActivity using YambaApplication**
 
@@ -163,15 +163,15 @@ Twitter.Status status = ((YambaApplication) getApplication())
 
 %+ We now use getTwitter() method from the YambaApplication instead of keeping it locally. This way the same method can be reused by other parts of the application that need access to the cloud service.
 
-+ 现在是使用来自YambaApplication的``getTwitter()``方法，而不再是局部调用。类似，其它需要访问服务端的部分也都可以使用这个方法。
++ 现在是使用来自 ``YambaApplication`` 的 ``getTwitter()`` 方法，而不再是局部调用。类似的，其它需要访问服务端的代码也都需要使用这个方法。
 
 
 % === Updating Manifest File ===
-===更新Manifest文件===
+=== 更新Manifest文件 ===
 
 % The final step is to tell our application to use YambaApplication class instead of the default Application class. To do that, we need to update the Android Manifest file and add an attribute to <application> element:
 
-最后一步就是通知我们的应用选择YambaApplication而非默认的Application了。更新Android的Manifest的文件，为<application>节点增加一个属性：
+最后一步就是通知我们的应用选择 ``YambaApplication`` 而非默认的 ``Application`` 了。更新 Manifest 的文件，为 ``<application>`` 节点增加一个属性：
 
 {CODE}
 <?xml version="1.0" encoding="utf-8"?>
@@ -187,20 +187,20 @@ Twitter.Status status = ((YambaApplication) getApplication())
 
 % + The attribute android:name=".YambaApplication" in <application> element tells the Android system to instantiate our YambaApplication object as the application.
 
-+ <application>节点中的属性``android:name=".YambaApplication"``令Android系统选择YambaApplication类实例化Application对象。
++ ``<application>`` 节点中的属性 ``android:name=".YambaApplication"`` 告诉系统使用 YambaApplication 类的实例作为 Application 对象。
 
 % So, at this point we have successfully moved common functionality from StatusActivity to YambaApplication. This process is also known as [code refactoring http://en.wikipedia.org/wiki/Code_refactoring] and is a good practice as we keep on adding new features to our application.
 
-好，到这里我们已经成功地把``StatusActivity``里面一些通用的功能转移到了``YambaApplication``之中。这一过程就是[代码重构 http://en.wikipedia.org/wiki/Code_refactoring]。添加了功能就记着重构，这是个好习惯。
+好，到这里我们已经成功地将 ``StatusActivity`` 里面一些通用的功能转移到了 ``YambaApplication`` 之中。这一过程就是[代码重构 http://en.wikipedia.org/wiki/Code_refactoring]。添加了功能就记着重构，这是个好习惯。
 
 
 % === Simplifying Status Activity ===
 
-===简化Status Activity===
+=== 简化Status Activity ===
 
 % Now that the functionality for getting the Twitter object has been moved to Yamba Application, we can simplify Status activity to refer to that functionality there. Here’s what our new PostToTwitter Async task would look like:
 
-现在获得Twitter对象的功能已经在YambaApplication里面，接下来我们可以简化Status Activity，改用YambaApplication提供的功能。如下是异步任务(Async Task)``PostToTwitter``的样子：
+现在我们可以通过 YambaApplication 获取 Twitter 对象了，接下来需要对 Status Activity 进行修改，在其中使用 YambaApplication 提供的功能。下面是新版的 ``PostToTwitter`` ：
 
 {CODE}
 class PostToTwitter extends AsyncTask<String, Integer, String> {
@@ -224,13 +224,13 @@ class PostToTwitter extends AsyncTask<String, Integer, String> {
 % + We the the reference to the Application object via ``getApplication()`` call in the current context. Since we have a custom YambaApplication object, we need to cast the generic Application into Yamba application.
 % + Once we have the reference to our application object, we can call its methods, such as ``getTwitter()`` method.
 
-+ 在当前上下文中调用``getApplication()``获取Application对象的引用。这里的Application对象来自我们自定义的YambaApplication，因此需要一个额外的类型转换。
-+ 得到Application对象的引用之后即可调用其中的函数了，比如``getTwitter()``。
++ 在当前上下文中调用 ``getApplication()`` 获取 Application 对象的引用。这里的 Application 对象来自我们自定义的 YambaApplication ，因此需要一个额外的类型转换。
++ 得到 Application 对象的引用之后即可调用其中的函数了，比如 ``getTwitter()``。
 
 
 % You have seen how we have refactored our Status activity to move some of the common functionality in a shared Application object. Now that we have done that, we can create our Updater service that will use some of this common functionality.
 
-以上，可以看出我们是如何一步步将StatusActivity中的功能重构到Application对象之中的。接下来就利用这些共享出来的功能，实现我们的Updater Service。
+以上，可以看到我们是如何一步步将 ``StatusActivity`` 中的功能重构到 Application 对象之中的。接下来就利用这些共享出来的功能，实现我们的 Updater Service。
 
 
 % == UpdaterService ==
@@ -238,35 +238,35 @@ class PostToTwitter extends AsyncTask<String, Integer, String> {
 
 % As mentioned in the introduction to this chapter, we need a service to run as an always-on, background process pulling latest Twitter statuses into a local database. The purpose of this pull mechanism is to cache updates locally in order for our app to have data even when it’s offline. We’ll call this service UpdaterService.
 
-在本章的引言有提及，我们的Service会一直在后台执行，定期获取Twitter的最新消息并存入本地的数据库。这一来我们的程序在离线时也有缓存的数据可读。我们称这个Service为UpdaterService。
+在本章的引言曾经提到，我们需要一个 Service 能一直在后台执行，并且定期获取 Twitter 的最新消息并存入本地的数据库。这一来我们的程序在离线时也有缓存的数据可读。我们称这个 Service 为 ``UpdaterService``。
 
 % Steps to creating a service are:
 
-创建Service的步骤如下：
+创建 Service 的步骤如下：
 
 %- Create the Java class representing your service.
 %- Register the service in Android manifest file.
 %- Have the service started.
 
-- 创建一个表示这个Service的Java类。
-- 在Manifest文件中注册这个Service。
-- 启动Service。
+- 创建一个表示这个 Service 的 Java 类。
+- 在 Manifest 文件中注册这个 Service 。
+- 启动 Service 。
 
 
 % === Creating UpdaterService Java Class ===
-=== 创建UpdaterService类 ===
+=== 创建 UpdaterService 类 ===
 
 % The basic procedure for creating a service, as with Activities and other main building blocks, is to subclass a Service class provided by the Android framework.
 
-创建Service的基本过程与创建Activity或者其它基本构件大同小异，首先都是基于Android框架提供的基类，派生一个子类。
+创建 Service 的过程与创建 Activity 或者其它基础构件类似，首先都是基于 Android 框架提供的基类，派生一个子类。
 
 % To create the new service, we need to create a new Java file. Go ahead and select your Java package in the src folder, right-click and choose New→Class, and type in UpdaterService as the class name. This will create a new UpdaterService.java file as part of your package.
 
-先新建一个Java文件。在src目录中选择你的Java package，右键选择New→Class，在class name一栏输入UpdaterService。这样就在package中新建出来一个UpdaterService.java文件。
+先新建一个 Java 文件。在 src 目录中选择你的 Java package ，右键选择 New→Class ，在 class name 一栏输入 UpdaterService 。这样就在 package 中新建出来一个 UpdaterService.java 文件。
 
 % You may recall from the section called "Services" that a typical service goes through this lifecycle:
 
-回忆一下，在"Service"一节有提到过一般的Service的生存周期：
+回忆一下，在 "Service" 一节有提到过一般的 Service 的生存周期：
 
 %**Figure 8.1. Service Lifecycle**
 **图8.1. Service的生存周期**
@@ -281,14 +281,14 @@ class PostToTwitter extends AsyncTask<String, Integer, String> {
 % + ``onStartCommand()`` Called when the service is started.
 % + ``onDestroy()`` Called when the service is terminated.
 
-+ ``onCreate()``调用于Service初始化时。
-+ ``onStartCommand()``调用于Service启动时。
-+ ``onDestory()``调用于Service结束时。
++ ``onCreate()`` 在 Service 初始化时调用。
++ ``onStartCommand()`` 在 Service 启动时调用。
++ ``onDestory()`` 在 Service 结束时调用。
 
 
 % To do that, you can use Eclipse tool Source→Override/Implement Methods and select those three methods.
 
-Eclipse提供了方便重载的工具。进入Source→Override/Implement Methods，选上这三个方法即可。
+Eclipse 提供了方便重载的工具。进入 Source→Override/Implement Methods ，选上这三个方法即可。
 
 % At this point, in spirit of producing a minimally working app at each stage of learning, we’ll write just a little code that logs a note in each of the overridden methods. So the shell of our service looks like this:
 
@@ -308,25 +308,25 @@ public class UpdaterService1 extends Service {
   static final String TAG = "UpdaterService"; //{#1}
 
   @Override
-  public IBinder onBind(Intent intent) { //{#2} 
+  public IBinder onBind(Intent intent) { //{#2}
     return null;
   }
 
   @Override
-  public void onCreate() { //{#3} 
+  public void onCreate() { //{#3}
     super.onCreate();
     Log.d(TAG, "onCreated");
   }
 
   @Override
-  public int onStartCommand(Intent intent, int flags, int startId) { //{#4} 
+  public int onStartCommand(Intent intent, int flags, int startId) { //{#4}
     super.onStartCommand(intent, flags, startId);
     Log.d(TAG, "onStarted");
     return START_STICKY;
   }
 
   @Override
-  public void onDestroy() { //{#5} 
+  public void onDestroy() { //{#5}
     super.onDestroy();
     Log.d(TAG, "onDestroyed");
   }
@@ -340,18 +340,18 @@ public class UpdaterService1 extends Service {
 % + onDestroy() is called just before the service is destroyed by stopService() request. This is a good place to clean up things that might have been initialized in onCreate().
 
 + 因为会频繁地使用Log.d()，我会在所有主要的类中声明一个TAG常量。
-+ ``onBind()``在Bound Service中使用，它会返回一个Binder的具体实现。在这里还没有用到Bound Service，因此返回null。
-+ ``onCreate()``调用于Service初次创建时，而不一定是startService()的结果。可以在这里做些一次性的初始化工作。
-+ ``onStartCommand()``调用于Service收到一个startService()的Intent而启动时。对已经启动的Service而言，依然可以再次收到启动的请求，这时就会调用``onStartCommand()``。
-+ ``onDestory()``调用于Service收到一个stopService()的请求而销毁时。对应``onCreate()``中的初始化工作，可以在这里做一些清理工作。
++ ``onBind()`` 在Bound Service中使用，它会返回一个Binder的具体实现。在这里还没有用到Bound Service，因此返回null。
++ ``onCreate()`` 调用于Service初次创建时，而不一定是startService()的结果。可以在这里做些一次性的初始化工作。
++ ``onStartCommand()`` 调用于Service收到一个startService()的Intent而启动时。对已经启动的Service而言，依然可以再次收到启动的请求，这时就会调用``onStartCommand()``。
++ ``onDestory()`` 调用于Service收到一个stopService()的请求而销毁时。对应``onCreate()``中的初始化工作，可以在这里做一些清理工作。
 
 
 % ===Update the Manifest File===
-===更新Manifest文件===
+=== 更新Manifest文件 ===
 
 % Now that we have the shell of our service, we have to define it in the manifest file just like any other main building block, otherwise we won’t be able to call our service. Simply open AndroidManifest.xml, click on the right-most tab to see the raw XML code, and add the following within the <application> element:
 
-我们的Service已经有了个样子，接下来就跟对待其它构件一样在Manifest文件中注册它，不然就是无法使用的。打开AndroidManifest.xml，单击最右边的这个tab查看XML源码，把如下代码加入<application>节点：
+我们的 Service 已经有了个样子，接下来就跟对待其它构件一样在 Manifest 文件中注册它，不然就是无法使用的。打开 AndroidManifest.xml ，单击最右边的 tab 查看 XML 源码，把如下代码加入 ``<application>`` 节点：
 
 {CODE}
 ...
@@ -364,24 +364,24 @@ public class UpdaterService1 extends Service {
 {/CODE}
 
 % - UpdaterService definition.
-% - 定义UpdaterService。
+- 定义 UpdaterService。
 
 
 % Services are equal to activities as Android building blocks, so they appear at the same level in the manifest file.
 
-同为Android的基本构件，Service与Activity是平等的。因此在Manifest文件中，它们处于同一级别。
+同为 Android 的基本构件 ，Service 与 Activity 是平等的。因此在 Manifest 文件中，它们处于同一级别。
 
 
 % ===Add Menu Items===
-===添加菜单项===
+=== 添加菜单项 ===
 
 % Now that we have the service defined and declared, we need a way to start and stop it. The easiest way would be to add a menu button to our options menu that we have already created. Later on, we’ll have a more intelligent way of starting services, but for now this manual approach is easier to understand.
 
-现在我们已经定义并且注册了这个Service，接下来考虑一个控制它启动或者停止的方法。最简单的方法就是在我们的选项菜单中添加一个按钮。便于理解起见，我们先从这里入手。更智能的方法我们稍候讨论。
+现在我们已经定义并且注册了这个 Service，接下来考虑一个控制它启动或者停止的方法。最简单的方法就是在我们的选项菜单中添加一个按钮。便于理解起见，我们先从这里入手。更智能的方法我们稍候讨论。
 
 % To add start/stop menu buttons, we’ll add two more menu items to our menu.xml resource, just as we created the Prefs menu item in the section called “Menu Resource”. The updated menu.xml now looks like this:
 
-为添加启动/停止的按钮，我们需要在menu.xml添加两个菜单项，就像在"Menu Resource"一节中添加Prefs菜单项时一样。更新后的menu.xml是这个样子：
+为添加启动/停止的按钮，我们需要在 menu.xml 添加两个菜单项，就像在 "Menu Resource" 一节中添加 Prefs 菜单项一样。更新后的 menu.xml 是这个样子：
 
 %TALK: Menu Resource一节待更新。
 
@@ -403,12 +403,12 @@ public class UpdaterService1 extends Service {
 % + The ServiceStop item is similar to the ServiceStart item.
 
 + 此项在前一章定义。
-+ ServiceStart一项拥有常见的几个属性：id, title, icon。icon在这里同样是个Android的资源。
-+ ``ServiceStop``与``ServiceStart``相似。
++ ServiceStart 一项拥有常见的几个属性：``id``, ``title``, ``icon``。``icon`` 在这里同样是个 ``Android``的资源。
++ ``ServiceStop`` 与 ``ServiceStart`` 相似。
 
 % Now that the menu resource has been updated, it’s time to handle those items when user clicks on them.
 
-menu.xml已经更新，接下来就是让它们捕获用户的点击事件。
+menu.xml 已经更新，接下来就是让它们捕获用户的点击事件。
 
 %=== Update Options Menu Handling ===
 ===更新选项菜单的处理===
@@ -417,7 +417,7 @@ menu.xml已经更新，接下来就是让它们捕获用户的点击事件。
 
 % To handle new menu items, we need to update the onOptionsItemSelected() method in StatusActivity, just as we did it in the section called “Update StatusActivity to Handle Menu Events”. So open your StatusActivity.java file and locate the onOptionsItemSelected() method. We now have a framework in this method to support any number of menu items. To add support for starting and stopping our service, we launch intents pointing to our UpdaterService via startService() and stopService() calls. The final code looks like this:
 
-要捕获新条目的点击事件，我们需要更新StatusActivity中的``onOptionsItemSelected()``方法，这跟我们在"Update StatusActivity to Handle Menu Events"一节中所做的一样。打开StatusActivity.java文件，找到``onOptionsItemSelected``方法。现在里边已经有了为不同条目提供支持的大体框架，要增加两个“启动Service”与“关闭Service”两个条目，需要分别为UpdaterService通过``startService()``和``stopService()``发送Intent。更新后的代码如下：
+要捕获新条目的点击事件，我们需要更新 ``StatusActivity`` 中的 ``onOptionsItemSelected()`` 方法，这跟我们在 "Update StatusActivity to Handle Menu Events" 一节中所做的一样。打开 StatusActivity.java 文件，找到 ``onOptionsItemSelected`` 方法。现在里边已经有了为不同条目提供支持的大体框架，要增加两个“启动 Service ”与“关闭 Service ”两个条目，需要分别为 ``UpdaterService`` 通过``startService()`` 和 ``stopService()`` 发送 Intent 。更新后的代码如下：
 
 %TALK: "Update StatusActivity to Handle Menu Events"是第七章中一节的标题，待更新。
 
@@ -450,19 +450,19 @@ public boolean onOptionsItemSelected(MenuItem item) {
 
 % In this example, we are using explicit intents to specify exactly what class the intents are intended for, namely UpdaterService.class.
 
-在这个例子中我们使用了Explicit Intent，明确指明接收Intent的目标类，即``UpdaterService.class``。
+在这个例子中我们使用了 Explicit Intent ，明确指明接收 Intent 的目标类，即 ``UpdaterService.class``。
 
 
 % ===Testing it all works===
-===测试正常运行===
+=== 测试正常运行 ===
 
 % At this point, you can restart your application. Note that you do not need to restart the emulator. When your application starts up, click on the menu and your new buttons should appear in the menu options. You can now freely click on start and stop service buttons.
 
-现在可以重启你的程序(留意模拟器是不需要重启的)。当你的程序启动时，单击菜单选项中新增的按钮，即可随意控制Service的启动与停止。
+现在可以重启你的程序(留意模拟器是不需要重启的)。当你的程序启动时，单击菜单选项中新增的按钮，即可随意控制 Service 的启动与停止。
 
 % To verify that your service is working, open up your Logcat and look for appropriate log messages that you generated in your service code. Remember from the section called “Logging in Android” that you can view the logcat both in Eclipse and via the command line.
 
-检验Service是否正常执行的话，打开Logcat查看程序生成的日志信息。在//"Logging in Android"//一节中我们曾提到，查看Log既可以通过Eclipse，也可以通过命令行。
+检验 Service 是否正常执行的话，打开 Logcat 查看程序生成的日志信息。在 //"Logging in Android"// 一节中我们曾提到，查看 Log 既可以通过 Eclipse ，也可以通过命令行。
 
 % Another way to verify that the service is running is to go to the Android Settings app and see it listed. To do that, go to Home screen, press Menu, and choose Settings. Then go to Applications→Running services. You should see your service listed, as shown in Figure 8.2, “Running Services”.
 
@@ -470,27 +470,27 @@ public boolean onOptionsItemSelected(MenuItem item) {
 
 **Figure 8.2. Running Services**
 
-[images/08-RunningServices.png]
+	[images/08-RunningServices.png]
 
 % Your service is now working, although it’s not doing much at this point.
 
-好，你的Service已经能够正常运行了，只是一时还不能做多少事情。
+好，你的 Service 已经能够正常运行了，只是还不能做多少事情。
 
 
 % ==Looping In The Service==
-==在Service中循环==
+== 在Service中循环 ==
 
 % By design, our service is supposed to wake up every so often, check the online service for new status updates, then go back to "sleep" for some time. And this work needs to keep on happening forever, until the service is stopped. A good way to implement this is to have our service run in a loop and to pause execution between iterations. Java provides a Thread.sleep() method that we can use to make the currently running thread pause and relinquish CPU for some number of milliseconds.
 
-按照设计，我们的Service需要被频繁地唤醒，检查消息更新，然后再次“睡眠”一段时间。这一过程会持续进行下去，直到Service停止。实现时可以将这一过程放在一个循环中，每迭代一次就暂停一段时间。在这里可以利用Java提供的``Thread.sleep()``方法，可以让当前进程以毫秒为单位暂停一段时间，并让出CPU。
+根据设计，我们的 Service 需要被频繁地唤醒，检查消息更新，然后再次“睡眠”一段时间。这一过程会持续进行下去，直到 Service 停止。实现时可以将这一过程放在一个循环中，每迭代一次就暂停一段时间。在这里可以利用 Java 提供的 ``Thread.sleep()`` 方法，可以让当前进程以毫秒为单位暂停一段时间，并让出 CPU。
 
 % Another consideration to keep in mind is that the service could require a good deal of time to make its connection to Twitter and pull in friends' status data. The behavior of networking calls depends on the type of network connection we have have at the moment, the responsiveness of the server, and all other sorts of factors that collectively make up the network latency.
 
-在这里还有一点需要考虑，那就是Service连接到服务端获取朋友消息这一行为本身，需要花费相当长的时间。网络操作的执行效率直接受网络接入方式、服务端的响应速度以及一些不可预知的因素影响，延时是很常见的。
+在这里还有一点需要考虑，那就是Service连接到服务端获取数据这一行为本身，需要花费相当长的时间。网络操作的执行效率直接受网络接入方式、服务端的响应速度以及一些不可预知的因素影响，延迟是很常见的。
 
 % If we run our update operation on the default thread, any delay caused by the network update will cause our user interface to block. This in turn will make our application appear sluggish to the user and may even lead to Android system offering to kill our application by bringing up the "Force Close or Wait" dialog window, as discussed in the section called “Threading in Android”.
 
-我们要把检查更新的操作放在主线程的话，网络操作中的任何延时都会导致用户界面僵死，这会给用户留下一个很不好的印象。甚至很可能会让用户不耐烦，直接调出"Force Close or Wait"对话框(参见//‘Threading in Android’//一节)把我们的应用杀死。
+我们要把检查更新的操作放在主线程的话，网络操作中的任何延时都会导致用户界面僵死，这会给用户留下一个很不好的印象。甚至很可能会让用户不耐烦，直接调出 "Force Close or Wait" 对话框(参见//‘Threading in Android’//一节)把我们的应用杀死。
 
 %TODO: Threading in Android待修改。
 
@@ -593,30 +593,30 @@ public class UpdaterService2 extends Service {
 % + When we signal interrupt() to the thread, if the thread is running it will cause an InterruptedException in the run() method. We handle the exceptionsimply by setting the runFlag to false so the thread doesn’t keep on trying to run again until it is restarted.
 
 + 声明一个常量，用以表示网络更新的时间间隔。我们也可以把它做在选项里，使之可以配置。
-+ 这个标志变量用以方便检查Service的执行状态。
-+ Updater在另一个线程中进行网络更新。这个线程只需创建一次，因此我们在``onCreate()``中创建它。
-+ 在Service将启动时，它会调用``onStartCommand()``方法，我们就在这里启动Updater线程再合适不过。同时设置上标志变量，表示Service已经开始执行了。
-+ 与之对应，我们可以在``onDestroy()``中停止Updater线程。再修改标志变量表示Service已经停止。
-+ 我们通过调用``interrupt()``来停止一个线程执行，随后设置变量的引用为null，以便于垃圾收集器清理。
-+ 在这里定义Updater类。它是个线程，因此以Java的Thread类为基类。
++ 这个标志变量用以方便检查 Service 的执行状态。
++ Updater 在另一个线程中进行网络更新。这个线程只需创建一次，因此我们在 ``onCreate()`` 中创建它。
++ 在 Service 启动时，它会调用 ``onStartCommand()`` 方法，我们就在这里启动 Updater 线程再合适不过。同时设置上标志变量，表示 Service 已经开始执行了。
++ 与之对应，我们可以在 ``onDestroy()`` 中停止 Updater 线程。再修改标志变量表示 Service 已经停止。
++ 我们通过调用 ``interrupt()`` 来停止一个线程执行，随后设置变量的引用为 null ，以便于垃圾收集器清理。
++ 在这里定义 Updater 类。它是个线程，因此以 Java 的 Thread 类为基类。
 + 给我们的线程取一个名字。这样便于在调试中辨认不同的线程。
-+ Java的线程必须提供一个``run()``方法。
-+ 简单得到对Service的引用。Updater是我们Service的内部类。
-+ 这个循环会一直执行下去，直到Service停止为止。记着runFlag变量是由``onStartCommand()``与``onDestroy()``修改的。
-+ 调用``Thread.sleep()``暂停Updater线程一段时间，前面我们将DELAY设置为1分钟。
-+ 对执行中的线程调用``interrupt()``，会导致``run()``中产生一个``InterruptException``异常。 我们捕获这个异常，并设置runFlag为False，从而避免它不断重试。
++ Java 的线程必须提供一个 ``run()`` 方法。
++ 简单得到对 Service 的引用。 Updater 是 Service 的内部类。
++ 这个循环会一直执行下去，直到 Service 停止为止。记着 runFlag 变量是由 ``onStartCommand()`` 与 ``onDestroy()`` 修改的。
++ 调用 ``Thread.sleep()`` 暂停Updater线程一段时间，前面我们将DELAY设置为1分钟。
++ 对执行中的线程调用 ``interrupt()`` ，会导致 ``run()`` 中产生一个 ``InterruptException`` 异常。 我们捕获这个异常，并设置 runFlag 为 false ，从而避免它不断重试。
 
 
 % === Testing it all works ===
-===测试正常运行===
+=== 测试正常运行 ===
 
 % At this point, you can run the application and start the service. If you observe the log file, you’ll notice that every minute or so the service logs that it ran our job. Also, stopping the service will stop the further execution of the job.
 
-到这里，已经可以运行程序并启动Service了。只要观察log文件你就可以发现，我们的Service会每隔两分钟记录一次任务的执行情况。而Service一旦停止，任务就不再执行了。
+到这里，已经可以运行程序并启动 Service 了。只要观察 log 文件你就可以发现，我们的 Service 会每隔两分钟记录一次任务的执行情况。而 Service 一旦停止，任务就不再执行了。
 
 % Here’s the LogCat output of what is going on with our service:
 
-如下为LogCat的输出结果，从中可以看出我们Service的执行情况：
+如下为 LogCat 的输出结果，从中可以看出我们 Service 的执行情况：
 
 {CODE}
 D/UpdaterService( 3494): onCreated
@@ -631,25 +631,25 @@ D/UpdaterService( 3494): onDestroyed
 
 % As you can see, the service got created and started. It also ran couple of times before it finally got destroyed.
 
-可见，我们的Service在最终销毁之前，循环了两次，其创建与启动皆正常。
+可见，我们的 Service 在最终销毁之前，循环了两次，其创建与启动皆正常。
 
 
 % ==Pulling Data From Twitter==
-==从Twitter读取数据==
+== 从Twitter读取数据 ==
 
 % We now have a framework and are ready to make the actual connection to the online twitter-like service, pull the status data, and display that data in our application. Twitter and Twitter-like services offer many different APIs to retrieve what is going on with our friends. The jtwitter.jar library exposes most of them to us via the Twitter class. Perhaps one of the most appropriate methods is getFriendsTimeline(), which returns the twenty most recent posts made over the past 24 hours from the user and her friends.
 
-我们已经有了个大体的框架，接下来就连接到微博服务，读取数据并且在程序中显示出来。在读取朋友消息上，Twitter与不同的微博服务提供的API都各不相同。这时可以使用三方库``jtwitter.jar``，它提供了一个``Twitter``类作为封装。里边最常用的功能之一就是``getFriendsTimeline()``，它可以返回24小时以内最新的20条消息。
+我们已经有了个大体的框架，接下来就连接到 Twitter ，读取数据并且在程序中显示出来。Twitter 或者其他的微博平台提供的 API 都各不相同。这时可以使用三方库 ``jtwitter.jar`` ，它提供了一个 ``Twitter`` 类作为封装。里边最常用的功能之一就是 ``getFriendsTimeline()`` ，它可以返回24小时以内最新的20条消息。
 
 %TALK: 把twitter-like译为“微博”是否合适呢，感觉似乎比“类twitter”顺口一些。
 
 % To use this feature of the Twitter API, we need to connect to the online service. And to do that, we need the username, password, and root API for our online service. As you recall from previous chapter, we have already refactored most of this functionality into the Yamba Application object in the section called “Yamba Application Object”. We can reuse all those features here, because our service is part of the same application and as such has access to the same Application object.
 
-要使用Twitter API的这一特性，首先应连接到Twitter服务。我们需要一个用户名、密码，以及一个API授权。回忆下本章前面“Yamba的Application对象”一节中，我们已经把大部分相关的功能重构到了YambaApplication中。因此我们得以在这里重用这一功能，因为包括Service在内的程序中任何一个构件，都可以访问同一个Application对象。
+要使用 Twitter API 的这一特性，首先应连接到 Twitter 服务。我们需要一个用户名、密码，以及一个API授权。回忆下本章前面 “Yamba 的 Application 对象” 一节中，我们已经把大部分相关的功能重构到了 YambaApplication 中。因此我们得以在这里重用这一功能，因为包括 Service 在内的程序中任何一个构件，都可以访问同一个 Application 对象。
 
 % We do need, however, to make a minor update to YambaApplication, because we would also like to be able to tell whether our service is running or not. To do that, we’ll add a flag to YambaApplication as well as provide setter and getter methods to access and update that flag:
 
-在这里我们需要小小地修改下YambaAppliaction，好让别人知道这个Service是否正在运行。因此在YambaApplication中添加一个标志变量，配合getter与setter用以访问与更新：
+在这里我们需要小小地修改下 YambaAppliaction ，好让别人知道这个 Service 是否正在运行。因此在 YambaApplication 中添加一个标志变量，配合 getter 与 setter 用以访问与更新：
 
 {CODE}
 public class YambaApplication extends Application implements OnSharedPreferenceChangeListener {
@@ -670,13 +670,13 @@ public class YambaApplication extends Application implements OnSharedPreferenceC
 % + The public method to check the status of the serviceRunning flag.
 % + Another public method to set the state of the serviceRunning flag.
 
-+ 这个标志变量表示了Service的运行状态。注意它是个私有成员，不可以直接访问。
-+ 这个全局方法用以访问标志变量serviceRunning的值。
-+ 另一个全局方法，用以设置标志变量serviceRunning的值。
++ 这个标志变量表示了 Service 的运行状态。注意它是个私有成员，不可以直接访问。
++ 这个全局方法用以访问标志变量 ``serviceRunning`` 的值。
++ 另一个全局方法，用以设置标志变量 ``serviceRunning`` 的值。
 
 % Now we can write new code for UpdaterService and have it connect to the online API to pull the latest status of our friends.
 
-接下来我们可以为UpdaterService写些代码，让它连接到API，读取朋友的最新消息。
+接下来我们可以为 ``UpdaterService`` 写些代码，让它连接到API，读取朋友的最新消息。
 
 **Example 8.6. UpdaterService.java, final version**
 {CODE}
@@ -786,23 +786,23 @@ public class UpdaterService extends Service {
 % + Now that we have initialized the timeline list, we can loop over it. The easiest way to do that is to use Java’s "for each" loop that automatically iterates over our list, assigning each element in turn to the status variable.
 % + For now, we simply just print out the statuses of who said what to the Logcat output.
 
-+ 这个变量用以方便访问YambaApplication对象，便于使用其中的共享功能，比如读取用户设置、连接到微博服务等。
-+ 通过``getApplication()``方法获得YambaApplication对象的引用。
-+ 一旦启动了这个Service，我们就设置YambaApplication中的标志变量``serviceRunning``。
-+ 同样，等Service停止时也修改YambaApplication对象中的``serviceRunning``。
-+ 我们使用了Java中的泛型，用以定义一个List来存放Twitter.Status的实例。
-+ 调用YambaApplication中的``getTwitter()``方法获得Twitter对象，然后调用``getFriendTimeline()``来获得24小时内朋友最新的20条消息。注意这个函数需要访问网络，因此其运行时间受网络延迟影响比较大。我们把它安置在一个独立的线程中，毕竟不能让用户界面的响应跟着它延时。
-+ 网络相关的操作失败的原因有很多。我们在这里捕获异常，并打印出错时的堆栈信息。其输出在Logcat中可见。
-+ 现在我们已经初始化了timeline这个List，可以遍历其中的元素。最简单的方法就是使用Java的"for each"循环，自动地遍历我们的List，分别把每个元素的引用交给变量status。
-+ 暂时我们先把消息也就是“谁说了什么“输出到Logcat。
++ 这个变量用以方便访问 ``YambaApplication`` 对象，便于使用其中的共享功能，比如读取用户设置、连接到远程服务等。
++ 通过 ``getApplication()`` 方法获得 ``YambaApplication`` 对象的引用。
++ 一旦启动了这个 Service ，我们就设置 ``YambaApplication`` 中的标志变量 ``serviceRunning``。
++ 同样，等 Service 停止时也修改 ``YambaApplication`` 对象中的 ``serviceRunning``。
++ 我们使用了 Java 中的泛型来定义一个存放 ``Twitter.Status`` 的 List 变量。
++ 调用 ``YambaApplication`` 中的 ``getTwitter()`` 方法获得 Twitter 对象，然后调用 ``getFriendTimeline()`` 来获得24小时内朋友最新的20条消息。注意因为这个函数需要访问云端服务，所以其运行时间受网络延迟影响比较大。我们把它安置在一个独立的线程中，从而防止它拖慢用户界面的响应。
++ 网络相关的操作失败的原因有很多。我们在这里捕获异常，并打印出错时的堆栈信息。其输出在 Logcat 中可见。
++ 现在我们已经初始化了 timeline 这个 List ，可以遍历其中的元素。最简单的方法就是使用 Java 的 "for each" 循环，自动地遍历我们的 List ，分别把每个元素的引用交给变量 status。
++ 暂时我们先把消息也就是“谁说了什么“输出到 Logcat。
 
 
 % ===Testing it all works===
-===测试运行正常===
+=== 测试运行正常 ===
 
 % Now we can run our application, start the service, and see the list of our friends' statuses in the logcat:
 
-好，我们可以运行我们的程序并启动Service，观察Logcat中记录的朋友消息。
+好，我们可以运行我们的程序并启动 Service ，观察 Logcat 中记录的朋友消息。
 
 {CODE}
 D/UpdaterService(  310): Marko Gargenta: it is great that you got my message
@@ -813,11 +813,11 @@ D/UpdaterService(  310): Marko Gargenta: right!
 {/CODE}
 
 % ==Summary==
-==总结==
+== 总结 ==
 
 % We now have a working service, which we start and stop and in a relatively crude, manual way. The service connects to the cloud service and pulls down the status posts from our friends. For now, we just print this data in the Logcat, but in the next chapter we’ll insert the data into the database.
 
-我们已经有了一个可用的Service，只是启动/停止还需要人工操作，仍略显粗放。这个Service能够连接到服务端更新朋友的最新消息。目前我们只是把这些消息输出到Logcat中，到下一章我们就把它们存进数据库里。
+我们已经有了一个可用的 Service，只是启动/停止还需要人工操作，仍略显粗放。这个 Service 能够连接到服务端更新朋友的最新消息。目前我们只是把这些消息输出到 Logcat 中，到下一章我们就把它们存进数据库里。
 
 % Figure 8.3, “Yamba Completion” illustrates what we have done so far as part of the design outlined in Figure 5.4, “Yamba Design Diagram”:
 
@@ -825,5 +825,5 @@ D/UpdaterService(  310): Marko Gargenta: right!
 
 **Figure 8.3. Yamba Completion**
 
-[images/08-Yamba-3.png]
+	[images/08-Yamba-3.png]
 

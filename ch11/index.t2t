@@ -1,4 +1,468 @@
 %
 %
 %
-= CH11 is MISSING =
+= Broadcast Receivers =
+
+
+In this chapter, you will learn what Broadcast receivers are and when to use them. We’ll create couple of different receivers illustrating different usage scenarios. First, you’ll create a broadcast receiver that will start up your update service at boot time, so that users always have their latest friends' timelines the first time they check for them (assuming their preferences are set). Next, you will create a receiver that will update the timeline when it changes while the user is viewing it. This will illustrate the programmatic registration of receivers and get you introduced to broadcasting intents. We’ll implement a receiver that is trigged by changes in network availability. And finally, we’ll learn how to surround our app with some security by defining permissions.
+
+By the end of this chapter, your app has most of the functionality that a user would need. The app can send status updates, get friends' timelines, update itself, and start automatically. It works even when the user is not connected to the network (although of course it cannot send or receive new messages).
+
+== About Broadcast Receivers ==
+
+Broadcast receivers are Android’s implementation of the Publish/Subscribe messaging pattern, more precisely is an Observer pattern. Applications (known as publishers) can generate broadcasts to simply send events not knowing who, if anyone, will get them. Receivers (known as subscribers) that want the information subscribe to specific messages via filters. If the message matches a filter, the subscriber is activated (if it’s not already running) and notified of the message.
+
+As you may recall from Chapter 4, Main Building Blocks, a BroadcastReceiver is a piece of code to which an app subscribes in order to get notified when an action happens. That action is in a form of an intent broadcast. When the right intent is fired, the receiver wakes up and executes. The "wakeup" happens in form of a onReceive() callback method.
+
+== BootReceiver ==
+
+In our Yamba application, the UpdaterService is the one responsible for periodically updating the data from the online service. Currently, the user needs to manually start the service, which she does by first starting the application, then clicking on Start Service menu option.
+
+It would be much cleaner and simpler if somehow UpdaterService was started automatically by the system when the device is powered up. To do this, we create BootReceiver, a broadcast receiver that will get launched by the system when the boot is complete, and in turn will launch our TimelineActivity activity. The following few lines sets up our broadcast receiver.
+
+**Example 11.1. BootReceiver.java**
+{CODE}
+package com.marakana.yamba6;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+
+public class BootReceiver extends BroadcastReceiver { //1
+
+  @Override
+  public void onReceive(Context context, Intent intent) { //2
+    context.startService(new Intent(context, UpdaterService.class)); //3
+    Log.d("BootReceiver", "onReceived");
+  }
+
+}
+{/CODE}
+
+
++ We create BootReceiver by subclassing BroadcastReceiver, the base class for all receivers.
++ The only method that we need to implement is onReceive(). This method gets called when an intent matches this receiver.
++ We launch an intent to start our Updater service. The system passed us a Context object when it invoked our onReceive() method, and we are expected to pass it on to the Updater service. The service doesn’t happen to use the Context object for anything, but we’ll see an important use later for a context.
+
+
+At this point, we have our boot receiver. But, in order for it to get called - in order for the activity to start at boot - we must register it with the system.
+
+=== Registering the BootReceiver with the AndroidManifest file ===
+
+To register BootReceiver, we add it to the manifest file. We also add an intent filter to it. This intent filter specifies which broadcasts trigger the receiver to get activated.
+
+
+**Example 11.2. AndroidManifest.xml: <application> section**
+{CODE}
+...
+<receiver android:name=".BootReceiver">
+  <intent-filter>
+    <action android:name="android.intent.action.BOOT_COMPLETED" />
+  </intent-filter>
+</receiver>
+...
+{/CODE}
+
+In order to get notifications for this particular intent filter, we must also specify that we’re using a specific permission required by it, in this case android.permission.RECEIVE_BOOT_COMPLETED.
+
+
+**Example 11.3. AndroidManifest.xml: <manifest> section**
+{CODE}
+...
+<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+...
+{/CODE}
+
+
+{NOTE}
+If we don’t specify the permission we require, we simply won’t get notified when this event occurs, and we won’t have the chance to run our start-up code. We won’t even know we aren’t getting notified, so this is potentially a hard bug to find.
+{/NOTE}
+
+
+=== Testing the Boot Receiver ===
+
+At this point, you can reboot your device. Once it comes back up, your UpdaterService should be up and running. You can verify that either by looking at the LogCat for our output, or by using System Settings and checking that the service is running.
+
+To verify via System Settings, at the Home screen, click on th Menu button and choose Settings→Applications→Running Services. You should see UpdaterService listed there. At this point, you know the BootReceiver did indeed get the broadcast and has started the UpdaterService.
+
+
+== The TimelineReceiver ==
+
+Currently, if you view your Timeline activity while a new status update comes in, you wouldn’t know about it. That’s because the UpdaterService doesn’t have a way to notify TimelineActivity to refresh itself.
+
+To address this, we create another broadcast receiver, this time as an inner class of TimelineActivity.
+
+
+**Example 11.4. TimelineActivity.java with TimelineReceiver inner class**
+{CODE}
+...
+class TimelineReceiver extends BroadcastReceiver { //1
+  @Override
+  public void onReceive(Context context, Intent intent) { //2
+    cursor.requery(); //3
+    adapter.notifyDataSetChanged(); //4
+    Log.d("TimelineReceiver", "onReceived");
+  }
+}
+...
+{/CODE}
+
+
++ As before, to create a broadcast receiver, we subclass BroadcastReceiver class.
++ The only method we need to override is onReceive(). This is where we put the work we want done when this receiver is triggered.
++ The work we want done is simply to tell the cursor object to refresh itself. We do this by invoking requery(), which executes the same query that was executed initially to obtain this cursor object.
++ Notifies the adapter that underlying data has changed.
+
+
+At this point, our receiver is ready but not registered. Unlike BootReceiver, where we registered our receiver with the system statically, via the manifest file, we’ll register TimelineReceiver programmatically. This is because TimelineReceiver makes sense only within TimelineActivity as it’s purpose is to refreshing the list when the user is looking at Timeline Activity.
+
+
+**Example 11.5. TimelineActivity.java with TimelineReceiver**
+{CODE}
+...
+@Override
+protected void onResume() {
+  super.onResume();
+
+  // Get the data from the database
+  cursor = db.query(DbHelper.TABLE, null, null, null, null, null,
+      DbHelper.C_CREATED_AT + " DESC");
+  startManagingCursor(cursor);
+
+  // Create the adapter
+  adapter = new TimelineAdapter(this, cursor);
+  listTimeline.setAdapter(adapter);
+
+  // Register the receiver
+  registerReceiver(receiver, filter);   //1
+}
+
+@Override
+protected void onPause() {
+  super.onPause();
+
+  // UNregister the receiver
+  unregisterReceiver(receiver);  //2
+}
+...
+{/CODE}
+
+
++ We register the receiver in onResume() so that it’s registered whenever the TimelineActivity is running. Recall that all paths to the Running state go through the onResume() method, as described in the section called “Running State”.
++ Similarly, we unregister the receiver on the way to the Stopped state (recall the section called “Stopped State”). onPause() is a good place to do that.
+What’s missing now is the explanation of what filter is. To specify what triggers the receiver, we need an instance of IntentFilter, which simply indicates which intent actions we want to be notified about. In this case, we make up an action string through which we filter intents.
+
+
+
+**Example 11.6. TimelineActivity.java with update onCreate()**
+{CODE}
+...
+filter = new IntentFilter("com.marakana.yamba.NEW_STATUS"); //1
+...
+{/CODE}
+
+
++ Create a new instance of IntentFilter to filter for the com.marakana.yamba.NEW_STATUS intent action. Since this is a text constant, we’ll define it as such and refer to it as a constant later on. A good place to define it is the UpdaterService, because that’s the code that generates the events we’re waiting for.
+
+
+
+== Broadcasting Intents ==
+
+Finally, to trigger the filter, we need to broadcast an intent that matches the action that the intent filter is listening for. In case of BootReceiver, earlier, we didn’t have to do this because the system was already broadcasting the appropriate intent. However, for TimelineReceiver, the broadcast is ours to do because the intent is specific to our application.
+
+If you recall from Chapter 8, Services, our UpdaterService had an inner class called Updater. This was the separate thread that connected to the online service and pulled down the data. Becausee this is where we know whether or not there are any new statuses, this is a good place to send notifications from as well.
+
+
+**Example 11.7. UpdaterService.java with Updater inner class**
+{CODE}
+...
+private class Updater extends Thread {
+  Intent intent;
+
+  public Updater() {
+    super("UpdaterService-Updater");
+  }
+
+  @Override
+  public void run() {
+    UpdaterService updaterService = UpdaterService.this;
+    while (updaterService.runFlag) {
+      Log.d(TAG, "Running background thread");
+      try {
+        YambaApplication yamba =
+            (YambaApplication) updaterService.getApplication(); //1
+        int newUpdates = yamba.fetchStatusUpdates();  //2
+        if (newUpdates > 0) { //3
+          Log.d(TAG, "We have a new status");
+          intent = new Intent(NEW_STATUS_INTENT); //4
+          intent.putExtra(NEW_STATUS_EXTRA_COUNT, newUpdates); //5
+          updaterService.sendBroadcast(intent); //6
+        }
+        Thread.sleep(60000); //7
+      } catch (InterruptedException e) {
+        updaterService.runFlag = false; //8
+      }
+    }
+  }
+}
+...
+{/CODE}
+
+
++ We get the application object to access our common application methods.
++ If you recall, our application provides fetchStatusUpdates() to get all the latest status updates and populate the database. This method returns the number of new statuses.
++ We check whether there are any new statutes at all.
++ This is the intent we are about to broadcast. NEW_STATUS_INTENT is a constant that represents an arbitrary action. In our case, we define it as com.marakana.yamba.NEW_STATUS, but it could be any string without spaces. However, using something that resembles your package name is a good practice.
++ There’s a way to add data to an Intent. In our case, it would be useful to communicate to others as part of this broadcast how many new statuses there arre. In this line, we use Intent’s putExtra() method to add the number of new statuses under a key NEW_STATUS_EXTRA_COUNT, which is just our arbitrary constant.
++ At this point, we know there’s at least one new status. sendBroadcast() is part of Context, which is a superclass of Service and therefore also a superclass of our UpdaterService. Since we’re inside the Updater inner class, we have to refer to the parent’s updaterService instance in order to call sendBroadcast(). This method simply takes the intent we just created.
++ We tell this thread to sleep for a minute, so that it doesn’t overload the device’s CPU while checking regularly for updates.
++ In case this thread is interrupted for whatever reason, we update this service’s runFlag so we know it’s not running any more.
+
+
+
+{NOTE}
+UpdaterService may be sending broadcasts even when the TimelineReceiver` is not registered. That is perfectly fine. Those broadcasts will simply be ignored.
+{/NOTE}
+
+
+At this point, a new status received by UpdaterService causes an intent to be broadcast over to the TimelineActivity, where the message gets received by the TimelineReceiver, which in turn refreshes the ListView of statuses.
+
+
+
+== The Network Receiver ==
+
+With the current design, our service will start automatically at boot time and will attempt to connect to the cloud and retrieve latest updates approximately every minute. One of the problems with the current design is that the service will try to do so even when there’s no Internet connection available. This adds unnecessary attempts to wake up the radio and connect to the server, all of which is taxing the battery. Imagine how many wasteful attempts would be made while your phone is in Flight Mode on a cross-country flight. This highlights some of the inherit constraints for programming for mobile devices - we’re limited by the battery life and network connectivity.
+
+A better approach would be to listen to network availability broadcasts and use that information to intelligently turn the service off when the Internet is unavailable and turn it back on when data connection comes back up. The system does send an intent whenever connection availability changes. Another system service allows us to find out what changed and act accordingly.
+
+In this case, we’re creating another receiver, NetworkReceiver. Just as before, we need to create a Java class that subclasses BroadcastReceiver, and register it via the Android manifest file.
+
+
+**Example 11.8. NetworkReceiver.java**
+{CODE}
+package com.marakana.yamba6;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.util.Log;
+
+public class NetworkReceiver extends BroadcastReceiver { //1
+  public static final String TAG = "NetworkReceiver";
+
+  @Override
+  public void onReceive(Context context, Intent intent) {
+
+    boolean isNetworkDown = intent.getBooleanExtra(
+        ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);  //2
+
+    if (isNetworkDown) {
+      Log.d(TAG, "onReceive: NOT connected, stopping UpdaterService");
+      context.stopService(new Intent(context, UpdaterService.class)); //3
+    } else {
+      Log.d(TAG, "onReceive: connected, starting UpdaterService");
+      context.startService(new Intent(context, UpdaterService.class)); //4
+    }
+  }
+
+}
+{/CODE}
+
+
+
++ As we said before, when you create a new broadcast receiver, you typically start by subclassing Android’s own BroadcastReceiver class.
++ When the system broadcasts the particular intent action that we are subscribed to get in this receiver, the intent will have an extra piece of information indicating if the network is up or down. In this case, the variable is a Boolean value keyed to the ConnectivityManager.EXTRA_NO_CONNECTIVITY constant. In the previous section we associated a value to a string of our own invention; here we’re on the other end of the message, extracting a value from a Boolean. A value of true indicates that the network is down.
++ If the network is down, we simply send an intent to our UpdaterService. We now have a use for the Context object that the system passed to this method. We call its stopService() method, passing the Intent.
++ If the flag was false, we know that the network has changed and is now available. So we start our UpdaterService, the inverse of our previous stop action.
+
+
+
+{NOTE}
+Inside an activity or a service, we simply used methods startActivity(), startService(), stopService() and so on. This is because activities and services are subclasses of Context and thus they inherited these methods. So, there’s an is-a relationship between them and Context. Broadcast Receivers on the other hand have Context object passed into it, thus having a has-a relationship with it.
+{/NOTE}
+
+
+
+Now that we have created this new receiver, we need to register it with the manifest file:
+
+
+**Example 11.9. AndroidManifest.xml: <application> section**
+{CODE}
+...
+<receiver android:name=".NetworkReceiver">
+  <intent-filter>
+    <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+  </intent-filter>
+</receiver>
+...
+{/CODE}
+
+
+
+We also need to update the permissions that our application uses, because that particular action filter for a network change is protected and requires us to ask the user to grant us this particular permission.
+
+
+**Example 11.10. AndroidManifest.xml: <manifest> section**
+{CODE}
+...
+<uses-permission android:name="android.permission.INTERNET" /> <!-- 1 -->
+<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- 2 -->
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 3 -->
+...
+{/CODE}
+
+
++ Used by our Twitter object to connect to the Internet to get and post status updates. We saw this permission already in Chapter 6, Android User Interface. Not having this permission will cause our app to crash when it attempts to access the network (unless we catch and handle that network exception).
++ Required in order to receive broadcasts that the system has booted. As mentioned earlier, if we don’t have this permission, we will silently be ignored at boot time and our boot code won’t run.
++ Needed in order to receive network state updates. Just as with the boot receiver, if we don’t have this permission, we will be silently passed by when the network state changes.
+
+
+
+== Adding Custom Permissions to Send and Receive Broadcasts ==
+
+As discussed in the section called “Updating Manifest File for Internet Permission”, an application must be granted permissions to access certain restricted features of the system, such as connecting to Internet, sending SMS messages, making phone calls, reading the user’s contacts, taking photos, and so on. It is user who has to grant all or none of the permissions to the application at installation time, and it is the job of the application developer to list all the permissions the app needs to successfully run by adding the <uses-permission> element to the manifest file. So far, we’ve added permissions to Yamba in order to access the Internet, kick off our boot-time service, and learn about network changes.
+
+But now that we have our Updater service sending a broadcast action to our Timeline receiver, we may want to restrict permission to send and receive that broadcast to our own app. Otherwise, it would be possible for another app, knowing what our action looks like, to send it and cause actions in our application that we didn’t intent.
+
+To fill up this security hole, we define our own permission and ask the user to grant it to the Yamba application. Next, we’ll enforce both sending and receiving of the permissions.
+
+
+=== Declaring Permissions in the Manifest File ===
+
+The first step is to declare our permissions, explaining what they are, how they are to be used, and what protection level they are at.
+
+
+**Example 11.11. Adding Permissions to Manifest File**
+{CODE}
+<manifest>
+
+  ...
+
+  <permission android:name="com.marakana.yamba.SEND_TIMELINE_NOTIFICATIONS" <!-- 1 -->
+    android:label="@string/send_timeline_notifications_permission_label" <!-- 2 -->
+    android:description="@string/send_timeline_notifications_permission_description" <!-- 3 -->
+    android:permissionGroup="android.permission-group.PERSONAL_INFO" <!-- 4 -->
+    android:protectionLevel="normal" /> <!-- 5 -->
+
+  <!-- 6 -->
+  <permission android:name="com.marakana.yamba.RECEIVE_TIMELINE_NOTIFICATIONS"
+    android:label="@string/receive_timeline_notifications_permission_label"
+    android:description="@string/receive_timeline_notifications_permission_description"
+    android:permissionGroup="android.permission-group.PERSONAL_INFO"
+    android:protectionLevel="normal" />
+
+  <!-- 7 -->
+  <uses-permission android:name="com.marakana.yamba.SEND_TIMELINE_NOTIFICATIONS" />
+  <uses-permission android:name="com.marakana.yamba.RECEIVE_TIMELINE_NOTIFICATIONS" />
+
+</manifest>
+{/CODE}
+
+
+
++ This is the name of our permission, the handle we are going to use later to refer to it both when we request it and when we enforce it. In our app, we’ll be using the permission to securely send timeline notifications.
++ Label that will be displayed to the user when she is prompted to grant this permission to our app at the installation time. It should be relatively short. Note that we have defined this label in our strings.xml resource file.
++ A description should be provided to offer information about why this permission is needed and how it’s going to be used.
++ The permission group is optional, but helps the system to group your permission with other common permissions in one of the system-defined permission groups. You could also define your own group, but that is rarely done.
++ The permission level is a required value specifying the severity or risk posed by granting the permission. A level of ‘normal’ is the lowest and most basic of the four standard permission levels.
++ We do the same to define the other permission, which allows us to receive the timeline notifications we are generating.
++ Once we have our permissions defined, we need to ask the user to grant them to the application. We do that via the <uses-permission> element, just as we did it for the other system permissions we specified earlier.
+
+
+At this point, we have defined our two custom permissions and have requested them for our application. Next, we need to make sure the sender and receiver both play by the rules.
+
+
+=== Updating the Services to Enforce Permissions ===
+
+It is our Updater service that broadcasts the intent to the rest of the system once there’s a new status update. Now, since we do not want everyone to receive this intent, we want to ensure that the receiver won’t be allowed to receive it unless the receiver defines the right permission.
+
+
+**Example 11.12. Updater in UpdaterService**
+{CODE}
+  ...
+  private class Updater extends Thread {
+    static final String RECEIVE_TIMELINE_NOTIFICATIONS =
+        "com.marakana.yamba.RECEIVE_TIMELINE_NOTIFICATIONS"; //1
+    Intent intent;
+
+    public Updater() {
+      super("UpdaterService-Updater");
+    }
+
+    @Override
+    public void run() {
+      UpdaterService updaterService = UpdaterService.this;
+      while (updaterService.runFlag) {
+        Log.d(TAG, "Running background thread");
+        try {
+          YambaApplication yamba = (YambaApplication) updaterService
+              .getApplication();
+          int newUpdates = yamba.fetchStatusUpdates();
+          if (newUpdates > 0) {
+            Log.d(TAG, "We have a new status");
+            intent = new Intent(NEW_STATUS_INTENT);
+            intent.putExtra(NEW_STATUS_EXTRA_COUNT, newUpdates);
+            updaterService.sendBroadcast(intent, RECEIVE_TIMELINE_NOTIFICATIONS); //2
+          }
+          Thread.sleep(DELAY);
+        } catch (InterruptedException e) {
+          updaterService.runFlag = false;
+        }
+      }
+    }
+  } // Updater
+  ...
+{/CODE}
+
+
+
++ This is the name of the permission that we are requiring the receiver to have. It needs to be the same as the permission name in the manifest file that we specified previously.
++ To enforce the permission on the receiver, we simply add it to the sendBroadcast() call as the optional second parameter. If the receiver doesn’t have this particular permission granted to it by the user, the receiver won’t be notified and will never know that our message just got dropped.
+
+
+To complete the security in the sending direction, we don’t have to do anything to TimelineReceiver. It will be able to receive the permission because the user granted it. But there is a corresponding responsibility on the TimelineReceiver side. It should check that the sender had permission to send the message it is receiving.
+
+
+
+=== Update Timeline Receiver to Enforce Permissions ===
+
+Now we will check on the receiver side that the broadcaster is allowed to talk to us. To do this, we add the broadcast permission that the sender should have to our receiver when we register it.
+
+
+**Example 11.13. TimelineReceiver in TimelineActivity.java**
+{CODE}
+...
+public class TimelineActivity extends BaseActivity {
+  static final String SEND_TIMELINE_NOTIFICATIONS =
+      "com.marakana.yamba.SEND_TIMELINE_NOTIFICATIONS"; //1
+  ...
+  @Override
+  protected void onResume() {
+    super.onResume();
+    ...
+    // Register the receiver
+    super.registerReceiver(receiver, filter,
+        SEND_TIMELINE_NOTIFICATIONS, null); //2
+  }
+  ...
+}
+{/CODE}
+
+
++ We define the permission name as a constant. This needs to be the same name as we declared for this permission in the manifest file.
++ In the onResume() method where we register our TimelineReceiver, we now add a parameter specifying this permission as a requirement placed on anyone who wants to send us this type of broadcast.
+We now have a pair of custom permissions and we are enforcing them in both the sender and the receiver of the broadcast. This illustrates some of the capabilities of Android to fine-tune the permission system.
+
+
+== Summary ==
+
+Yamba is now complete and ready for prime time. Our application can now send status updates to our online service, get the latest statuses from our friends, get started automatically on boot time, and be refreshed live when a new status is received.
+
+__Figure 11.1, “Yamba Completion”__ illustrates what we have done so far as part of the design outlined in __Figure 5.4, “Yamba Design Diagram”__.
+
+	**Figure 11.1. Yamba Completion**
+		[images/11-YambaCompletion.png]
+
+
