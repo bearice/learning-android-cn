@@ -168,7 +168,7 @@
 {TRAN}=== 应用程序签名 ===
 
 {ORGI}Android applications must be signed before they can be installed on a device. For development purposes, we’ll be signing applications with a debug key - a key that you already have on your development platform. However, when you want to distribute your application commercially, you’ll want to sign it with your own key. The details how to do that are at [Signing Your Application http://developer.android.com/guide/publishing/app-signing.html] page. We’ll also discuss it in Going Live chapter.
-{TRAN}Android 程序在安装前必须进行签名。在开发时，我们可以使用开发者密钥(debug key)进行签名——这个密钥已经包含在开发环境中。 但作为商品发布时，你就必须使用自己的密钥进行签名。关于签名的具体步骤可以在 Android 网站的 [Signing Your Application http://developer.android.com/guide/publishing/app-signing.html] 页面找到。我们也会在后面的章节中讨论这个话题。
+{TRAN}Android 程序在安装前必须进行签名。在开发时，我们可以使用开发者密钥(debug key)作为临时签名——这个密钥已经包含在开发环境中。 但作为商品发布时，你就必须使用自己的密钥进行签名。关于签名的具体步骤可以在 Android 网站的 [Signing Your Application http://developer.android.com/guide/publishing/app-signing.html] 页面找到。在后面我们将具体地讨论这个话题。
 
 %NOTE: Going Live意思似乎是“待发布”的意思，猜该是一个遗忘的占位符号。在书写本章时，作者的连载才刚刚开始。
 
@@ -191,7 +191,7 @@
 {TRAN}这是一个去中心化的发布系统，自然就免不了有人利用用户的信任传播恶意软件来做坏事。目前已接到通过伪造的金融应用进行钓鱼攻击(phishing attacks)的报告。
 
 {ORGI}So, Android leaves it to the market place to sort it out. Eventually, if you believe in free market, there will be stores that are more reputable and those that are less so. For example, Google polices its Android Market by removing malicious apps, such as the fake banking apps. Google relies on users to report malicious apps. Other stores may choose to do more proactive testing and raise the bar on what gets into the store in the first place.
-{TRAN}Android把这个问题交给市场去解决。如果你了解自由市场，就知道商店的信誉是良莠不齐的。 Google通过人工移除Android Market 中的恶意软件(比如钓鱼软件)来保证用户的安全， 这需要用户的举报。 但是其他商店也可以做出更多主动检测，并给出一个明显的提示。
+{TRAN}Android把这个问题交给市场去解决。如果你了解自由市场，就知道商店的信誉是良莠不齐的。 Google会根据用户的举报，通过人工移除Android Market 中的恶意软件(比如钓鱼软件)来保证用户的安全。其它商店也可以做出更多主动检测，并给出一个明显的提示。
 
 {ORGI}== Summary ==
 {TRAN}== 总结 ==
