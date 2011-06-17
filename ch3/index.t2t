@@ -26,7 +26,7 @@
 
 {ORGI}Android Software Development Kit (SDK) is all you need to develop applications for Android. It comes with a set of tools as well as a platform to run it and see it all work. You can download Android SDK for your particular platform from [Android SDK Download http://developer.android.com/sdk/index.html]page.
 
-{TRAN}Android软件开发包（SDK）即你为Android开发应用所需的一切。除了一套开发的工具集，它也提供了一个用以测试的平台。你可以在[Android SDK的下载页面 http://developer.android.com/sdk/index.html]为你的目标平台下载到对应的Android SDK。
+{TRAN}Android软件开发包（SDK）是你开发Android应用所需的一切。除了一套开发的工具集，它也提供了一个用以测试的平台。你可以在[Android SDK的下载页面 http://developer.android.com/sdk/index.html]为你的目标平台下载到对应的Android SDK。
 
 {ORGI}Once you download it, unzip (or on Linux, untar) it into a folder that is easy to get to. Further examples in the book will assume your SDK is in the folder ~/android-sdk. If it’s in a different location, use that location instead of ~/android-sdk. For example:
 
@@ -67,7 +67,7 @@ Android SDK里有个目录，主要的工具都在里面。我们会频繁地用
 
 % Eclipse is an open-source collection of programming tools originally created by IBM for for Java. Nowadays, most developers in the Java community favor Eclipse as their Integrated Development Environment (IDE) of choice. Eclipse lives at Eclipse.org.
 
-Eclipse是一个开源的编程工具集，其前身是IBM为Java开发的IDE，如今已成为Java社区大部分开发者的首选。Eclipse的首页在[http://eclipse.org/ Eclipse.org]。
+Eclipse是一个开源的编程工具集，前身是IBM为Java开发的IDE，如今已成为Java社区大部分开发者的首选。Eclipse的首页在[http://eclipse.org/ Eclipse.org]。
 
 % Eclipse is very feature-rich and has a lot of time-saving features. I’ll be pointing them out as we keep on going. Keep in mind that, while powerful, Eclipse tends to be very resource-hungry and you may want to restart it once a day if it starts running very sluggishly.
 
@@ -92,7 +92,7 @@ Andorid开发并不限制开发者选择任何自己喜欢的编辑器或者IDE�
 
 % Eclipse organizes all your work by projects. Projects are placed in a workspace, which is a location you choose. So, where you put your workspace is significant. I recommend ~/workspace as a simple place for your code. On Windows however, I recommend storying your workspace in a directory that doesn’t have spaces it (they complicate anything you might do at the command-line). C:\workspace is a good choice for Windows users.
 
-Eclipse通过project组织你的工作，而所有的project皆放置在workspace之中，其位置由用户决定。因此workspace的位置需要明确下来，我建议使用 ``~/workspace`` 这样相对简单的位置来存放自己的代码。Windows的话，我依然建议避免在workspace目录中存在空格（使用命令行的时候会添麻烦），``C:\workspace``该是个好地方。
+Eclipse以项目为单位管理用户的工作，项目又都位于workspace中。因此workspace的位置需要明确下来，我建议使用 ``~/workspace`` 这样相对简单的位置来存放自己的代码。Windows的话，仍建议避免在workspace目录中存在空格（使用命令行的时候会添麻烦）——``C:\workspace``该是个好地方。
 
 % === Setting Up Android Development Tools ===
 === 安装Android Development Tools ===
@@ -126,8 +126,7 @@ Eclipse通过project组织你的工作，而所有的project皆放置在workspac
 {NOTE}
 % If you have trouble downloading the plugin, you can try using "http" in the URL, instead of "https" (https is preferred for security reasons).
 
-如果在下载插件时遇到问题，你可以尝试将URL中的``"https"``替换为``"http"``（使用``https``往往是出于安全目的）。
-
+如果下载插件时遇到问题，可以尝试将URL中的``"https"``替换为``"http"``（使用``https``往往是出于安全目的）。
 {/NOTE}
 
 
@@ -136,33 +135,32 @@ Eclipse通过project组织你的工作，而所有的project皆放置在workspac
 
 % To make sure everything is set up properly, we’re going to write a simple Hello World program. As a matter of fact, there’s not much for us to write, but a lot to understand. This is because Eclipse will create the project shell for us from some predefined templates.
 
-一切准备妥当，我们就写个Hello World程序。实际上，由于Eclipse会为项目自动生成一些模板，这里需要写的代码并不多，重要的是理解。
+一切准备就绪，开工写一个Hello World程序。由于Eclipse会为项目自动生成一些模板，这里需要写的代码并不多，重要的是理解。
 
 % === Creating New Project ===
-=== 创建新Project ===
+=== 创建新项目 ===
 
 % In Eclipse, choose File→New→Android Project. Sometimes (especially the first time you run Eclipse) the Android tools may not be appear there right away. They should show up in the future after you’ve used them for the first time. If Android Project is not an option under File→New, choose Other and look for Android Project in there.
 
-进入Eclipse，选择 File→New→Android Project 。有时菜单里可能会没有Android Project一项（尤其是第一次启动Eclipse时），选择Other找到Android Project即可。只要选择过一次，它就会一直显示在菜单里。
+进入Eclipse，选择 File→New→Android Project 。有时菜单里可能会没有Android Project一项（尤其是在第一次启动Eclipse的时候），这时选择Other找到Android Project即可。只要选择过一次，它就会一直显示在菜单里。
 
 % In the new project dialog window, fill out the following:
 
-进入new project对话框，分别进行如下设置：
+进入New Project对话框，分别进行如下设置：
 
 % + "Project name" is an Eclipse construct. Eclipse organizes everything into projects. A project name should be one word. I like to use [CamelCase http://en.wikipedia.org/wiki/Camel_case_(programming)] naming convention here. Go ahead and type: HelloWorld.
 % + Next, you need to choose the build target. The build target tells the build tools which version of Android platform you are building for. You should see a list of available platforms and add-ons you have installed as part of your SDK in here. Go ahead, pick one of the newer ones, such as Android 2.2 (but don’t choose the targets named Google APIs).
-
 % + You need to fill out your project properties next. The application name is the plain English name of your application. Go ahead, write something like Hello, World!!!.
 % + The package name is a Java construct. In Java, all source code is organized into packages. Packages are important because, among other things, they specify the visibility of objects between the various Java classes in your project. In Android, packages are also important for application signing purposes. Your package name should be the reverse of your domain name with optional subdomains. I might use com.example.calculator if I were building a calculator app and my domain name was example.com. I’m going to be using com.marakana for my package name here.
 % + You can optionally specify an activity. I haven’t covered activities yet (you’ll learn about them in [Chapter 6, Android User Interface #ch6]), but think of them as corresponding to the various screens in your application. An activity is going to be represented by a Java class, so as such its name should adhere to Java class naming conversion: start with upper case and use CamelCase to separate words. So, type HelloWorld for your activity name.
 % + The minimum SDK version is the minimum version of Android—as represented by API level—that is required on the device in order to run this application. You want this number to be as low as possible so that your app can run on as many various devices out there as possible. I’m going to put 8 here to represent Android 2.2, which I know I have installed.
 % + Finally, click on Finish button and Eclipse will create your project. Let’s look at the various files that this process created:
 
-+ 填写"Project name"。这是个Eclipse概念：Eclipse把一切皆组织为项目(project)，而项目名只能是一个单词。在命名上，我个人比较喜欢[CamelCase http://en.wikipedia.org/wiki/Camel_case]方式。在此输入：``HelloWorld``。
-+ 接下来选择"build target"，它为构建工具指明了目标平台的版本。其中罗列了所有可用的目标平台，以及你的SDK中附带的扩展。在这里可以选择一个较新的版本，比如Android 2.2（但不要选择Google APIs）。
-+ 接下来设置你的project属性。其中的application name也就是你应用的英文名字，随便写上就好，比如"Hello, World!!!"。
-+ "package name"是个Java中的概念。在Java中所有源码都是组织为package，用以表示Java对象在不同类中的可见性，是个很重要的概念。在Android开发中package作为应用注册的单位，也是很重要的。其命名规范为逆序的域名，后跟可选的子域名(译者：这里译法有存疑)。比如我有个域名是example.com，要编写一个计算器（caculator）的应用，那package的名字就可以是com.example.caculator。
-+ "activity"一项是可选的。目前我们还没讲到Activity（参见[第六章，Android用户界面 #ch6]），姑且把它看作是程序的界面即可。Activity通过Java的类来表示，因此其名字也就遵守Java中类的命名规范：首字母大写，对多个单词使用CamelCase命名规范。在此输入``HelloWorld``作为Activity的名字。
++ 填写"Project name"。这是个Eclipse概念：Eclipse把一切皆组织为项目(project)，而项目名只能是一个单词。在命名上，我个人比较喜欢[CamelCase http://en.wikipedia.org/wiki/Camel_case]风格。在此输入：``HelloWorld``。
++ 选择"build target"，它为构建工具指明目标平台的版本。其中罗列了所有可用的目标平台，以及你的SDK中附带的扩展。在这里可以选择一个较新的版本，比如Android 2.2（但不要选择Google APIs）。
++ 接下来设置project属性。其中的application name也就是你应用的英文名字，随便写上就好，比如"Hello, World!!!"。
++ "package name"是个Java中的概念。在Java中所有源码都是组织为package，用以表示Java对象在不同类中的可见性，是个很重要的概念。在Android开发中package作为应用注册的单位，也是很重要的。它的命名规范为逆序的域名，后跟可选的子域名(译者：这里译法有存疑)。比如我有个域名是example.com，要编写一个计算器（caculator）的应用，那package的名字就可以是com.example.caculator。
++ "activity"一项是可选的。目前我们还没讲到Activity（参见[第六章，Android用户界面 #ch6]），姑且把它看作是程序的界面即可。Activity通过Java的类来表示，因此它的名字也同样遵循Java中类的命名规范：首字母大写，对多个单词使用CamelCase命名规范。在此输入``HelloWorld``作为Activity的名字。
 + "minimum SDK version"是这一应用所支持目标平台的最低版本，以API Level为单位。若想要得到较高的兼容性，就选择一个较低的版本。在这里我们只要支持本机即可，因此选择8，对应Android 2.2。
 + 最后单击Finish按钮，Eclipse就会新建出一个项目。接下来，我们依次观察一下在这一环节中新建出来的文件。
 
@@ -175,7 +173,7 @@ Eclipse通过project组织你的工作，而所有的project皆放置在workspac
 
 % Manifest file glues everything together. It is this file that explains what the application consists of, what all its main building blocks are, what permissions it requires, and so on.
 
-Manifest文件是应用各部分之间的牵线人。它申明了程序中包含的构件(Building Blocks)、所需的权限等等信息。
+Manifest文件是应用程序各部分之间的牵线人。它申明了程序中包含的构件(Building Blocks)及其所需权限等信息。
 
 **Example 3.1. AndroidManifest.xml**
 {CODE}
@@ -201,7 +199,7 @@ Manifest文件是应用各部分之间的牵线人。它申明了程序中包含
 
 % The layout file specifies the layout of your screen. In this case, we have only one screen and its loaded by the Java code, HelloWorld activity above.
 
-Layout文件用于表示界面的布局。在这里我们只用到了一个界面，即上面定义的Activity：``HelloWorld``。
+Layout文件用于表示界面的布局。在这里我们只用到了一个界面，就是上面定义的Activity：``HelloWorld``。
 
 **Example 3.2. res/layout/main.xml**
 {CODE}
@@ -219,7 +217,7 @@ Layout文件用于表示界面的布局。在这里我们只用到了一个界�
 
 % This is another XML file that contains all text that your application uses. For example, names of buttons, labels, default text and all such strings go into this file. This is the best practice of separating concerns of various files, even if they are XML files. In other words, layout XML is responsible for layout out widgets, but strings XML is responsible for their textual content.
 
-这也是个XML文件，包含应用中出现的所有文本。比如按钮的名字、Label、默认的文本等等，都统一在这一文件之下。把问题分解，令不同文件各司其职，这是个很好的做法——哪怕是XML文件。由此，Layout文件负责Widget的布局，Strings文件负责文本内容。
+这也是个XML文件，内容是程序中出现的所有文本。比如按钮的名字、Label、默认的文本等等，都统一在这一文件之下。把问题分解，令不同文件各司其职，这是个很好的做法——哪怕是XML文件。由此，Layout文件负责Widget的布局，Strings文件负责文本内容。
 
 **Example 3.3. res/values/strings.xml**
 {CODE}
@@ -235,11 +233,11 @@ Layout文件用于表示界面的布局。在这里我们只用到了一个界�
 
 % The R file is the glue between the world of Java and the world of resources. It is an automatically generated file and as such you never modify it. It is recreated every time you change anything in the res directory, for example add an image or XML file.
 
-R文件用来关联Java与外部资源。它在res目录中的内容发生改变时(比如添加一个图片或者xml文件)由SDK自动生成，不必手工修改。
+R文件负责Java与外部资源之间的关联。它在res目录中的内容变化时(比如添加一个图片或者xml文件)由SDK自动生成，不必手工修改。
 
 % You don’t need to look at this file much. We will use data it in quite a bit, but we’ll use Eclipse to help us refer to values stored in this file.
 
-对这个文件本身我们不必关注太多，毕竟有Eclipse代劳。不过它里面的数据是非常有用的。
+既然有Eclipse代劳，对这个文件本身我们不必关注太多。不过它里面的数据是非常有用的。
 
 **Example 3.4. gen/com/marakana/R.java**
 {CODE}
@@ -273,7 +271,7 @@ public final class R {
 
 % The Java code is what drives everything. It is this code that ultimately gets converted to Dalvik executable and runs your application.
 
-Java代码是整个应用的驱动者。它会被编译为可执行格式，在Dalvik之上执行。
+Java代码是整个程序的驱动者。它会被编译为可执行格式，在Dalvik之上执行。
 
 **Example 3.5. HelloWorld.java**
 {CODE}
@@ -297,7 +295,7 @@ public class HelloWorld extends Activity {
 
 % Running your application on a physical device versus an emulated device is pretty much the same thing. That is because the emulator is an actual code emulator, meaning it runs the same code base as the actual device, all the way down to the machine layer.
 
-应用在仿真器（Emulator）上执行，与在真机上执行的效果是一样的。这是因为仿真器是机器码级别的仿真，其机器码与真机相同。
+在仿真器（Emulator）上执行程序，与在真机上执行的效果是一样的。这是因为仿真器是机器码级别的仿真，其机器码与真机相同。
 
 {TIP}
 % A simulator and an emulator sound very similar, but are fundamentally different. To emulate means to imitate the machine executing the binary code. So, an emulator is sort of like a virtual machine. A simulator merely simulates the behavior of the code at a higher level. Android SDK ships with a true emulator, based on [QEMU http://wiki.qemu.org/Main_Page].
@@ -322,7 +320,7 @@ public class HelloWorld extends Activity {
 
 % Each AVD can have an SD Card. You can just specify a number here for your built-in card, in megabytes. Skin is the look and feel of your device as well as its form factor. Hardware option lets you fine tune what this AVD does or doesn’t support.
 
-AVD中也有一个SD卡，你能以MB为单位指明其大小。Skin指明其位置由你决定虚拟设备中的观感。通过Hardware选项可以详细设置AVD的硬件参数，选择其支持的特性。
+AVD中也有一个SD卡，你能以MB为单位指明它的大小。Skin表示虚拟设备的观感。通过Hardware选项可以详细设置AVD的硬件参数，选择支持的特性。
 
 	Figure 3.4. New AVD Dialog
 		[images/03-CreateNewAVD.png]

@@ -494,30 +494,37 @@ public void onCreate(Bundle savedInstanceState) {
 
 Now that we have username, password and API root coming from user-defined preferences, we can refactor our twitter code so it no longer hard-codes them. To do that, we add a private method to StatusActivity that is responsible for returning valid twitter object. This method lazily initializes twitter meaning if twitter exists it returns it as-is, otherwise creates it.
 
-现在用户名、密码与API root几项都已定义，。
+现在用户名、密码与API root几项都已定义。接下来我们可以重构代码中的Twitter对象部分，消除原先的硬编码。我们可以为StatusActivity添加一个私有方法，用以返回可用的twitter对象。它判断twitter对象是否存在，若不存在，则创建新对象。
 
 {CODE}
 private Twitter getTwitter() {
-        if (twitter == null) {  // 
+        if (twitter == null) {  // #{1}
                 String username, password, apiRoot;
-                username = prefs.getString("username", "");     // 
+                username = prefs.getString("username", "");     // #{2}
                 password = prefs.getString("password", "");
     apiRoot = prefs.getString("apiRoot", "http://yamba.marakana.com/api");
 
                 // Connect to twitter.com
-                twitter = new Twitter(username, password);      // 
-                twitter.setAPIRootUrl(apiRoot); // 
+                twitter = new Twitter(username, password);      // #{4}
+                twitter.setAPIRootUrl(apiRoot); // #{5}
         }
         return twitter;
 }
 {/CODE}
 
-+ Only if twitter is null, i.e. undefined, we create it.
-+ Get the username and password from the shared preference object. The first parameter in getString() is the key we assigned to each preference item, such as username and password. The second argument is the default value in case such preference is not found. Keep in mind that first time user runs your application, the preference file doesn’t exist so defaults will be used. So, if user hasn’t went to PrefsActivity to setup her preferences, this code will attempt to login with empty username and password, and thus fail. The failure however is going to happen when try try to do the actual status update because that’s how jtwitter library is designed.
-+ We login to twitter service with user-defined preferences.
-+ Remember that we need to update the actual service that we using by updating the API root URL for that service.
+% + Only if twitter is null, i.e. undefined, we create it.
+% + Get the username and password from the shared preference object. The first parameter in getString() is the key we assigned to each preference item, such as username and password. The second argument is the default value in case such preference is not found. Keep in mind that first time user runs your application, the preference file doesn’t exist so defaults will be used. So, if user hasn’t went to PrefsActivity to setup her preferences, this code will attempt to login with empty username and password, and thus fail. The failure however is going to happen when try try to do the actual status update because that’s how jtwitter library is designed.
+% + We login to twitter service with user-defined preferences.
+% + Remember that we need to update the actual service that we using by updating the API root URL for that service.
 
-Now, we don’t use twitter object directly any more, but call getTwitter() to get it instead. So, onClick() becomes like this:
++ 仅在twitter为null时创建新对象。
++ 从SharedPreferences对象中获取username与password。``getString()``的第一个参数是选项条目的键，比如"username"和"password"，第二个参数是条目不存在时备用的默认值。因此，如果用户在登录前还没有设置个人选项，到这里用户名密码就都是空的，自然也就无法登录。但是由于jtwitter设计的原因，用户只有在尝试发送消息时才会看到错误。
++ 按照用户提供的用户名密码登录。
++ 我们需要提供自己的API root才可以访问twitter服务。
+
+% Now, we don’t use twitter object directly any more, but call getTwitter() to get it instead. So, onClick() becomes like this:
+
+到这里，我们不再直接引用twitter对象，而统一改为通过``getTwitter()``获取它的引用。修改后的``onClick()``方法如下：
 
 {CODE}
 public void onClick(View v) {
@@ -531,9 +538,13 @@ public void onClick(View v) {
 }
 {/CODE}
 
-Note that although we moved the code where we initialize our connection to the cloud, we still need the AsyncTask to deal with the fact that this call is still blocking and may take a while to complete, as it’s subject to network availability and latency.
+% Note that although we moved the code where we initialize our connection to the cloud, we still need the AsyncTask to deal with the fact that this call is still blocking and may take a while to complete, as it’s subject to network availability and latency.
 
-Now, as we mentioned before when updating onCreate() and registering for preference updates, we need to handle what happens when user changes username or password. By registering prefs.registerOnSharedPreferenceChangeListener(this) in onCreate() and implementing OnSharedPreferenceChangeListener, we got a callback method onSharedPreferenceChanged() that system will invoke whenever preferences change. In this method, we simply invalidate the twitter object so next time it is needed, getTwitter() will recreate it.
+留意，我们虽将初始化的代码移到了外面，但它依然是阻塞的，可能会因为网络状况的不同产生一定的延迟。日后我们仍需对此做些考虑，利用AsyncTask来改进它。
+
+% Now, as we mentioned before when updating onCreate() and registering for preference updates, we need to handle what happens when user changes username or password. By registering prefs.registerOnSharedPreferenceChangeListener(this) in onCreate() and implementing OnSharedPreferenceChangeListener, we got a callback method onSharedPreferenceChanged() that system will invoke whenever preferences change. In this method, we simply invalidate the twitter object so next time it is needed, getTwitter() will recreate it.
+
+前面修改``onCreate()``时曾提到，我们需要跟踪用户名与密码的变化。因此，在当前的类中添加``onSharedPreferenceChanged()``方法，然后在``onCreate()``中通过``pres.registerOnSharedPreferenceChangeListener(this)``将它注册到prefs对象，这样就得到一个回调函数，它会在选项信息变化时触发。在这里我们只需简单将twitter设为null，到下次获取引用时，``getTwitter()``会重新创建它的实例。
 
 {CODE}
 public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
@@ -541,5 +552,18 @@ public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
         twitter = null;
 }
 {/CODE}
+
+
+
+==File System, Explained==
+
+So, where are these preferences stored on the device? How secure is my username and password? To answer that, we need to look at how Android filesystem is organized.
+
+===Exploring File System===
+
+There are two ways for you to access the file system on an Android device. One way is using Eclipse, the other command line.
+
+In Eclipse, we use File Explorer view to access the file system. To open up the File Explorer view, go to Window→Show View→Other…→Android→File Explorer. You can also access File Explorer view via DDMS Perspective. Select DDMS Perspective in the top-right corner of your Eclipse [images/07-icon_ddms.png] or go to Window→Open Perspective→Other…→DDMS. If you have multiple devices connected to your workstation, make sure you select which one you are working with in the Devices view. You should now be able to navigate through the file system of the device.
+
 
 
