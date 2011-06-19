@@ -302,20 +302,19 @@ public class PrefsActivity extends PreferenceActivity { // #{1}
 菜单项显示的标题。留意屏幕的宽度往往是有限的，因此标题应尽量的短。好习惯是，在此引用``string.xml``中定义的内容。
 
 **Icon**
-The icon that shows along with the menu item’s title. While is is not required, it is a very useful visual cue from usability point of view. However, in this case it illustrates how to point to Android system resources.
+% The icon that shows along with the menu item’s title. While is is not required, it is a very useful visual cue from usability point of view. However, in this case it illustrates how to point to Android system resources.
 
 % The next section describes these resources in more detail.
 
 显示在菜单项上的图标。这不是必须的，但是加上对用户体验有好处。在这里，我们拿它作为例子，展示引用Android系统资源的方法。而具体细节将在下一节讨论。
 
 
-===Android System Resources===
+% ===Android System Resources===
 ===Android系统资源===
 
 % Just like your application can have its resources so can Android system as well. Like most other operating systems, Android comes with some preloaded images, graphics, sound clips, and other types of resources. Recall that our app resources are in /res/. To refer to Android system resources prefix them with with android: keyword in XML, for example @android:drawable/ic_menu_preferences. If you are referring to an Android system resource from Java, then you use android.R instead the usual R reference.
 
-我们的程序都有自己的资源，Android系统也同样。Android系统中内置了许多图标、图像、音频等等各种资源文件。回想下，应用程序的资源文件都在/res/目录之下，要在XML中引用它们，只需填上地址即可；而引用系统资源，则需要为地址加一个前缀``android:``，比如``@android:drawable/ic_menu_preferences``。在Java中引用的话，可以用android.R替换掉原先的R。
-
+我们的程序都有自己的资源，Android系统也同样。Android系统中内置了许多图标、图像、音频等等各种资源文件。回想下，应用程序的资源文件都在/res/目录之下，要在XML中引用它们，只需填上地址即可；而引用系统资源，则需要为地址加一个前缀``android:``，比如``@android:drawable/ic_menu_preferences``。在Java中引用的话，就用android.R替换掉原先的R。 
 {TIP}
 % The actual resource files are in your SDK, inside specific platform folder. For example, if you are using Android 9 (Gingerbread), the location of the resource folder would be android-sdk/platforms/android-9/data/res/.
 
@@ -492,7 +491,7 @@ public void onCreate(Bundle savedInstanceState) {
 + 选项信息可以随时为用户修改，因此我们需要提供一个机制来跟踪选项信息的变化。为此我们在StatusActivity中提供一个``OnSharedPreferenceChangeListener``接口的实现，并注册到SharedPreferences对象中。具体内容将在后面讨论。
 
 
-Now that we have username, password and API root coming from user-defined preferences, we can refactor our twitter code so it no longer hard-codes them. To do that, we add a private method to StatusActivity that is responsible for returning valid twitter object. This method lazily initializes twitter meaning if twitter exists it returns it as-is, otherwise creates it.
+% Now that we have username, password and API root coming from user-defined preferences, we can refactor our twitter code so it no longer hard-codes them. To do that, we add a private method to StatusActivity that is responsible for returning valid twitter object. This method lazily initializes twitter meaning if twitter exists it returns it as-is, otherwise creates it.
 
 现在用户名、密码与API root几项都已定义。接下来我们可以重构代码中的Twitter对象部分，消除原先的硬编码。我们可以为StatusActivity添加一个私有方法，用以返回可用的twitter对象。它判断twitter对象是否存在，若不存在，则创建新对象。
 
@@ -555,15 +554,166 @@ public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
 
 
 
-==File System, Explained==
+% ==File System, Explained==
+==简介文件系统==
 
-So, where are these preferences stored on the device? How secure is my username and password? To answer that, we need to look at how Android filesystem is organized.
+% So, where are these preferences stored on the device? How secure is my username and password? To answer that, we need to look at how Android filesystem is organized.
 
-===Exploring File System===
+话说回来，前面的这些选项信息又是储存在设备的哪里？我的用户名与密码是否安全？在这些问题之前，我们需要先对Android的文件系统有所了解。
 
-There are two ways for you to access the file system on an Android device. One way is using Eclipse, the other command line.
+% ===Exploring File System===
+===浏览文件系统===
 
-In Eclipse, we use File Explorer view to access the file system. To open up the File Explorer view, go to Window→Show View→Other…→Android→File Explorer. You can also access File Explorer view via DDMS Perspective. Select DDMS Perspective in the top-right corner of your Eclipse [images/07-icon_ddms.png] or go to Window→Open Perspective→Other…→DDMS. If you have multiple devices connected to your workstation, make sure you select which one you are working with in the Devices view. You should now be able to navigate through the file system of the device.
+% There are two ways for you to access the file system on an Android device. One way is using Eclipse, the other command line.
 
+访问Android的文件系统有两种方式。一种是通过Eclipse，另一种是通过命令行。
+
+% In Eclipse, we use File Explorer view to access the file system. To open up the File Explorer view, go to Window→Show View→Other…→Android→File Explorer. You can also access File Explorer view via DDMS Perspective. Select DDMS Perspective in the top-right corner of your Eclipse [images/07-icon_ddms.png] or go to Window→Open Perspective→Other…→DDMS. If you have multiple devices connected to your workstation, make sure you select which one you are working with in the Devices view. You should now be able to navigate through the file system of the device.
+
+Eclipse中提供了一个File Explorer工具供我们访问文件系统。要打开它，可以选择``Window→Show View→Other…→Android→File Explorer``，也可以单击右上角的DDMS 中访问它。要打开DDMS，可以单击右上角的DDMS Perspective[images/07-icon_ddms.png]，也可以选择``Window→Open Perspective→Other…→DDMS``。如果在工作台上连接着多台设备，选择出正确的设备，然后就可以访问它的文件系统了。
+
+% If you prefer the command line, you can always use adb shell to get to the shell of the device. From there you can explore the file system like you would on any other Unix platform.
+
+如果更喜欢命令行，adb shell就是你的首选。通过它，你可以像访问Unix系统那样访问设备的文件系统。
+
+% ===File System Partitions===
+===文件系统的分区===
+
+% There are three main parts of the file system on every Android device. They are:
+
+Android设备主要有三个分区，即：
+
+% - System partition at /system/
+% - SDCard at /sdcard/
+% - User Data partition at /data/
+
+- 系统分区：/system/
+- SDCard分区：/sdcard/
+- 用户数据分区：/data/
+
+**Figure 7.5. File System as seen via File Explorer in Eclipse**
+
+[images/07-FileSystem.png]
+
+
+% ===System Partition===
+===系统分区===
+
+% System partition is where your entire Android operating system is. This is the main partition containing all your preinstalled applications, system libraries, Android framework, linux command line tools, and so on.
+
+系统分区用于存放整个Android操作系统。预装的应用程序、系统库、Android框架、Linux命令行工具等等，都存放在这里。
+
+% System partition is mounted read-only, meaning you as developer have very little influence over it. As such, this partition is of limited interest to us.
+
+系统分区是以只读模式挂载的，应用开发者针对它的发挥空间不大，因此我们不多做关注。
+
+% The system partition in the Emulator corresponds to system.img file in your platform images directory, located in android-sdk/platforms/android-8/images/ folder.
+
+在仿真器中，系统分区对应的映像文件是``system.img``，它与平台相关，位于android-sdk/platforms/android-8/images目录。
+
+===SDCard Partition===
+
+% SDCard partition is a free-for-all mass storage. Your app can read files from this partition as well as write files to it if it holds WRITE_TO_EXTERNAL_STORAGE permission. This is a great place to store large files, such as music, photos, videos and similar.
+
+SDCard分区是个通用的存储空间。你的程序只要拥有WRITE_TO_EXTERNAL_STORAGE权限，即可随意读写这个文件系统。这里最适合存放音乐、照片、视频等大文件。
+
+% Note that since FroYo version of Android, /sdcard mount point appears in Eclipse File Explorer under /mnt/sdcard location. This is because of the new feature in FroYo to allow for storing and running applications on the SDCard as well.
+
+留意，Android自FroYo版本开始，Eclipse File中显示的挂载点从/sdcard改为了/mnt/sdcard。这是因为FroYo引入的新特性，允许在SDCard中存储并执行程序。
+
+% As an app developer, SDCard partition is very useful and important to you. At the same time, this partition is not very structured.
+
+对应用开发者而言，SDCard分区无疑十分有用。不过它的文件结构也相对松散一些，管理时需要注意。
+
+% This partition typically corresponds to sdcard.img in your Android Virtual Device (AVD) directory. This directory is in you ~/.android/avd/ folder and will have a subdirectory for each specific virtual device. On the physical device, it is an actual SD card.
+
+这个分区的镜像文件一般是sdcard.img，位于对应设备的AVD目录之下，也就是``~/.android/avd``之下的某个子目录。对真机而言，它就是一个SD卡。
+
+% ===User Data Partition===
+===用户数据分区===
+
+% As user and app developer, the most important partition is the User Data partition. This is where all your user data is stored, all the downloaded apps are located, and most importantly, all apps' data is. This includes both preinstalled apps as well as user-downloaded apps.
+
+对开发者和用户来讲，用户数据分区才是最重要的。用户数据都储存在这里，下载的应用程序储存在这里，而且所有的应用程序数据也都储存在这里。
+
+% So, while user apps are stored in /data/app/ folder, the most important folder to us as app developer is /data/data/ folder. More specifically, within this folder there’s a subfolder corresponding to each app. This folder is identified by the Java package that this app used to sign itself. Again, this is why Java packages are important to Android security.
+
+用户安装的应用程序都储存在/data/app目录，而开发者关心的数据文件都储存在/data/data目录。在这个目录之下，每个应用程序对应一个单独的子目录，按照Java package的名字作为标识。从这里可以再次看出Java package在Android安全机制中的地位。
+
+% Android framework provides number of handy methods as part of context that help you access user data file system from within your application. Take a look at getFilesDir() for example.
+
+Android框架提供了许多相关的辅助函数，允许应用程序访问文件系统，比如``getFilesDir()``。
+
+% This partition typically corresponds to user-data.img in your Android Virtual Device (AVD) directory. As before, this directory is in your ~/.android/avd/ folder and will have a subdirectory for each specific virtual device.
+
+这个分区的镜像文件是user-data.img，位于对应设备的AVD目录之下。同前面一样，也是在~/.android/avd/之下的某个子目录。
+
+% When you create a new app, you assign your Java code to a specific package. Typically, this package follows the Java convention of reverse domain name plus app name. For example, Yamba app is in com.marakana.yamba package. So, once installed, Android creates a special folder just for this app under /data/data/com.marakana.yamba/. This folder is the cornerstone of our private secured file system dedicated to each app.
+
+新建应用程序的时候，你需要为Java代码指定一个package，按约定，它的名字一般都是逆序的域名，比如``com.marakana.yamba``。应用安装之后，Android会为应用单独创建一个文件夹``/data/data/com.marakana.yamba/``。其中的内容就是应用程序的私有数据。
+
+%TALK: 查了下，这些数据还不是加密的，似乎把SD卡偷走就能读出来里面的数据...没搞懂这安全是什么来头。 -fleuria
+
+% There will be sub-folders in /data/data/com.marakana.yamba2/, but they are well-defined. For example, the preferences are in /data/data/com.marakana.yamba2/shared_prefs/. As a matter of fact, if you open up DDMS perspective in your Eclipse and select File Explorer, you can navigate to this partition. You will probably see com.marakana.yamba2_preferences.xml file in there. You could pull this file and exam in it, or you could use adb shell.
+
+``/data/data/com.marakana.yamba2/``下面也有子目录，但是结构很清晰，不同的数据分在不同的目录之下，比如首选项信息就都位于``/data/data/com.marakana.yamba2/shared_prefs/``。通过Eclipse的File Explorer访问这一目录，可以在里面看到一个``com.marakana.yamba2_preferences.xml``文件。你可以把它拷贝出来，也可以在adb shell中直接查看。
+
+% adb shell is another one of those common adb subcommands to access the shell of your device (either physical or virtual). For instance, you could just open up your command line terminal and type:
+
+adb shell是adb的另一个重要命令，它允许你访问设备(真机或者虚拟机)的shell。就像下面这样：
+
+{CODE}
+[user:~]> adb shell
+# cd /data/data/com.marakana.yamba2/shared_prefs
+# cat com.marakana.yamba2_preferences.xml
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<map>
+<string name="password">password</string>
+<string name="apiRoot">http://yamba.marakana.com/api</string>
+<string name="username">student</string>
+</map>
+#
+{/CODE}
+
+% This XML file represents the storage for all our preference data for this application. As you can see, our username, password and API root are all stored in there.
+
+这个XML文件里表示的就是这个程序中的选项数据。可见，用户名、密码与API root都在这里。
+
+%TALK: 感觉这里很坑爹。 -fleuria
+
+% ===File System Security===
+===文件系统的安全机制===
+
+% So, how secure is this? This is a common question by security folks. Username and password stored in clear text always raises eyebrows.
+
+对安全问题敏感的同学肯定要问了，这样安全吗？明文存储的用户名密码总是容易让人神经紧张。
+
+% To answer this question, I usually compare it to finding someone’s laptop on the street. While indeed we can easily gain access to the "hard-drive" via adb tool, that doesn’t mean we have a way of reading its data. Each folder under /data/data/ is going to belong to a separate user account. This user account is managed by Linux. Unless our app is that app, it won’t have access to that folder. So, short of us reading byte-by-byte on the physical device, even clear-text data is secure.
+
+其实这个问题就像是在大街上捡到一台笔记本，我们可以拆开它的硬盘，但不一定能读取它的数据。``/data/data``之下的每个子目录都有单独的用户帐号，由负责Linux管理。也就是说，只有我们自己的应用程序才拥有访问这一目录的权限。数据既然无法读取，明文也就是安全的。
+
+%TALK: 坑爹！！！ -fleuria
+
+% On the Emulator, we have root permissions meaning we can explore entire file system. This is useful for development purposes.
+
+在仿真器上，我们只要拥有root权限即可访问整个文件系统。这有助于方便开发者进行调试。
+
+(译者注：作者在此说法似乎有矛盾之处。如果手机被偷走，依然不能排除小偷使用root权限窃取其中密码的可能。译者的建议是尽量避免使用明文。谈及安全问题，神经紧张一些总不会错。)
+
+
+% ==Summary==
+==总结==
+
+% At this point, the user can specify the username and password for the micro-blogging site. This makes the app usable to way more people than the the version that had this information previously hard-coded.
+
+到这里，用户可以设置自己的用户名与密码。同时移除原先的硬编码，使得程序更加可用。
+
+% Figure 7.6, “Yamba Completion” illustrates what we have done so far as part of the design outlined in Figure 5.4, “Yamba Design Diagram”:
+
+图7.6, //"Yamba Completion"//展示了目前为止我们已完成的部分。全图参见图5.4, //"Yamba Design Diagram"//。
+
+**Figure 7.6. Yamba Completion**
+
+[images/07-Yamba-2.png]
 
 

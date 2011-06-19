@@ -100,7 +100,7 @@ Android框架中内置的Layout各种各样，不过常用的大约也就这几�
 
 % LinearLayout is one of the simplest and most common layouts. It simply lays out its children next to each other, either horizontally or vertically. The order of children matters. As LinearLayout asks its children for how much space they need, it allocates desired space to each child in the order they are added. So, if an "older" child comes along and asks for all the space on the screen, there won’t be much left for the subsequent widgets in this layout.
 
-LinearLayout是最简单的Layout之一，只是简单地纵向或者横向排列它的子元素。它会按顺序计算每个子元素需要的空间，如果一个“较早加入的”元素占据了整个屏幕的大小，后面的元素就显示不出来了。因此子元素的顺序很重要。
+LinearLayout是最简单的Layout之一，只是简单地纵向或者横向排列它的子元素。它会按顺序计算每个子元素需要的空间，如果一个“较早加入的”元素占据了整个屏幕大小，后面的元素就显示不出来了。因此子元素的顺序很重要。
 
 % An important property for LinearLayout are layout_orientation and valid options are vertical or horizontal.
 
@@ -286,7 +286,7 @@ StatusActivity的源码大致如下：
 
 % Defines how much space this widget is asking from its parent layout to display itself. While you could enter a value in pixels, inches, or similar, that is not a good practice. Since your application could run on many different devices with various screen sizes, you want to use relative size for your components, not absolute. So, best practice would be to use either fill_parent or wrap_content for the value. fill_parent means that your widget wants all the available space from its parent. wrap_content means that it only requires as much space as it needs to display its own content. Note that in API Level 8 and higher, fill_parent has been renamed to match_parent.
 
-表示控件从父元素中占据的空间。在这里可以明确给出像素、英寸等单位的值，但这样是不提倡的。你的程序需要运行在不同的设备上，它们屏幕的尺寸会有不同，因此绝对大小不如相对大小。提倡的是，在这里给出fill_parent或者wrap_content，分别表示占据父元素的所有可用空间，或者仅占据自己全部显示所需要的最小空间。留意，自API level 8开始，fill_parent改为match_parent。
+表示控件在父元素中占据的空间。在这里可以明确给出像素、英寸等单位的值，但这样是不提倡的。你的程序需要运行在不同的设备上，它们屏幕的尺寸会有不同，因此绝对大小不如相对大小。提倡的是，在这里给出fill_parent或者wrap_content，分别表示占据父元素的所有可用空间，或者仅占据自己全部显示所需要的最小空间。留意，自API level 8开始，fill_parent改为match_parent。
 
 **layout_weight**
 

@@ -292,7 +292,7 @@ Eclipse 提供了方便重载的工具。进入 Source→Override/Implement Meth
 
 % At this point, in spirit of producing a minimally working app at each stage of learning, we’ll write just a little code that logs a note in each of the overridden methods. So the shell of our service looks like this:
 
-鉴于“最小可用”原则，我们在学习的时候也该从简入手。到这里，先只在每个重载的方法中记录些log。我们Service的样子大致如下：
+鉴于“最小可用”原则，我们在学习的时候也该从简入手。到这里，先只在每个重载的方法中记录些日志。我们Service的样子大致如下：
 
 **Example 8.3. UpdaterService.java, version 1**
 
