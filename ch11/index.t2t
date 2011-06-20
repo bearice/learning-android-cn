@@ -1,24 +1,37 @@
 %
 %
 %
-= Broadcast Receivers =
+{ORGI}= Broadcast Receivers =
+{TRAN}= 广播接收器 =
 
 
-In this chapter, you will learn what Broadcast receivers are and when to use them. We’ll create couple of different receivers illustrating different usage scenarios. First, you’ll create a broadcast receiver that will start up your update service at boot time, so that users always have their latest friends' timelines the first time they check for them (assuming their preferences are set). Next, you will create a receiver that will update the timeline when it changes while the user is viewing it. This will illustrate the programmatic registration of receivers and get you introduced to broadcasting intents. We’ll implement a receiver that is trigged by changes in network availability. And finally, we’ll learn how to surround our app with some security by defining permissions.
+{ORGI}In this chapter, you will learn what Broadcast receivers are and when to use them. We’ll create couple of different receivers illustrating different usage scenarios. First, you’ll create a broadcast receiver that will start up your update service at boot time, so that users always have their latest friends' timelines the first time they check for them (assuming their preferences are set). Next, you will create a receiver that will update the timeline when it changes while the user is viewing it. This will illustrate the programmatic registration of receivers and get you introduced to broadcasting intents. We’ll implement a receiver that is trigged by changes in network availability. And finally, we’ll learn how to surround our app with some security by defining permissions.
+{TRAN}在本章中，我们将学习什么是广播接收器 （Broadcast receivers） 以及如何使用它们。我们会创建一系列接收器来在不同的场景中使用。第一个接收器用来在系统启动时运行更新服务，以便用户能在第一时间看到它们时间线的更新（如果他们做好了相应设置的话）。接下来需要创建一个能让用户浏览时间线时动态更新显示的接收器。同时还会演示如何在程序中动态注册它。我们将实现一个能被网络触发的接收器。最后我们将学习如何定义权限来保证你的程序的安全。
 
-By the end of this chapter, your app has most of the functionality that a user would need. The app can send status updates, get friends' timelines, update itself, and start automatically. It works even when the user is not connected to the network (although of course it cannot send or receive new messages).
+{ORGI}By the end of this chapter, your app has most of the functionality that a user would need. The app can send status updates, get friends' timelines, update itself, and start automatically. It works even when the user is not connected to the network (although of course it cannot send or receive new messages).
+{TRAN}在本章结束后，我们的 app 将能够满足绝大部分用户的需求。它能够发送状态更新，获取用户时间线，更新自己的时间线，并且还能自动启动。 而且即使用户没有连接网络，它仍然可以运行（不过当然不能发生或者接受任何数据）。
 
-== About Broadcast Receivers ==
+{ORGI}== About Broadcast Receivers ==
+{TRAN}== 关于广播接收器 ==
 
-Broadcast receivers are Android’s implementation of the Publish/Subscribe messaging pattern, more precisely is an Observer pattern. Applications (known as publishers) can generate broadcasts to simply send events not knowing who, if anyone, will get them. Receivers (known as subscribers) that want the information subscribe to specific messages via filters. If the message matches a filter, the subscriber is activated (if it’s not already running) and notified of the message.
 
-As you may recall from Chapter 4, Main Building Blocks, a BroadcastReceiver is a piece of code to which an app subscribes in order to get notified when an action happens. That action is in a form of an intent broadcast. When the right intent is fired, the receiver wakes up and executes. The "wakeup" happens in form of a onReceive() callback method.
+{ORGI}Broadcast receivers are Android’s implementation of the Publish/Subscribe messaging pattern, more precisely is an Observer pattern. Applications (known as publishers) can generate broadcasts to simply send events not knowing who, if anyone, will get them. Receivers (known as subscribers) that want the information subscribe to specific messages via filters. If the message matches a filter, the subscriber is activated (if it’s not already running) and notified of the message.
+{TRAN}广播接收器是 Android 中对“发布/订阅”模式的一种实现，这种模式又被叫做“观察者模式 (Observer)”。应用程序（或称“发布者”）可以生产一系列广播然后把它们发送给接收者们而不用关心接收者到底是谁，如果存在接受者，它们将会得到这些消息。 接收者（或称“订阅者”）可以通过过滤器选择它关心的事件。如果某个消息符合过滤器条件，接收者就被激活（如果它没被激活的话）并且得到通知。
 
-== BootReceiver ==
 
-In our Yamba application, the UpdaterService is the one responsible for periodically updating the data from the online service. Currently, the user needs to manually start the service, which she does by first starting the application, then clicking on Start Service menu option.
+{ORGI}As you may recall from Chapter 4, Main Building Blocks, a BroadcastReceiver is a piece of code to which an app subscribes in order to get notified when an action happens. That action is in a form of an intent broadcast. When the right intent is fired, the receiver wakes up and executes. The "wakeup" happens in form of a onReceive() callback method.
+{TRAN}如果你还记得“第4章Main Building Blocks”中的内容，就应该知道 ``BroadcastReceiver`` 是应用程序定义的在得到某项通知后执行的代码段。这些通知是由广播 Intent 发布的。当某个 Intent 被触发时，接收器就会被唤醒并且执行其代码。这里的“唤醒”是指 ``onReceive()`` 调用。
+%REF ch4
 
-It would be much cleaner and simpler if somehow UpdaterService was started automatically by the system when the device is powered up. To do this, we create BootReceiver, a broadcast receiver that will get launched by the system when the boot is complete, and in turn will launch our TimelineActivity activity. The following few lines sets up our broadcast receiver.
+{ORGI}== BootReceiver ==
+{TRAN}== BootReceiver ==
+
+{ORGI}In our Yamba application, the UpdaterService is the one responsible for periodically updating the data from the online service. Currently, the user needs to manually start the service, which she does by first starting the application, then clicking on Start Service menu option.
+{TRAN}在 Yamba 中， ``UpdaterService`` 是负责在后台周期性更新数据的服务。 目前这个服务只能让用户手动启动应用，然后在菜单里选择 “Start Service” 才能启动。
+
+{ORGI}It would be much cleaner and simpler if somehow UpdaterService was started automatically by the system when the device is powered up. To do this, we create BootReceiver, a broadcast receiver that will get launched by the system when the boot is complete, and in turn will launch our TimelineActivity activity. The following few lines sets up our broadcast receiver.
+{TRAN}如果 UpdaterService 能够随着系统启动时自动启动，就能让系统实现的更加简洁。为了达到这个目的，我们需要 BootRecever -- 在系统启动完毕时运行的广播接收器。届时，它将负责启动 UpdaterService。
+%TALK 怀疑是原文错误： and in turn will launch our TimelineActivity activity. 根据下面的代码看应该是 UpdaterService
 
 **Example 11.1. BootReceiver.java**
 {CODE}
@@ -41,16 +54,24 @@ public class BootReceiver extends BroadcastReceiver { //1
 {/CODE}
 
 
-+ We create BootReceiver by subclassing BroadcastReceiver, the base class for all receivers.
-+ The only method that we need to implement is onReceive(). This method gets called when an intent matches this receiver.
-+ We launch an intent to start our Updater service. The system passed us a Context object when it invoked our onReceive() method, and we are expected to pass it on to the Updater service. The service doesn’t happen to use the Context object for anything, but we’ll see an important use later for a context.
+{ORGI}+ We create BootReceiver by subclassing BroadcastReceiver, the base class for all receivers.
+{TRAN}+ ``BootReceiver`` 继承 ``BroadcastReceiver`` ，它是所有广播接收器的基类
+{ORGI}+ The only method that we need to implement is onReceive(). This method gets called when an intent matches this receiver.
+{TRAN}+ 在这里我们只需要实现 ``onReceive()``，该方法在收到符合条件的Intent时调用。
+{ORGI}+ We launch an intent to start our Updater service. The system passed us a Context object when it invoked our onReceive() method, and we are expected to pass it on to the Updater service. The service doesn’t happen to use the Context object for anything, but we’ll see an important use later for a context.
+{TRAN}+ 使用 Intent 启动 UpdaterService。 系统在调用 ``onRecevie()`` 时会传入一个 Context 对象，我们需要把它传给 UpdaterService 。虽然现在 UpdaterService 并不需要这个Context，但是以后我们会发现它的重要性。
 
 
-At this point, we have our boot receiver. But, in order for it to get called - in order for the activity to start at boot - we must register it with the system.
+{ORGI}At this point, we have our boot receiver. But, in order for it to get called - in order for the activity to start at boot - we must register it with the system.
+{TRAN}现在我们完成了启动消息接收器，为了能让系统正确的调用它，以便能够启动我们的服务，需要将它向系统中注册。
 
-=== Registering the BootReceiver with the AndroidManifest file ===
 
-To register BootReceiver, we add it to the manifest file. We also add an intent filter to it. This intent filter specifies which broadcasts trigger the receiver to get activated.
+{ORGI}=== Registering the BootReceiver with the AndroidManifest file ===
+{TRAN}=== 在 AndroidManifest 中注册 BootReceiver ===
+
+
+{ORGI}To register BootReceiver, we add it to the manifest file. We also add an intent filter to it. This intent filter specifies which broadcasts trigger the receiver to get activated.
+{TRAN}注册 BootReceiver 就是在 manifest 文件中添加它的描述。 另外还要为它添加一组 intent 过滤器。过滤器定义了哪些广播消息可以出发接收器。
 
 
 **Example 11.2. AndroidManifest.xml: <application> section**
@@ -64,8 +85,9 @@ To register BootReceiver, we add it to the manifest file. We also add an intent 
 ...
 {/CODE}
 
-In order to get notifications for this particular intent filter, we must also specify that we’re using a specific permission required by it, in this case android.permission.RECEIVE_BOOT_COMPLETED.
 
+{ORGI}In order to get notifications for this particular intent filter, we must also specify that we’re using a specific permission required by it, in this case android.permission.RECEIVE_BOOT_COMPLETED.
+{TRAN}要使用特定的过滤器，需要赋予应用它需要的权限。在本例中是 ``android.permission.RECEIVE_BOOT_COMPLETED``。
 
 **Example 11.3. AndroidManifest.xml: <manifest> section**
 {CODE}
@@ -76,22 +98,30 @@ In order to get notifications for this particular intent filter, we must also sp
 
 
 {NOTE}
-If we don’t specify the permission we require, we simply won’t get notified when this event occurs, and we won’t have the chance to run our start-up code. We won’t even know we aren’t getting notified, so this is potentially a hard bug to find.
+{ORGI}If we don’t specify the permission we require, we simply won’t get notified when this event occurs, and we won’t have the chance to run our start-up code. We won’t even know we aren’t getting notified, so this is potentially a hard bug to find.
+{TRAN}如果我们不声明需要的权限的话，在事件发生时就不会得到通知，因此也就无法在系统启动是运行代码。更重要的是在运行过程中我们甚至不会知道到底自己会不会受到通知，因此这有可能成为一个很难找到的 BUG 。
 {/NOTE}
 
 
-=== Testing the Boot Receiver ===
+{ORGI}=== Testing the Boot Receiver ===
+{TRAN}=== 测试 BootReceiver ===
 
-At this point, you can reboot your device. Once it comes back up, your UpdaterService should be up and running. You can verify that either by looking at the LogCat for our output, or by using System Settings and checking that the service is running.
+{ORGI}At this point, you can reboot your device. Once it comes back up, your UpdaterService should be up and running. You can verify that either by looking at the LogCat for our output, or by using System Settings and checking that the service is running.
+{TRAN}现在，重启你的设备。等它启动完成后，UpdaterService就应该在运行着了。你可以通过 LogCat的输出来验证这一点，或者使用系统设置来检查服务是否在运行。
 
-To verify via System Settings, at the Home screen, click on th Menu button and choose Settings→Applications→Running Services. You should see UpdaterService listed there. At this point, you know the BootReceiver did indeed get the broadcast and has started the UpdaterService.
+{ORGI}To verify via System Settings, at the Home screen, click on th Menu button and choose Settings→Applications→Running Services. You should see UpdaterService listed there. At this point, you know the BootReceiver did indeed get the broadcast and has started the UpdaterService.
+{TRAN}要使用系统设置来验证，在主屏幕上点击菜单按钮，选择“设置 -> 应用程序 -> 正在运行的服务”。你应该可以看到 UpdaterService 在这里被列出。如果一切正常，我们可以确定 BootReceiver 的确收到了系统的广播并且启动了服务。
 
 
-== The TimelineReceiver ==
+{ORGI}== The TimelineReceiver ==
+{TRAN}== TimelineReceiver ==
 
-Currently, if you view your Timeline activity while a new status update comes in, you wouldn’t know about it. That’s because the UpdaterService doesn’t have a way to notify TimelineActivity to refresh itself.
+{ORGI}Currently, if you view your Timeline activity while a new status update comes in, you wouldn’t know about it. That’s because the UpdaterService doesn’t have a way to notify TimelineActivity to refresh itself.
+{TRAN}现在的程序中，如果你在浏览时间线时程序在后台更新了数据，用户并不会得到通知。 这是因为 ``UpdaterService`` 没办法通知 ``TimelineActivity`` 刷新显示。
 
-To address this, we create another broadcast receiver, this time as an inner class of TimelineActivity.
+
+{ORGI}To address this, we create another broadcast receiver, this time as an inner class of TimelineActivity.
+{TRAN}为了解决这个问题，我们需要创建另一个广播接收器，这次它是作为 ``TimelineActivity``的内部类出现的。
 
 
 **Example 11.4. TimelineActivity.java with TimelineReceiver inner class**
@@ -109,13 +139,18 @@ class TimelineReceiver extends BroadcastReceiver { //1
 {/CODE}
 
 
-+ As before, to create a broadcast receiver, we subclass BroadcastReceiver class.
-+ The only method we need to override is onReceive(). This is where we put the work we want done when this receiver is triggered.
-+ The work we want done is simply to tell the cursor object to refresh itself. We do this by invoking requery(), which executes the same query that was executed initially to obtain this cursor object.
-+ Notifies the adapter that underlying data has changed.
+{ORGI}+ As before, to create a broadcast receiver, we subclass BroadcastReceiver class.
+{TRAN}+ 广播接收器都是要继承 ``BroadcastReceiver`` 的，我们之前就讲过了。
+{ORGI}+ The only method we need to override is onReceive(). This is where we put the work we want done when this receiver is triggered.
+{TRAN}+ 接收器中唯一需要覆盖的方法是 ``onReceive()``。这里面的代码会在接收器被触发时执行。
+{ORGI}+ The work we want done is simply to tell the cursor object to refresh itself. We do this by invoking requery(), which executes the same query that was executed initially to obtain this cursor object.
+{TRAN}+ 在此需要做的是告诉cursor对象刷新他自己。我们只需要调用 ``requery()`` 方法来重新执行一次初始化时的数据查询就OK了。
+{ORGI}+ Notifies the adapter that underlying data has changed.
+{TRAN}+ 这里告诉 adapter 它内部的数据已经被更改过了。
 
 
-At this point, our receiver is ready but not registered. Unlike BootReceiver, where we registered our receiver with the system statically, via the manifest file, we’ll register TimelineReceiver programmatically. This is because TimelineReceiver makes sense only within TimelineActivity as it’s purpose is to refreshing the list when the user is looking at Timeline Activity.
+{ORGI}At this point, our receiver is ready but not registered. Unlike BootReceiver, where we registered our receiver with the system statically, via the manifest file, we’ll register TimelineReceiver programmatically. This is because TimelineReceiver makes sense only within TimelineActivity as it’s purpose is to refreshing the list when the user is looking at Timeline Activity.
+{TRAN}不过要让接收器正常工作，我们还需要注册它。不像刚才的 ``BootReceiver`` 那样使用 manifest 文件进行静态注册，这里我们需要动态添加接收器。这是因为 ``TimelineReceiver`` 仅仅在用户查看时间线时才有意义。
 
 
 **Example 11.5. TimelineActivity.java with TimelineReceiver**
@@ -149,10 +184,14 @@ protected void onPause() {
 {/CODE}
 
 
-+ We register the receiver in onResume() so that it’s registered whenever the TimelineActivity is running. Recall that all paths to the Running state go through the onResume() method, as described in the section called “Running State”.
-+ Similarly, we unregister the receiver on the way to the Stopped state (recall the section called “Stopped State”). onPause() is a good place to do that.
-What’s missing now is the explanation of what filter is. To specify what triggers the receiver, we need an instance of IntentFilter, which simply indicates which intent actions we want to be notified about. In this case, we make up an action string through which we filter intents.
+{ORGI}+ We register the receiver in onResume() so that it’s registered whenever the TimelineActivity is running. Recall that all paths to the Running state go through the onResume() method, as described in the section called “Running State”.
+{TRAN}+ 在 ``onResume()`` 中注册接收器，也就是当 ``TimelineActivity`` 开始运行时。在 “Running State” 一节中我们曾经讲过，无论 Activity 是如何被启动或者唤醒的， ``onResume()`` 方法都会被调用。
+{ORGI}+ Similarly, we unregister the receiver on the way to the Stopped state (recall the section called “Stopped State”). onPause() is a good place to do that.
+{TRAN}+ 类似的，当 Activity 被置于 Stopped 状态时， ``onPause()`` 会被系统调用，所以我们在这里移除之前注册的接收器。
 
+
+{ORGI}What’s missing now is the explanation of what filter is. To specify what triggers the receiver, we need an instance of IntentFilter, which simply indicates which intent actions we want to be notified about. In this case, we make up an action string through which we filter intents.
+{TRAN}现在来解释一下 filter 是什么。为了制定触发接收器的条件，我们需要实例化一个 ``IntentFilter`` 对象。这个对象保存了我们希望接受的 intent 。在本例中，我们直接使用了一个字符串来初始化这个对象。
 
 
 **Example 11.6. TimelineActivity.java with update onCreate()**
@@ -163,16 +202,18 @@ filter = new IntentFilter("com.marakana.yamba.NEW_STATUS"); //1
 {/CODE}
 
 
-+ Create a new instance of IntentFilter to filter for the com.marakana.yamba.NEW_STATUS intent action. Since this is a text constant, we’ll define it as such and refer to it as a constant later on. A good place to define it is the UpdaterService, because that’s the code that generates the events we’re waiting for.
+{ORGI}+ Create a new instance of IntentFilter to filter for the com.marakana.yamba.NEW_STATUS intent action. Since this is a text constant, we’ll define it as such and refer to it as a constant later on. A good place to define it is the UpdaterService, because that’s the code that generates the events we’re waiting for.
+{TRAN}+ 创建一个允许 ``com.marakana.yamba.NEW_STATUS`` 的 ``IntentFilter``。 由于这里使用了一个文本常量，最好将它定义成一个常量变量以方便在别处应用它。一般来说在 ``UpdaterService`` 中定义它是个不错的想法，因为这个类是触发此类事件的源。
 
 
+{ORGI}== Broadcasting Intents ==
+{TRAN}== 广播 Intents ==
 
-== Broadcasting Intents ==
+{ORGI}Finally, to trigger the filter, we need to broadcast an intent that matches the action that the intent filter is listening for. In case of BootReceiver, earlier, we didn’t have to do this because the system was already broadcasting the appropriate intent. However, for TimelineReceiver, the broadcast is ours to do because the intent is specific to our application.
+{TRAN}最后，为了能够触发这个 filter ，我们需要向系统广播一个能够匹配 filter 的 intent。 在之前的 ``BootReceiver`` 中我们没有这么做是因为系统会自己广播合适的 intent。 但是对于 ``TimelineReceiver`` 来说，这个工作就需要我们自己来完成了。
 
-Finally, to trigger the filter, we need to broadcast an intent that matches the action that the intent filter is listening for. In case of BootReceiver, earlier, we didn’t have to do this because the system was already broadcasting the appropriate intent. However, for TimelineReceiver, the broadcast is ours to do because the intent is specific to our application.
-
-If you recall from Chapter 8, Services, our UpdaterService had an inner class called Updater. This was the separate thread that connected to the online service and pulled down the data. Becausee this is where we know whether or not there are any new statuses, this is a good place to send notifications from as well.
-
+{ORGI}If you recall from Chapter 8, Services, our UpdaterService had an inner class called Updater. This was the separate thread that connected to the online service and pulled down the data. Becausee this is where we know whether or not there are any new statuses, this is a good place to send notifications from as well.
+{TRAN}在第八章“服务”中，我们为 ``UpdaterService`` 创建了一个叫 ``Updater`` 的内部类。它负责在独立的线程中连接服务器并抓取数据。所以在这个类中发送我们的通知是最合适的，因为能准确的知道什么时候会有新的数据可用。
 
 **Example 11.7. UpdaterService.java with Updater inner class**
 {CODE}
@@ -210,33 +251,47 @@ private class Updater extends Thread {
 {/CODE}
 
 
-+ We get the application object to access our common application methods.
-+ If you recall, our application provides fetchStatusUpdates() to get all the latest status updates and populate the database. This method returns the number of new statuses.
-+ We check whether there are any new statutes at all.
-+ This is the intent we are about to broadcast. NEW_STATUS_INTENT is a constant that represents an arbitrary action. In our case, we define it as com.marakana.yamba.NEW_STATUS, but it could be any string without spaces. However, using something that resembles your package name is a good practice.
-+ There’s a way to add data to an Intent. In our case, it would be useful to communicate to others as part of this broadcast how many new statuses there arre. In this line, we use Intent’s putExtra() method to add the number of new statuses under a key NEW_STATUS_EXTRA_COUNT, which is just our arbitrary constant.
-+ At this point, we know there’s at least one new status. sendBroadcast() is part of Context, which is a superclass of Service and therefore also a superclass of our UpdaterService. Since we’re inside the Updater inner class, we have to refer to the parent’s updaterService instance in order to call sendBroadcast(). This method simply takes the intent we just created.
-+ We tell this thread to sleep for a minute, so that it doesn’t overload the device’s CPU while checking regularly for updates.
-+ In case this thread is interrupted for whatever reason, we update this service’s runFlag so we know it’s not running any more.
+{ORGI}+ We get the application object to access our common application methods.
+{TRAN}+ 首先获取 application 对象，方便后面的调用。
+{ORGI}+ If you recall, our application provides fetchStatusUpdates() to get all the latest status updates and populate the database. This method returns the number of new statuses.
+{TRAN}+ application 对象定义了 ``fetchStatusUpdates()`` 方法来获取数据并写入数据库。这个方法会返回新获取的数据的数量。
+{ORGI}+ We check whether there are any new statutes at all.
+{TRAN}+ 检查是否有新数据到达。
+{ORGI}+ This is the intent we are about to broadcast. NEW_STATUS_INTENT is a constant that represents an arbitrary action. In our case, we define it as com.marakana.yamba.NEW_STATUS, but it could be any string without spaces. However, using something that resembles your package name is a good practice.
+{TRAN}+ 我们需要广播的 intent ，``NEW_STATUS_INTENT`` 是代表字符串 ``com.marakana.yamba.NEW_STATUS`` 的常量，这个常量的值可以为任何不包含空格的字符串。但是使用一个有意义的名称是个好习惯。
+{ORGI}+ There’s a way to add data to an Intent. In our case, it would be useful to communicate to others as part of this broadcast how many new statuses there arre. In this line, we use Intent’s putExtra() method to add the number of new statuses under a key NEW_STATUS_EXTRA_COUNT, which is just our arbitrary constant.
+{TRAN}+ 可以为 intent 提供附加数据，以方便不同模块间通信。在本例中，我们将其设置为新到达的数据的数量。在这里使用 Intent 的 ``putExtra()`` 方法将数据和对应的键值关联起来。
+{ORGI}+ At this point, we know there’s at least one new status. sendBroadcast() is part of Context, which is a superclass of Service and therefore also a superclass of our UpdaterService. Since we’re inside the Updater inner class, we have to refer to the parent’s updaterService instance in order to call sendBroadcast(). This method simply takes the intent we just created.
+{TRAN}+ 刚才已经检查过至少有一条新数据到达。所以使用 Context 提供的 sendBroadcast() 方法将 intent 广播出去。UpdaterService 的父类 Service 实现了 Context 接口所以使用 updaterService 变量来调用 sendBroadcast()。 这个方法的参数就是刚刚创建的 Intent。
+{ORGI}+ We tell this thread to sleep for a minute, so that it doesn’t overload the device’s CPU while checking regularly for updates.
+{TRAN}+ 让线程休眠一分钟，这样就不会让设备的 CPU 过载。
+{ORGI}+ In case this thread is interrupted for whatever reason, we update this service’s runFlag so we know it’s not running any more.
+{TRAN}+ 如果线程被任何原因打断，runFlag 会被设置成 false 表示服务不再继续运行。
 
 
 
 {NOTE}
-UpdaterService may be sending broadcasts even when the TimelineReceiver` is not registered. That is perfectly fine. Those broadcasts will simply be ignored.
+{ORGI}UpdaterService may be sending broadcasts even when the TimelineReceiver` is not registered. That is perfectly fine. Those broadcasts will simply be ignored.
+{TRAN}即便 ``TimelineReceiver`` 没有注册，``UpdaterService`` 仍然会广播 Intent。这很正常并且没用的广播会被系统简单的忽略掉。
 {/NOTE}
 
 
-At this point, a new status received by UpdaterService causes an intent to be broadcast over to the TimelineActivity, where the message gets received by the TimelineReceiver, which in turn refreshes the ListView of statuses.
+{ORGI}At this point, a new status received by UpdaterService causes an intent to be broadcast over to the TimelineActivity, where the message gets received by the TimelineReceiver, which in turn refreshes the ListView of statuses.
+{TRAN}现在，``UpdaterService`` 收到新的数据后就会发送一个 intent ，而 ``TimelineReceiver`` 能够接受到这个 intent 并且刷新相应的显示。
 
 
+{ORGI}== The Network Receiver ==
+{TRAN}== 网络接收器 ==
 
-== The Network Receiver ==
+{ORGI}With the current design, our service will start automatically at boot time and will attempt to connect to the cloud and retrieve latest updates approximately every minute. One of the problems with the current design is that the service will try to do so even when there’s no Internet connection available. This adds unnecessary attempts to wake up the radio and connect to the server, all of which is taxing the battery. Imagine how many wasteful attempts would be made while your phone is in Flight Mode on a cross-country flight. This highlights some of the inherit constraints for programming for mobile devices - we’re limited by the battery life and network connectivity.
+{TRAN}在现在的程序中， 我们编写的服务在系统启动后自动运行，并且每分钟尝试连接服务器并获取数据。这样的设计存在一个问题： 即使设备没有联网，程序仍然试图连接并获取数据，这样做会导致非必要的电池消耗。假如你的在一架跨国航班上启用手机的飞行模式，这样的程序会很快用光你的电池。所以我们需要为程序添加一些约束，来保证它能够适应移动设备的特点 -- 电池寿命和网络连接都是有限的。
 
-With the current design, our service will start automatically at boot time and will attempt to connect to the cloud and retrieve latest updates approximately every minute. One of the problems with the current design is that the service will try to do so even when there’s no Internet connection available. This adds unnecessary attempts to wake up the radio and connect to the server, all of which is taxing the battery. Imagine how many wasteful attempts would be made while your phone is in Flight Mode on a cross-country flight. This highlights some of the inherit constraints for programming for mobile devices - we’re limited by the battery life and network connectivity.
 
-A better approach would be to listen to network availability broadcasts and use that information to intelligently turn the service off when the Internet is unavailable and turn it back on when data connection comes back up. The system does send an intent whenever connection availability changes. Another system service allows us to find out what changed and act accordingly.
+{ORGI}A better approach would be to listen to network availability broadcasts and use that information to intelligently turn the service off when the Internet is unavailable and turn it back on when data connection comes back up. The system does send an intent whenever connection availability changes. Another system service allows us to find out what changed and act accordingly.
+{TRAN}一个好办法是监视网络是否可用，然后根据这个条件决定是否打开或者关闭后台服务。系统会在网络条件发生变化时发送一些 intent ，并且我们能通过一些系统服务获取当前的网络状态。
 
-In this case, we’re creating another receiver, NetworkReceiver. Just as before, we need to create a Java class that subclasses BroadcastReceiver, and register it via the Android manifest file.
+{ORGI}In this case, we’re creating another receiver, NetworkReceiver. Just as before, we need to create a Java class that subclasses BroadcastReceiver, and register it via the Android manifest file.
+{TRAN}在这里，我们创建一个新的接收器； ``NetworkReceiver``。 之前已经做过很多次了： 新建一个 Java 类并且继承 ``BroadcastReceiver``，然后在 manifest文件中注册它。
 
 
 **Example 11.8. NetworkReceiver.java**
@@ -272,21 +327,25 @@ public class NetworkReceiver extends BroadcastReceiver { //1
 
 
 
-+ As we said before, when you create a new broadcast receiver, you typically start by subclassing Android’s own BroadcastReceiver class.
-+ When the system broadcasts the particular intent action that we are subscribed to get in this receiver, the intent will have an extra piece of information indicating if the network is up or down. In this case, the variable is a Boolean value keyed to the ConnectivityManager.EXTRA_NO_CONNECTIVITY constant. In the previous section we associated a value to a string of our own invention; here we’re on the other end of the message, extracting a value from a Boolean. A value of true indicates that the network is down.
-+ If the network is down, we simply send an intent to our UpdaterService. We now have a use for the Context object that the system passed to this method. We call its stopService() method, passing the Intent.
-+ If the flag was false, we know that the network has changed and is now available. So we start our UpdaterService, the inverse of our previous stop action.
-
+{ORGI}+ As we said before, when you create a new broadcast receiver, you typically start by subclassing Android’s own BroadcastReceiver class.
+{TRAN}+ 之前已经说过，接收器都是 ``BroadcastReceiver`` 的子类。
+{ORGI}+ When the system broadcasts the particular intent action that we are subscribed to get in this receiver, the intent will have an extra piece of information indicating if the network is up or down. In this case, the variable is a Boolean value keyed to the ConnectivityManager.EXTRA_NO_CONNECTIVITY constant. In the previous section we associated a value to a string of our own invention; here we’re on the other end of the message, extracting a value from a Boolean. A value of true indicates that the network is down.
+{TRAN}+ 当系统广播了能够触发这个接收器的 intent 时，intent 会附带一组额外的数据来表示网络是否可用。在这里我们只要获取 ```` 所对应的 Boolean 值。 在之前创建 intent 时我们给 intent 提供过附加数据，而现在我们在接收 intent 时做了相反的事情。这里获取到的 Boolean 代表了网络是否无效。
+{ORGI}+ If the network is down, we simply send an intent to our UpdaterService. We now have a use for the Context object that the system passed to this method. We call its stopService() method, passing the Intent.
+{TRAN}+ 如果网络失效，就告诉 UpdaterService 停止。 系统传递给我们一个 Context 对象所以可以使用它。
+{ORGI}+ If the flag was false, we know that the network has changed and is now available. So we start our UpdaterService, the inverse of our previous stop action.
+{TRAN}+ 如果网络没有失效，那么需要启动 UpdaterService。
 
 
 {NOTE}
-Inside an activity or a service, we simply used methods startActivity(), startService(), stopService() and so on. This is because activities and services are subclasses of Context and thus they inherited these methods. So, there’s an is-a relationship between them and Context. Broadcast Receivers on the other hand have Context object passed into it, thus having a has-a relationship with it.
+{ORGI}Inside an activity or a service, we simply used methods startActivity(), startService(), stopService() and so on. This is because activities and services are subclasses of Context and thus they inherited these methods. So, there’s an is-a relationship between them and Context. Broadcast Receivers on the other hand have Context object passed into it, thus having a has-a relationship with it.
+{TRAN}如果在 activity 或者 service 中，我们可以直接调用 startActivity(), startService(), stopService() 等方法。 这是因为 activity 或者 service 都继承了 Context 。所以他们本身就是一个 Context 。而广播接收器并没有继承 Context ，所以需要使用系统传递的 Context。
 {/NOTE}
 
 
 
-Now that we have created this new receiver, we need to register it with the manifest file:
-
+{ORGI}Now that we have created this new receiver, we need to register it with the manifest file:
+{TRAN}注意在新建了接收器以后我们还需要在manifest中注册它：
 
 **Example 11.9. AndroidManifest.xml: <application> section**
 {CODE}
@@ -301,7 +360,8 @@ Now that we have created this new receiver, we need to register it with the mani
 
 
 
-We also need to update the permissions that our application uses, because that particular action filter for a network change is protected and requires us to ask the user to grant us this particular permission.
+{ORGI}We also need to update the permissions that our application uses, because that particular action filter for a network change is protected and requires us to ask the user to grant us this particular permission.
+{TRAN}另外还需要为应用添加相应的权限，因为监听网络状态是需要用户许可才能进行的。
 
 
 **Example 11.10. AndroidManifest.xml: <manifest> section**
@@ -314,25 +374,32 @@ We also need to update the permissions that our application uses, because that p
 {/CODE}
 
 
-+ Used by our Twitter object to connect to the Internet to get and post status updates. We saw this permission already in Chapter 6, Android User Interface. Not having this permission will cause our app to crash when it attempts to access the network (unless we catch and handle that network exception).
-+ Required in order to receive broadcasts that the system has booted. As mentioned earlier, if we don’t have this permission, we will silently be ignored at boot time and our boot code won’t run.
-+ Needed in order to receive network state updates. Just as with the boot receiver, if we don’t have this permission, we will be silently passed by when the network state changes.
+{ORGI}+ Used by our Twitter object to connect to the Internet to get and post status updates. We saw this permission already in Chapter 6, Android User Interface. Not having this permission will cause our app to crash when it attempts to access the network (unless we catch and handle that network exception).
+{TRAN}+ Twitter 对象需要访问 Internet 并且收发数据。 我们在第六章就使用过这个权限了。如果应用没有这个权限，在访问网络时将会因为异常而崩溃（除非你处理了网络异常）。
+{ORGI}+ Required in order to receive broadcasts that the system has booted. As mentioned earlier, if we don’t have this permission, we will silently be ignored at boot time and our boot code won’t run.
+{TRAN}+ 需要接受系统启动消息时使用的权限。之前说过如果你没有这个权限，那么启动代码就不会运行并且没有任何错误提示。
+{ORGI}+ Needed in order to receive network state updates. Just as with the boot receiver, if we don’t have this permission, we will be silently passed by when the network state changes.
+{TRAN}+ 监视网络状态需要的权限。 类似启动消息的权限一样，如果缺少了，就不会得到通知并且没有提示。
 
 
+{ORGI}== Adding Custom Permissions to Send and Receive Broadcasts ==
+{TRAN}== 为广播消息添加自定义权限 ==
 
-== Adding Custom Permissions to Send and Receive Broadcasts ==
+{ORGI}As discussed in the section called “Updating Manifest File for Internet Permission”, an application must be granted permissions to access certain restricted features of the system, such as connecting to Internet, sending SMS messages, making phone calls, reading the user’s contacts, taking photos, and so on. It is user who has to grant all or none of the permissions to the application at installation time, and it is the job of the application developer to list all the permissions the app needs to successfully run by adding the <uses-permission> element to the manifest file. So far, we’ve added permissions to Yamba in order to access the Internet, kick off our boot-time service, and learn about network changes.
+{TRAN}在前文中我们曾经讨论过，应用要访问某项系统功能必须显示的获取相应的权限，比如连接网络、发送短信、打电话、读取电话本、拍照等等。在安装软件时需要用户允许应用声明的全部权限，这些声明对应 manifest 文件中的 <uses-permission> 元素。目前我们为 Yamba 声明了网络权限、自动启动权限和监视网络条件的权限。
 
-As discussed in the section called “Updating Manifest File for Internet Permission”, an application must be granted permissions to access certain restricted features of the system, such as connecting to Internet, sending SMS messages, making phone calls, reading the user’s contacts, taking photos, and so on. It is user who has to grant all or none of the permissions to the application at installation time, and it is the job of the application developer to list all the permissions the app needs to successfully run by adding the <uses-permission> element to the manifest file. So far, we’ve added permissions to Yamba in order to access the Internet, kick off our boot-time service, and learn about network changes.
+{ORGI}But now that we have our Updater service sending a broadcast action to our Timeline receiver, we may want to restrict permission to send and receive that broadcast to our own app. Otherwise, it would be possible for another app, knowing what our action looks like, to send it and cause actions in our application that we didn’t intent.
+{TRAN}但是程序中的 UpdaterService 使用广播来通知 TimelineActivity，我们希望限制其他程序发生或者接受这样的广播。否则只要知道了相应的 action 名称，其他程序就能发生或者接受我们的广播，这可能会带来意料外的问题。
 
-But now that we have our Updater service sending a broadcast action to our Timeline receiver, we may want to restrict permission to send and receive that broadcast to our own app. Otherwise, it would be possible for another app, knowing what our action looks like, to send it and cause actions in our application that we didn’t intent.
+{ORGI}To fill up this security hole, we define our own permission and ask the user to grant it to the Yamba application. Next, we’ll enforce both sending and receiving of the permissions.
+{TRAN}为了弥补这个安全漏洞，我们需要为 Yamba 定义需要用户许可的权限。然后为广播的发送和接受应用权限限制。
 
-To fill up this security hole, we define our own permission and ask the user to grant it to the Yamba application. Next, we’ll enforce both sending and receiving of the permissions.
 
+{ORGI}=== Declaring Permissions in the Manifest File ===
+{TRAN}=== 在 Manifest 文件中定义权限 ===
 
-=== Declaring Permissions in the Manifest File ===
-
-The first step is to declare our permissions, explaining what they are, how they are to be used, and what protection level they are at.
-
+{ORGI}The first step is to declare our permissions, explaining what they are, how they are to be used, and what protection level they are at.
+{TRAN}首先需要定义我们的权限，解释它们是什么、怎么使用、处于什么保护级别。
 
 **Example 11.11. Adding Permissions to Manifest File**
 {CODE}
@@ -362,21 +429,30 @@ The first step is to declare our permissions, explaining what they are, how they
 
 
 
-+ This is the name of our permission, the handle we are going to use later to refer to it both when we request it and when we enforce it. In our app, we’ll be using the permission to securely send timeline notifications.
-+ Label that will be displayed to the user when she is prompted to grant this permission to our app at the installation time. It should be relatively short. Note that we have defined this label in our strings.xml resource file.
-+ A description should be provided to offer information about why this permission is needed and how it’s going to be used.
-+ The permission group is optional, but helps the system to group your permission with other common permissions in one of the system-defined permission groups. You could also define your own group, but that is rarely done.
-+ The permission level is a required value specifying the severity or risk posed by granting the permission. A level of ‘normal’ is the lowest and most basic of the four standard permission levels.
-+ We do the same to define the other permission, which allows us to receive the timeline notifications we are generating.
-+ Once we have our permissions defined, we need to ask the user to grant them to the application. We do that via the <uses-permission> element, just as we did it for the other system permissions we specified earlier.
+{ORGI}+ This is the name of our permission, the handle we are going to use later to refer to it both when we request it and when we enforce it. In our app, we’ll be using the permission to securely send timeline notifications.
+{TRAN}+ 权限的名称，在后面使用这个名词来引用相应的权限。
+{ORGI}+ Label that will be displayed to the user when she is prompted to grant this permission to our app at the installation time. It should be relatively short. Note that we have defined this label in our strings.xml resource file.
+{TRAN}+ 当需要用户授权时显示的标签。这个标签应该比较短。我们在string.xml里定义了相应的资源。
+{ORGI}+ A description should be provided to offer information about why this permission is needed and how it’s going to be used.
+{TRAN}+ 描述权限的内容和使用目的。
+{ORGI}+ The permission group is optional, but helps the system to group your permission with other common permissions in one of the system-defined permission groups. You could also define your own group, but that is rarely done.
+{TRAN}+ 权限组是可选的，但是能够帮助系统吧它和其他权限分组。 你也可以自己定义新的分组，不过很少需要这么做。
+{ORGI}+ The permission level is a required value specifying the severity or risk posed by granting the permission. A level of ‘normal’ is the lowest and most basic of the four standard permission levels.
+{TRAN}+ 权限的保护等级定义了授权后可能面临的分析程度。 normal 是标准的四个等级中最低的等级
+{ORGI}+ We do the same to define the other permission, which allows us to receive the timeline notifications we are generating.
+{TRAN}+ 其他的权限定义和上面的类似，这个权限运行接收 Yamba 生成的时间线广播。
+{ORGI}+ Once we have our permissions defined, we need to ask the user to grant them to the application. We do that via the <uses-permission> element, just as we did it for the other system permissions we specified earlier.
+{TRAN}+ 我们定义过这些权限后，需要为程序申请这些权限。和系统权限一样使用  <uses-permission> 来定义。
 
 
-At this point, we have defined our two custom permissions and have requested them for our application. Next, we need to make sure the sender and receiver both play by the rules.
+{ORGI}At this point, we have defined our two custom permissions and have requested them for our application. Next, we need to make sure the sender and receiver both play by the rules.
+{TRAN}现在已经定义好了两个自定义权限并且为自己申请了授权。接下来需要保证广播的接受和发送都能符合相应的权限。
 
+{ORGI}=== Updating the Services to Enforce Permissions ===
+{TRAN}=== 为服务应用自定义权限 ===
 
-=== Updating the Services to Enforce Permissions ===
-
-It is our Updater service that broadcasts the intent to the rest of the system once there’s a new status update. Now, since we do not want everyone to receive this intent, we want to ensure that the receiver won’t be allowed to receive it unless the receiver defines the right permission.
+{ORGI}It is our Updater service that broadcasts the intent to the rest of the system once there’s a new status update. Now, since we do not want everyone to receive this intent, we want to ensure that the receiver won’t be allowed to receive it unless the receiver defines the right permission.
+{TRAN}当新数据到达时，UpdaterService 负责向系统中广播 intent 。现在我们不想让别人接收这个广播，所以需要确保接收者拥有正确的权限。
 
 
 **Example 11.12. Updater in UpdaterService**
@@ -418,17 +494,21 @@ It is our Updater service that broadcasts the intent to the rest of the system o
 
 
 
-+ This is the name of the permission that we are requiring the receiver to have. It needs to be the same as the permission name in the manifest file that we specified previously.
-+ To enforce the permission on the receiver, we simply add it to the sendBroadcast() call as the optional second parameter. If the receiver doesn’t have this particular permission granted to it by the user, the receiver won’t be notified and will never know that our message just got dropped.
+{ORGI}+ This is the name of the permission that we are requiring the receiver to have. It needs to be the same as the permission name in the manifest file that we specified previously.
+{TRAN}+ 我们要求接收者拥有的权限的名称。这个名称和 manifest 中定义的需要一样。
+{ORGI}+ To enforce the permission on the receiver, we simply add it to the sendBroadcast() call as the optional second parameter. If the receiver doesn’t have this particular permission granted to it by the user, the receiver won’t be notified and will never know that our message just got dropped.
+{TRAN}+ 要保证接收者拥有特定的权限，只需要在 sendBroadcast() 调用中添加第二个可选的参数即可。如果接收器没有相应的权限，那么将不会接受到该广播。
 
 
-To complete the security in the sending direction, we don’t have to do anything to TimelineReceiver. It will be able to receive the permission because the user granted it. But there is a corresponding responsibility on the TimelineReceiver side. It should check that the sender had permission to send the message it is receiving.
+{ORGI}To complete the security in the sending direction, we don’t have to do anything to TimelineReceiver. It will be able to receive the permission because the user granted it. But there is a corresponding responsibility on the TimelineReceiver side. It should check that the sender had permission to send the message it is receiving.
+{TRAN}要保证发送端的安全，我们不需要对 TimelineReceiver 做任何改动。因为用户已经赋予相应的权限，所以能够正确的获取通知。 但是对于接收端，同样应该确保发送者是我们认可的。
 
 
+{ORGI}=== Update Timeline Receiver to Enforce Permissions ===
+{TRAN}=== 为接收端应用权限 ===
 
-=== Update Timeline Receiver to Enforce Permissions ===
-
-Now we will check on the receiver side that the broadcaster is allowed to talk to us. To do this, we add the broadcast permission that the sender should have to our receiver when we register it.
+{ORGI}Now we will check on the receiver side that the broadcaster is allowed to talk to us. To do this, we add the broadcast permission that the sender should have to our receiver when we register it.
+{TRAN}现在我们需要在接收端检查消息是否是我们许可的代码发送的。要实现此功能，需要在注册接收器时添加权限。
 
 
 **Example 11.13. TimelineReceiver in TimelineActivity.java**
@@ -451,16 +531,23 @@ public class TimelineActivity extends BaseActivity {
 {/CODE}
 
 
-+ We define the permission name as a constant. This needs to be the same name as we declared for this permission in the manifest file.
-+ In the onResume() method where we register our TimelineReceiver, we now add a parameter specifying this permission as a requirement placed on anyone who wants to send us this type of broadcast.
-We now have a pair of custom permissions and we are enforcing them in both the sender and the receiver of the broadcast. This illustrates some of the capabilities of Android to fine-tune the permission system.
+{ORGI}+ We define the permission name as a constant. This needs to be the same name as we declared for this permission in the manifest file.
+{TRAN}+ 我们将权限名称定义为一个常量。值和manifest文件中定义的一样。
+{ORGI}+ In the onResume() method where we register our TimelineReceiver, we now add a parameter specifying this permission as a requirement placed on anyone who wants to send us this type of broadcast.
+{TRAN}+ 在 onResume() 中注册 TimelineReceiver 时，定义发送者应该具有的权限。
 
 
-== Summary ==
+{ORGI}We now have a pair of custom permissions and we are enforcing them in both the sender and the receiver of the broadcast. This illustrates some of the capabilities of Android to fine-tune the permission system.
+{TRAN}现在我们在两端都添加了权限限制。这个过程也是对 Android 的权限系统的一个粗略介绍。
 
-Yamba is now complete and ready for prime time. Our application can now send status updates to our online service, get the latest statuses from our friends, get started automatically on boot time, and be refreshed live when a new status is received.
+{ORGI}== Summary ==
+{TRAN}== 小结 ==
 
-__Figure 11.1, “Yamba Completion”__ illustrates what we have done so far as part of the design outlined in __Figure 5.4, “Yamba Design Diagram”__.
+{ORGI}Yamba is now complete and ready for prime time. Our application can now send status updates to our online service, get the latest statuses from our friends, get started automatically on boot time, and be refreshed live when a new status is received.
+{TRAN}到目前为止， Yamba 已经接近于完成了。我们已经可以将消息发送到服务器，也能够从服务器上获取朋友们的消息，并且在系统启动时自动启动，还能在有新消息到达时自动刷新显示。
+
+{ORGI}__Figure 11.1, “Yamba Completion”__ illustrates what we have done so far as part of the design outlined in __Figure 5.4, “Yamba Design Diagram”__.
+{TRAN}__Figure 11.1, "Yamba Completion"__ 展示了我们目前已完成的部分。完整图参见 __Figure 5.4, Yamba Design Diagram__
 
 	**Figure 11.1. Yamba Completion**
 		[images/11-YambaCompletion.png]
