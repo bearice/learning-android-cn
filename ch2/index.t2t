@@ -160,7 +160,7 @@
 {ORGI}  - Resources: resources are everything that is not code. Your application may contain number of images, audio/video clips, as well as numerous XML files describing layouts, language packs, and so on. Collectively, these items are resources.
 {TRAN}  - 资源: 资源就是除了代码外剩下的部分。你的应用中可能包含若干图片，音频/视频，还有很多的 XML 文件描述用来表述UI布局、语言包等等。总之，这些都是资源。
 {ORGI}  - Native libraries: optionally, your application may include some native code, such as C/C++ libraries. These libraries could be packaged together with your APK file.
-{TRAN}  - 本地库: 可选的，你的应用中可能包含若干本地库，例如 C/C++ 库。 这些库被一并打包在 APK 文件中。
+{TRAN}  - 本地库: 你的应用中可能会包含一些本地代码，比如 C/C++ 库。 这些库将一并打包在 APK 文件中。
 
 
 {ORGI}=== Application Signing ===

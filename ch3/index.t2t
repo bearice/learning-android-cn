@@ -130,8 +130,8 @@ Eclipse以项目为单位管理用户的工作，项目又都位于workspace中�
 {/NOTE}
 
 
-% == Hello World ==
-== Hello World ==
+% == Hello, World ==
+== Hello, World ==
 
 % To make sure everything is set up properly, we’re going to write a simple Hello World program. As a matter of fact, there’s not much for us to write, but a lot to understand. This is because Eclipse will create the project shell for us from some predefined templates.
 

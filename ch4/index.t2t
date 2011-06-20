@@ -193,7 +193,7 @@
 {TRAN}系统自身时时刻刻广播着一些事件。比如收到短信、来了一个电话、电量不足或者系统启动等事件发生的时候，它们都是通过广播传递给每个接收者。
 
 {ORGI}In our Twitter app example, we want to start the update service once the system starts up. To do that, we can subscribe to the broadcast that tells us the system has completed booting up.
-{TRAN}对我们的Twitter应用而言，我们希望在系统启动时就启动UpdateService来更新消息。为此，我可以订阅"系统已启动"的广播事件。
+{TRAN}对我们的Twitter应用而言，我们希望在系统启动时就启动UpdaterService来更新消息。为此，我可以订阅"系统已启动"的广播事件。
 
 {ORGI}You can also send your own broadcasts from one part of your application to another, or a totally different application.
 {TRAN}你也可以发送自己的广播。接收者可以是程序自身的其它部分，也可以是其它的程序。

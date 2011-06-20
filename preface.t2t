@@ -34,11 +34,11 @@
 
 % Chapter 4, Main Building Blocks, explains the components that Android provides to application developers to put together an app.
 
-第四章，**Main Building Blocks**：展示Android为应用开发者提供的组件。
+第四章，**基本构件**，展示构成Android应用程序的基本元件。
 
 % Chapter 5, Yamba Overview, is the overview of the Yamba application that we’ll build together through the book and use as an example to learn various features of Android. 
  
-第五章，**Yamba概述**，简单介绍一个Andorid应用Yamba，它将作为贯穿全书的实例，以展示Android的诸多特性。
+第五章，**Yamba项目简介**，简单介绍一个Andorid应用Yamba，它将作为贯穿全书的实例，以展示Android的诸多特性。
  
 % Chapter 6, Android User Interface, explains how to build the user interface for your application.
 
@@ -50,23 +50,23 @@
 
 % Chapter 8, Services, covers building an Android service to process background tasks. 
 
-第八章，**服务**，介绍Android中后台任务的构建方法。
+第八章，**Service**，介绍Android中后台任务的构建方法。
 
 % Chapter 9, Databases, explains Android framework’s support for the built-in SQLite database and how to use it to persist the data in your own application.
 
-第九章，**数据库**，介绍了Android架构中内置的SQLite支持，以及在你自己应用中使用数据库的方法。
+第九章，**数据库**，介绍了Android框架中内置的SQLite支持，以及在应用程序中使用数据库的方法。
 
 % Chapter 10, Lists and Adapters, covers an important feature of Android that allows large data sets to be linked to relatively small screens in an efficient way. 
 
-第十章，**List与Adapter**，介绍Android中的一个重要特性，它允许在较小的屏幕上高效地读显大量数据。
+第十章，**List与Adapter**，介绍Android的一个重要特性，它允许在较小的屏幕上高效地读显大量数据。
 
 % Chapter 11, Broadcast Receivers, explains how to use the publish-subscribe mechanism in Android to respond to various system and user defined messages. 
 
-第十一章，**Broadcast Receivers**，介绍了如何在Android中应用“发布-订阅”机制以响应来自系统和用户的各种消息。
+第十一章，**Broadcast Receivers**，介绍了如何应用Android中“发布-订阅”机制响应来自系统和用户的各种消息。
 
 % Chapter 12, Content Providers, shows how to design a content provider to share data between applications, using the content provider to enable our app widget to display data on the home screen. 
 
-第十二章，**Content Providers**，介绍了如何设计一个Content Provider来为不同的应用共享数据，以及使用Content Provider为主屏幕上的widget提供数据的方法。
+第十二章，**Content Providers**，介绍Content Provider的编写方法，为不同的应用程序提供数据。以及。
 
 % Chapter 13, System Services, goes into various system services that an app developer can tap into. 
 
@@ -74,11 +74,11 @@
 
 % Chapter 14, Android Interface Definition Language (AIDL), covers building an inter-process communication mechanism to allow for remote access to a service from another application.  
 
-第十四章，**Android Interface Definition Language(AIDL)**，介绍进程间通信机制的使用和远程访问另一个应用中服务的方法。
+第十四章，**Android接口描述语言(AIDL)**，介绍进程间通信机制的使用，以及访问远程Service的方法。
 
 % Chapter 15, Native Development Kit (NDK), introduces how to write native C code as part of your Android application.
 
-第十五章，**Native Development Kit(NDK)**，介绍在应用中使用原生C代码的方法。
+第十五章，**Native Development Kit(NDK)**，介绍在应用程序中使用原生C代码的方法。
 
 % == Conventions Used in This Book ==
 == 排版约定 ==
@@ -123,7 +123,7 @@
 {/WARNING}
 
 % == Using Code Examples ==
-== 关于本书的程序 ==
+== 关于本书的代码 ==
 
 % This book is here to help you get your job done. In general, you may use the code in this book in your programs and documentation. You do not need to contact us for permission unless you’re reproducing a significant portion of the code. For example, writing a program that uses several chunks of code from this book does not require permission. Selling or distributing a CD-ROM of examples from O’Reilly books does require permission. Answering a question by citing this book and quoting example code does not require permission. Incorporating a significant amount of example code from this book into your product’s documentation does require permission.
 
@@ -173,7 +173,7 @@ O'Reilly Media已经将本书上传至Safari Books Online。欲获得关于本�
 
 % I’d like to thank my team at Marakana: Aleksandar (Saša) Gargenta, Ken Jones, and Laurent Tonon for bringing back first-hand feedback from running Android Bootcamp courses using the draft of this book. Saša, special thanks to you for sending me back to the drawing board more times than I’d like to admit. This book is probably months pass due because of your in-depth technical comments.
 
-感谢我在Marakana的团队：Aleksandar (Saša) Gargenta，Ken Jones和Laurent Tonon。你们使用本书的原稿作为Android Bootcamp培训课程，并给了我第一手的反馈。这里要特殊感谢不下n次督促我回到写字台的Saša：要没你深刻的技术评论，本书很可能几个月前就草草了事了。
+感谢我在Marakana的团队：Aleksandar (Saša) Gargenta，Ken Jones和Laurent Tonon。你们使用本书的原稿作为Android Bootcamp的教材，并给了我第一手的反馈。这里要特殊感谢曾多次督促我回到写字台的Saša：要没你深刻的技术评论，本书很可能几个月前就草草了事了。
 
 % And finally, a huge thanks to my wife Lisa and daughter Kylie. I know what a sacrifice it was for you while I was criss-crossing the world working on this material. Thank you for supporting me along the way.
 

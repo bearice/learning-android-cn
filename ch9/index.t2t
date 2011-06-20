@@ -232,13 +232,13 @@ public class DbHelper1 extends SQLiteOpenHelper { //①
 {TRAN}接下来，我们需要升级已有的服务来让他能够打开数据库，然后吧从网络中的来的数据写进去。
 
 {ORGI}== Update UpdaterService ==
-{TRAN}== 升级 UpdateService ==
+{TRAN}== 升级 UpdaterService ==
 
 {ORGI}Remember that it is our UpdaterService that connects to the cloud and gets the data. So it is also UpdaterService that is responsible for inserting this data into the local database.
-{TRAN}因为 ``UpdateService`` 是负责来链接到云端并且获取数据的。所以它同样应该负责吧数据插入本地数据库中。
+{TRAN}因为 ``UpdaterService`` 是负责来链接到云端并且获取数据的。所以它同样应该负责吧数据插入本地数据库中。
 
 {ORGI}We can now update the UpdaterService to pull the data from the cloud and store it in the database.
-{TRAN}现在来升级 ``UpdateService`` 使它能把数据存进数据库中。
+{TRAN}现在来升级 ``UpdaterService`` 使它能把数据存进数据库中。
 
 **Example 9.2. UpdaterService.java, version 1**
 
@@ -469,7 +469,7 @@ CREATE TABLE timeline ( _id integer primary key,created_at integer, source text,
 
 
 {ORGI}Now that we have a way to create and open up our database, we are ready to update the service that will insert the data into the database.
-{TRAN}现在我们已经可以创建并打开数据库，并且 ``UpdateService`` 也能够将数据插入数据库中了。
+{TRAN}现在我们已经可以创建并打开数据库，并且 ``UpdaterService`` 也能够将数据插入数据库中了。
 
 {ORGI}At this point we should be getting the data from the online service as well as insert that data in the database. We can also verify that the data is indeed in the database by using ``sqlite3``.
 {TRAN}要验证数据是不是已经成功插入，也需要使用 ``sqlite3`` 命令，不过具体过程与上面类似，在此就不做描述了。
@@ -513,7 +513,7 @@ try {
 {TRAN}== 重构数据访问模块 ==
 
 {ORGI}While the previous work we did does work for UpdaterService, it is not ideal for supporting our next user of this data - the TimelineActivity. Since TimelineActivity will also need to access the same database and fetch the same data, it would be better if we would share some of the same functionality between the UpdaterService and the TimelineActivity.
-{TRAN}我们刚刚修改了 ``UpdateService`` 是它能够和数据库交互，但是对于整个程序来讲这并不理想。因为数据的使用者 ``TimelineActivity`` 也需要访问数据库并且读取数据，所以最好的做法是将相同的代码抽出来以便共享。
+{TRAN}我们刚刚修改了 ``UpdaterService`` 是它能够和数据库交互，但是对于整个程序来讲这并不理想。因为数据的使用者 ``TimelineActivity`` 也需要访问数据库并且读取数据，所以最好的做法是将相同的代码抽出来以便共享。
 
 {ORGI}In order to do that, we’ll create a new Java class, StatusData and make it be the common container for database-related functionality. It will be hiding (encapsulating) SQLite in a higher-level class accessible to other parts of Yamba application. The rest of our app will then just ask for StatusData and not be concerned how that data is generated. This is a better design and will allows us later to improve even further on it using Content Providers as explained in [Chapter 12, Content Providers #ch12].
 {TRAN}为了能够共享代码，我们需要新建一个 Java 类 ``StatueData`` 作为数据库相关函数的容器。这个类可以隐藏（或者说封装）关于 SQLite 的细节部分，并提供相应接口给Yamba中的其他类使用。 这样一来 Yamba 中其他部分就只需要关心 ``StatusData`` 而不需要担心数据来源。在后面的章节中，我们会继续改进这个设计并且实现 ContentProvider ，有关的介绍可以在[第12章 ContentProvider #ch12]找到。
@@ -728,11 +728,11 @@ public synchronized int fetchStatusUpdates() {  //③
 {ORGI}+ This object is available to rest of the application for viewing only via this accessor method.
 {TRAN}+ 其他模块访问该对象只能通过访问函数获取。
 {ORGI}+ This is where we moved most of the code from the previous version of the UpdaterService. This was the code that was running on the Updater thread, connecting to online service to get the data, and then saving that data in the database.
-{TRAN}+ 这里的代码基本上是从原来的 ``UpdateService`` 移动过来的。它运行在独立的线程中，连接云端并获取数据，然后保存到数据库里面。
+{TRAN}+ 这里的代码基本上是从原来的 ``UpdaterService`` 移动过来的。它运行在独立的线程中，连接云端并获取数据，然后保存到数据库里面。
 
 
 {ORGI}We can now simplify the ``UpdaterService`` to use the refactored code in the YambaApplication to get the latest data. Note that most of the Updater’s ``run()`` method has been moved to YambaApplication’s ``fetchStatusUpdates()`` method. In addition, the Updater doesn’t need any access to the ``StatusData`` object, which is totally hidden from it.
-{TRAN}我们使用新版的 ``YambaApplication`` 重构了 ``UpdateService`` 。 现在 ``fetchStatusUpdates()`` 中的代码大部分是从 ``Updater`` 的 ``run()`` 中复制来的。另外 ``Updater`` 再也不需要访问 ``StatusData`` 了。
+{TRAN}我们使用新版的 ``YambaApplication`` 重构了 ``UpdaterService`` 。 现在 ``fetchStatusUpdates()`` 中的代码大部分是从 ``Updater`` 的 ``run()`` 中复制来的。另外 ``Updater`` 再也不需要访问 ``StatusData`` 了。
 
 **Example 9.5. UpdaterService.java**
 
