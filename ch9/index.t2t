@@ -14,7 +14,7 @@
 {TRAN}移动设备中的数据库是网络世界中的一个重要补充。尽管很多情况下数据在云端比在终端更有利，但是我们仍然需要一个能够快速访问并且在没有网络的时候仍然能够工作的存储方式。此时，我们就可以使用数据库作为缓存。我们在 Yamba 将会这样使用数据库。
 
 {ORGI}In this chapter, you will learn how Android supports databases. You will learn to create and use a database inside Yamba application to store our status updates locally. Local data will help Yamba display statuses to the user quickly without having to wait for the network to provide the data. Our service will run in the background and periodically update the database so that the data is relatively fresh. This will overall improve the user experience of the application.
-{TRAN}在本章中我们将学习在 Android 系统如何使用数据库。我们将在 Yamba 中使用数据库来在本地存储状态更新。 本地数据可以让 Yamba 更快的显示时间线而不用等待网络数据。 我们会使用服务在后台更新数据，所以数据库中的数据都是相对较新的。这将在整体上改善应用的用户体验。
+{TRAN}在本章中我们将学习在 Android 系统如何使用数据库。我们将在 Yamba 中使用数据库来在本地存储状态更新。 把数据存储在本地， 可以让Yamba省去访问网络的开销，从而更快地显示 Timeline。 我们会使用Service在后台更新数据，所以数据库中的数据都是相对较新的。这将在整体上改善应用的用户体验。
 
 {ORGI}== About SQLite ==
 {TRAN}== 关于 SQLite ==
@@ -229,7 +229,7 @@ public class DbHelper1 extends SQLiteOpenHelper { //①
 
 
 {ORGI}Next, we need to update the service in order to have it open up the database connection, fetch the data from the network and insert it into the database.
-{TRAN}接下来，我们需要升级已有的服务来让他能够打开数据库，然后吧从网络中的来的数据写进去。
+{TRAN}接下来，我们需要重构现有的Service，让它能够打开数据库，然后将刚刚得到的数据写进去。
 
 {ORGI}== Update UpdaterService ==
 {TRAN}== 升级 UpdaterService ==
@@ -369,7 +369,7 @@ public class UpdaterService1 extends Service {
 {ORGI}+ Create the instance of DbHelper and pass this as the context for it. This works because Android Service class is a subclass of Context. DbHelper will figure out if the database needs to be created or upgraded.
 {TRAN}+ 使用 ``context`` 创建 ``DbHelper`` 实例。因为 Android 中的 ``Service`` 本身就是 Context 的子类所以可以直接使用。DbHelper 会在需要时创建或升级数据库。
 {ORGI}+ We need to connect to the online service, get latest updates, and insert them into the database. getTwitter() in YambaApplication is our lazy initialization of Twitter object. Then we call the actual Twitter API call getFriendsTimeline() to get last 20 statuses from friends in last 24 hours.
-{TRAN}+ 连接云端服务，获取最新的时间线，然后插入数据库中。 ``YambaApplication`` 中的 ``getTwitter()`` 是用来延迟加载 Twitter 对象的。然后使用 ``getFriendsTimeline()`` 来调用 Twitter API 以获取24小时内最新的20条微博。
+{TRAN}+ 连接服务端，获取最新的Timeline，然后插入数据库中。 ``YambaApplication`` 中的 ``getTwitter()`` 是用来延迟加载 Twitter 对象的。然后使用 ``getFriendsTimeline()`` 来调用 Twitter API 以获取24小时内最新的20条微博。
 {ORGI}+ Get the writable database so we can insert new statuses into it. First time we make this call, onCreate() in DbHelper will run and create the database file for this user.
 {TRAN}+ 获取数据库的写入对象。当我们第一次调用此函数时，会触发 DbHelper 的 onCreate() 方法来创建数据库文件。
 {ORGI}+ ContentValues is a simple name-value pairs data structure that maps database table names to their respective values.
@@ -478,10 +478,10 @@ CREATE TABLE timeline ( _id integer primary key,created_at integer, source text,
 {TRAN}=== 数据库约束 ===
 
 {ORGI}Second time around, when your service runs, you’ll notice that it fails and that you get many ``SQLExceptions`` in the logcat. You will also notice that it complains about the database constraint failing.
-{TRAN}当你再次运行服务时，会发现它失败了！在logcat中能看到很多 ``SQLException``，日志消息会抱怨说数据库约束失败（database constraint failing）。
+{TRAN}当你再次运行Service时，会发现它失败了！在logcat中能看到很多 ``SQLException``，日志消息会抱怨说数据库约束失败（database constraint failing）。
 
 {ORGI}This happens because we have duplicate IDs. If you remember, we are fetching all the data from the online service, including IDs used online. We are then inserting this in to our local database. But we get the data via ``getFriendsTimeline()`` call which returns twenty most recent posts in the past 24 hours and we do this every minute or so. So, unless you have friends who post more than twenty posts a minute, you’re likely going to get duplicates. That means we’re attempting to insert duplicate IDs into a database that is setup to have _id be the primary key, meaning be unique. This fails for duplicate entries and that’s why the database complains via throwing ``SQLException``.
-{TRAN}这是因为我们插入了重复的 ID。 如果你还记得我们从云端获取数据时包括ID字段，然后将其插入本地数据库。但是我们每分钟都会通过``getFriendsTimeline()`` 来获取最近24小时内的数据。所以除非时间线没分钟都有20条以上的数据，ID字段就会获取到重复的内容。这意味着我们试图将重复的ID插入到数据库中，而对应的 _id 字段正是这个表的主键。主键意味着不能重复，所以当遇到重复内容时就数据库就会抛出 ``SQLException``。
+{TRAN}这是因为我们插入了重复的 ID。 如果你还记得我们从云端获取数据时包括ID字段，然后将其插入本地数据库。但是我们每分钟都会通过``getFriendsTimeline()`` 来获取最近24小时内的数据。所以除非Timeline每分钟都有20条以上的数据，ID字段就会获取到重复的内容。这意味着我们试图将重复的ID插入到数据库中，而对应的 _id 字段正是这个表的主键。主键意味着不能重复，所以当遇到重复内容时就数据库就会抛出 ``SQLException``。
 
 {ORGI}We could check with the database that there are no duplicates before inserting, but that would mean writing that logic. Since database is already good at database stuff, it is more efficient to attempt to insert duplicate entries, fail at it, and ignore that failure.
 {TRAN}因此在插入时，我们应该首先检查是否已经有重复的内容，但是我们不想写这种逻辑代码。因为数据库已经能够很好的处理这个问题了，所以简单的插入，然后忽略可能产生才重复错误就可以了。

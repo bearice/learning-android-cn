@@ -221,7 +221,7 @@
 %TALK: 几个Building Blocks都尽量保留原文吧
 
 {ORGI}For example, we want to start our updates when the device is powered up. We also want to stop pulling the data from the cloud when the network is not available, only to start it again once we’re back online. This goal will introduce us to one type of Broadcast Receivers.
-{TRAN}比如我们希望在设备开机时就开始更新消息，也希望在网络离线时暂停更新，并在网络正常时恢复更新。要实现上述功能，我们需要引入Broadcase Receiver机制。
+{TRAN}比如我们希望在设备开机时就开始更新消息，也希望在网络离线时暂停更新，并在网络正常时恢复更新。要实现上述功能，我们需要引入Broadcast Receiver机制。
 
 {ORGI}=== Timeline Receiver ===
 {TRAN}=== Timeline Reciever ===

@@ -93,7 +93,7 @@
 
 % username preference, we’ll put username for key. We will define Title and Summary in strings.xml as this is the best practice.
 
-对username一项而言，key就是``username``。置于Title与Summary的值我们都放在``string.xml``里面，这是个好习惯。
+对username一项而言，key就是``username``。至于Title与Summary的值，我们都放在``string.xml``里面，这是个好习惯。
 
 % Instead of modifying strings.xml file directly, you can use an Eclipse shortcut. Here’s how it goes:
 
@@ -116,7 +116,7 @@
 
 % To switch to the actual XML code by clicking on the tab on the bottom of this window:
 
-要查看实际的xml代码，可以单击窗口地下的标签。
+要查看实际的xml代码，可以单击窗口底下的标签。
 
 **Figure 7.2. Prefs.xml in Developer-friendly view**
 
@@ -149,7 +149,7 @@
 
 % The main property of any of these elements is the key. The key is how we’ll look up these values later on. Remember, preferences is just a set of name-value pairs at the end of the day.
 
-以上最重要的属性就是key了，它是获取对应的配置数据所必须的标识符。前面提到，首选项正是一组键值对(Key-Value Pair)构成的数据集。
+以上最重要的属性就是key了，它是获取对应的配置数据所必需的标识符。前面提到，首选项正是一组键值对(Key-Value Pair)构成的数据集。
 
 % Like we said couple of times earlier, while Eclipse does provide a developer-friendly tools to manage XML files, you often run into certain limitations with with Eclipse. For example, we would like to hide the actual text that the user types in the password field as it’s commonly done with passwords. Android does provide support for that but Eclipse tools haven’t integrated it in there yet. Since we can always edit the XML directly, in this case we to that to add android:password="true" property to our password property. This will cause the password to be masked while user is typing it in.
 
@@ -199,7 +199,7 @@ public class PrefsActivity extends PreferenceActivity { // #{1}
 {TIP}
 % If you didn’t want to type the long signature of onCreate() and other methods that we often have to implement or override, you could use an Eclipse tool to help you with that. While in your PrefsActivity.java and after you have added ... extends PreferenceActivity..., you can choose Source→Override/Implement Methods…. This will bring up a dialog box with appropriate selection of methods you could override or implement given that you are subclassing PreferenceActivity class. In here, you can choose onCreate() and Eclipse will insert the stub for this method into your code.
 
-如果不像打字敲``onCreate()``或其它需要重载的方法那长长的声明，大可使用Eclipse的工具代劳。假如你在编辑``PrefsActivity.java``文件，并已加上了``extends PreferenceActivity``。可以选择`` Source→Override/Implement Methods…``，然后会出现一个对话框，在里面选出需要重载的方法(这里是``onCreate()``)即可。Eclipse会为你选择的方法生成代码。
+如果不想打字敲出``onCreate()``或其它重载方法那长长的声明，大可使用Eclipse的工具代劳。假如你在编辑``PrefsActivity.java``文件，并已加上了``extends PreferenceActivity``。可以选择`` Source→Override/Implement Methods…``，然后会出现一个对话框，在里面选出需要重载的方法(这里是``onCreate()``)即可。Eclipse会为你选择的方法生成代码。
 {/TIP}
 
 % ===Update Manifest File===
@@ -220,7 +220,7 @@ public class PrefsActivity extends PreferenceActivity { // #{1}
 {TIP}
 % When editing code in Eclipse, you can use Ctrl+Space key shortcut to invoke type-ahead feature of Eclipse. This is every useful both for XML and Java code and is context-sensitive, meaning Eclipse is smart enough to know what could possibly be entered at that point in code. Using Ctrl+Space makes your life as programmer much easier as you don’t have to remember long method names and tags, plus it helps avoid typos.
 
-在Eclipse中编辑代码时，可以使用Ctrl+Space快捷键调出Eclipse的自动完成功能。Eclipse可以感知初当前输入代码的上下文，从而预测接下来可能输入的内容。这一来程序员即可省去牢记各种方法变量的名字，也可以减少输入错误，对解放生产力是大有好处的。
+在Eclipse中编辑代码时，可以使用Ctrl+Space快捷键调出Eclipse的自动完成功能。Eclipse可以感知出当前输入代码的上下文，从而预测接下来可能输入的内容。这一来程序员即可省去牢记各种方法变量的名字，也可以减少输入错误，对解放生产力是大有好处的。
 {/TIP}
 
 % So after adding our manifest file now looks like this:
@@ -356,7 +356,7 @@ public class PrefsActivity extends PreferenceActivity { // #{1}
 
 % We need to update the StatusActivity to load up the options menu. To do that, add onCreateOptionsMenu() method to StatusActivity. This method gets called only first time when user clicks on the menu button.
 
-我们需要为Activity加入装载菜单的相关代码，为此先在加入``onCreateOptionsMenu()``方法。它将只在用户第一次按下菜单键时触发。
+我们需要为Activity加入装载菜单的相关代码，为此加入``onCreateOptionsMenu()``方法。它将只在用户第一次按下菜单键时触发。
 
 {CODE}
 // Called first time user clicks on the menu button
@@ -611,7 +611,8 @@ Android设备主要有三个分区，即：
 
 在仿真器中，系统分区对应的映像文件是``system.img``，它与平台相关，位于android-sdk/platforms/android-8/images目录。
 
-===SDCard Partition===
+% ===SDCard Partition===
+===SDCard分区===
 
 % SDCard partition is a free-for-all mass storage. Your app can read files from this partition as well as write files to it if it holds WRITE_TO_EXTERNAL_STORAGE permission. This is a great place to store large files, such as music, photos, videos and similar.
 
@@ -690,7 +691,7 @@ adb shell是adb的另一个重要命令，它允许你访问设备(真机或者�
 
 % To answer this question, I usually compare it to finding someone’s laptop on the street. While indeed we can easily gain access to the "hard-drive" via adb tool, that doesn’t mean we have a way of reading its data. Each folder under /data/data/ is going to belong to a separate user account. This user account is managed by Linux. Unless our app is that app, it won’t have access to that folder. So, short of us reading byte-by-byte on the physical device, even clear-text data is secure.
 
-其实这个问题就像是在大街上捡到一台笔记本，我们可以拆开它的硬盘，但不一定能读取它的数据。``/data/data``之下的每个子目录都有单独的用户帐号，由负责Linux管理。也就是说，只有我们自己的应用程序才拥有访问这一目录的权限。数据既然无法读取，明文也就是安全的。
+其实这个问题就像是在大街上捡到一台笔记本，我们可以拆开它的硬盘，但不一定能读取它的数据。``/data/data``之下的每个子目录都有单独的用户帐号，由Linux负责管理。也就是说，只有我们自己的应用程序才拥有访问这一目录的权限。数据既然无法读取，明文也就是安全的。
 
 %TALK: 坑爹！！！ -fleuria
 

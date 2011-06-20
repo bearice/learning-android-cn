@@ -56,7 +56,7 @@
 %=== Activity Lifecycle ===
 === Activity 生命周期 ===
 {ORGI}Launching an activity may be quite expensive. It may involve creating a new linux process, allocating memory for all the UI objects, inflating all the objects from XML layouts, and setting the whole screen up. Since we’re doing a lot of work to launch an activity, it’s be a waste to just toss it out once user leaves that screen. To avoid this waste, activity lifecycle is managed via Activity Manager.
-{TRAN}因为涉及到新建Linux进程、为UI对象申请内存、解释XML文件以及最终的图像渲染，初始化Activity的成本是比较高的。既然在初始化上面花了这么大功夫，每离开Activity就将其销毁就未免太浪费了。在这方面，Android引入了Activity Manager机制，用以自动管理Activity的生命周期。
+{TRAN}因为涉及到新建Linux进程、为UI对象申请内存、解析XML文件以及最终的图像渲染，初始化Activity的成本是比较高的。既然在初始化上面花了这么大功夫，每离开Activity就将其销毁就未免太浪费了。在这方面，Android引入了Activity Manager机制，用以自动管理Activity的生命周期。
 
 {ORGI}Activity Manager is responsible for creating, destroying, and overall managing activities. For example, when the user starts an application for the first time, the activity manager will create its activity and put it onto the screen. Later, when the user switches screens, the activity manger will move that previous activity to a holding place. This way, if the user wants to go back to an older activity, it can be started more quickly. Older activities that user hasn’t used in a while will be destroyed in order to free more space for the currently active one. This mechanism is designed to help improve the speed of user interface and thus improve the overall user experience.
 

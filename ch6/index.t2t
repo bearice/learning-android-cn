@@ -360,11 +360,11 @@ Java部分对应的文件是``StatusActivity.java``，Eclipse New Project对话�
 
 
 % === Creating your application-specific object and initialization code ===
-===编写自己的对象以及初始化的相关代码===
+===编写自己的对象，以及初始化的相关代码===
 
 % As with all Main Building Blocks in Android, such as Activities, Services, BroadcastReceivers and ContentProviders, you usually start by subclassing a base class provided by the Android framework, and overriding certain inherited methods. In this case, we subclass Android’s Activity class and override its onCreate() method. As you recall, activities have a certain lifecycle the section called “Activity Lifecycle”, or state machine through which they go. We as developers do not control what state the activity is in, but we do get to say what happens at a transition to a particular state. In this case, the transition we want to override is onCreate() method that is invoked by the system’s ActivityManager when the activity is first created (i.e. it goes from Starting the section called “Starting State” to Running the section called “Running State” state). This sort of programming when we subclass a system class and fill out the blanks is also known as Template pattern.
 
-Android程序中所有的构件(如Activity、Service、BroadcastReceiver、ContentProvider)都是继承一个Android框架中提供的基类，然后重载特定的方法。在这里，我们继承Activity类，重载了``onCreate()``方法。前面曾提到说Activity有个精心设计的生命周期，作为指导Activity行动的一台自动机。身为开发者，我们通常不会主动地干涉Activity的状态，而是跟踪Activity状态的变更，被动地对事件做处理。这里我们重载的``onCreate()``会在Activity第一次创建时，由系统的ActivityManager负责调用。像这样继承一个基类然后重载特定的方法的编程范式，被称作Template模式。
+Android程序中所有的构件(如Activity、Service、BroadcastReceiver、ContentProvider)都是继承一个Android框架中提供的基类，然后重载特定的方法。在这里，我们继承Activity类，重载了``onCreate()``方法。前面曾提到说Activity有个精心设计的生命周期，作为指导Activity行动的一台状态机。身为开发者，我们通常不会主动地干涉Activity的状态，而是跟踪Activity状态的变更，被动地对事件做处理。这里我们重载的``onCreate()``会在Activity第一次创建时，由系统的ActivityManager负责调用。像这样继承一个基类然后重载特定的方法的编程范式，被称作Template模式。
 
 %TALK:  (i.e. it goes from Starting the section called “Starting State” to Running the section called “Running State” state). 很诡异的一句。
 
@@ -382,7 +382,7 @@ Android程序中所有的构件(如Activity、Service、BroadcastReceiver、Cont
 
 % So, once you subclass the framework’s class, override the appropriate method, and call super’s method in it, you are still back at status quo - your code does the same thing the original class did. But now we have a placeholder where we can add our own code.
 
-这一来保留了父类的逻辑。我们可以将自己的逻辑放在后面，但并不希望从零做起。
+这样就保留了父类的逻辑。我们可以将自己的逻辑跟在后面，但并不希望从零做起。
 
 % The very first thing we typically do in activity’s onCreate() is to load the UI from the XML file and inflate it into the Java memory space. In other words, we write some Java code that opens up our XML layout file, parses it, and for each element in XML it creates a corresponding Java object in our memory space. For each attribute of a particular XML element, this code will set that attribute on our Java object. This process is called inflating from XML and the line of code that does all this is setContentView(R.layout.status);.  Remember that R class is the automatically generated set of pointers that helps connect the world of Java to our world of XML and other resources in /res folder. Similarly, R.layout.status points to our /res/layout/status.xml file.
 
@@ -390,7 +390,7 @@ Android程序中所有的构件(如Activity、Service、BroadcastReceiver、Cont
 
 % This method setContentView() does a lot of work, in other words. It reads the XML file, parses it, creates all the appropriate Java objects to correspond to XML elements, sets object properties to correspond to XML attributes, sets up parent/child relationships between objects and overall inflates the entire view. At the end of this one line, our screen is ready for drawing.
 
-显而易见，``setContentView()``做了很多工作。读取文件、解析XML、创建对应XML元素的Java对象、设置对象的属性、处理对象的从属关系、投射整个View。等它执行完毕，界面就可以重绘了。
+显而易见，``setContentView()``做了很多工作。读取文件、解析XML、创建XML元素对应的Java对象、设置对象的属性、处理对象的从属关系、投射整个View。等一切就绪，随后就是重绘界面了。
 
 % Your objects are not the only ones that define methods and respond to external stimuli. Android’s user interface objects do that too. Thus, you can tell your Button to execute certain code when its clicked. To do that, you need to define a method named onClick() and put the code there that you want executed. You also have to run the setOnClickListener method on the Button. You pass this as an argument to setOnClickListener because your object is where you define onClick().
 
@@ -450,7 +450,6 @@ public class StatusActivity1 extends Activity implements OnClickListener { // {#
 + 要让StatusActivity捕获按钮的事件，因此为它实现一个OnClickListener接口。
 + 找到对应的View。
 + 将这个按钮注册，使它按下时能够通知到StatusActivity。
-+ 连接到支持Twitter API的在线服务。在这里我们姑且将用户名与密码硬编码上去。
 + 连接到Twitter API的服务端。在这里，我们硬编码了用户名与密码。
 + OnClickListener接口的实现部分，表示按钮按下时调用的方法。
 + 调用Twitter的API，将消息更新到服务端。
@@ -798,7 +797,7 @@ public class StatusActivity2 extends Activity implements OnClickListener {
 + ``PostToTwitter``是``StatusActivity``的内部类，也是``AsyncTask``的子类。留意后面的三个类型参数，它们决定着下面函数的类型：第一个类型参数与``doInBackground()``相关，第二个与``onPostExecute()``相关，第三个与``onPostExecute()``相关。
 + ``doInBackground()``是个回调方法，表示异步执行的网络操作，就像执行在后台一样。它的参数``String...``来自前面声明中的第一个类型参数，后面的三个``.``表示它接纳多个字符串作为参数，即使只用到一个字符串也必须如此。
 + ``onProgressUpdate()``在任务进度更新时触发，其中的“进度”由``doInBackground()``负责更新。一个应用样例是，下载工具显示已完成的百分比。但在这里没有显示进度信息的必要，因此留空。
-+ ``onPostExecute()``在任务完成时触发。我们可以在这个回调方法里面更新用户界面，显示任务完成。这里我们应用Android的Toast机制，在屏幕上弹出一条消息。调用Toast的静态方法``makeText()``，创建一条Toast消息，然后调用``show()``才能显示出来。这与前面的第三个类习惯参数相关。
++ ``onPostExecute()``在任务完成时触发。我们可以在这个回调方法里面更新用户界面，显示任务完成。这里使用了Android的Toast机制，在屏幕上弹出一条消息。创建Toast的静态方法是``makeText()``，但在创建一条Toast消息之后，还需要调用``show()``才能显示出来，对这点需要小心。另外``onPostExecute()``方法参数的类型与前面的第三个类型参数相关。
 + 设置``AsyncTask``完毕，接下来使用它：简单创建一个实例，然后调用``execute()``即可。它的参数会原样传给``doInBackground()``。留意，这是个可变参数，因此单个字符串会被转化为字符串数组的形式。
 
 
@@ -1161,8 +1160,9 @@ Android使用标准的RGB颜色，加上可选的Alpha项，你可以使用RGB�
 
 % At this point you’ve seen multiple ways to specify color of couple of different properties of various views in your activity. There are many properties and many different widgets that Android offers. You should be able to extrapolate from this how to set other properties and make your application UI look exactly the way you want.
 
-这里你已经看到了不同多种View指定颜色的方式。Android为多种不同的控件提供了多种属性。你应该能够从这里总结出如何设置其他的属性来使你的应用程序界面显得和你想要的一致。
+到这里，我们已观察了设置View颜色的几种方法。Android为开发者提供了丰富的控件，它们的属性也数目繁多、功能各异，但道理都是相同的。要设置哪个控件的哪个属性，我们完全可以凭经验推断出来，这就是最小立异原则的一种体现。
 
+%TALK: 上一段意译比较重，加了一句话。
 
 
 % == Alternative Resources ==
