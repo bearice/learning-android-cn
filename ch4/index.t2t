@@ -93,7 +93,7 @@
 
 === Stopped State ===
 {ORGI}When an activity is not visible, but still in memory, we say it’s in Stopped State. Stopped activity could be brought back to front to become a Running activity again. Or, it could be destroyed and removed from memory.
-{TRAN}当Activity不再显示却依然驻留在内存中的时候，就是Stopped状态。Stopped状态的Activity可能会被重复利用，重新进入Running状态。也有可能被销毁，从内存中移除。
+{TRAN}当Activity不再显示却依然驻留在内存中的时候，就是Stopped状态。Stopped状态的Activity可能会被重复利用，重新进入Running状态。也有可能被销毁而从内存中移除。
 
 {ORGI}System keeps activities around in Stopped State because it is likely that the user will still want to get back to those activities some time soon. And restarting a stopped activity is far cheaper than starting an activity from scratch. That is because we already have all the objects loaded in memory and just simply have to bring it all up to foreground.
 {TRAN}系统将Stopped状态的Activity驻留在内存中，用以加速用户下次访问。毕竟重启一个Activity要比重新初始化一个Activity轻量的多。一切都还在内存里，需要做的只是把它显示出来。

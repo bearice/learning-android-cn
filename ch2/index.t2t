@@ -32,13 +32,13 @@
 {TRAN}=== 可移植性 ===
 
 {ORGI}Linux is a portable platform relatively easy to compile on various hardware architectures. What Linux brings to Android is a level of hardware abstractions. By basing Android on Linux, we don’t have to worry too much about underlying hardware features. Most of low level parts of Linux have been written in fairly portable C code, which allows for third-parties to port Android to variety of devices.
-{TRAN}Linux可以轻松地移植到各种不同的硬件平台上。有了Linux做硬件抽象层，Android就不必为不同硬件的兼容性而劳心。Linux 的绝大多数低级代码都是用可移植的C代码编写，因此第三方开发者可以将 Android 移植到很多不同的设备上。
+{TRAN}Linux可以轻松地移植到各种不同的硬件平台上。有了Linux做硬件抽象层，Android就不必为不同硬件的兼容性而劳心。Linux 的绝大多数底层代码都是用可移植的 C 代码编写，因此第三方开发者可以将 Android 移植到很多不同的设备上。
 
 {ORGI}=== Security ===
 {TRAN}=== 安全性 ===
 
 {ORGI}Linux is a highly secure system, having been tried and tested through some very harsh environments over the decades. Android heavily relies on Linux for security. All Android applications run as separate linux processes with permissions set by the Linux system. As such, Android passes a lot of security concerns to the underlying Linux system.
-{TRAN}Linux 已经在一些苛刻的环境下使用和测试了数十年，被证明是一个非常安全的系统。Android 依赖 Linux 实现其安全特性。 所有的 Android 应用都在独立的 Linux 进程中执行，可以直接应用Linux进程的权限机制。如此，Android得以将大部分安全措施交由底层的Linux实现。
+{TRAN}Linux 已经在一些苛刻的环境下使用和测试了数十年，被证明是一个非常安全的系统。Android 依赖 Linux 实现其安全特性。 所有的 Android 应用都在独立的 Linux 进程中执行，可以直接应用Linux进程的权限机制。由此，Android得以将大部分安全措施交由底层的Linux实现。
 
 
 {ORGI}=== Features ===
@@ -51,10 +51,10 @@
 {TRAN}== 本地库 ==
 
 {ORGI}Native libraries are C/C++ libraries often taken from the open source community in order to provide necessary services to Android application layer. They include:
-{TRAN}来自开源社区的 C/C++ 本地库为 Android 应用层提供了很多必须的服务。它们包括: 
+{TRAN}来自开源社区的 C/C++ 本地库为 Android 应用层提供了很多必需的服务。它们包括: 
 
 {ORGI} - WebKit: a fast web rendering engine used by Safari, Chrome, and other browsers
-{TRAN} - WebKit: 一个高速的Web渲染引擎，这个引擎已经被 Safari ， Chrome 和很多替他的浏览器所使用。
+{TRAN} - WebKit: 一个高速的Web渲染引擎，这个引擎已经被 Safari ， Chrome 和很多其他的浏览器所使用。
 {ORGI} - SQLite: a full-featured SQL database
 {TRAN} - SQLite: 一个全功能的 SQL 数据库
 {ORGI} - Apache Harmony: an open source implementation of Java
@@ -62,13 +62,13 @@
 {ORGI} - OpenGL: 3D graphics libraries
 {TRAN} - OpenGL: 3D 图像渲染库
 {ORGI} - OpenSSL: the secure socket layer
-{TRAN} - OpenSSL: 安全套接字
+{TRAN} - OpenSSL: 安全套接字层
 {ORGI} - and many others
 {TRAN} - 等等
 
 
 {ORGI}While many of these libraries are taken as-is, one notable exception is Bionic. Bionic is basically a rewritten version of Standard C Library. The reason for Bionic is two fold:
-{TRAN}这些库中的大部分都是被原封不动的拿过来的，但是 Bionic 是一个例外。 Bionic 基本上是 C 标准库的重写版。 使用 Bionic 的原因有如下两条: 
+{TRAN}这些库中的大部分都是被原封不动地拿过来的，但是 Bionic 是一个例外。 Bionic 基本上是 C 标准库的重写版。 使用 Bionic 的原因有如下两条: 
 
 {ORGI} - Technology: to make it purpose-built for tiny battery powered devices
 {TRAN} - 技术方面: 专门为使用电池的设备进行优化
@@ -89,7 +89,7 @@
 {TRAN}Dalvik 是一个专门为了 Android 而设计的虚拟机。它由 Dan Bornstein 和他在 Google 的团队开发。
 
 {ORGI}While the Java virtual machine (VM) was designed to be a one-size-fits-all solution, the Dalvik team felt they could do a better job by focusing strictly on mobile devices. They looked at which of the constraints specific to a mobile environment are least likely to change in the near future. One of these is battery life, and the other is processing power. Dalvik was built from ground up to address those constraints.
-{TRAN}传统的Java虚拟机（JVM）是为了适应各种不同的环境而设计，强调泛用性。但Dalvik的开发团队认为专注于一个方面，可以得到更好的设计。因此他们研究了长期限制移动设备性能的制约因素，比如电池的续航能力和处理器的速度。而后针对这些因素对症下药，专门设计了Dalvik。
+{TRAN}传统的Java虚拟机（JVM）是为了适应各种不同环境而设计的，强调泛用性。但Dalvik的开发团队认为专注于一个方面，可以得到更好的设计。因此他们研究了长期限制移动设备性能的制约因素，比如电池的续航能力和处理器的速度。而后针对这些因素对症下药，专门设计了Dalvik。
 
 {ORGI}Another side effect of replacing the Java VM with Dalvik VM is the licensing. While the Java language, Java tools and Java libraries are free, the Java virtual machine is not. This was more of an issue back in 2005 when the work on Dalvik started. Nowadays, there are open source alternatives to Sun’s Java VM, namely OpenJDK and Apache Harmony projects.
 {TRAN}使用Dalvik VM代替传统Java VM的另一个好处在于许可证。 Java语言、开发工具以及Java类库都是自由的，但Java虚拟机不是。在2005年时，这对Dalvik来讲是个大问题。不过现在，除了 Sun 的 JVM 外，也出现了其他的开源 VM，例如 [OpenJDK http://openjdk.java.net/] 和 [Apache Harmony http://harmony.apache.org/] 。
@@ -135,7 +135,7 @@
 {TRAN}== 应用程序框架 ==
 
 {ORGI}The application framework is a rich environment that provides numerous services to you, the app developer, to get your job done. This is the part of the platform that is best documented and extensively covered. That is because it is this layer that enables the mass-market of developers to get creative and be empowered to create fantastic applications.
-{TRAN}应用程序框架是Android程序的执行环境，也是开发者的强大工具箱。另外，它也拥有Android平台中最全面最完善的文档。良好的文档它可以激发广大开发人员的创意，也可以为他们构建优秀的应用程序提供有力的支持。
+{TRAN}应用程序框架是Android程序的执行环境，也是开发者的强大工具箱。另外，它也拥有Android平台中最全面最完善的文档。良好的文档可以激发广大开发人员的创意，也可以为他们构建优秀的应用程序提供有力的支持。
 
 {ORGI}In application framework layer, you will find numerous Java libraries specifically built for Android. You will also find many services (or managers) that provide the ecosystem of capabilities your application can tap into, such as location, sensors, WiFi, telephony and so on.
 {TRAN}在应用程序框架中，你可以发现很多为Android设计的Java库。除此之外，也有系统环境的支持，比位置、传感器、WiFi、电话等等。
@@ -147,13 +147,13 @@
 {TRAN}== 应用程序 ==
 
 {ORGI}And finally there are applications that you and other developers create. Applications are what end users find valuable about Android. They can come pre-installed on the device or could be downloaded from one of many Android markets.
-{TRAN}架构的最上层是就你和其他开发者创建的各种应用。 应用即 Andorid 呈现给用户的发光之处， 它可以是预先安装在系统中，也可以从诸多的软件商店中下载。
+{TRAN}架构的最上层是就你和其他开发者创建的各种应用。 应用即 Andorid 呈现给用户的发光之处， 它可以预先安装在系统中，也可以从诸多的软件商店中下载。
 
 {ORGI}=== The APK ===
 {TRAN}=== APK 文件 ===
 
 {ORGI}An application is a single APK (application package) file. An APK file roughly has three main components. It consists of all your Dalvik executable code (Java code compiled automatically to Dalvik executable) plus all your resources (everything that is not code, such as images, layouts, etc.). Additionally, it may contain some native code as well.
-{TRAN}每个应用都是一个 APK 文件（表示 Application PacKage ）。一个 APK 文件基本上由三个部分组成。它包括了所有的 Dalvik 代码（ Java 源文件可以自动编译成 Dalvik 代码），还有所有的资源（也就是出了代码以外的部分，例如图像和布局文件）。另外它还能包含可能会有的本地库。
+{TRAN}每个应用都是一个 APK 文件（表示 Application PacKage ）。一个 APK 文件基本上由三个部分组成。它包括了所有的 Dalvik 代码（ Java 源文件可以自动编译成 Dalvik 代码）和所有的资源（也就是除了代码以外的部分，例如图像文件和布局文件）。另外它可能还会包含一些本地库。
 
 {ORGI}  - Dalvik executable: this is all your Java source code compiled down to Dalvik executable. This is the code that runs your application.
 {TRAN}  - Dalvik 代码: 由你的 Java 文件编译而来的 Dalvik 字节码。这是完成你程序功能的主要部分。

@@ -17,7 +17,7 @@
 {TRAN}在本章中我们将学习在 Android 系统如何使用数据库。我们将在 Yamba 中使用数据库来在本地存储状态更新。 本地数据可以让 Yamba 更快的显示时间线而不用等待网络数据。 我们会使用服务在后台更新数据，所以数据库中的数据都是相对较新的。这将在整体上改善应用的用户体验。
 
 {ORGI}== About SQLite ==
-{TRAN}== 关于 SQLLite ==
+{TRAN}== 关于 SQLite ==
 
 {ORGI}SQLite is an open source database that is has been around for a long time, is quite stable, and is popular on many small devices in addition to Android. There are couple of good reasons why SQLite is a great fit for Android app development:
 {TRAN}SQLite 是一个开源的数据库。它已经经过相当长时间的改进并且非常稳定，包括 Android 在内，很多小型设备都在使用它。 SQLite 非常适合 Android 开发的原因有：
