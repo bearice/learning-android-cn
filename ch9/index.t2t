@@ -5,39 +5,50 @@
 {TRAN}= 数据库 =
 
 {ORGI}Android system uses databases to store many useful information that needs to be persisted so that the data is there for the app to access again if the user kills the app or even shuts down the device and powers it back on. The data includes contacts, system settings, bookmarks, and so on.
-{TRAN}Android 使用数据库来存储很多需要持久化的数据，这样就算进程被杀掉了或者设备关机了，数据都不会丢失。这些数据包括联系人，系统设置，书签等等。
+
+{TRAN}Android 系统中的许多数据都是持久化地储存在数据库中，比如联系人、系统设置、书签等等。 这样可以避免因为进程意外关闭或者设备关机造成的数据丢失。
 
 {ORGI}So, why use a database in a mobile application? After all, isn’t it better to keep our data in a cloud where it’s always backed up instead of storing it in a mobile device which is easily lost or damaged?
-{TRAN}那么，为什么在移动应用程序中使用数据库呢？毕竟，把它们存储在云端来作为备份总要比放在一个容易损坏丢失的移动设备上要好吧？
+
+{TRAN}可是，在移动应用程序中使用数据库又有什么好处？ 把数据留在可靠的云端，不总比存储在一个容易丢失容易损坏的移动设备中更好？
+
+%TALK: always backed up 该是指"云端服务商会负责备份数据"。
 
 {ORGI}Database in a mobile device is very useful to supplement the online world. While it’s true that in many cases it is much better to count on the data living in the cloud, it is useful to store it locally in order to access it faster and have it available even when the network may not be available. In this case, we are using a local database as a cache. This is also how we use it in our Yamba application.
-{TRAN}移动设备中的数据库是网络世界中的一个重要补充。尽管很多情况下数据在云端比在终端更有利，但是我们仍然需要一个能够快速访问并且在没有网络的时候仍然能够工作的存储方式。此时，我们就可以使用数据库作为缓存。我们在 Yamba 将会这样使用数据库。
+
+{TRAN}移动设备中的数据库可以看作是网络世界的一个重要补充。虽说将数据存储在云端有诸多好处，但是我们仍需要一个快速而稳定的存储方式，在没有网络时依然正常工作。这时，就是将数据库当作缓存使用，而Yamba正是如此。
 
 {ORGI}In this chapter, you will learn how Android supports databases. You will learn to create and use a database inside Yamba application to store our status updates locally. Local data will help Yamba display statuses to the user quickly without having to wait for the network to provide the data. Our service will run in the background and periodically update the database so that the data is relatively fresh. This will overall improve the user experience of the application.
-{TRAN}在本章中我们将学习在 Android 系统如何使用数据库。我们将在 Yamba 中使用数据库来在本地存储状态更新。 把数据存储在本地， 可以让Yamba省去访问网络的开销，从而更快地显示 Timeline。 我们会使用Service在后台更新数据，所以数据库中的数据都是相对较新的。这将在整体上改善应用的用户体验。
+
+{TRAN}本章介绍 Android 系统中数据库的使用方法。我们将在Yamba中新建一个数据库，用来存储从服务端收到的消息更新。将数据存储在本地，可以让Yamba节约访问网络的开销，从而加速Timeline的显示。 另由Service负责在后台定期抓取数据到数据库，来保证数据的实时性。这对用户体验的提升是大有好处的。
+
+%TALK: 此处“实时性”不知是否妥当。 -fle
 
 {ORGI}== About SQLite ==
 {TRAN}== 关于 SQLite ==
 
 {ORGI}SQLite is an open source database that is has been around for a long time, is quite stable, and is popular on many small devices in addition to Android. There are couple of good reasons why SQLite is a great fit for Android app development:
-{TRAN}SQLite 是一个开源的数据库。它已经经过相当长时间的改进并且非常稳定，包括 Android 在内，很多小型设备都在使用它。 SQLite 非常适合 Android 开发的原因有：
 
-{ORGI}	 - It’s a zero-configuration database. That means there’s absolutely nothing for you as developer to configure about how the database works. This makes it relatively simple to use.
-{TRAN}	 - 无需配置。这意味着作为开发人员你不需要对数据库本身做任何配置，这样就可以相对简化它的使用。
-{ORGI}	 - It doesn’t have a server. There’s no SQLite database process running. It is basically a set of libraries that provide the database functionality. Not having a server to worry about is also a good thing.
-{TRAN}	 - 无需服务器。SQLite 不需要独立的进程运行，基本上 SQLite 就是一组提供数据库功能的库。不用担心服务端能让你省心不少。
-{ORGI}	 - It’s a single-file database. This makes database security straightforward, as it boils down to file system security. We already know that Android sets aside a special secure sandbox for each application.
-{TRAN}	 - 只有一个文件。这个特性让你可以直接使用文件系统的权限来确保数据安全。我们已经知道 Android 对每个应用都建立了相应的安全沙盒。
-{ORGI}	 - It’s open source.
-{TRAN}	 - 开发源代码。
+{TRAN}SQLite是一个开源的数据库，经过相当一段时间的发展，它已经非常稳定，成为包括Android在内的许多小型设备平台的首选。 Android选择SQLite的理由有：
+
+{ORGI}- It’s a zero-configuration database. That means there’s absolutely nothing for you as developer to configure about how the database works. This makes it relatively simple to use.
+{TRAN}- 零配置。开发者不必对数据库本身做任何配置，这就降低了它的使用门槛。
+{ORGI}- It doesn’t have a server. There’s no SQLite database process running. It is basically a set of libraries that provide the database functionality. Not having a server to worry about is also a good thing.
+{TRAN}- 无需服务器。SQLite 不需要独立的进程，而是以库的形式提供它的功能。省去服务器，可以让你省心不少。
+{ORGI}- It’s a single-file database. This makes database security straightforward, as it boils down to file system security. We already know that Android sets aside a special secure sandbox for each application.
+{TRAN}- 单文件数据库。这一特性允许你直接使用文件系统的权限机制来保护数据。Android将每个应用程序的数据都放在独立的安全沙盒(sandbox)中，这点我们已经有所了解。
+{ORGI}- It’s open source.
+{TRAN}- 开放源码。
 
 
 {ORGI}The Android framework offers several ways to use SQLite easily and effectively, and we’ll look at the basic usage in this chapter. You may be pleased to find that, although SQLite uses SQL, Android provides a higher-level library with an interface that is much easier to integrate into an application.
-{TRAN}Android 框架提供了几种能够简单高效操作 SQLite 的 API。本章我们主要关注最基本的使用方式。你可以欣喜的发现尽管 SQLite 使用 SQL，但是 Android 提供了更高层的 API 来让你更简单的把它集成到你的应用中。
+
+{TRAN}Android 框架提供了几套不同的接口，允许开发者简单高效地访问 SQLite 数据库。本章我们关注最基本的那套接口。SQLite 的默认接口是SQL，不过一个好消息是 Android 提供了更高层的封装来简化开发者的工作。
 
 {NOTE}
 {ORGI}Although SQLite support is built into Android, it is by no means your only option when it comes to data persistence for your app. You can always use another database system, such as JavaDB or MongoDB, but you’d have to bundle the required libraries with you app and would not be able to rely on Android’s built-in support for database. SQLite is not an alternative to a full SQL server, instead it is an alternative to using a local file with an arbitrary format.
-{TRAN}尽管 Android 内建 SQLite 支持， 但是它并不是你进行数据持久化的唯一选择。 你可以使用其他的数据库系统，比如 JavaDB 或者 MongoDB， 但是你需要把他们放在你的程序里一起发布而无法依靠 Android 自带的数据库支持。 SQLite 也并不是一个完整的 SQL 服务器，而是使用一个本地文件存储数据。
+
+{TRAN}Android 内建了 SQLite 支持， 但这并不是说 SQLite 是数据持久化的唯一选择。 你仍可以使用其他数据库系统，比如 JavaDB 或者 MongoDB，但这样就无法利用 Android内建的数据库支持了，而且必需将它们打包到程序中一起发布。另外，SQLite的定位不是重量级的数据库服务器，而是作为自定义数据文件的替代品。
 {/NOTE}
 
 
@@ -45,21 +56,25 @@
 {TRAN}== DbHelper ==
 
 {ORGI}Android provides an elegant interface for your app to interact with a SQLite database. To get access to the database, you first need a helper class that provides a "connection" to the database, creating the connection if it doesn’t already exist. This class, provided to you by the Android framework, is called SQLiteOpenHelper. The database class it returns is an instance of SQLiteDatabase.
-{TRAN}Android 提供了一套特别的 API 用于操作 SQLite 数据库。 要访问数据库，你需要一个辅助类提供并创建与数据库的“连接”。这个类在 Andriod 框架中已经提供了，叫做 ``SQLiteOpenHelper`` 。它可以返回一个 ``SQLiteDatabase`` 对象。
+
+{TRAN}针对SQLite数据库的相关操作，Android提供了一套优雅的接口。要访问数据库，你需要一个辅助类来得到数据库的“连接”。这个类就是 Android框架中的``SQLiteOpenHelper``，它可以返回一个 ``SQLiteDatabase`` 对象。
 
 {ORGI}In the following subsections I’ll explain some of the background concepts you should know when working with DbHelper. I’m not going to explain SQL or basic database concepts such as normalization, because there are hundreds of good places to find that information and I expect most of my readers already know it. This chapter, though, should give you enough to get started even if your knowledge of databases is spotty.
-{TRAN}在接下来的几节中，我将介绍一些你使用 DbHelper 时需要注意的一些事项。 不过我不会介绍 SQL 或者数据库的基本常识，比如规范化。这些知识你可以在其他地方很容易的学习到，并且我希望读者们已经了解这些知识。不过本章中的内容即使你对数据库了解不多也能够理解。
+
+{TRAN}我们将在后面的几节中介绍DbHelper相关的一些注意事项。至于SQL以及数据库的基本常识(比如规范化)则不打算涉及了，毕竟这些知识很容易就可以在别处学到，而且我相信多数读者也都是有一定基础的。尽管如此，即使读者没有数据库的相关基础，依然不妨碍对本章的理解。
 
 {ORGI}=== The database schema and its creation ===
-{TRAN}=== 数据库构架和创建 ===
+{TRAN}=== 数据库原型及其创建 ===
 
+%TALK: schema应译为“原型”
 
 {ORGI}A schema is just a description of what’s in a database. In our Yamba database, for instance, we want fields for the following information about each tweet we retrieve from Twitter:
-{TRAN}数据库构架(schema) 是对数据库结构的描述。 在 Yamba 的数据库中，我们希望把从 Twitter 获取的微博中的以下字段存储下来：
+
+{TRAN}数据库原型(schema)是对数据库结构的描述。 在Yamba的数据库中，我们希望储存从Twitter获取的数据的以下字段：
 
 **created_at**
 {ORGI}	The date when the tweet was sent
-{TRAN}	发送时间
+{TRAN}	消息的发送时间
 **source**
 {ORGI}	…
 {TRAN}	来源
@@ -68,24 +83,32 @@
 {TRAN}	文本内容
 **user**
 {ORGI}	The user who sent the tweet
-{TRAN}	用户名
+{TRAN}	消息的作者
 
 
 {ORGI}So each row in our table will contain the data for one tweet, and these four items will be the columns in our schema, along with a unique ID for each tweet. We need the ID so we can easily refer to a tweet. SQLite, like most database, allows us to declare the ID as a primary key and even assigns a unique number automatically to tweet for us.
-{TRAN}表中的每一行都保存了一条微博的数据，上述4项就是我们的构架中要描述的列，另外我们还需要给每条微博添加一个唯一ID。使用ID能够使我们更方便的表示一条微博。 SQLite 就像其他大多数数据库那样能够定义ID作为主键，并且自动给他赋值。
+
+{TRAN}表中的每一行数据对应一条Twitter消息，以上四项就是我们要在原型中定义的数据列了。另外，我们还需要给每条消息定义一个唯一的ID，以方便特定消息的查找。同其它数据库相同，SQLite也允许我们将ID定义为主键并设置自增属性，保持键值唯一。
+
+%TALK: "refer to"意思不是偏向"描述"，而是偏向"查找"。
 
 {ORGI}The schema has to be created when our application starts, so we’ll do it in the onCreate() method of DbHelper. We might add new fields or change existing ones in a later version of our application, so we’ll assign a version number to our schema and provide an onUpgrade() method that we can call to alter the schema.
-{TRAN}构架需要在应用启动时创建，所以我们在 ``DbHelper`` 的 ``onCreate()`` 方法中做这件事。在以后的版本中我们也许需要添加其他的列或者修改现有的列，所以要给构架赋予一个版本号并且提供一个 ``onUpdate()`` 方法来修改构架。
+
+{TRAN}数据库原型是在程序启动时创建的，因此我们在``DbHelper``的``onCreate()``方法中完成此项工作。在以后的迭代中，我们可能需要添加新列或者修改旧列，为方便版本控制，我们将为每个原型添加一个版本号，以及一个方法``onUpdate()``，用以修改数据库的原型。
+
+%TALK: ``when our application starts``不知是指“启动”还是“安装”，存疑
 
 {ORGI}The onCreate() and onUpgrade() methods are the only ones in our application when we need to use SQL. We’ll execute CREATE TABLE in onCreate() to create a table in our database. In a production application, we’d use ALTER TABLE in onUpgrade() when the schema changes, but that requires a lot of complex introspection of the database, so for now we’ll use DROP TABLE and recreate the table. Of course, DROP TABLE destroys any data currently in the table, but that’s not a problem for our Yamba application. It always refills the table with tweets from the past 24 hours, which are the only ones our users will care about.
-{TRAN}``onCreate()`` 和 ``onUpdate()`` 方法是我们的应用中唯一需要使用 SQL 的地方。 我们在 ``onCreate()`` 中执行 ``CREATE TABLE`` 来创建表。 在生产环境中，我们会在 ``onUpdate()`` 中使用 ``ALTER TABLE`` 来修改构架，不过这么做需要对数据库有很深的了解。所以为了简便起见我们直接使用 ``DROP TABLE`` 删除表然后再重新创建它。 当然使用 ``DROP TABLE`` 会毁掉表中的所有数据，不过在 Yamba 中这样做没有问题。因为用户只关心过去24小时内的微博，所以程序会使用新的数据来填充数据库。
+
+{TRAN}``onCreate()``和``onUpdate``两个方法就是我们应用程序中唯一需要用到SQL的地方了。在``onCreate()``方法中，需要执行``CREATE TABLE``来创建表；在``onUpdate()``方法中，需要执行``ALTER TABLE``来修改原型，不过这里为方便起见，直接使用``DROP TABLE``删除表然后再重新创建它。当然，``DROP TABLE``会毁掉表中所有的数据，但在Yamba中这样做完全没有问题，因为用户一般只关心过去24小时的消息，即使丢失了，仍可以重新抓取回来。
 
 
 {ORGI}=== Four major operations ===
 {TRAN}=== 四种主要操作 ===
 
 {ORGI}The DbHelper class offers you a high-level interface that’s much simpler than SQL. The developers realized that most applications use databases for only four major operations, which go by the appealing acronym [CRUD http://en.wikipedia.org/wiki/Create,_read,_update_and_delete] (create, read (query), update, and delete). To fulfill these requirements, DbHelper offers:
-{TRAN}DbHelper 类提供了高层 API 来简化 SQL。 开发人员们发现绝大多数程序只使用了数据库中的四种主要操作，可以简写成 [CRUD http://en.wikipedia.org/wiki/Create,_read,_update_and_delete]  (即 添加（create）, 查询（query）, 修改（update）, 删除（delete）)。为了满足这些需求，``DbHelper`` 提供了以下方法：
+
+{TRAN}DbHelper类提供了自己的封装来简化SQL操作。经观察人们发现，绝大多数的数据库操作不外乎只有四种，也就是添加(Create)、查询(Query)、修改(Update)、删除(Delete)，简称为 [CRUD http://en.wikipedia.org/wiki/Create,_read,_update_and_delete] 。为满足这些需求，``DbHelper``提供了以下方法：
 
 **insert()**
 {ORGI}	Inserts one or more rows into the database.
@@ -102,46 +125,56 @@
 
 
 {ORGI}Each of these methods has variants that enhance it with other functions. To use one of the methods, create a ContentValues container and place in it the information you want inserted, updated, etc. This chapter will show you the process for an insert, and the other operations work in similar ways.
-{TRAN}每个方法都有若干变形来丰富其功能。要使用某个方法，需要创建一个 ``ContentValues`` 容器并且在其中存放你想要插入，更新等操作所需要的数据。本章主要介绍了插入操作，其他操作都是用类似的方式进行。
+
+{TRAN}以上的每个方法都有若干变种(译者注：比如insertOrIgnore、insertOrThrow)，分别提供不同的功能。要调用上面的方法，我们需要创建一个ContentValues对象作为容器，将关心的数据暂存到里面。本章将以插入操作为例，讲解数据库操作的基本过程，而其它操作则都是大同小异的。
+
+%TALK: variants是指"insertOrIgnore、insertOrThrow"之类。
 
 {ORGI}So, why not use SQL directly? There are three good reasons why.
-{TRAN}那么为什么不直接使用 SQL 呢？有三个主要的原因：
+
+{TRAN}那么，为什么不直接使用 SQL 呢？有三个主要的原因：
 
 {ORGI}First, from security point of view, an SQL statement is a prime candidate for a security attack on your application and data, known as [SQL injection http://en.wikipedia.org/wiki/SQL_injection] attack. That is because the SQL statement takes user input that, unless you check and isolate it very carefully, could embed other SQL statements with undesirable effects.
-{TRAN}首先，从安全性上来看，直接使用 SQL 语句很容易导致 [SQL 注入 http://en.wikipedia.org/wiki/SQL_injection]攻击。 这是因为你需要在 SQL 中加入用户输入的数据， 除非你保证能够非常仔细且安全的隔离用户输入，否则这些输入将会带来很多始料未及的问题。
+
+{TRAN}首先从安全角度上，直接使用 SQL 语句很容易导致 [SQL 注入 http://en.wikipedia.org/wiki/SQL_injection]攻击。 这是因为 SQL 语句中会包含用户的输入， 而用户的输入都是不可信任的，不加检查地构造 SQL 语句的话，很容易导致安全漏洞。
 
 {ORGI}Secondly, from performance point of view, executing SQL statements repeatedly is highly inefficient because you’d have to parse the SQL every time the statement runs.
-{TRAN}其次，从性能的角度出发，重复执行 SQL 语句是非常耗时的，因为每次执行都需要对其进行解析。
+
+{TRAN}其次从性能的角度，重复执行SQL语句是非常耗时的，因为每次执行都需要对其进行解析。
 
 {ORGI}Finally, the DbHelper methods are more robust and less likely to pass through the compiler with undetected errors. When you include SQL in a program, it’s easy to create errors that turn up only at run time.
-{TRAN}最后，使用 ``DbHelper`` 中的方法能够改善程序的健壮性并且使编译器在编译时就能检查出错误。当在程序中使用 SQL 时，这些错误往往只能在运行过程中才能发现。
+
+{TRAN}最后，使用 ``DbHelper`` 有助于提高程序的健壮性，许多编程错误可以在编译时发现。若是使用 SQL，这些错误一般得到运行时才能被发现。
 
 {ORGI}With so-called [Data Definition Language http://en.wikipedia.org/wiki/Data_Definition_Language] part of SQL language, there isn’t as much support in Android framework for prepared statements. That’s why we did use execSQL() to run the code to CREATE TABLE.... That is okay since that code doesn’t depend on any user input and as such SQL injection is not possible. Additionally, that code runs very rarely to have to worry about the performance implications.
-{TRAN}Android 框架对 SQL 中的 DDL（[Data Definition Language http://en.wikipedia.org/wiki/Data_Definition_Language]） 封装并不如 CRUD 这样的查询完善。 所以我们需要使用 ``execSQL()`` 来运行 ``CREATE TABLE`` 之类的语句。因为此时不需要任何用户输入，所以这样做不会产生安全问题。并且由于这些代码很少执行，所以也不会对性能产生影响。
+
+{TRAN}很遗憾，Android框架对SQL的DDL([Data Definition Language http://en.wikipedia.org/wiki/Data_Definition_Language],数据定义语言)部分支持不多，缺少相应的封装。因此要创建表，我们只能通过``execSQL()``调用来运行``CREATE TABLE``之类的SQL语句。但这里不存在用户输入，也就没有安全问题；而且这些代码都很少执行，因此也不会对性能造成影响。
 
 {ORGI}=== Cursors ===
-{TRAN}=== 游标 ===
+{TRAN}=== Cursor ===
 
 {ORGI}A query returns a set of rows along with a pointer called a cursor. You can retrieve results one at a time from the cursor, causing it to advance each time to the next row. You can also move the cursor around in the result set. An empty cursor indicates that you’ve retrieved all the rows.
-{TRAN}每个查询都会返回一些数据行和一个叫做“游标（ ``Coursor`` ）”的指针。通过指针，你可以每次获取一行数据并把它移向下一行。同样你也可以把游标在整个结果集中随便移动。当系统返回一个空的游标则表示没有数据可以返回了。
+
+{TRAN}查询得到的数据将按照Cursor的形式返回。通过Cursor，你可以读出得到的第一行数据并移向下一行，直到返回空为止。也可以在数据集中自由移动，读取所得数据的任意一行。
 
 {ORGI}In general, anything you do with SQL could lead to SQL Exception since it’s code interacting with a system that’s outside our direct control. For example, the database could be running out of space, or somehow corrupted. So, it is a good practice to handle all the `SQLException`s by surrounding your database calls in a try/catch block.
-{TRAN}通常你进行任何 SQL 操作时都有可能抛出 ``SQLException`` ，因为数据库并不在我们代码的直接控制范围内。例如存储空间可能用完了，或者执行过程被意外打断。所以在操作数据库时使用 ``try/catch`` 来捕获 ``SQLException`` 是一种明智的行为。
+
+{TRAN}一般而言，SQL的相关操作都存在触发``SQLException``异常的可能，这是因为数据库不在我们代码的直接控制范围内。比如数据库的存储空间用完了，或者执行过程被意外中断等等，对我们程序来说都属于不可预知的错误。因此好的做法是，将数据库的有关操作统统放在``try/catch``中间，捕获``SQLException``异常。
 
 {ORGI}An easy way to do that is by using the Eclipse shortcut:
-{TRAN}你可以通过 eclpise 的快捷方式来轻松的完成这件事：
 
+{TRAN}这里可以利用Eclipse的快捷功能：
 
 {ORGI}+ Select the code that you’d like to handle exceptions for. Typically this would be most of your SQL calls.
-{TRAN}+ 选择你需要处理异常的代码段，一般就是你进行 SQL 调用的地方。
+{TRAN}+ 选择需要处理异常的代码段，一般就是 SQL 操作相关的地方。
 {ORGI}+ In Eclipse menu, choose Source→Surround With→Try/catch Block. Eclipse will generate the appropriate try/catch statements around your code for the proper exception class.
-{TRAN}+ 在菜单中选择 ``“Source→Surround With→Try/catch Block”``，eclipse 会生成合适的 ``try/catch`` 语句。
+{TRAN}+ 在菜单中选择 ``“Source→Surround With→Try/catch Block”``，Eclipse 即可自动生成合适的 ``try/catch`` 语句。
 {ORGI}+ Handle this exception in the catch block. This may be a simple call to Log.e() to pass the tag, message and the exception object itself.
-{TRAN}+ 在 ``catch`` 块中处理异常，最简单的办法是调用 ``Log.e()``， 参数可以是一个标记、消息或者是异常对象本身。
+{TRAN}+ 在 ``catch`` 块中添加异常处理的相关代码。这里可以调用 ``Log.e()``记录一条日志， 它的参数可以是一个标记、消息或者异常对象本身。
 
 
 {ORGI}== First example ==
-{TRAN}== 原型 ==
+{TRAN}== 第一个例子 ==
 
 {ORGI}So we’re going to create our own helper class to help us open our Yamba database. We’ll call the class DbHelper. It will create the database file if one doesn’t already exist, or upgrade the user’s database if the schema has changed between versions.
 {TRAN}接下来我们要为 Yamba 创建辅助类来操作数据库。 这个类叫做 ``DbHelper``。 通过它我们可以在数据库文件不存在时创建它，或者在版本变更时对其进行升级。
@@ -150,7 +183,6 @@
 {TRAN}如同以前我们写过的很多类一样， 我们的类常常会继承 Android 框架中的某个类。 在本例中我们继承 ``SQLiteOpenHelper`` 。 我们需要实现该类的构建函数、 ``onCreate()`` 和 ``onUpgrade()`` 方法。
 
 **Example 9.1. DbHelper.java, version 1**
-
 {CODE}
 package com.marakana.yamba4;
 
@@ -209,7 +241,7 @@ public class DbHelper1 extends SQLiteOpenHelper { //①
 {ORGI}+ This is the database file name.
 {TRAN}+ 数据库文件名
 {ORGI}+ This is the version of our database. Version is important so that later when you change the schema, you can provide existing users with a way to upgrade their database to the latest schema.
-{TRAN}+ 数据库的版本号。 在你需要修改数据库构架时版本号是十分有用的，你可以给用户提供一种平滑升级他们数据库的方式。
+{TRAN}+ 数据库的版本号。 在你需要修改数据库原型时版本号是十分有用的，你可以给用户提供一种平滑升级他们数据库的方式。
 {ORGI}+ The following are some database constants specific to our application. It is handy to define these as constants to that we can refer to them from other classes.
 {TRAN}+ 下面一些代码是某些有关数据库的常量。通过常量来定义这些参数是为了能够在其他地方方便的引用他们。
 {ORGI}+ We override the SQLiteOpenHelper by passing the constants to the super and retaining the local reference to the context.
@@ -241,7 +273,16 @@ public class DbHelper1 extends SQLiteOpenHelper { //①
 {TRAN}现在来升级 ``UpdaterService`` 使它能把数据存进数据库中。
 
 **Example 9.2. UpdaterService.java, version 1**
-
+马瑞松2011-06-21 18:15
+回复王雪晴 $^@^$：试试，哈哈回复
+王雪晴 $^@^$2011-06-21 18:15
+回复马瑞松：额.....回复
+马瑞松2011-06-21 18:16
+回复王雪晴 $^@^$：呵呵回复
+李亚舟2011-06-21 18:21
+^^
+马瑞松2011-06-21 18:21
+回复李亚舟：一个打酱油的回复
 {CODE}
 package com.marakana.yamba4;
 
@@ -445,7 +486,7 @@ sqlite>
 {ORGI}- Standard SQL commands, such as ``insert ...``, ``update ...``, ``delete ...``, ``select ...`` as well as ``create table ...``, ``alter table ...`` and so on. Note the [SQL http://en.wikipedia.org/wiki/SQL] is another language altogether and as such is not covered by this book. We assume you have very basic knowledge of SQL. Also note that in ``sqlite3``, you must terminate your SQL statements with a semi-column ;.
 {TRAN}- 标准 SQL ，例如 ``insert ...``, ``update ...``, ``delete ...``, ``select ...`` 甚至是 ``create table ...``, ``alter table ...`` 等等， 由于 [SQL http://en.wikipedia.org/wiki/SQL] 并不在本书的范围内，所以不做过多的说明。要注意在 sqlite3 中，你需要使用半角分号 ``;`` 来表示语句结束。
 {ORGI}- ``sqlite3`` commands. These are commands that are specific to SQLite. You can see the list of all commands by typing ``.help`` on the ``sqlite3>`` prompt. For now, we’ll just use ``.schema`` to verify that the schema got created.
-{TRAN}- ``sqlite3`` 命令， 这些命令是 SQLite 特有的， 使用 ``.help`` 可以获取这些命令的列表。现在只需要使用 ``.schema`` 来验证构架是不是已经成功创建。
+{TRAN}- ``sqlite3`` 命令， 这些命令是 SQLite 特有的， 使用 ``.help`` 可以获取这些命令的列表。现在只需要使用 ``.schema`` 来验证原型是不是已经成功创建。
 
 
 {CODE}
