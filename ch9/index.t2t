@@ -77,7 +77,7 @@
 {TRAN}	消息的发送时间
 **source**
 {ORGI}	…
-{TRAN}	来源
+{TRAN}	消息的来源
 **txt**
 {ORGI}	The text of the tweet
 {TRAN}	文本内容
@@ -94,13 +94,13 @@
 
 {ORGI}The schema has to be created when our application starts, so we’ll do it in the onCreate() method of DbHelper. We might add new fields or change existing ones in a later version of our application, so we’ll assign a version number to our schema and provide an onUpgrade() method that we can call to alter the schema.
 
-{TRAN}数据库原型是在程序启动时创建的，因此我们在``DbHelper``的``onCreate()``方法中完成此项工作。在以后的迭代中，我们可能需要添加新列或者修改旧列，为方便版本控制，我们将为每个原型添加一个版本号，以及一个方法``onUpdate()``，用以修改数据库的原型。
+{TRAN}数据库原型是在程序启动时创建的，因此我们在``DbHelper``的``onCreate()``方法中完成此项工作。在以后的迭代中，我们可能需要添加新列或者修改旧列，为方便版本控制，我们将为每个原型添加一个版本号，以及一个方法``onUpgrade()``，用以修改数据库的原型。
 
 %TALK: ``when our application starts``不知是指“启动”还是“安装”，存疑
 
 {ORGI}The onCreate() and onUpgrade() methods are the only ones in our application when we need to use SQL. We’ll execute CREATE TABLE in onCreate() to create a table in our database. In a production application, we’d use ALTER TABLE in onUpgrade() when the schema changes, but that requires a lot of complex introspection of the database, so for now we’ll use DROP TABLE and recreate the table. Of course, DROP TABLE destroys any data currently in the table, but that’s not a problem for our Yamba application. It always refills the table with tweets from the past 24 hours, which are the only ones our users will care about.
 
-{TRAN}``onCreate()``和``onUpdate``两个方法就是我们应用程序中唯一需要用到SQL的地方了。在``onCreate()``方法中，需要执行``CREATE TABLE``来创建表；在``onUpdate()``方法中，需要执行``ALTER TABLE``来修改原型，不过这里为方便起见，直接使用``DROP TABLE``删除表然后再重新创建它。当然，``DROP TABLE``会毁掉表中所有的数据，但在Yamba中这样做完全没有问题，因为用户一般只关心过去24小时的消息，即使丢失了，仍可以重新抓取回来。
+{TRAN}``onCreate()``和``onUpgrade``两个方法就是我们应用程序中唯一需要用到SQL的地方了。在``onCreate()``方法中，需要执行``CREATE TABLE``来创建表；在``onUpgrade()``方法中，需要执行``ALTER TABLE``来修改原型，不过这里为方便起见，直接使用``DROP TABLE``删除表然后再重新创建它。当然，``DROP TABLE``会毁掉表中所有的数据，但在Yamba中这样做完全没有问题，因为用户一般只关心过去24小时的消息，即使丢失了，仍可以重新抓取回来。
 
 
 {ORGI}=== Four major operations ===
@@ -177,10 +177,11 @@
 {TRAN}== 第一个例子 ==
 
 {ORGI}So we’re going to create our own helper class to help us open our Yamba database. We’ll call the class DbHelper. It will create the database file if one doesn’t already exist, or upgrade the user’s database if the schema has changed between versions.
-{TRAN}接下来我们要为 Yamba 创建辅助类来操作数据库。 这个类叫做 ``DbHelper``。 通过它我们可以在数据库文件不存在时创建它，或者在版本变更时对其进行升级。
+{TRAN}接下来我们将创建自己的辅助类``DbHelper``，用以操作数据库。当数据库不存在时，它负责创建数据库；当数据库原型变化时，它负责数据库的更新。
 
 {ORGI}Like many other classes in Android, we usually start by subclassing a framework class, in this case SQLiteOpenHelper. We then need to implement the class’s constructor as well as onCreate() and onUpgrade() methods.
-{TRAN}如同以前我们写过的很多类一样， 我们的类常常会继承 Android 框架中的某个类。 在本例中我们继承 ``SQLiteOpenHelper`` 。 我们需要实现该类的构建函数、 ``onCreate()`` 和 ``onUpgrade()`` 方法。
+
+{TRAN}同前面的很多类一样，它也是继承自Android框架中的某个类，也就是``SQLiteOpenHelper``。我们需要实现该类的构造函数，``onCreate()``方法和``onUpgrade()``方法。
 
 **Example 9.1. DbHelper.java, version 1**
 {CODE}
@@ -192,11 +193,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.util.Log;
 
-public class DbHelper1 extends SQLiteOpenHelper { //①
+public class DbHelper1 extends SQLiteOpenHelper { //#{1}
   static final String TAG = "DbHelper";
-  static final String DB_NAME = "timeline.db"; //②
-  static final int DB_VERSION = 1; //③
-  static final String TABLE = "timeline"; //④
+  static final String DB_NAME = "timeline.db"; //#{2}
+  static final int DB_VERSION = 1; //#{3}
+  static final String TABLE = "timeline"; //#{4}
   static final String C_ID = BaseColumns._ID;
   static final String C_CREATED_AT = "created_at";
   static final String C_SOURCE = "source";
@@ -205,7 +206,7 @@ public class DbHelper1 extends SQLiteOpenHelper { //①
   Context context;
 
   // Constructor
-  public DbHelper1(Context context) { //⑤
+  public DbHelper1(Context context) { //#{5}
     super(context, DB_NAME, null, DB_VERSION);
     this.context = context;
   }
@@ -214,54 +215,56 @@ public class DbHelper1 extends SQLiteOpenHelper { //①
   @Override
   public void onCreate(SQLiteDatabase db) {
     String sql = "create table " + TABLE + " (" + C_ID + " int primary key, "
-    + C_CREATED_AT + " int, " + C_USER + " text, " + C_TEXT + " text)"; //⑥
+    + C_CREATED_AT + " int, " + C_USER + " text, " + C_TEXT + " text)"; // #{6}
 
-    db.execSQL(sql);  //⑦
+    db.execSQL(sql);  // #{7}
 
     Log.d(TAG, "onCreated sql: " + sql);
   }
 
   // Called whenever newVersion != oldVersion
   @Override
-  public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) { //⑧
+  public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) { //#{8}
     // Typically do ALTER TABLE statements, but...we're just in development,
     // so:
 
     db.execSQL("drop table if exists " + TABLE); // drops the old database
-    Log.d(TAG, "onUpdated");
+    Log.d(TAG, "onUpgraded");
     onCreate(db); // run onCreate to get new database
   }
 
 }
 {/CODE}
 
+%NOTE: 代码处"onUpgraded"原为"onUpdated"，疑为错误。
 
 {ORGI}+ Start by subclassing SQLiteOpenHelper.
-{TRAN}+ 继承 ``SQLiteOpenHelper``
+{TRAN}+ 将``SQLiteOpenHelper``作为基类。
 {ORGI}+ This is the database file name.
-{TRAN}+ 数据库文件名
+{TRAN}+ 数据库文件名。
 {ORGI}+ This is the version of our database. Version is important so that later when you change the schema, you can provide existing users with a way to upgrade their database to the latest schema.
-{TRAN}+ 数据库的版本号。 在你需要修改数据库原型时版本号是十分有用的，你可以给用户提供一种平滑升级他们数据库的方式。
+{TRAN}+ 为数据库保留一个版本号。这在需要修改原型时将会十分有用，使得用户可以平滑地升级数据库。
 {ORGI}+ The following are some database constants specific to our application. It is handy to define these as constants to that we can refer to them from other classes.
-{TRAN}+ 下面一些代码是某些有关数据库的常量。通过常量来定义这些参数是为了能够在其他地方方便的引用他们。
-{ORGI}+ We override the SQLiteOpenHelper by passing the constants to the super and retaining the local reference to the context.
-{TRAN}+ 我们在构建 ``SQLiteOpenHelper`` 时向父类传递的一些常量，并且保留了 ``context`` 的引用。
+{TRAN}+ 定义数据库相关的一些常量，方便在其它类中引用它们。
+{ORGI}+ We override the SQLiteOpenHelper by passing the constants to the super and retaining the local reference to the context
+{TRAN}+ 重载SQLiteOpenHelper的构造函数。将前面定义的几个常量传递给父类，并保留对``context``的引用。
 {ORGI}+ This is the actual SQL that we’ll pass on to the database in order to have it create the appropriate SQL schema that we need.
-{TRAN}+ 在这里拼接了我们要传递给数据库的 SQL 语句
+{TRAN}+ 拼接将要传递给数据库的SQL语句。
 {ORGI}+ Once we have our SQL to create the database by running execSQL() on the database object that was passed into onCreate().
-{TRAN}+ 通过传入 ``onCreate()`` 的数据库对象里的 ``execSQL()`` 来执行我们的 SQL语句。
+{TRAN}+ 在``onCreate()``中可以得到一个数据库对象，调用它的``execSQL()``方法执行SQL语句。
 {ORGI}+ onUpgrade() is called whenever user’s database version is different than the application version. This will typically happen when you change the schema and release the application update to users who already have older version of your app.
-{TRAN}+ ``onUpgrade()`` 在现有的数据库版本与程序中定义的版本不相符时调用。 通常这时候你需要升级你现有的数据库架构到最新的版本。
+{TRAN}+ ``onUpgrade()``在数据库版本与当前版本号不匹配时调用。它负责修改数据库的原型，使得数据库随着程序的升级而更新。
 
 
 {NOTE}
 {ORGI}As mentioned, earlier, you would typical execute ALTER TABLE ... SQL statements in onUpgrade(). Since we don’t have an old database to alter, we are assuming this application is still in pre-release mode and are just deleting any user data when recreating the database.
-{TRAN}我们早些时候提到过，通常在 ``onUpgrade()`` 中使用 ``ALERT TABLE`` 语句。不过现在我们的程序还没发布过，所以也没有旧的数据库可以升级。因此这里直接删除了旧数据库然后重新建立一个新的数据库。
+
+{TRAN}早些时候曾提到， ``onUpgrade()`` 中一般都是执行``ALERT TABLE`` 语句。不过现在我们的程序还没有发布，也就没有升级可言。因此便直接删除了旧的数据表并重建。
 {/NOTE}
 
-
 {ORGI}Next, we need to update the service in order to have it open up the database connection, fetch the data from the network and insert it into the database.
-{TRAN}接下来，我们需要重构现有的Service，让它能够打开数据库，然后将刚刚得到的数据写进去。
+{TRAN}接下来我们将重构原先的Service，使它能够打开数据库，并将服务端得到的数据写入进去。
+
 
 {ORGI}== Update UpdaterService ==
 {TRAN}== 升级 UpdaterService ==
