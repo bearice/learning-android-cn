@@ -263,7 +263,7 @@ public class DbHelper1 extends SQLiteOpenHelper { //#{1}
 {/NOTE}
 
 {ORGI}Next, we need to update the service in order to have it open up the database connection, fetch the data from the network and insert it into the database.
-{TRAN}接下来我们将重构原先的Service，使它能够打开数据库，并将服务端得到的数据写入进去。
+{TRAN}接下来我们将重构原先的Service，使之能够打开数据库，并将服务端得到的数据写入进去。
 
 
 {ORGI}== Update UpdaterService ==
@@ -276,16 +276,6 @@ public class DbHelper1 extends SQLiteOpenHelper { //#{1}
 {TRAN}现在来升级 ``UpdaterService`` 使它能把数据存进数据库中。
 
 **Example 9.2. UpdaterService.java, version 1**
-马瑞松2011-06-21 18:15
-回复王雪晴 $^@^$：试试，哈哈回复
-王雪晴 $^@^$2011-06-21 18:15
-回复马瑞松：额.....回复
-马瑞松2011-06-21 18:16
-回复王雪晴 $^@^$：呵呵回复
-李亚舟2011-06-21 18:21
-^^
-马瑞松2011-06-21 18:21
-回复李亚舟：一个打酱油的回复
 {CODE}
 package com.marakana.yamba4;
 
