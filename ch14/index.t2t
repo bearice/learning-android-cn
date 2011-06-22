@@ -74,7 +74,7 @@ interface ILogService { // #{3}
 + 同Java一样，AIDL代码也需要指明它所在的package；
 + 不同在于，即使在同一个package中，我们仍需显式地导入其它的AIDL定义。
 + 指定接口的名字。按照约定，名字以I字母开头。
-+ 这个方法很简单，只有表示输入的参数而没有返回值。留意String不是Java的基本类型，不过AIDL把它当作几本类型对待。
++ 这个方法很简单，只有表示输入的参数而没有返回值。留意String不是Java的基本类型，不过AIDL把它当作基本类型对待。
 + 这个方法取我们自定义的Message对象作为输入参数。它的定义在后面给出。
 
 
@@ -159,7 +159,7 @@ public class LogService extends Service { // #{1}
 % - log_d() is the simple method that takes two strings and logs them. Our implementation simply invokes the system’s Log.d().
 % - We also provide a log() method that gets our Message parcel as its input parameter. Out of this object we extract the tag and the message. Again, for this trivial implementation, we just invoke Android’s logging mechanism.
 
-+ LogService以Android框架的Service为基类。前面已经见过不少Service，但里与众不同。
++ LogService以Android框架的Service为基类。前面已经见过不少Service，但这里与众不同。
 + 它是个Bound Service，因此必须提供``onBind()``的实现，使之返回一个IBinder的实例。参数是客户端传来的Intent，里面包含一些字符串信息。在客户端的实现部分，我们将介绍在Intent中附带少量数据并传递给远程Service的方法。
 + IBinder的实例由``ILogService.Stub()``方法生成，它是自动生成的stub文件中的一个辅助方法，位置在``/gen/com/marakana/logservice/LogService.java``。
 + log_d()是个简单的方法，它取两个字符串作参数，并记录日志。简单地调用系统的``Log.d()``即可。
@@ -465,7 +465,7 @@ public class LogActivity extends Activity implements OnClickListener {
 
 % Try to run the client from within Eclipse. Since Eclipse knows that LogClient is dependent on LogService, it should install both packages onto your device. Once the client starts, it should bind to the service. Try clicking on the button and check that LogService is indeed logging. Your adb logcat call should give you something like this:
 
-尝试在Eclipse中运行客户端。Eclipse知道LogCient与LogService之间的依赖关系，因此会在设备中同时安装这两个package。客户端程序启动之后，应该会绑定到Service。尝试点击按钮，检查LogServic的日志操作。adb中的logcat输出应如下：
+尝试在Eclipse中运行客户端。Eclipse知道LogClient与LogService之间的依赖关系，因此会在设备中同时安装这两个package。客户端程序启动之后，应该会绑定到Service。尝试点击按钮，检查LogServic的日志操作。adb中的logcat输出应如下：
 
 {CODE}
 ...

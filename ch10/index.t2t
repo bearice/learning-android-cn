@@ -38,7 +38,7 @@
 
 % In this first iteration, we are creating a new layout for the TimelineActivity. This layout initially uses a TextView to display all the data that we have in the database. This is fine initially when we don’t have too many statuses to show.
 
-在第一次迭代中，我们为TimelineActty创建一个新的布局(Layout)，它使用一个TextView来展示数据库中的所有消息。在刚开始的时候数据量不大，这样还是没有问题的。
+在第一次迭代中，我们为TimelineActivity创建一个新的布局(Layout)，它使用一个TextView来展示数据库中的所有消息。在刚开始的时候数据量不大，这样还是没有问题的。
 
 % ===Introducing ScrollView===
 ===简介ScrollView===
@@ -284,7 +284,7 @@ ListView中单行的Layout定义在文件``row.xml``。
 
 % Now that we have the XML files sorted out, we are ready to update the Java code. First we need to create the adapter. Adapters generally come in two flavors: those that represent array data and those that represent cursor data. Since our data is coming from the database, we are going to use the cursor-based adapter. One of the simplest of those is SimpleCursorAdapter.
 
-已经有了相应的XML文件，接下来修改Java代码，把Adapter创建出来。Adapter通常有两种形式：一种基于数组(Array)，一种基于Cursor。这里我们的数据来自数据库，因此选择基于Cursor的Adapter。而其中最简单的又顶数``SimpleCursorAdapter``。
+已经有了相应的XML文件，接下来修改Java代码，把Adapter创建出来。Adapter通常有两种形式：一种基于数组(Array)，一种基于Cursor。这里我们的数据来自数据库，因此选择基于Cursor的Adapter。而其中最简单的又数``SimpleCursorAdapter``。
 
 % SimpleCursorAdapter requires us to describe a single row of data (which we do in row.xml), the data (a cursor in our case) and the mapping for a single record of data to the single row in the list. The last parameter maps each cursor column to a view in the list.
 
@@ -363,7 +363,7 @@ public class TimelineActivity2 extends Activity {
 + ``listTimeLine``即我们用以显示数据的ListView。
 + ``adapter``是我们自定义的Adapter，这在后文中讲解。
 + ``FROM``是个字符串数组，用以指明我们需要的数据列。其内容与我们前面引用数据列时使用的字符串相同。
-+ ``TO``是个整型数组，对应布局row.xml中指明的View的ID，用以指明数据的绑定对象。FROM与TO的各个元素必须一一对应，比如``FROM[0]``对应``TO[0]``，``FROM[1]``对应``TO[1]``，如是继续。
++ ``TO``是个整型数组，对应布局row.xml中指明的View的ID，用以指明数据的绑定对象。FROM与TO的各个元素必须一一对应，比如``FROM[0]``对应``TO[0]``，``FROM[1]``对应``TO[1]``，以此类推。
 + 获取XML布局中声明的ListView。
 + 获得了Cursor形式的数据，``row.xml``定义了单行消息的布局，常量FROM与TO表示了映射关系，现在可以创建一个``SimpleCursorAdapter``。
 + 最后通知ListView使用这个Adapter。
@@ -631,12 +631,12 @@ public class TimelineActivity3 extends Activity {
 </manifest>
 {/CODE}
 
-% + <intent_filter> registers this particular activity with the system to respond to certain intents.
+% + <intent-filter> registers this particular activity with the system to respond to certain intents.
 % + Tells the system that this is the main activity to start when users chooses to start your application.
 % + The category LAUNCHER tells the Home application to add this application into the list of applications it displays in the launcher drawer.
 % + StatusActivity no longer needs any intent filters.
 
-+ ``<intent_filter>``将这个Activity所关心的Intent列出，并在系统中注册。
++ ``<intent-filter>``将这个Activity所关心的Intent列出，并在系统中注册。
 + 通知系统，这就是用户启动时显示的主界面。
 + 目录``LAUNCHER``通知Home程序，将本程序的图标显示在Launcher中。
 + ``StatusActivity``就不需要IntentFilter了。

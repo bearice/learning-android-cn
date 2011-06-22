@@ -52,7 +52,7 @@
 
 % When the orientation sensor changes, the Sensor service calls back our sensor listener via onSensorChanged() and reports the new sensor data. The data always comes back as an array of float values that represent degrees and therefore range from 0 to 359. In the case of orientation sensor, the elements represent the following dimensions, illustrated in Figure 13.1, “Axis”:
 
-在方向传感器状态变化时，Sensor服务会回调``onSensorChanged()``，通知侦听器(Listener)得到了新数据。这些数据都是0~359之间的浮点数组成的数组。方向角(azimuth)与磁偏角(pitch与roll)，构成了下边的坐标，如图13.1：
+在方向传感器状态变化时，Sensor服务会回调``onSensorChanged()``，通知侦听器(Listener)得到了新数据。这些数据都是0~359之间的浮点数组成的数组。方位角(azimuth)与磁偏角(pitch与roll)，构成了下边的坐标，如图13.1：
 
 %NOTE: 磁偏角：磁针指示的方向并不是正南正北，而是微偏西北和东南，这在科学上称为磁偏角。
 
@@ -183,7 +183,7 @@ public class Compass extends Activity implements SensorEventListener { //#{1}
 + 通过SensorManager对象，选择我们关心的传感器。
 + 同前面所说，在``onResume()``中将自己注册到系统服务，侦听传感器的输出。
 + 对应``onResume()``，在onPause()``中注销系统服务。
-+ 依然提供``onAccuracyChanged()``的实现，因为这对SensorEventListener接口来说是必须的。但是留空，前面已有解释。
++ 依然提供``onAccuracyChanged()``的实现，因为这对SensorEventListener接口来说是必需的。但是留空，前面已有解释。
 + 传感器在状态改变时会回调``onSensorChanged()``，表示设备的方向发生变化。具体的角度信息储存在``SensorEvent``对象中。
 + 我们只关心返回值中的第一个元素。
 + 得到新的方向信息，更新表盘的角度。
