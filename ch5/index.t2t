@@ -6,7 +6,7 @@
 {TRAN}= Yamba 项目简介 =[ch5]
 
 {ORGI}The best way to learn is by an example. And that example has to meet certain criteria. After working with thousands of new Android developers and explaining some of unique concepts that this platform has to offer, using various example applications, I concluded that the best example has to be:
-{TRAN}学习的最好方法就是动手实践，因此一个好的实例是很重要的。在平日面向数千名初学者的教学中，我曾尝试使用过许多不同的实例。经过总结，一个好的实例该有如下特征：
+{TRAN}学习的最好方法就是动手实践，因此一个好的实例是很重要的。在平日面向数千初学者的教学中，我曾尝试使用过许多不同的实例。经过总结，一个好的实例该有如下特征：
 
 {ORGI}**Comprehensive**
 {TRAN}**全面**
@@ -58,25 +58,25 @@
 {TRAN}**渐进式开发**
 
 {ORGI}	Yamba application will start out small and will constantly grow in functionality and complexity. Initially, the app will not do much, but it will organically grow one step at a time. Along the way, we’ll explain each step so that you’re expanding your skills along the way.
-{TRAN}先从一个小程序做起，随后慢慢给它添加功能。一开始程序的结构会很简单，但是我们会在更新中不断为它添血加肉，让它慢慢成长。在行进途中我们会及时讲解这些变化，读者可以留意。
+{TRAN}先从一个小程序做起，随后慢慢给它添加功能。一开始程序的结构会很简单，但是我们会在更新中不断为它添血加肉，让它慢慢成长。行进途中我会及时讲解这些变化，读者可以留意。
 
 {ORGI}**Always Whole and Complete**
 {TRAN}**保持完整，保持可用**
 
 {ORGI}	The application must always be working. In other words, we’ll add new features in small, self-contained chunks and pull them back into the main project so that you can see how it fits together as a whole. The application must always work at each stopping point.
-{TRAN}程序必须保证一直都是可用的。或者说，在每次修改中所添加的功能应尽量的小并且完备，一旦将其加入原先的代码库即构成一个整体。并且保证在每一轮更新之后，程序都可以正常运行。
+{TRAN}程序必须保证一直都是可用的。或者说，在每次修改中所添加的功能应尽量的小并且完备。一旦将其加入原先的代码库，就依然是一个整体，并保证在每一轮更新之后，程序都是可以正常运行的。
 
 {ORGI}**Refactoring Code**
 {TRAN}**代码重构**
 
 {ORGI}	Once in a while, we’ll have to take a step back and refactor the application to remove duplicate code and optimize the design. The goal is to reuse the code and not reinvent the wheel. But we are going to cross those bridges as we get to them, providing the motivation for refactoring along the way. This process will teach you about some general software development best practices as well.
-{TRAN}每过一段时间就回头重构下我们的程序，及时消除重复代码，优化设计，增加代码重用，避免重复造轮子。 不过没有必要纠结于一次性解决所有的问题，毕竟还有未来的重构。在这一流程中，读者也可以体会下软件开发过程中的最佳实践。
+{TRAN}每过一段时间就回头重构下我们的程序，及时消除重复代码，优化设计，增加代码重用，避免重复造轮子。 但也没有必要纠结于一次性解决所有的问题，毕竟还有未来的重构。在这一流程中，读者也可以体会下软件开发过程中的最佳实践。
 
 {ORGI}== Project Design ==
 {TRAN}== 项目设计 ==
 
 {ORGI}If you remember from __Chapter 4, Main Building Blocks__, an Android application is a loose collection of Activities, Services, Content Providers, and Broadcast Receivers. These are the components from which we put together an application. __Figure 5.4, “Yamba Design Diagram”__ shows the design of the entire Yamba application, which incorporates most of the main Android building blocks.
-{TRAN}在[第4章 #ch4]中有提及，一个Android应用即Activity、Service、Content Provider、Broadcast Receiver的松散组合。它们作为Android的基本构件(Building Block)，在开发中扮演着不可或缺的角色。 //图5.4// 给出了Yamba的设计架构，可以留意其中基本构件与应用之间的关系。
+{TRAN}在[第4章 #ch4]中有提及，Android应用就是Activity、Service、Content Provider、Broadcast Receiver的松散组合。它们作为Android的基本构件(Building Block)，在开发中扮演着不可或缺的角色。 //图5.4// 给出了Yamba的设计架构，不妨留意其中基本构件与应用之间的关系。
 
 	**Figure 5.4. Yamba Design Diagram**
 		[images/05-Yamba.png]
@@ -99,7 +99,7 @@
 {TRAN}在这一章中，我们将尝试开发一个如//图5.2//那样允许用户发布消息的界面。在此过程中，我们配合使用Java与XML完成UI 的设计。在此读者将了解到Android中布局（Layout） 与视图（View）的概念，以及图片的使用方法与美化UI的窍门。
 
 {ORGI}Our approach will focus on best practices in UI development so that your application looks good and works well on any Android device, regardless of screen size and resolution.
-{TRAN}我们通过应用 UI 设计的最佳实践，使你的程序得以适应任何尺寸和分辨率，而不失美观和实用。
+{TRAN}在此，我们将贯彻 UI 设计的最佳实践，使你的应用程序能够适应任何尺寸和分辨率，而不失美观和实用。
 
 {ORGI}=== Networking and multithreading ===
 {TRAN}=== 网络和多线程 ===
@@ -170,7 +170,7 @@
 {TRAN}=== SQLite以及Android的数据库支持 ===
 
 {ORGI}Android ships with a built-in database called SQLite. In addition to this cool little database, the Android framework offers a rich API that makes SQLite easier for us to take advantage of it. In this section, you will learn how to use SQLite and the API for it. No, you do not have to be an SQL buff to understand what is going on, but some basic understanding of SQL always helps.
-{TRAN}Android自带了 SQLite 数据库的支持。SQLite短小精悍，更有Andorid框架中丰富的API，使用起来会很容易。本节我们介绍SQLite及其配套API的使用方法。哦，在这里还没必要精通SQL，不过了解一些SQL总是好的。
+{TRAN}Android自带了 SQLite 数据库的支持。SQLite短小精悍，更有Android框架中丰富的API，使用起来会很容易。本节我们介绍SQLite及其配套API的使用方法。哦，在这里还没必要精通SQL，不过了解一些SQL总是好的。
 
 {ORGI}=== Refactoring the code, again ===
 {TRAN}=== 再次重构代码 ===
@@ -213,7 +213,7 @@
 {TRAN}== 第六部分: Broadcast Receiver ==
 
 {ORGI}In this part, we’ll equip Yamba with receivers so it can react to events around it in an intelligent way. For that purpose, we’ll use Broadcast Receivers.
-{TRAN}我们想让Yamba智能地响应外部事件。为此，我们在这里引入Broadcast Receiver机制。
+{TRAN}我们想让Yamba智能地响应外部事件。为此，在这里引入Broadcast Receiver机制。
 
 {ORGI}=== Boot and Network Receivers ===
 {TRAN}=== Boot Reciever与Network Reciever ===
@@ -221,14 +221,14 @@
 %TALK: 几个Building Blocks都尽量保留原文吧
 
 {ORGI}For example, we want to start our updates when the device is powered up. We also want to stop pulling the data from the cloud when the network is not available, only to start it again once we’re back online. This goal will introduce us to one type of Broadcast Receivers.
-{TRAN}比如我们希望在设备开机时就开始更新消息，也希望在网络离线时暂停更新，并在网络正常时恢复更新。要实现上述功能，我们需要引入Broadcast Receiver机制。
+{TRAN}假如我们希望在设备开机时就开始更新消息，也希望在网络离线时暂停更新，并在网络正常时恢复更新。要实现上述功能，我们需要引入Broadcast Receiver机制。
 
 {ORGI}=== Timeline Receiver ===
 {TRAN}=== Timeline Reciever ===
 
 {ORGI}There’s another type of receiver. This one will only exist at certain times. Also, it won’t be receiving messages from the Android system, but from various other parts of our own Yamba application. This will demonstrate how we can use Receivers to put together loosely coupled components in an elegant and flexible way.
 %NOTE: couple --> 耦合
-{TRAN}还有另一种Receiver，它们只存在于特定的时间段，且收听的消息不是来自Android系统，而是来自Yamba自身的其它部分。我们可以在这里了解到，如何使用Reciever将松散耦合的各部分优雅地组合起来，而不失可扩展性。
+{TRAN}还有另一种Receiver，它们只存在于特定的时间段，收听的消息也不是来自Android系统，而是来自Yamba自身的其它部分。我们将在这里了解到，如何使用Reciever将松散耦合的各部分优雅地组合起来，而不失可扩展性。
 
 {ORGI}=== Permissions ===
 {TRAN}=== 权限 ===
@@ -241,7 +241,7 @@
 {TRAN}== 第七部分: Content Provider ==
 
 {ORGI}In this part, we’ll revisit content providers and refactor our database code to use them. To demonstrate that it all works, we’ll throw in an Android App Widget.
-{TRAN}在此我们再访Content Providers，重构数据库的代码以使用它们。为展示它们的工作方式，我们引入一个Android App Widget。
+{TRAN}在这里，我们将再访Content Providers，重构数据库的代码来使用它们。为展示它们的工作方式，我们引入一个Android小部件。
 
 %NOTE： demonstrate that it all works，原意为“展示它们工作良好”，在此意译。既然"可以观察它的工作方式"了，必然是“工作良好”的。
 
@@ -249,34 +249,34 @@
 {TRAN}=== 消息数据 ===
 
 {ORGI}Our status data is okay the way it is if nobody else cares about it. But what if we want to expose some of this data to the rest of the system? After all, other applications may leverage our friends' timeline in a new and creative way. To do that, we’ll create a Content Provider and expose our status data.
-{TRAN}其它程序不干涉我们的消息数据，这样很好。但我们想让其它程序访问这些数据又该怎么办？毕竟其它程序也可能会希望利用我们的数据，来发挥他们独特的表现手法。为此我们需要创建一个Content Provider来为外部提供数据。
+{TRAN}其它程序不能干涉我们的消息数据，这样很好。但我们想让其它程序访问这些数据又该怎么办？毕竟其它程序也可能会希望利用我们的数据，通过它们独特的表现手法做另一番展示。为此，我们需要创建一个Content Provider为外部提供数据。
 
 {ORGI}=== Android Widgets ===
 {TRAN}=== Android Widgets ===
 
 {ORGI}But who will remember to pull up our app? To demonstrate usefulness of our new Status Data, we’ll put together an App Widget. App widgets are those little components that the user can put on the home screen to see weather updates and such. We’ll create a widget that will pull the latest status update from Yamba database via Status Data Content Provider and display it on the Home screen.
-{TRAN}但是谁会关心我们的数据呢？当然有，比如App Widget(小部件)，也就是挂在主屏幕上显示天气之类的小东西。我们在此新建一个Widget，通过Content Provider读取最新消息并显示在主屏幕上。
+{TRAN}但是谁会关心我们的数据呢？当然有，比如小部件(App Widget)，也就是挂在主屏幕上显示天气之类的小东西。我们将在这里新建一个小部件，通过Content Provider读取最新消息并显示在主屏幕上。
 
 {ORGI}== Part 8: System Services ==
 {TRAN}== 第八部分: 系统服务 ==
 
 {ORGI}The Android OS comes with many useful system services: processes you can easily access to ask for things like your location, sensor readings, WiFi hotspots, and much more. In this part, you will add some cool new features to Yamba, such as user’s current location.
-{TRAN}Andorid OS内置了许多有用的系统服务供程序使用，比如当前位置、传感器数据、WiFi热点等等。在这部分，我们将为Yamba添加若干小功能，比如提交用户的当前位置。
+{TRAN}Android 操作系统内置了许多有用的系统服务供程序使用，比如当前位置、传感器数据、WiFi热点等等。在这部分，我们将为Yamba添加若干小功能，比如提交用户的当前位置。
 
 {ORGI}=== Compass & Location ===
 {TRAN}=== Compass与Location ===
 
 {ORGI}This example will illustrate how system services work in general. You will walk away understanding some common patterns for using these services. We’ll illustrate building a compass app using sensors. Later, we’ll put this knowledge to use in order to let Yamba support the user’s location when posting status updates.
-{TRAN}本例用以演示系统服务的工作方式，足以管中窥豹。我们使用传感器来开发一个指南针应用，然后将类似的功能引入Yamba，为用户发送的消息附带上坐标信息。
+{TRAN}本例用以演示系统服务的工作方式，足以管中窥豹。我们将利用传感器的有关特性，开发一个指南针应用，随后将类似的功能引入Yamba，为用户发送的消息附带上坐标信息。
 
 {ORGI}=== Intent Service, Alarms, Notifications ===
 {TRAN}=== Intent Service, Alarms, Notifications ===
 
 {ORGI}It turns out that some of the cool features Android services provide can make our Updater service much simpler. So we’ll refactor our code, yet again. This time, we’ll introduce Intent Services that respond to Intents. But we’re going to need something to fire off these intents on regular basis, and for that we’ll use the Alarm service. Additionally, we’ll add a feature to notify the user of new updates by putting a notification in the notification bar. For that, we’ll use the Notification service. All this will prove to be a substantially more elegant solution to our Updater service need.
-{TRAN}我们可以看到Android内置了一些很酷的Service，用好可以简化UpdaterService的实现。所以再次重构代码吧。在这里我们引入Intent Service来专门处理Intent请求。还需要有人来触发Intent请求，因此引入Alarm Service。另外我们还会使用到Notification Service，好在系统托盘(Notification Area)显示提示信息。经过重构，我们将得到一个更优雅的UpdaterService实现。
+{TRAN}可以看到，Android内置了一些很酷的Service，用好可以简化UpdaterService的实现。所以再次重构代码吧。在这里我们引入IntentService来响应Intent请求，另外还需要有人来触发Intent请求，因此引入Alarm Service。我们还将使用到Notification Service，在系统托盘(Notification Area)显示提示信息。经过重构，我们将得到一个更为优雅的UpdaterService实现。
 
 {ORGI}== Summary ==
 {TRAN}== 总结 ==
 
 {ORGI}This chapter is intended as a road map for the next eight chapters. By the end of all these iterations, you will have built a medium-size Android app from scratch. Even more, you will understand various constructs and how to put them together into a meaningful whole. The hope is that you’ll start developing a way of ``thinking`` in Android.
-{TRAN}本章可作为后面八章的铺垫。经过一轮轮的迭代，你可以完成一个中等规模的Android应用。更重要的是，你可以在这过程中体会到程序不同部分的意义，以及将其合而为一的方法。或者说，这就是体会到Android开发中的“思维方式”。
+{TRAN}本章可作为后面八章的铺垫。经过一轮轮的迭代，你将完成一个中等规模的Android应用。更重要的是，你可以在这过程中体会到程序各部分的意义、及其合而为一的方法。或者说，这就是体会到Android开发中的“思维方式”。

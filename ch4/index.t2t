@@ -51,7 +51,10 @@
 {TRAN}我通常喜欢拿网页来类比Activity：就像一个网站含有多个网页，Android程序也含有多个界面(Activity)；网站有主页，Android程序有主界面(main Activity)——也就是启动程序时显示的第一个界面；页面多了方便用户跳转，网站会提供导航，Android程序也同样。
 
 {ORGI}On the web, you can jump from a page on one website to a page on another. Similarly, in Android, you could be looking at an activity of one application, but shortly after you could start another activity in a completely separate application. For example, if you are in your Contacts app, and you choose to text a friend, you’d be launching the activity to compose a text message in the Messaging application.
-{TRAN}在网站里，你可以从一个页面跳到另个网站的某个页面。类似地在Andorid中，你也可以在某个程序的界面里启动或访问其它程序的界面。比如在通讯录应用中，你可以选择某个朋友，直接进入短信应用的界面为他写消息。
+{TRAN}在网站里，你可以从一个页面跳到另个网站的某个页面。类似地在Android中，你也可以在某个程序的界面里启动或访问其它程序的界面。比如在通讯录应用中，你可以选择某个朋友，直接进入短信应用的界面为他写消息。
+
+%TALK: “通讯录应用”这一名词疑似不统一。 
+
 
 %=== Activity Lifecycle ===
 === Activity 生命周期 ===
@@ -169,7 +172,7 @@
 {TRAN}Content Provider是应用程序之间共享数据的接口。Android默认使每个应用程序都运行在沙盒(sandbox)里面，自己的数据与外面的程序完全隔离，要传递数据则必须依赖一些特定的接口。少量数据通过Intent传递即可，大量的数据就需要Content Provider了。为此，Content Provider提供了一套很好的按照CRUD原则设计的接口。
 
 {ORGI}Android system uses this mechanism all the time. For example, Contacts Provider is a content provider that exposes all users contacts data to various applications. Settings Provider exposes system settings to various applications including the built-in Settings application. Media Store is responsible for storing and sharing all various media, such as photos, and music across various applications.
-{TRAN}Andorid将这种机制应用到了方方面面。比如Contact Provider专为不同的应用程序提供联系人数据，Setting Provider专为不同的应用程序提供系统的配置信息，Media Store为不同的应用程序提供多媒体信息(比如图片、音乐)的存储与分享，等等。
+{TRAN}Android将这种机制应用到了方方面面。比如Contact Provider专为不同的应用程序提供联系人数据，Setting Provider专为不同的应用程序提供系统的配置信息，Media Store为不同的应用程序提供多媒体信息(比如图片、音乐)的存储与分享，等等。
 
 {ORGI}This separation of data storage and the actual user interface application offers greater flexibility to mash up various parts of the system. For example, a user could install an alternative Address Book application that uses the same data as the default Contacts app. Or, install widgets on the Home Screen that allow for easy changes in the System Settings, such as turning on or off the Wifi, Bluetooth or GPS features. Many phone manufactures take advantage of Content Providers to add their own applications on top of standard Android to improve overall user experience, such as HTC Sense.
 {TRAN}把数据的存储与用户界面分离开来，这使得系统中各个部分之间的联系更紧密，拆换起来也更灵活。比如用户可以安装一个新的通讯录应用替换掉原先的默认的联系人app，同时仍希望使用原先的数据；或在主屏幕上面安装一个小部件，方便做些开关WiFi/蓝牙/GPS之类的系统设置。也有许多手机制造商(比如 HTC Sense)基于Content Provider机制，通过设计一套自己的软件集来提升用户体验。

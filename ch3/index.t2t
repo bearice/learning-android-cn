@@ -75,7 +75,7 @@ Eclipse有着强大的功能与丰富的实用特性，我会在行进的途中�
 
 % While you can do Android development with any favorite text editor or IDE, most developers seem to be using Eclipse, and thus I’m basing this book on its use as well.
 
-Andorid开发并不限制开发者选择任何自己喜欢的编辑器或者IDE。不过Eclipse的使用者既占多数，本书也就选择了它。
+Android开发并不限制开发者选择任何自己喜欢的编辑器或者IDE。不过Eclipse的使用者既占多数，本书也就选择了它。
 
 {TIP}
 % If you choose not to use Eclipse, please refer to [Developing in Other IDEs http://developer.android.com/guide/developing/other-ide.html]

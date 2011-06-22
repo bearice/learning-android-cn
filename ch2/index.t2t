@@ -5,7 +5,7 @@
 {TRAN}= Android的架构 =
 
 {ORGI}This is the 9,000-foot overview of the Android platform. Although you’re concerned primarily with writing Android applications, understanding layout of the system will help shape your understanding about what you can or cannot easily do with Android.
-{TRAN}我们将从9000英尺的高空俯瞰Android平台。你的目标可能仅仅是想学习Android应用程序的编写方法，但对Andorid的架构有所理解是绝对没有坏处的。在学习中了解到它的长处和不足，在实际的开发中才能做到扬长避短、事半功倍。
+{TRAN}我们将从9000英尺的高空俯瞰Android平台。你的目标可能仅仅是想学习Android应用程序的编写方法，但对Android的架构有所理解是绝对没有坏处的。在学习中了解到它的长处和不足，在实际的开发中才能做到扬长避短、事半功倍。
 
 {ORGI}By the end of this chapter, you’ll understand how the whole system works, at least from the high level. 
 {TRAN}读过本章，你将能够对Android整个系统的工作方式有个大体的了解。

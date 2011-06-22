@@ -590,7 +590,7 @@ public class TimelineActivity3 extends Activity {
 
 % Now, in order to make TimelineActivity the main entry point into our application, we need to register it to respond to certain intents. Basically, when the user clicks to start your application, the system sends an intent. You have to define an activity to "listen" to this intent. The activity does that by filtering the intents using an IntentFilter. In XML, this is within the <intent-filter> element and it usually contains at least an <action> element representing the actual intent action we’re interested in.
 
-要把它设为程序的“主界面”，我们需要为它注册到特定的Intent。通常情况是，用户点击启动你的程序，系统就会发送一个Intent。你必须有个Activity“侦听”到这个Intent才行，因此Andorid提供了IntentFilter，使之可以过滤出各自感兴趣的Intent。在XML中，它通过``<intent-filter>``元素表示，其下至少含有一个``<action>``元素，以表示我们感兴趣的Intent。
+要把它设为程序的“主界面”，我们需要为它注册到特定的Intent。通常情况是，用户点击启动你的程序，系统就会发送一个Intent。你必须有个Activity“侦听”到这个Intent才行，因此Android提供了IntentFilter，使之可以过滤出各自感兴趣的Intent。在XML中，它通过``<intent-filter>``元素表示，其下至少含有一个``<action>``元素，以表示我们感兴趣的Intent。
 
 % You may have noticed that StatusActivity had some extra XML compared to PrefsActivity. The extra code is the intent filter block, along with the action that it’s filtering for.
 
