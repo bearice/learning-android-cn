@@ -37,7 +37,7 @@ Android是一个完整的平台，即为移动设备提供的一套完整的软�
 
 % For developers, Android provides all the tools and frameworks to allow easy and quick development of mobile apps. Android SDK is all you need to start developing for Android - you don’t even need a physical phone.
 
-面向开发者，Android提供了一套完整的工具和框架，以简化开发过程、提高开发效率。想要开发Android应用的话，Android SDK就是你所需的一切了——甚至不需要一台真正的手机。
+面向开发者，Android提供了一套完整的工具和框架，以简化开发过程、提高开发效率。想要开发Android应用的话，Android SDK就是你所需的一切——甚至不需要一台真正的手机。
 
 % For users, Android just works right out of the box. Additionally, users can substantially customize their phone experience.
 
@@ -52,7 +52,7 @@ Android是一个完整的平台，即为移动设备提供的一套完整的软�
 
 % Android is an open source platform. The entire stack, from low-level Linux modules all the way to native libraries, and application framework, to complete applications, Android is totally open.
 
-Android是一个开放源码的平台。整个架构，从底层的Linux模块、原生库，到高层的开发框架乃至完整的应用程序，Android都是完全开放的。
+Android是一个开放源码的平台。它的整个架构，从底层的Linux模块、原生库，到高层的开发框架乃至完整的应用程序，都是完全开放的。
 
 % More so, Android is licensed under business-friendly licenses (Apache/MIT) so that others can freely extend it and use it for variety of purposes. Even some 3rd party open source libraries that were brought into Android stack were re-written to be licensed under new license terms.
 

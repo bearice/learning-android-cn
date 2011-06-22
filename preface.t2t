@@ -127,7 +127,7 @@
 
 % This book is here to help you get your job done. In general, you may use the code in this book in your programs and documentation. You do not need to contact us for permission unless you’re reproducing a significant portion of the code. For example, writing a program that uses several chunks of code from this book does not require permission. Selling or distributing a CD-ROM of examples from O’Reilly books does require permission. Answering a question by citing this book and quoting example code does not require permission. Incorporating a significant amount of example code from this book into your product’s documentation does require permission.
 
-本书旨在为读者提供能及的帮助。除非用作特殊用途，你可以在你的程序或者文档中随意使用本书的代码，而不必向我们申请许可。比如基于本书的一些代码开发的程序无需许可，而出售或者以CD-ROM形式分发O'Reilly出版物中的例子则需要许可；在回答问题时引用本书的例子不需要许可，在产品的文档中大量引用本书的例子则需要许可。
+本书旨在为读者提供力所能及的帮助。除非用作特殊用途，你可以在程序或者文档中随意使用本书的代码，而不必向我们申请许可。比如基于本书代码所开发的程序无需许可，而出售或者以CD-ROM形式分发O'Reilly出版物中的例子则需要许可；在回答问题时引用本书的例子不需要许可，在产品的文档中大量引用本书的例子则需要许可。
 
 % We appreciate, but do not require, attribution. An attribution usually includes the title, author, publisher, and ISBN. For example: “Book Title by Some Author. Copyright 2008 O’Reilly Media, Inc., 978-0-596-xxxx-x.”
 
@@ -135,7 +135,7 @@
 
 % If you feel your use of code examples falls outside fair use or the permission given above, feel free to contact us at permissions@oreilly.com.
 
-如果你为没有许可地使用本书的代码而过意不去，联系我们就好：permission@oreilly.com。
+如果你认为自己对本书代码的使用超出了上述范围，联系我们就好：permission@oreilly.com。
 
 == Safari® Books Online ==
 
