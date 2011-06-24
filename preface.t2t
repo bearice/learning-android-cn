@@ -6,15 +6,15 @@
 % = Preface =
 == 前言 ==
 
-% This book sprang from years of delivering Marakana Android Bootcamp training class to thousands of software developers at some of the largest mobile companies on four continents around the world. Teaching Android, over time I saw what works and what doesn’t. This book is the distilled version of Android Bootcamp training course that I developed at Marakana and fine-tuned over numerous engagements.
+% This book sprang from years of delivering Marakana Android Bootcamp training class to thousands of software developers at some of the largest mobile companies on four continents around the world. Teaching Android [this class], over time I saw what works and what doesn’t. This book is the distilled version of Android Bootcamp training course that I developed at Marakana and fine-tuned over numerous engagements.
 
 本书的前身是Marakana Android Bootcamp培训课程内部的连载读物，其受众多达几千人，遍布四个大洲，大多是一些移动设备公司的开发者。它总结了我在几年Android教学中的心得体会：哪些实践有用，哪些实践应该避免。经过适当的增删与提炼，最终编成本书。
 
-% My background is in Java from back before it was even called that. From the beginning, I was very much interested in embedded development in order to program various devices that surround us in every day life. Because Java took off mostly in the web application development, most of my previous decade went to building large enterprise system. Then Android arrived and I got once again very excited about building software for non-traditional computers. My current interests are Android on devices that may not even resemble a typical phone.
+% My background is in Java from back before it was even called that. From the beginning, I was very much interested in embedded development in order to [as a way to] program various devices that surround us in every day [everyday] life. Because Java took off mostly in the web application development, most of my previous decade went to building large enterprise system. [Because Java primarily took off in web application development, most of my experience in the previous decade has been in building large enterprise systems.] Then Android arrived and I got once again very excited about building software for non-traditional computers. [Then Android arrived, and once again I became very excited about building software for nontraditional computers.] My current interests are Android on devices that may not even resemble a typical phone. [My current interests lie in using Android on devices that may not even resemble a typical phone.]
 
 自Java初出茅庐不久，我就与它结下了不解之缘。当时java的定位还是在嵌入式领域，“对身边的各种设备编程”，这一想法对我触动很深。不久之后Java的主力就转向了Web应用的开发，我的工作也随之而转型到大型企业级应用，并在此间度过了十个春秋。所以当Android出现时，我马上就认了出来：为非PC的设备编程！更何况Android所支持的不仅仅是手机而已。
 
-% This book lets anyone who knows Java (or a similar language) grow to develop a reasonably complex Android application. I hope you find this book fairly comprehensive and that you find the example-based learning reasonably motivating. The goal of Learning Android is to get you to think in Android terms.
+% This book lets anyone [teaches anyone] who knows Java (or a similar language) grow to [how to] develop a reasonably complex Android application. I hope you find this book fairly comprehensive and that you find the example-based learning reasonably motivating. The goal of Learning Android is to get you to think in Android terms.
 
 本书假定读者拥有java或类似语言的基础，配合实例，参照一个合适的难度，手把手地为你讲解Android应用的开发过程。Learning Android，更是体会Android的思维方式。
 
@@ -36,7 +36,7 @@
 
 第四章，**基本构件**，展示构成Android应用程序的基本元件。
 
-% Chapter 5, Yamba Overview, is the overview of the Yamba application that we’ll build together through the book and use as an example to learn various features of Android. 
+% Chapter 5, Yamba Overview, is the overview of the Yamba application that we’ll build together through the book and use as an example to learn various features of Android. [Explains the Yamba application that we’ll build together through this book and use as an example to learn Android’s various features]
  
 第五章，**Yamba项目简介**，简单介绍一个Android应用Yamba，它将作为贯穿全书的实例，以展示Android的诸多特性。
  
@@ -56,19 +56,19 @@
 
 第九章，**数据库**，介绍了Android框架中内置的SQLite支持，以及在应用程序中使用数据库的方法。
 
-% Chapter 10, Lists and Adapters, covers an important feature of Android that allows large data sets to be linked to relatively small screens in an efficient way. 
+% Chapter 10, Lists and Adapters, covers an important feature of Android that allows large data sets to be linked to relatively small screens in an efficient way. [Covers an important feature of Android that allows large data sets to be linked efficiently to relatively small screens]
 
 第十章，**List与Adapter**，介绍Android的一个重要特性，它允许在较小的屏幕上高效地读显大量数据。
 
-% Chapter 11, Broadcast Receivers, explains how to use the publish-subscribe mechanism in Android to respond to various system and user defined messages. 
+% Chapter 11, Broadcast Receivers, explains how to use the publish-subscribe mechanism in Android to respond to various system and user defined [user-defined] messages.
 
 第十一章，**Broadcast Receivers**，介绍了如何应用Android中“发布-订阅”机制响应来自系统和用户的各种消息。
 
-% Chapter 12, Content Providers, shows how to design a content provider to share data between applications, using the content provider to enable our app widget to display data on the home screen. 
+% Chapter 12, Content Providers, shows how to design a content provider to share data between applications, using the content provider to enable our app widget to display data on the home screen. [Shows how to design a content provider to share data between applications, in this case using it to enable our app widget to display data on the home screen]
 
 第十二章，**Content Providers**，介绍Content Provider的编写方法，为不同的应用程序提供数据。以及。
 
-% Chapter 13, System Services, goes into various system services that an app developer can tap into. 
+% Chapter 13, System Services, goes into various system services that an app developer can tap into. [Introduces various system services that an app developer can tap into]
 
 第十三章，**系统服务**，介绍可供开发者挖掘的一些系统服务。
 
@@ -129,7 +129,7 @@
 
 本书旨在为读者提供力所能及的帮助。除非用作特殊用途，你可以在程序或者文档中随意使用本书的代码，而不必向我们申请许可。比如基于本书代码所开发的程序无需许可，而出售或者以CD-ROM形式分发O'Reilly出版物中的例子则需要许可；在回答问题时引用本书的例子不需要许可，在产品的文档中大量引用本书的例子则需要许可。
 
-% We appreciate, but do not require, attribution. An attribution usually includes the title, author, publisher, and ISBN. For example: “Book Title by Some Author. Copyright 2008 O’Reilly Media, Inc., 978-0-596-xxxx-x.”
+% We appreciate, but do not require, attribution. An attribution usually includes the title, author, publisher, and ISBN. For example: “Book Title by Some Author. Copyright 2008 O’Reilly Media, Inc., 978-0-596-xxxx-x.” [For example: “Learning Android by Marko Gargenta (O’Reilly). Copyright 2011 Marko Gargenta, 978-1-449-39050-1.”]
 
 我们鼓励保留出处信息，但不强制。通常出处信息可以包含书名、作者、出版商、ISBN等，比如“Book Title by Some Author. Copyright 2008 O'Reilly Media. Inc.”。
 
@@ -156,6 +156,29 @@
 
 O'Reilly Media已经将本书上传至Safari Books Online。欲获得关于本书或者类似出版物的更多信息，请登录 http://my.safaribooksonline.com 。
 
+[[
+=== How to Contact Us ===
+
+Please address comments and questions concerning this book to the publisher:
+O’Reilly Media, Inc.
+1005 Gravenstein Highway North
+Sebastopol, CA 95472
+800-998-9938 (in the United States or Canada)
+707-829-0515 (international or local)
+707 829-0104 (fax)
+
+We have a web page for this book, where we list errata, examples, and any additional information. You can access this page at:
+http://oreilly.com/catalog/9781449390501/
+
+To comment or ask technical questions about this book, send email to:
+<bookquestions@oreilly.com>
+
+For more information about our books, courses, conferences, and news, see our website at http://oreilly.com.
+Find us on Facebook: http://facebook.com/oreilly
+Follow us on Twitter: http://twitter.com/oreillymedia
+Watch us on YouTube: http://www.youtube.com/oreillymedia
+]]
+
 % === Acknowledgements ===
 === 致谢 ===
 
@@ -163,7 +186,7 @@ O'Reilly Media已经将本书上传至Safari Books Online。欲获得关于本�
 
 本书之付梓面世离不开大家的协作。首先要感谢O'Reilly的编辑Andy Oram和Brian Jepson。Andy，你的建议总是一针见血，让我受益良多。Brian，感谢你说服我开始本书的写作。
 
-% I’d like to thank all my technical editors: Dan Bornstein, Hervé Guihot, Frank Maker III, and Bill Schrickel. Thank you for diligently reading my half-baked drafts and providing valuable comments.
+% I’d [I would] like to thank all my technical editors: Dan Bornstein, Hervé Guihot, Frank Maker III, and Bill Schrickel. Thank you for diligently reading my half-baked drafts and providing valuable comments.
 
 感谢我的所有技术编辑：Dan Bornstein，Hervé Guihot，Frank Maker III和Bill Schrickel。感谢你们孜孜不倦地审读我未成形的原稿，以及你们提供的宝贵建议。
 
@@ -171,11 +194,11 @@ O'Reilly Media已经将本书上传至Safari Books Online。欲获得关于本�
 
 没有大家在诸多设备上所做的实际测试，本书肯定不是现在的样子 —— 你们是Android的先驱者，你们的项目令人印象深刻。感谢你们的信任。
 
-% I’d like to thank my team at Marakana: Aleksandar (Saša) Gargenta, Ken Jones, and Laurent Tonon for bringing back first-hand feedback from running Android Bootcamp courses using the draft of this book. Saša, special thanks to you for sending me back to the drawing board more times than I’d like to admit. This book is probably months pass due because of your in-depth technical comments.
+% I’d like to thank my team at Marakana: Aleksandar (Saša) Gargenta, Ken Jones, and Laurent Tonon for bringing back first-hand [firsthand] feedback from running Android Bootcamp courses using the draft of this book. Saša, special thanks to you for sending me back to the drawing board more times than I’d like to admit. This book is probably months pass due because of your in-depth technical comments.
 
 感谢我在Marakana的团队：Aleksandar (Saša) Gargenta，Ken Jones和Laurent Tonon。你们使用本书的原稿作为Android Bootcamp的教材，并给了我第一手的反馈。这里要特殊感谢曾多次督促我回到写字台的Saša：要没你深刻的技术评论，本书很可能几个月前就草草了事了。
 
-% And finally, a huge thanks to my wife Lisa and daughter Kylie. I know what a sacrifice it was for you while I was criss-crossing the world working on this material. Thank you for supporting me along the way.
+% And finally, a huge thanks to my wife Lisa and daughter Kylie. [And finally, a huge thanks to my wife, Lisa, and daughter, Kylie.] I know what a sacrifice it was for you while I was criss-crossing [crisscrossing] the world working on this material. Thank you for supporting me along the way.
 
 最后的感谢留给我深爱的妻子Lisa和女儿Kylie，写作期间难免忙碌，感谢你们所做的牺牲以及对我一如既往的支持。
 

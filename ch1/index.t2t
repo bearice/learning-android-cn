@@ -5,11 +5,10 @@
 % = Android Overview =
 = Android概述 =
 
-%In this chapter, you will learn how Android came about. We’ll take a look at its history to help us understand its future. As mobile environment is entering a make-or-break year(s), we look at the key players in this ecosystem, what motivates and what strengths and weaknesses they bring to the table.
-
+%In this chapter, you will learn how Android came about. We’ll take a look at its history to help us understand its future. As mobile environment is entering a make-or-break year(s), [As this mobile environment enters a make-or-break year,] we look at the key players in this ecosystem, what motivates and what strengths and weaknesses they bring to the table.
 在本章，我们讲述Android是如何诞生的。当今的移动领域正值群雄争霸的关键时期，Android扮演的角色不容小觑。我们在此简要回顾下它的历史，展望下它的未来，以应对它所带来的机遇与风险。
 
-% By the end of this chapter, you will have a better perception of the ecosystem from business point of view, which should help you understand the technology choices and how they relate to long-term advantages for various platforms.
+% By the end of this chapter, you will have a better perception of the ecosystem from business point of view, [you will better understand the ecosystem from a business point of view,] which should help you understand the technology choices [which should help clarify the technology choices] and how they relate to long-term advantages for various platforms.
 
 读过本章，你能以商业的视角对移动领域这一生态圈有更好的认识。我们也需要思考的是，面对诸多平台的更迭，如何选择技术才能获得长线的回报。
 
@@ -20,7 +19,7 @@
 
 Android是一个为移动设备设计的开源系统。它由Google主导的开放手持设备联盟（Open Handset Alliance）维护，该组织的口号是：“助力移动设备的变革，以更低廉的价格，为用户提供更强大的功能和更好的体验”，而Android正是其理念的核心。
 
-% As such, Android is revolutionizing the mobile space. For the first time, it is a truly open platform that is separating hardware from software that runs on it. This allows for a much larger number of devices to run same applications and creates a much richer ecosystem for developers and consumers to enjoy.
+% As such, Android is revolutionizing the mobile space. For the first time, it is a truly open platform that is separating [separates] hardware from software that runs on it. This allows for a much larger number of devices to run same applications and creates a much richer ecosystem for developers and consumers to enjoy [creates a much richer ecosystem for developers and consumers].
 
 现在，Android正主导着移动领域的一场革命。这是第一个真正与硬件无关的开放系统，使得同一个应用能够轻松兼容于大量不同的设备之上，为用户和开发者营造一个更富生机的生态圈。
 
@@ -31,34 +30,34 @@ Android是一个为移动设备设计的开源系统。它由Google主导的开�
 % === Comprehensive ===
 === 完整性 ===
 
-% Android is a comprehensive platform. It is a complete software stack for a mobile device.
+% Android is a comprehensive platform. It is a complete software stack for a mobile device. [Android is a comprehensive platform, which means it is a complete software stack for a mobile device.]
 
 Android是一个完整的平台，即为移动设备提供的一套完整的软件架构。
 
-% For developers, Android provides all the tools and frameworks to allow easy and quick development of mobile apps. Android SDK is all you need to start developing for Android - you don’t even need a physical phone.
+% For developers, Android provides all the tools and frameworks to allow easy and quick development of mobile apps. [Android provides all the tools and frameworks for developing mobile apps quickly and easily.] The Android SDK is all you need to start developing for Android; you don’t even need a physical phone.
 
 面向开发者，Android提供了一套完整的工具和框架，以简化开发过程、提高开发效率。想要开发Android应用的话，Android SDK就是你所需的一切——甚至不需要一台真正的手机。
 
-% For users, Android just works right out of the box. Additionally, users can substantially customize their phone experience.
+% For users, Android just works right out of the box. Additionally, users can substantially customize their phone experience. [users can customize their phone experience substantially.]
 
 面向用户，Android开机即用。而且，用户可以按照自己的喜好做出相当程度的自定义。
 
-% For manufacturers, it is the complete solution that can run their devices. Other than some hardware-specific drivers, Android provides everything else to make their devices work.
+% For manufacturers, it is the complete solution that can run their devices. [it is the complete solution for running their devices.] Other than some hardware-specific drivers, Android provides everything else to make their devices work.
 
 面向生产厂商，Android就是令他们的设备跑起来的完整方案。厂商只需要编写自己的硬件驱动即可，其它一切都有Android代劳。
 
 % === Open Source Platform ===
 === 开源平台 ===
 
-% Android is an open source platform. The entire stack, from low-level Linux modules all the way to native libraries, and application framework, to complete applications, Android is totally open.
+% Android is an open source platform. The entire stack, from low-level Linux modules all the way to native libraries, and application framework, to complete applications, Android is totally open. [and from the application framework to complete applications, is totally open.]
 
 Android是一个开放源码的平台。它的整个架构，从底层的Linux模块、原生库，到高层的开发框架乃至完整的应用程序，都是完全开放的。
 
-% More so, Android is licensed under business-friendly licenses (Apache/MIT) so that others can freely extend it and use it for variety of purposes. Even some 3rd party open source libraries that were brought into Android stack were re-written to be licensed under new license terms.
+% More so, Android is licensed under business-friendly licenses (Apache/MIT) so that others can freely extend it and use it for variety of purposes. Even some 3rd party [third-party] open source libraries that were brought into Android stack were re-written [rewritten] to be licensed under new license terms.
 
 而且，Android选择了对商业行为比较友好的许可证（Apache/MIT），从而允许他人在自由的扩展之余，更可以合法地用作其它用途。为保证整个架构的开放，Android甚至重写了一些三方库，并按照新的许可证重新发布。
 
-% So, as a developer, you have access to entire platform source code. This allows you to see how the guts of Android operating system work. As manufacturer, you can easily port Android OS to your specific hardware. You can also add your own proprietary secret sauce and you do not have to push it back to the development community if you don’t want to.
+% So, as a developer, you have access to entire platform source code. This allows you to see how the guts of Android operating system work. As manufacturer, you can easily port Android OS to your specific hardware. You can also add your own proprietary secret sauce [,] and you do not have to push it back to the development community if you don’t want to.
 
 因此作为开发者，你有权访问整个平台的所有代码，其运行原理不是秘密；作为生产厂商，你可以轻松把Android OS移植到自己专有的硬件平台之上，也可以保留自己的私传秘方，而不必强制贡献给开发社区。
 
@@ -67,7 +66,7 @@ Android是一个开放源码的平台。它的整个架构，从底层的Linux�
 这一切都不需要Android的授权。你可以随时随地使用它、修改它，而不带任何附加条件。Android还在不同层次上内置了丰富的hooks，在扩展上使人大有可为。
 
 %{NOTE}
-% There are couple of minor low-level pieces of code that are proprietary to each vendor, such as the software stack for the cellular, Wi-Fi, and Bluetooth radios. Android tries hard to abstract those components with interfaces so that vendor-specific code can be easily managed.
+% There are couple of minor low-level pieces of code that are proprietary to each vendor, such as the software stack for the cellular, Wi-Fi [WiFi], and Bluetooth radios. Android tries hard to abstract those components with interfaces so that vendor-specific code can be easily managed [managed easily].
 %{/NOTE}
 
 {NOTE}
@@ -78,7 +77,7 @@ Android是一个开放源码的平台。它的整个架构，从底层的Linux�
 % === Designed for Mobile Devices ===
 === 为移动设备而设计 === 
 
-% Android is a purpose-built platform for mobile devices. When designing Android, the team looked at what constraints are likely not going to change for a foreseeable future when it comes to mobile devices. For one, mobile devices are battery powered and battery performance is likely not going to get much better any time soon. Secondly, the small size of mobile devices means that they will always be limited in terms of memory and speed.
+% Android is a purpose-built platform for mobile devices. When designing Android, the team looked at what constraints are likely not going to change for a foreseeable future when it comes to mobile devices. [When designing Android, the team looked at which mobile device constraints likely were not going to change for the foreseeable future.] For one, mobile devices are battery powered [,] and battery performance is likely [likely is] not going to get much better any time soon. Secondly [Second], the small size of mobile devices means that they will always be limited in terms of memory and speed.
 
 Android是为移动设备而设计的系统。Android的开发团队在设计时，会对移动设备本身的一些限制做些评估，哪些可以在可见的未来得到改善，而哪些会长期不变。比如移动设备多是使用蓄电池，而电池的续航能力可能在几年内并不能得到多大的改善。再比如，移动设备受其体积所限，它们只能拥有较少的内存，CPU的速度也要打个折扣。
 
@@ -93,7 +92,7 @@ Android是为移动设备而设计的系统。Android的开发团队在设计时
 % == History ==
 == 历史 ==
 
-% The history of Android is interesting in order to gain the perspective on what the future might hold.
+% The history of Android is interesting in order to gain the perspective on what the future might hold. [The history of Android is interesting and offers some perspective on what the future might hold.]
 
 欲对Android的未来有所把握，就不能不了解其历史。
 
@@ -101,12 +100,12 @@ Android是为移动设备而设计的系统。Android的开发团队在设计时
 
 如下是过去几年的大事记：
 
-% - 2005 Google buys Android, Inc. The world thinks a "gPhone" is about to come out…
+% - [In] 2005 Google buys Android, Inc. The world thinks a "gPhone" is about to come out…
 % - Everything goes quiet for a while.
-% - 2007 Open Handset Alliance is announced. Android is officially open-sourced.
-% - 2008 Android SDK 1.0 is released. The G1 phone, manufactured by HTC, and sold by the wireless carrier T-Mobile USA, follows shortly afterwards.
-% - 2009 sees a proliferation of Android-based devices. New versions of the operating system: Cupcake (1.5), Donut (1.6), and Eclair (2.0 and 2.1) are released. 20+ devices run Android.
-% - 2010 Android is 2nd only to RIM as best-selling smart phone platform. Froyo (Android 2.2) is released and so are 60+ devices that run it.
+% - [In] 2007 [, the] Open Handset Alliance is announced. Android is officially open-sourced [open sourced].
+% - [In] 2008 Android SDK 1.0 is released. The G1 phone, manufactured by HTC and sold by the wireless carrier T-Mobile USA, follows shortly afterwards [afterward].
+% - 2009 sees a proliferation of Android-based devices. New versions of the operating system: Cupcake (1.5), Donut (1.6), and Eclair (2.0 and 2.1) are released. 20+ devices run Android. [New versions of the operating system are released: Cupcake (1.5), Donut (1.6), and Eclair (2.0 and 2.1). More than 20 devices run Android.]
+% - [In] 2010 Android is 2nd [second] only to RIM [Blackberry] as best-selling smart phone platform. Froyo (Android 2.2) is released and so are 60+ [more than 60] devices that run it.
 
 - 2005年 Google收购Android, Inc.，全世界都以为"gPhone"就快来了...
 - 风平浪静了一段时间。
@@ -115,29 +114,29 @@ Android是为移动设备而设计的系统。Android的开发团队在设计时
 - 2009年 基于Android的设备如雨后春笋。Android系统发布了几个新版本：Cupcake(1.5)，Donut(1.6)，Eclair(2.0及2.1)。 已有超过20款设备运行Android。
 - 2010年 Android成为仅次于黑莓的第二大智能手机平台。Froyo(Android 2.2)发布，已有超过60款设备运行它。
 
-% In 2005, when Google purchased Android, Inc., the world thought Google is about to enter the smart phone market. There were widespread speculations about device called gPhone.
+% In 2005, when Google purchased Android, Inc., the world thought Google is [was] about to enter the smart phone market. There were widespread speculations about device called gPhone.
 
 在2005年Google买下Android, Inc.时，这被认为是Google进军智能手机市场的信号，一时间人们纷纷猜测着一款叫做gPhone的设备。
 
-% Google CEO, Eric Schmidt, made it clear right away that Android’s ambitions are much larger than a single phone. They saw it as a platform that will enable many phones and other devices out there.
+% Google CEO, Eric Schmidt, made it clear right away that Android’s ambitions are much larger than a single phone. They saw it as a platform that will enable many phones and other devices out there. [Instead, they envisioned a platform that would enable many phones and other devices.]
 
 而Google的首席执行官Eric Schmit很快就让人们醒悟过来，仅仅一款智能手机是远远不能满足Android野心的：他们要把它做成一个通用的平台，为各种手机和其它设备都提供支持。
 
 % === Google’s Motivation ===
 === Google的动机 ===
 
-% Google’s motivation in supporting the Android project seems to be to have Android everywhere and by doing that, to create a level playing field for the mobile. Ultimately, Google is a media company and its business model is based on selling advertising. If everyone is using Android, then Google can provide additional services on top of it, and compete fairly. This is unlike business models of other software vendors who depend on the licensing fees.
+% Google’s motivation in supporting [for supporting] the Android project seems to be to have [having] Android everywhere and by doing that, to create a level playing field for the mobile. Ultimately, Google is a media company and its business model is based on selling advertising. If everyone is using Android, then Google can provide additional services on top of it, and compete fairly. This is unlike business models of other software vendors who depend on the licensing fees.
 
 Google对Android的支持似乎仅仅是为了推广Android，凭借它的无处不在为自己在移动领域占据一席之地。其实Google是一家传媒公司，其商业模式建基于广告营销，这与传统软件商出售许可证的商业模式有所不同。只要大家使用Android，就可以有Google提供的附加功能，这与第三方是公平竞争的。
 
-% While Google does license some proprietary apps, such as Gmail and Maps, and make some money off the Android market, its primary motivation is still the advertising revenue that those apps bring in.
+% While [Although] Google does license some proprietary apps, such as Gmail and Maps, and make some money off the Android market, its primary motivation is still the advertising revenue that those apps bring in.
 
 虽说Google也保留一些专有应用的许可（比如Gmail和Maps），在Android Market之上也有一定营收，但是Google最看重的还是应用程序带来的的广告收益。
 
 % === Open Handset Alliance ===
 === 开放手持设备联盟 ===
 
-% For this to be bigger than just Google, Android is owned by Open Handset Alliance, a non-profit group formed by key mobile operators, manufacturers, carriers, and others. The alliance is committed to openness and innovation for mobile user experience.
+% For this to be bigger than just Google, Android is owned by Open Handset Alliance, a non-profit [nonprofit] group formed by key mobile operators, manufacturers, carriers, and others. The alliance is committed to openness and innovation for [the] mobile user experience.
 
 Android的背后不只是Google，更有开放手持设备联盟（Open Handset Alliance）。它是一个由电信运营商、手机制造商、软件开发商和芯片制造商等等组成的非盈利组织，致力于保持开放以及改进移动设备的用户体验。
 
@@ -146,7 +145,7 @@ Android的背后不只是Google，更有开放手持设备联盟（Open Handset 
 这一联盟仍略显年轻，各个成员也正在慢慢摸索合作的方式。目前Android背后的主力仍是Google。
 
 %{NOTE}
-%The first version of Android SDK was released without an actual phone being on the market. The point of this is that you don’t really need a phone to do Android development. There are some exceptions to this (hardware sensors, telephony, etc.), but for the most part the Android SDK contains everything you’ll need for developing on this platform.
+%The first version of Android SDK was released without an actual phone being on the market. The point of this is that you don’t really need a phone to do [for] Android development. There are some exceptions to this (hardware sensors, telephony, etc.), [There are some exceptions (hardware sensors, telephony, etc.),] but for the most part the Android SDK contains everything you’ll need for developing on this platform.
 %{/NOTE}
 
 {NOTE}
@@ -157,7 +156,7 @@ Android的背后不只是Google，更有开放手持设备联盟（Open Handset 
 % == Android Versions ==
 == Android的版本 ==
 
-% Like any software, Android gets improved over time and that is reflected in its version numbers. But what is confusing is the relationship between different version numbers. Table 1.1, “Android versions through Android 2.3” is meant to help explain that.
+% Like any software, Android gets improved over time and that is reflected in its version numbers. But what is confusing is the relationship between different version numbers. [However, the relationship between different version numbers can be confusing.] Table 1.1, “Android versions through Android 2.3” is meant to help explain that.
 
 同任何软件一样，Android也在不断的改进之中，其间的变化就在版本号上得以呈现。但是容易使人迷惑的是，不同版本号之间又是什么关系？在表格里看会更直观些，如下：
 
@@ -173,14 +172,14 @@ Android的背后不只是Google，更有开放手持设备联盟（Open Handset 
 | Android 2.1 | 7 | Eclair |
 | Android 2.2 | 8 | Froyo(frozen yogurt) |
 | Android 2.3 | 9 | Gingerbread |
-| Android X.X | 10 | Honeycomb |
-| Android X.X | 11 | Ice Cream Sandwich |
+| Android 2.3.3 | 10 | Gingerbread |
+| Android 3.0 | 11 | Honeycomb |
 
-% Android version number itself sort of tells the story of major and minor release of the software platform. What is most important is the API level. Version numbers change all the time, sometimes because the APIs have changed, other times because of minor bug fixes or performance improvements.
+% Android version number itself sort of tells the story of major and minor release of the software platform. [The Android version number itself partly tells the story of the software platform’s major and minor releases. ] What is most important is the API level. Version numbers change all the time, sometimes because the APIs have changed, other times because of minor bug fixes or performance improvements.
 
 Android版本号差不多就是标志了它大版本和小版本发布的轨迹，其间以API Level最为重要。版本号的更新有时是为API的改动，有时是为修补bug或者性能优化。
 
-%As application developers, you will want to make sure you know what API level your application is targeting in order to run. That API level will determine devices that can and cannot run your application.
+%As application developers, you will want to make sure you know what API level your application is targeting in order to run. That API level will determine devices that can [which devices can] and cannot run your application.
 
 身为应用程序的开发者，你需要明确知道目标平台的API Level，这决定了你的应用能否兼容。
 
@@ -192,7 +191,7 @@ Android版本号差不多就是标志了它大版本和小版本发布的轨迹�
 
 [images/01-AndroidVersions.png]
 
-% You may notice that there are not a lot of users of Android 1.5 and 1.6. You may also notice that there are not a lot of users of latest and greatest Android 2.3, but the number of 2.x users is growing. This is because everyone on 1.0 and 1.1 got upgraded over the air (OTA) automatically to 1.5. On the other hand, users who still have devices with Android 1.5 and 1.6 will likely never be able to upgrade to 2.x versions because their older devices do not have relevant firmware and most manufacturers are not planning on releasing firmware upgrades as they are busy working on new models.
+% You may notice that there are not a lot of users of Android 1.5 and 1.6. You may also notice that there are not a lot of users of latest and greatest Android 2.3, but the number of 2.x users is growing. This is because everyone on 1.0 and 1.1 got upgraded over the air (OTA) automatically to 1.5. On the other hand, users who still have devices with Android 1.5 and 1.6 will likely [likely will] never be able to upgrade to 2.x versions because their older devices do not have relevant firmware and most manufacturers are not planning on releasing firmware upgrades as they are busy working on new models.
 
 你可以注意到，使用Android 1.5和1.6的用户已经不是很多，最新版本2.3也还未成气候，不过2.x版本的用户数增长势头良好。1.0和1.1的用户几乎都通过OTA自动升级到了1.5，不过1.5和1.6的用户却因为缺少固件难以升级。很多手机生产商甚至并无推出新固件的计划，因为他们更专注于新机的开发。
 
@@ -203,10 +202,10 @@ Android版本号差不多就是标志了它大版本和小版本发布的轨迹�
 % == Summary ==
 == 总结 ==
 
-% Android operating system was designed from the ground up to be a very comprehensive open source platform for mobile devices. It is a game-changer in the industry and has enjoyed a great success lately.
+% Android operating system was designed from the ground up to be a very comprehensive open source platform for mobile devices. It is a game-changer in the industry and has enjoyed a great success lately [and has enjoyed great success].
 
 Android操作系统在设计伊始，就是作为一个完整的、移动设备之上的开源平台而考虑的。随着巨大的成功，它改变了整个行业的游戏规则。
 
-% In the next chapter, we’ll take a look at the entire Android operating system at a high level to understand how technically all the pieces fit together.
+% In the next chapter, we’ll take a look at the entire Android operating system at a high level to understand how technically  [to gain a technical understanding of how] all the pieces fit together.
 
 在下一章，我们将全局地观察整个Android操作系统，了解它是如何将其各部分巧妙地合为一体的。
