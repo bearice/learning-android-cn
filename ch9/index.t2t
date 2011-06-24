@@ -263,17 +263,20 @@ public class DbHelper1 extends SQLiteOpenHelper { //#{1}
 {/NOTE}
 
 {ORGI}Next, we need to update the service in order to have it open up the database connection, fetch the data from the network and insert it into the database.
+
 {TRAN}接下来我们将重构原先的Service，使之能够打开数据库，并将服务端得到的数据写入进去。
 
 
 {ORGI}== Update UpdaterService ==
-{TRAN}== 升级 UpdaterService ==
+{TRAN}== 重构 UpdaterService ==
 
 {ORGI}Remember that it is our UpdaterService that connects to the cloud and gets the data. So it is also UpdaterService that is responsible for inserting this data into the local database.
-{TRAN}因为 ``UpdaterService`` 是负责来链接到云端并且获取数据的。所以它同样应该负责把数据插入本地数据库中。
+
+{TRAN}``UpdaterService``是负责连接到服务端并抓取数据的Service，因此由它负责将数据写入数据库是合理的。
 
 {ORGI}We can now update the UpdaterService to pull the data from the cloud and store it in the database.
-{TRAN}现在来升级 ``UpdaterService`` 使它能把数据存进数据库中。
+
+{TRAN}接下来重构``UpdaterService``，为它添加写入数据库的相关代码。
 
 **Example 9.2. UpdaterService.java, version 1**
 {CODE}
@@ -399,45 +402,49 @@ public class UpdaterService1 extends Service {
 
 
 {ORGI}+ Since we are likely going to need db and dbHelper objects throughout the class, we declare them globally to the class.
-{TRAN}+ 由于我们在很多地方都要使用 ``db`` 和 ``dbHelper`` ， 我们将其定义为类变量。
+{TRAN}+ 我们需要多次用到``db``和``dbHelper``两个对象 ， 为此将其定义为类的成员变量。
 {ORGI}+ Create the instance of DbHelper and pass this as the context for it. This works because Android Service class is a subclass of Context. DbHelper will figure out if the database needs to be created or upgraded.
-{TRAN}+ 使用 ``context`` 创建 ``DbHelper`` 实例。因为 Android 中的 ``Service`` 本身就是 Context 的子类所以可以直接使用。DbHelper 会在需要时创建或升级数据库。
+{TRAN}+ Android中的``Service``本身就是``Context``的子类，通过``this``创建``DbHelper``的实例。``DbHelper``可以在需要时创建或者升级数据库。
 {ORGI}+ We need to connect to the online service, get latest updates, and insert them into the database. getTwitter() in YambaApplication is our lazy initialization of Twitter object. Then we call the actual Twitter API call getFriendsTimeline() to get last 20 statuses from friends in last 24 hours.
-{TRAN}+ 连接服务端，获取最新的Timeline，然后插入数据库中。 ``YambaApplication`` 中的 ``getTwitter()`` 是用来延迟加载 Twitter 对象的。然后使用 ``getFriendsTimeline()`` 来调用 Twitter API 以获取24小时内最新的20条微博。
+{TRAN}+ 连接到服务端并获取最新的Timeline，插入数据库。 先通过``YambaApplication`` 中的 ``getTwitter()`` 获取Twitter对象，然后使用 ``getFriendsTimeline()`` 调用 Twitter API 获取24小时内最新的20条消息。
 {ORGI}+ Get the writable database so we can insert new statuses into it. First time we make this call, onCreate() in DbHelper will run and create the database file for this user.
-{TRAN}+ 获取数据库的写入对象。当我们第一次调用此函数时，会触发 DbHelper 的 onCreate() 方法来创建数据库文件。
+{TRAN}+ 获取写入模式的数据库对象。在第一次调用时，将触发 ``DbHelper`` 的``onCreate()``方法。
 {ORGI}+ ContentValues is a simple name-value pairs data structure that maps database table names to their respective values.
-{TRAN}+ ``ContentValues`` 是一种用来保存名称与数据间映射的数据结构。
+{TRAN}+ ``ContentValues`` 是一种简单的键值对结构，用以保存字段到数据的映射。
 {ORGI}+ We loop over all the status data that we got. In this case, we are using Java for-each loop to make the iteration simple.
-{TRAN}+ 在所有获取到的数据中循环。本例中使用了 Java 中的 for-each 结构来简化迭代过程。
+{TRAN}+ 遍历所得的所有数据。这里使用了 Java 的 for-each 语句来简化迭代过程。
 {ORGI}+ For each record, we create a content value. We are reusing the same Java object clearing it each time we start the loop and populating appropriate values for the status data.
-{TRAN}+ 对于每条记录，需要创建一个 ``ContentValues``。 不过我们在这里重用了已有的对象：首先清空它，然后绑定新的值。
+{TRAN}+ 为每条记录分别生成一个``ContentValues``。这里我们重用了同一个对象：在每次迭代中，都反复清空它，然后绑定新的值。
 {ORGI}+ We insert the content value into the database via insert() call to SQLiteDatabase object. Notice that we are not piecing together a SQL statement here, but rather using a prepared statement approach to inserting into the database.
-{TRAN}+ 通过 ``insert()`` 把数据插入数据库中。 注意在此我们没有使用任何的 SQL 语句，而是使用了封装好的函数完成了这项工作。
+{TRAN}+ 调用 ``insert()`` 将数据插入数据库。留意在这里我们并没有使用任何SQL语句，而是使用了既有的封装。 
 {ORGI}+ Finally, remember to close the database. This is important since another activity could be trying to read or write from this shared resource.
-{TRAN}+ 最后，记得关闭数据库连接。这样其他人才可以读写共享的数据库资源。
+{TRAN}+ 最后不要忘记关闭数据库。这很重要，不然会造成他人不必要的等待。
 
 
 {ORGI}We are now ready to run our code and test it all works.
-{TRAN}现在就可以运行代码并且测试它是否工作了。
+{TRAN}一切就绪，准备测试。
 
 === Testing It Works ===
 === 测试 ===
 
 {ORGI}At this point, we can test if the database got created properly and if the service has populated it with some data. We’re going to do this step by step.
-{TRAN}现在，让我们来看看数据库是不是已经成功创建了，并且是不是可以正常的写入数据呢。不要急，一步一步来。
+
+{TRAN}到这里，我们将测试数据库是否创建成功、能否正常写入数据。一步步来。
 
 ==== Verify Database Got Created ====
 ==== 验证数据库是否创建成功 ====
 
 {ORGI}If the database file got created successfully, it will be located in ``/data/data/com.marakana.yamba/databases/timeline.db`` file. You can use Eclipse DDMS perspective and File Explorer view to look at the file system of the device, or you can use adb shell on your command line, and then ``ls /data/data/com.marakana.yamba/databases/timeline.db`` to make sure the file is there.
-{TRAN}如果数据库创建成功的话，你可以在 ``/data/data/com.marakana.yamba/databases/timeline.db`` 找到它。 使用 Eclipse 提供的 DDMS 视图中的 File Explorer 来检查设备上的文件系统，或者可以在命令行使用 adb shell 命令 ``ls /data/data/com.marakana.yamba/databases/timeline.db`` 来验证它是否存在。
+
+{TRAN}数据库若创建成功，你就可以在``/data/data/com.marakana.yamba/databases/timeline.db``找到它。 要验证它是否存在，你可以使用Eclipse中DDMS的File Explorer界面，也可以在命令行使用 adb shell 命令 ``ls /data/data/com.marakana.yamba/databases/timeline.db``。
 
 {ORGI}To use File Explorer in Eclipse, either open the ``DDMS`` perspective in the top-right corner of your Eclipse, or go to ``Windows→Show View→Other…→Android→File Explorer``. This will open the view of the file system of the device you are currently looking at.
-{TRAN}要使用 Eclipse 的 File Explorer， 在窗口右上角点击 ``DDMS`` 或者使用菜单： ``Windows→Show View→Other…→Android→File Explorer``。 然后就可以看到目标设备的文件系统了。
+
+{TRAN}要使用 Eclipse 的 File Explorer，点击右上角的 ``DDMS`` 或者选择 ``Windows→Show View→Other…→Android→File Explorer``。 随后就可以查看目标设备的文件系统了。
 
 {ORGI}So far, you know that the database file is there, but don’t really know if the database schema got created properly. Next section address that.
-{TRAN}目前我们确定数据库文件已经存在，但是仍然不知道数据库结构是不是正确的创建了，下一节中将会验证这个。
+
+{TRAN}到这里我们已确认数据库文件存在，但仍不能确定数据库的结构是否正确，这将放在下一节。
 
 {ORGI}==== Using sqlite3 ====
 {TRAN}==== 使用 sqlite3 ====
