@@ -20,7 +20,7 @@
 
 {ORGI}In this chapter, you will learn how Android supports databases. You will learn to create and use a database inside Yamba application to store our status updates locally. Local data will help Yamba display statuses to the user quickly without having to wait for the network to provide the data. Our service will run in the background and periodically update the database so that the data is relatively fresh. This will overall improve the user experience of the application.
 
-{TRAN}本章介绍 Android 系统中数据库的使用方法。我们将在Yamba中新建一个数据库，用来存储从服务端收到的消息更新。将数据存储在本地，可以让Yamba节约访问网络的开销，从而加速Timeline的显示。 另由Service负责在后台定期抓取数据到数据库，来保证数据的实时性。这对用户体验的提升是大有好处的。
+{TRAN}本章介绍 Android 系统中数据库的使用方法。我们将在Yamba中新建一个数据库，用来存储从服务端收到的消息更新。将数据存储在本地，可以让Yamba节约访问网络的开销，从而加速Timeline的显示。 另由Service负责在后台定期抓取数据到数据库，以保证数据的实时性。这对用户体验的提升是大有好处的。
 
 %TALK: 此处“实时性”不知是否妥当。 -fle
 
@@ -43,12 +43,12 @@
 
 {ORGI}The Android framework offers several ways to use SQLite easily and effectively, and we’ll look at the basic usage in this chapter. You may be pleased to find that, although SQLite uses SQL, Android provides a higher-level library with an interface that is much easier to integrate into an application.
 
-{TRAN}Android 框架提供了几套不同的接口，允许开发者简单高效地访问 SQLite 数据库。本章我们关注最基本的那套接口。SQLite 的默认接口是SQL，不过一个好消息是 Android 提供了更高层的封装来简化开发者的工作。
+{TRAN}Android 框架提供了几套不同的接口，允许开发者简单高效地访问 SQLite 数据库。本章我们将关注最基本的那套接口。SQLite 的默认接口是SQL，不过一个好消息是 Android 提供了更高层的封装来简化开发者的工作。
 
 {NOTE}
 {ORGI}Although SQLite support is built into Android, it is by no means your only option when it comes to data persistence for your app. You can always use another database system, such as JavaDB or MongoDB, but you’d have to bundle the required libraries with you app and would not be able to rely on Android’s built-in support for database. SQLite is not an alternative to a full SQL server, instead it is an alternative to using a local file with an arbitrary format.
 
-{TRAN}Android 内建了 SQLite 支持， 但这并不是说 SQLite 是数据持久化的唯一选择。 你仍可以使用其他数据库系统，比如 JavaDB 或者 MongoDB，但这样就无法利用 Android内建的数据库支持了，而且必需将它们打包到程序中一起发布。另外，SQLite的定位不是重量级的数据库服务器，而是作为自定义数据文件的替代品。
+{TRAN}Android 内建了 SQLite 支持， 但这并不是说 SQLite 是数据持久化的唯一选择。 你仍可以使用其他数据库系统，比如 JavaDB 或者 MongoDB，但这样就无法利用 Android内建的数据库支持了，而且必需将它们打包到程序中一起发布才行。另外，SQLite的定位不是重量级的数据库服务器，而是作为自定义数据文件的替代品。
 {/NOTE}
 
 
@@ -424,19 +424,19 @@ public class UpdaterService1 extends Service {
 {ORGI}We are now ready to run our code and test it all works.
 {TRAN}一切就绪，准备测试。
 
-=== Testing It Works ===
-=== 测试 ===
+{ORGI}=== Testing It Works ===
+{TRAN}=== 测试 ===
 
 {ORGI}At this point, we can test if the database got created properly and if the service has populated it with some data. We’re going to do this step by step.
 
 {TRAN}到这里，我们将测试数据库是否创建成功、能否正常写入数据。一步步来。
 
-==== Verify Database Got Created ====
-==== 验证数据库是否创建成功 ====
+{ORGI}==== Verify Database Got Created ====
+{TRAN}==== 验证数据库是否创建成功 ====
 
 {ORGI}If the database file got created successfully, it will be located in ``/data/data/com.marakana.yamba/databases/timeline.db`` file. You can use Eclipse DDMS perspective and File Explorer view to look at the file system of the device, or you can use adb shell on your command line, and then ``ls /data/data/com.marakana.yamba/databases/timeline.db`` to make sure the file is there.
 
-{TRAN}数据库若创建成功，你就可以在``/data/data/com.marakana.yamba/databases/timeline.db``找到它。 要验证它是否存在，你可以使用Eclipse中DDMS的File Explorer界面，也可以在命令行使用 adb shell 命令 ``ls /data/data/com.marakana.yamba/databases/timeline.db``。
+{TRAN}数据库若创建成功，你就可以在``/data/data/com.marakana.yamba/databases/timeline.db``找到它。 要验证它是否存在，你可以使用Eclipse中DDMS的File Explorer界面，也可以在命令行的 adb shell 中执行命令 ``ls /data/data/com.marakana.yamba/databases/timeline.db``。
 
 {ORGI}To use File Explorer in Eclipse, either open the ``DDMS`` perspective in the top-right corner of your Eclipse, or go to ``Windows→Show View→Other…→Android→File Explorer``. This will open the view of the file system of the device you are currently looking at.
 
@@ -484,9 +484,10 @@ sqlite>
 {TRAN}在这里，你可以使用两种命令来操作SQLite数据库：
 
 {ORGI}- Standard SQL commands, such as ``insert ...``, ``update ...``, ``delete ...``, ``select ...`` as well as ``create table ...``, ``alter table ...`` and so on. Note the [SQL http://en.wikipedia.org/wiki/SQL] is another language altogether and as such is not covered by this book. We assume you have very basic knowledge of SQL. Also note that in ``sqlite3``, you must terminate your SQL statements with a semi-column ;.
-{TRAN}- 标准 SQL 命令。比如 ``insert ...``, ``update ...``, ``delete ...``, ``select ...`` 以及 ``create table ...``, ``alter table ...`` 等等。[SQL http://en.wikipedia.org/wiki/SQL] 是一门完整的语言，本书并不打算多做涉及。需要注意的是，在sqlite3中你需要使用半角分号 ``;`` 表示语句结束。
+{TRAN}- 标准 SQL 命令。比如 ``insert ...``, ``update ...``, ``delete ...``, ``select ...`` 以及 ``create table ...``, ``alter table ...`` 等等。[SQL http://en.wikipedia.org/wiki/SQL] 是一门完整的语言，本书不打算多做涉及。需要注意的是，在sqlite3中你需要使用半角分号 ``;`` 表示语句结束。
 {ORGI}- ``sqlite3`` commands. These are commands that are specific to SQLite. You can see the list of all commands by typing ``.help`` on the ``sqlite3>`` prompt. For now, we’ll just use ``.schema`` to verify that the schema got created.
-{TRAN}- ``sqlite3``命令。它们都是SQLite特有的，输入``.help``可以得到这些命令的列表。在这里，我们需要的是通过``.schema``查看原型是否正确。
+{TRAN}- ``sqlite3``命令。它们都是SQLite特有的，输入``.help``可以看到这些命令的列表。在这里，我们需要的是通过``.schema``命令来查看数据库的原型是否正确。
+
 
 {CODE}
 # sqlite3 timeline.db
@@ -505,7 +506,7 @@ CREATE TABLE timeline ( _id integer primary key,created_at integer, source text,
 {WARNING}
 {ORGI}New Android developers often execute sqlite3 timeline.db command in a wrong folder, then wonder why the database table wasn’t created. SQLite will not complain if the file you are referring to doesn’t exist - it will simply create a brand new database. So, make sure you are either in the correct folder (/data/data/com.marakana.yamba/databases/) when you execute sqlite3 timeline.db, or run the command specifying the full path to your file: sqlite3 /data/data/com.marakana.yamba/databases/timeline.db.
 
-{TRAN}新人很容易犯一个错误，那就是在错误的目录下执行``sqlite3 timeline.db``命令，然后会发现表没有创建。SQLite不会提示你正在使用一个不存在的文件，而是直接创建它。所以务必在正确的目录下(/data/data/com.marakana.yamba/databases)执行命令，或者使用绝对路径：``sqlite3 /data/data/com.marakana.yamba/databases/timeline.db``。
+{TRAN}新人很容易犯一个错误，那就是在错误的目录下执行``sqlite3 timeline.db``命令，然后就会发现表没有创建。SQLite不会提示你正在使用一个不存在的文件，而是直接创建它。所以务必在正确的目录下(/data/data/com.marakana.yamba/databases)执行命令，或者使用绝对路径：``sqlite3 /data/data/com.marakana.yamba/databases/timeline.db``。
 {/WARNING}
 
 {ORGI}Now that we have a way to create and open up our database, we are ready to update the service that will insert the data into the database.
@@ -514,7 +515,7 @@ CREATE TABLE timeline ( _id integer primary key,created_at integer, source text,
 
 {ORGI}At this point we should be getting the data from the online service as well as insert that data in the database. We can also verify that the data is indeed in the database by using ``sqlite3``.
 
-{TRAN}要验证数据是否插入成功，也是同样使用``sqlite3``命令，具体过程与上相似，兹不赘述。
+{TRAN}要验证数据是否插入成功，也是同样使用``sqlite3``命令，具体过程与上面相似，兹不赘述。
 
 {ORGI}=== Database Constraints ===
 {TRAN}=== 数据库约束 ===
@@ -552,9 +553,9 @@ try {
 {TRAN}当插入操作失败时，代码会抛出异常。
 
 {ORGI}+ We catch this exception and ignore it. We will improve on this later in the next section
-{TRAN}+ 捕获这一异常，并简单忽略。这将留在后面一节进行改进。
+{TRAN}+ 捕获这一异常，并简单忽略。这将留在后面一节做进一步改进。
 {ORGI}+ At this point, our code works, but it’s not ideal. There’s an opportunity to refactor it further.
-{TRAN}+ 到这里，代码可以正常工作，但还不够理想。重构的机会又来了。
+{TRAN}+ 到这里代码已经能够正常工作，但仍不够理想。重构的机会又来了。
 
 
 {ORGI}== Refactoring Status Data ==
@@ -831,11 +832,11 @@ private class Updater extends Thread {
 
 {ORGI}At this point, Yamba can pull the statuses of our friends from the cloud and post them into the local database. We still don’t have a way to view this data, but can verify that the data is there in the database.
 
-{TRAN}到这里，Yamba已经可以从服务端抓取数据，并储存到数据库中了。虽然仍不能将它们显示出来，但已经可以验证这些数据是可用的了。
+{TRAN}到这里，Yamba已经可以从服务端抓取数据，并储存到数据库中了。虽然仍不能将它们显示出来，但已经可以验证这些数据的可用性。
 
 {ORGI}The following illustrates what we have done so far as part of the design outlined in __Figure 5.4, “Yamba Design Diagram”__:
 
-{TRAN} 下图展示了目前为止我们已经完成的部分。完整图参见 //图5.4//。
+{TRAN}下图展示了目前为止我们已经完成的部分。完整图参见 //图5.4//。
 
 	**Figure 9.1. Yamba完成图**
 		[images/09-Yamba-4.png]
