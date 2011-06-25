@@ -562,11 +562,11 @@ try {
 
 {ORGI}While the previous work we did does work for UpdaterService, it is not ideal for supporting our next user of this data - the TimelineActivity. Since TimelineActivity will also need to access the same database and fetch the same data, it would be better if we would share some of the same functionality between the UpdaterService and the TimelineActivity.
 
-{TRAN}前面我们重构了``UpdaterService``，使它能够访问数据库。但这对整个程序来讲仍不理想，因为程序的其它部分可能也需要访问数据库，比如``TimelineActivity``。因此好的做法是，将数据库的相关代码独立出来，供UpdaterService与TimelineActivity共享。
+{TRAN}前面我们重构了``UpdaterService``，使它能够访问数据库。但这对整个程序来讲仍不理想，因为程序的其它部分可能也需要访问数据库，比如``TimelineActivity``。因此好的做法是，将数据库的相关代码独立出来，供UpdaterService与TimelineActivity重用。
 
 {ORGI}In order to do that, we’ll create a new Java class, StatusData and make it be the common container for database-related functionality. It will be hiding (encapsulating) SQLite in a higher-level class accessible to other parts of Yamba application. The rest of our app will then just ask for StatusData and not be concerned how that data is generated. This is a better design and will allows us later to improve even further on it using Content Providers as explained in [Chapter 12, Content Providers #ch12].
 
-{TRAN}为实现代码的共享，我们将创建一个新类``StatusData``，用以处理数据库的相关操作。它将封装SQLite操作中的细节，并提供接口供Yamba中的其它类调用。这一来Yamba的各个构件若需要数据，那就访问StatusData即可，而不必纠结于数据库操作的细节。在后面的章节中，我们将继续改进这个设计，用以实现ContentProvider，具体可见[第12章 ContentProvider #ch12]。
+{TRAN}为实现代码的重用，我们将创建一个新类``StatusData``，用以处理数据库的相关操作。它将SQLite操作封装起来，并提供接口，供Yamba中的其它类调用。这一来Yamba中的构件若需要数据，那就访问StatusData即可，而不必纠结于数据库操作的细节。在[第十二章 #ch12]中，我们还将基于这一设计，提供ContentProvider的实现。
 
 
 **Example 9.3. StatusData.java**
@@ -580,7 +580,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class StatusData { //①
+public class StatusData { //#{1}
   private static final String TAG = StatusData.class.getSimpleName();
 
   static final int VERSION = 1;
@@ -696,46 +696,46 @@ public class StatusData { //①
 
 
 {ORGI}+ Most of the StatusData code is a direct cut-paste from DbHelper.java. This is because it now makes sense to make DbHelper an [inner class http://en.wikipedia.org/wiki/Inner_class] since DbHelper now only exists in context of StatusData and is private to it. In other words, outside of StatusData, no other part of the system is concerned with the fact that we are using a database to store our data. That also makes our system flexible, which we will see later with use of Content Providers.
-{TRAN}+ StatusData 中的大多数代码都是直接从 DbHelper.java 中复制过来的。因为现在 DbHelper 已经成为 StatusData 的[内部类 http://en.wikipedia.org/wiki/Inner_class]。 这是因为它仅在 StatusData 内部使用，并且是私有成员。 这意味着在 StatusData 外部，其他人是不知道也不需要知道它是使用数据库，还是什么其他的方式来存储数据的。这样使得系统更加灵活，其优势在使用 ContentProvider 时更明显。
+{TRAN}+ StatusData 中的多数代码都是来自原先的 DbHelper.java 。现在 DbHelper 已经成为了 StatusData 的[内部类 http://en.wikipedia.org/wiki/Inner_class]。 仅供 StatusData 内部使用。 这意味着，在 StatusData 之外的调用者不必知道 StatusData 中的数据是以什么方式存储在什么地方。这样有助于使得系统更加灵活，而这也正是后面引入的ContentProvider的基本思想。
 {ORGI}+ This is the private and final reference to the dbHelper instance. Making it [final http://en.wikipedia.org/wiki/Final_(Java)] ensures that this object is created only once, whichever part of the system requests it first.
-{TRAN}+ 声明私有不可变成员 dbHelper 。[不可变属性(final)  http://en.wikipedia.org/wiki/Final_(Java)] 保证了对象只能在第一次使用时创建一次。
+{TRAN}+ 声明一个不可变的类成员dbHelper。[final http://en.wikipedia.org/wiki/Final_]关键字用于保证某类成员只会被赋值一次，
 {ORGI}+ The constructor simply constructs a new instance of ``DbHelper``.
-{TRAN}+ 构建函数很简单的做了一些初始化。
+{TRAN}+ 在构造函数中初始化DbHelper的实例。
 {ORGI}+ We need to expose ``close()`` for the dbHelper in order to have users of it close it properly.
-{TRAN}+ 我们需要暴露 ``close()`` 来允许其他人能够关闭数据库连接。
+{TRAN}+ 将dbHelper的``close()``方法暴露出去，允许他人关闭数据库。
 {ORGI}+ This is the new and improved version of ``db.insert...()`` method that we had in DbHelper before.
-{TRAN}+ 这是新的，改进过的 ``db.insert...()``
+{TRAN}+ 我们对DbHelper中``db.insert...()``方法的改进。
 {ORGI}+ We open the database only when we need it, which is right before writing to it.
-{TRAN}+ 仅在需要时（写入前）打开数据库。
+{TRAN}+ 仅在必要时打开数据库，也就是在写入之前。
 {ORGI}+ In this case, we use ``insertWithOnConflict()`` and pass ``SQLiteDatabase.CONFLICT_IGNORE`` as the final parameter to indicate that if there’s a conflict, the exception should be ignored. Remember that we did have conflict with the duplicate IDs, as explained [in the section called “Database Constraints” http://ofps.oreilly.com/titles/9781449390501/ch09.html#Database_Constraints].
-{TRAN}+ 在这里，我们使用``insertWithOnConflict()`` 并且传入 ``SQLiteDatabase.CONFLICT_IGNORE`` 作为最后一个参数来表示如果有冲突，异常应当被忽略掉。这是因为有可能插入重复的数据，原因在上文中的 “数据库约束” 一节中有说明。
+{TRAN}+ 在这里，我们调用``insertWithOnConflict()``，并将``SQLiteDatabase.CONFLICT_IGNORE``作为最后一个参数，表示如果有数据重复，则忽略异常。原因在前文的“数据库约束”一节已有说明。
 {ORGI}+ Notice that we also close the database right after we are done. We also do this in [finally http://en.wikipedia.org/wiki/Exception_handling] section of our exception handling. This ensures the database is shut down properly regardless if something went wrong or not. This theme is something we repeat in ``getLatestStatusCreatedAtTime()`` and ``getStatusTextById()``.
-{TRAN}+ 注意应该在使用完数据库后及时关闭。 同样的在异常处理时的 final 块中也应该关闭数据库。这样才能保证不管出错与否，数据库都能够被正确的关闭。在``getLatestStatusCreatedAtTime()`` 和 ``getStatusTextById()`` 进行了同样的操作。
+{TRAN}+ 不要忘记关闭数据库。我们把它放在finally子句中，这就可以保证无论出现何种错误，数据库都可以正确地关闭。同样的风格还可以在``getLatestStatusCreatedAtTime()``和``getStatusTextById()``中见到。
 {ORGI}+ This method simply returns all the statuses in the database, latest first.
-{TRAN}+ 这个函数简单地返回了所有的数据，最新的在前。
+{TRAN}+ 返回数据库中的所有消息数据，按时间排序。
 {ORGI}+ ``getLatestStatusCreatedAtTime()`` returns the timestamp of the latest status we have in the database. Having a way to know what is the newest status we have cached locally is useful later to ensure we only add new statuses into the database.
-{TRAN}+ ``getLatestStatusCreatedAtTime()`` 返回数据库中最新一条数据的时间戳。通过此函数使我们可以只插入新的数据而忽略掉旧的。
+{TRAN}+ ``getLatestStatusCreatedAtTime()`` 返回表中最新一条消息数据的时间戳(timestamp)。通过它，我们可以得知当前已存储的最新消息的日期，在插入新消息时可作为过滤的条件。
 {ORGI}+ For a given id, ``getStatusTextById()`` returns the actual text of this status.
-{TRAN}+ ``getStatusTextById()`` 返回指定 ID 对应的文本内容。
+{TRAN}+ ``getStatusTextById()`` 返回某一条消息数据的文本内容。
 
 
 {ORGI}Now that we have a new common place to handle status data, we can have it hang off of our common Application object so that any part of the application can easily access it. So the UpdaterService and TimelineActivity classes are in a has-a relationship to StatusData via YambaApplication object.
-{TRAN}这时，数据可以通过StatusData进行统一的处理了。通常可以把他放到 Application 对象里，以便其他模块能够方便地访问。现在 ``UpdaterService`` 和 ``TimelineActivity`` 通过 ``YambaApplication`` 和 ``StatusData`` 建立了联系。
+
+{TRAN}到这里，数据库的相关操作已都独立到了StatusData中。接下来把它放到``Application``对象里面，随后就可以让其它构件(比如``UpdaterService``与``TimelineActivity``)访问了。
 
 **Example 9.4. YambaApplication.java**
-
 {CODE}
 ...
-private StatusData statusData; //①
+private StatusData statusData; //#{1}
 ...
 
-public StatusData getStatusData() { //②
+public StatusData getStatusData() { //#{2}
   return statusData;
 }
 
 // Connects to the online service and puts the latest statuses into DB.
 // Returns the count of new statuses
-public synchronized int fetchStatusUpdates() {  //③
+public synchronized int fetchStatusUpdates() {  //#{3}
   Log.d(TAG, "Fetching status updates");
   Twitter twitter = this.getTwitter();
   if (twitter == null) {
@@ -774,15 +774,16 @@ public synchronized int fetchStatusUpdates() {  //③
 
 
 {ORGI}+ Yamba application now encapsulates the status data as a private StatusData object.
-{TRAN}+ ``YambaApplication`` 拥有 ``StatusData`` 对象作为其私有成员。
+{TRAN}+ 在``YambaApplication``中添加私有成员``StatusData``。
 {ORGI}+ This object is available to rest of the application for viewing only via this accessor method.
-{TRAN}+ 其他模块访问该对象只能通过访问函数获取。
+{TRAN}+ 其它部分若要访问它，只有通过这个方法。
 {ORGI}+ This is where we moved most of the code from the previous version of the UpdaterService. This was the code that was running on the Updater thread, connecting to online service to get the data, and then saving that data in the database.
-{TRAN}+ 这里的代码基本上是从原来的 ``UpdaterService`` 移动过来的。它运行在独立的线程中，连接云端并获取数据，然后保存到数据库里面。
+{TRAN}+ 这里的代码几乎都是来自原先的``UpdaterService``。它将运行在独立的线程中，连接到服务端抓取数据，并保存到数据库里面。
 
 
 {ORGI}We can now simplify the ``UpdaterService`` to use the refactored code in the YambaApplication to get the latest data. Note that most of the Updater’s ``run()`` method has been moved to YambaApplication’s ``fetchStatusUpdates()`` method. In addition, the Updater doesn’t need any access to the ``StatusData`` object, which is totally hidden from it.
-{TRAN}我们使用新版的 ``YambaApplication`` 重构了 ``UpdaterService`` 。 现在 ``fetchStatusUpdates()`` 中的代码大部分是从 ``Updater`` 的 ``run()`` 中复制来的。另外 ``Updater`` 再也不需要访问 ``StatusData`` 了。
+
+{TRAN}接下来可以利用新的``YambaApplication``，重构原先的``UpdaterService``。现在``run()``中的代码已都移到了``fetchStatusUpdates()``中，而且``UpdaterService``也不再需要内部的``StatusData``对象了。
 
 **Example 9.5. UpdaterService.java**
 {CODE}
@@ -801,9 +802,9 @@ private class Updater extends Thread {
       Log.d(TAG, "Running background thread");
       try {
         YambaApplication yamba = (YambaApplication) updaterService
-            .getApplication();  //①
-        int newUpdates = yamba.fetchStatusUpdates(); //②
-        if (newUpdates > 0) { //③
+            .getApplication();  //#{1}
+        int newUpdates = yamba.fetchStatusUpdates(); //#{2}
+        if (newUpdates > 0) { //#{3}
           Log.d(TAG, "We have a new status");
         }
         Thread.sleep(DELAY);
@@ -817,24 +818,25 @@ private class Updater extends Thread {
 ...
 {/CODE}
 
-
 {ORGI}+ We get the reference to YambaApplication object, which is readily available to Android Service and thus our own UpdaterService instance.
-{TRAN}+ 从 Andoird Service 中可以获取 ``YambaApplication`` 的实例。
+{TRAN}+ 从Service对象中可以获取``YambaApplication``的实例。
 {ORGI}+ We use the newly created fetchStatusUpdates() method in YambaApplication, which now houses most of the functionality previously part of this run() method.
-{TRAN}+ 在这里使用刚才编写的 ``fetchStatusUpdates()`` 函数，基本上就是原来的 ``run()`` 。
+{TRAN}+ 调用刚才新加入的 ``fetchStatusUpdates()`` 方法，功能与原先的 ``run()`` 基本一致。
 {ORGI}+ One of the features of `fetchStatusUpdates() is that it returns the number of new records that were fetched. We can use this info for debugging for now, but later will make a different use of it as well.
-{TRAN}+ ``fetchStatusUpdates()`` 可以返回新获取的记录数目，现在这个返回值只是用来调试，但是后面会有其他作用。
+{TRAN}+ ``fetchStatusUpdates()``以获取的消息数量作为返回值。暂时我们只利用这个值来调试，不过后面将有其它作用。
 
 
 {ORGI}== Summary ==
 {TRAN}== 总结 ==
 
 {ORGI}At this point, Yamba can pull the statuses of our friends from the cloud and post them into the local database. We still don’t have a way to view this data, but can verify that the data is there in the database.
-{TRAN}此刻， Yamba 有能力从云端获取数据并存储到数据库中了。虽然仍然不能将它们显示出来，不过可以验证的是它们的确在数据库里。
+
+{TRAN}到这里，Yamba已经可以从服务端抓取数据，并储存到数据库中了。虽然仍不能将它们显示出来，但已经可以验证这些数据是可用的了。
 
 {ORGI}The following illustrates what we have done so far as part of the design outlined in __Figure 5.4, “Yamba Design Diagram”__:
-{TRAN} __Figure 5.4, “Yamba Design Diagram”__ 展示了目前为止我们已经完成的部分。
 
-	Figure 9.1. Yamba Completion
+{TRAN} 下图展示了目前为止我们已经完成的部分。完整图参见 //图5.4//。
+
+	**Figure 9.1. Yamba完成图**
 		[images/09-Yamba-4.png]
 
