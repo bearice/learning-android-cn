@@ -86,7 +86,7 @@
 {TRAN}== Dalvik ==
 
 {ORGI}Dalvik is a purpose-built virtual machine designed specifically for Android. It is developed by Dan Bornstein and his team at Google.
-{TRAN}Dalvik 是一个专门为了 Android 而设计的虚拟机。它由 Dan Bornstein 和他在 Google 的团队开发。
+{TRAN}Dalvik 是一个专为 Android 设计的虚拟机。它由 Dan Bornstein 和他在 Google 的团队开发。
 
 {ORGI}While the Java virtual machine (VM) was designed to be a one-size-fits-all solution, the Dalvik team felt they could do a better job by focusing strictly on mobile devices. They looked at which of the constraints specific to a mobile environment are least likely to change in the near future. One of these is battery life, and the other is processing power. Dalvik was built from ground up to address those constraints.
 {TRAN}传统的Java虚拟机（JVM）是为了适应各种不同环境而设计的，强调泛用性。但Dalvik的开发团队认为专注于一个方面，可以得到更好的设计。因此他们研究了长期限制移动设备性能的制约因素，比如电池的续航能力和处理器的速度。而后针对这些因素对症下药，专门设计了Dalvik。
@@ -106,7 +106,7 @@
 		[images/02-DalvikJava.png]
 
 {ORGI}In Java, you write your Java source file, you compile it into a Java byte code using Java compiler and you run this byte code on the Java Virtual Machine. In Android things are different. You still write the Java source file and you still compile it to Java byte code using the same Java compiler. But at that point, you recompile it once again using Dalvik compiler to Dalvik byte code. It is Dalvik byte code that is then executed on Dalvik virtual machine.
-{TRAN}在平常的Java开发中，都是编写Java代码，然后通过Java编译器编译成字节码，最后在JVM上运行。但在Android中并非如此。相同的是仍需编写Java代码然后编译为字节码，但Dalvik编译器在执行前，会将Java字节码重新编译为Dalvik字节码。到最后真正执行的是Dalvik字节码。
+{TRAN}平常的Java开发都是先编写Java代码，然后通过Java编译器编译成字节码，最后在JVM上运行。但在Android中并非如此。相同的是仍需编写Java代码然后编译为字节码，但Dalvik编译器在执行前，会将Java字节码重新编译为Dalvik字节码。到最后真正执行的是Dalvik字节码。
 
 {NOTE}
 {ORGI}It may sound like you have to do a lot more work with Android when it comes to Java. However, all these compilation steps are automated by tools such as Eclipse or ant and you never notice the additional steps.

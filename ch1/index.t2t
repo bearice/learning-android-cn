@@ -44,7 +44,7 @@ Android是一个完整的平台，即为移动设备提供的一套完整的软�
 
 % For manufacturers, it is the complete solution that can run their devices. [it is the complete solution for running their devices.] Other than some hardware-specific drivers, Android provides everything else to make their devices work.
 
-面向生产厂商，Android就是令他们的设备跑起来的完整方案。厂商只需要编写自己的硬件驱动即可，其它一切都有Android代劳。
+面向生产厂商，Android就是令他们的设备跑起来的完整方案。厂商只需要编写自己的硬件驱动即可，而其它一切都有Android代劳。
 
 % === Open Source Platform ===
 === 开源平台 ===
@@ -94,7 +94,7 @@ Android是为移动设备而设计的系统。Android的开发团队在设计时
 
 % The history of Android is interesting in order to gain the perspective on what the future might hold. [The history of Android is interesting and offers some perspective on what the future might hold.]
 
-欲对Android的未来有所把握，就不能不了解其历史。
+欲对Android的未来有所把握，就不能不了解它背后的历史。
 
 % These are the key events of the past few years:
 

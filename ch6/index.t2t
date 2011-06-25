@@ -344,7 +344,7 @@ Android精细地划分了文件的职责：布局在资源文件中给出了定�
 {TIP}
 % 	I use a certain naming convention for my resource names. Let’s look at titleYamba, for example. First, I prefix the resource with the name of what it is, in this case a title of the activity. Secondly, I give it a name, Yamba. This naming convention helps later on keep many different resources sorted in a easy to find way. Finally, I use CamelCase for my names while some may prefer to use underscores to separate words.
 
-对资源的命名，我都是按照特定的命名规范。比如titleYamba这个名字，是按资源的用途——Activity中的标题(title)——作为前缀。后跟一个名字，Yamba。多个单词之间使用CamelCase命名法表示分隔。这样使得不同的资源容易区分，也容易查找。
+对资源的命名，建议使用统一的的命名规范。比如titleYamba这个名字，是按资源的用途——Activity中的标题(title)——作为前缀。后跟一个名字(Yamba)。多个单词之间使用CamelCase命名法表示分隔。这样使得不同的资源容易区分，也容易查找。
 {/TIP}
 
 

@@ -96,7 +96,7 @@
 {TRAN}我们先来熟悉一下 Android 的用户界面(UI)模型。Android的UI模型可能与你接触过的其它UI模型有所不同，其最大特点即它的 UI既可以通过Java描述，也可以通过XML描述。
 
 {ORGI}In this chapter, you will learn how to develop the user interface for __Figure 5.2, “Screen where the user can enter a status message”__, where the user updates the status. Through this process, you will use XML and Java to put together a working UI. You will learn about Layouts and Views, units in Android, how to work with images, and how to make the UI look pretty.
-{TRAN}在这一章中，我们将尝试开发一个如//图5.2//那样允许用户发布消息的界面。在此过程中，我们配合使用Java与XML完成UI 的设计。在此读者将了解到Android中布局（Layout） 与视图（View）的概念，以及图片的使用方法与美化UI的窍门。
+{TRAN}在这一章中，我们将尝试开发一个如//图5.2//那样允许用户发布消息的界面。在此过程中，我们配合使用Java与XML完成UI 的设计。在此，读者将了解到Android中Layout与View的概念，以及图片的使用方法与美化UI的窍门。
 
 {ORGI}Our approach will focus on best practices in UI development so that your application looks good and works well on any Android device, regardless of screen size and resolution.
 {TRAN}在此，我们将贯彻 UI 设计的最佳实践，使你的应用程序能够适应任何尺寸和分辨率，而不失美观和实用。
@@ -176,7 +176,6 @@
 {TRAN}=== 再次重构代码 ===
 
 {ORGI}At this point, we’ll have yet another opportunity to refactor our code and make it more streamlined. There will be a good motivation for it at that moment, and the effort will further be rewarded in later chapters.
-%{TRAN}此时，我们有了一个再次重构代码的契机，我们需要Yamba变得更加精简。因为此时我们拥有足够的理由来做这件事，并且这样做的效果会在以后的章节里更加明显。
 {TRAN}到这里不妨再重构一下代码。不必吝惜重构的机会，它是长线投资，甜头只有在后面才尝的出来。
 
 %TALK: 上段需要仔细斟酌
@@ -194,7 +193,7 @@
 {TRAN}=== Timeline界面 ===
 
 {ORGI}We’re going to develop this third and final activity in multiple stages. First, we’ll use existing knowledge of Android UI and put something together. It will work, sort of. Next, we’ll improve on that design. The app will look better, but it won’t be nearly as ready for the prime time since our design won’t be able to handle real-world usage. Finally, we’ll get it right by introducing Lists and Adapters to the mix.
-{TRAN}接下来分步实现第三个也是最后一个界面。首先利用已知的Android UI知识组装出一个半成品，能基本工作就好；然后改进设计，它会看起来更漂亮些，但是依然不能满足现实世界的需求；最后我们引入List与 Adapter，使之完善可用。
+{TRAN}接下来分步实现第三个也是最后一个界面。首先利用已知的Android UI知识组装出一个半成品，能基本工作就好；然后改进设计，它会看起来更漂亮些，但是依然不能满足现实世界的需求；最后我们引入List与Adapter，使之完善可用。
 
 {ORGI}=== Lists and Adapters ===
 {TRAN}=== List 与 Adapter ===
@@ -234,7 +233,7 @@
 {TRAN}=== 权限 ===
 
 {ORGI}So far you knew how to ask for system permissions, such as access to the Internet or file system. In this section we’ll learn how to define our own permissions and how to enforce them. After all, Yamba components may not want to respond to anyone else for some Yamba-specific actions.
-{TRAN}在访问网络或者文件系统时，你已经对系统内置的权限机制有所了解。在这里，我们将学习定义我们自己的权限机制，并应用它们。毕竟我们不希望他人可以随便访问Yamba的内部操作。
+{TRAN}在访问网络或者文件系统时，你已经对系统内置的权限机制有所了解。在这里，我们将尝试定义我们自己的权限机制，并应用它们。毕竟我们不希望他人可以随便访问Yamba的内部操作。
 
 
 {ORGI}== Part 7: Content Providers ==

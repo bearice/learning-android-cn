@@ -127,7 +127,7 @@
 
 % This book is here to help you get your job done. In general, you may use the code in this book in your programs and documentation. You do not need to contact us for permission unless you’re reproducing a significant portion of the code. For example, writing a program that uses several chunks of code from this book does not require permission. Selling or distributing a CD-ROM of examples from O’Reilly books does require permission. Answering a question by citing this book and quoting example code does not require permission. Incorporating a significant amount of example code from this book into your product’s documentation does require permission.
 
-本书旨在为读者提供力所能及的帮助。除非用作特殊用途，你可以在程序或者文档中随意使用本书的代码，而不必向我们申请许可。比如基于本书代码所开发的程序无需许可，而出售或者以CD-ROM形式分发O'Reilly出版物中的例子则需要许可；在回答问题时引用本书的例子不需要许可，在产品的文档中大量引用本书的例子则需要许可。
+本书旨在为读者提供一切力所能及的帮助。除非用作特殊用途，你可以在程序或者文档中随意使用本书的代码，而不必向我们申请许可。比如基于本书代码所开发的程序无需许可，而出售或以CD-ROM形式分发O'Reilly出版物中的例子则需要许可；在回答问题时引用本书的例子不需要许可，而在产品的文档中大量引用本书的例子则需要许可。
 
 % We appreciate, but do not require, attribution. An attribution usually includes the title, author, publisher, and ISBN. For example: “Book Title by Some Author. Copyright 2008 O’Reilly Media, Inc., 978-0-596-xxxx-x.” [For example: “Learning Android by Marko Gargenta (O’Reilly). Copyright 2011 Marko Gargenta, 978-1-449-39050-1.”]
 
@@ -144,17 +144,17 @@
 
 {NOTE}
 	
-	Safari Books Online是一家备受好评的数字图书资料库，你可以在上面轻松检索超过7,500册技术书籍、参考手册或者教学视频。
+	Safari Books Online是一家备受好评的数字图书资料库，你可以在上面轻松检索超过7,500册技术书籍、参考手册以及教学视频。
 	
 {/NOTE}
 
 % With a subscription, you can read any page and watch any video from our library online. Read books on your cell phone and mobile devices. Access new titles before they are available for print, and get exclusive access to manuscripts in development and post feedback for the authors. Copy and paste code samples, organize your favorites, download chapters, bookmark key sections, create notes, print out pages, and benefit from tons of other time-saving features.
 
-只要订阅，即可随意在我们的在线资料库中阅读文本、观看视频，也可以通过手机或者其它设备访问。在它上面可以第一时间阅读未出版的新书，跟踪其写作动态，为作者提供反馈。还有一系列方便的功能：复制代码样例，收藏、下载章节，作笔记，打印等等。
+只要订阅，即可随意访问在线资料库中的文本、视频。在这里，可以第一时间阅读未出版的新书，跟踪其写作动态，为作者提供反馈。还有一系列方便的功能：复制代码样例，收藏、下载章节，作笔记，打印等等。另外，还可以通过手机或者移动设备访问它。
 
 % O’Reilly Media has uploaded this book to the Safari Books Online service. To have full digital access to this book and others on similar topics from O’Reilly and other publishers, sign up for free at [role="orm:hideurl:ital"]http://my.safaribooksonline.com.
 
-O'Reilly Media已经将本书上传至Safari Books Online。欲获得关于本书或者类似出版物的更多信息，请登录 http://my.safaribooksonline.com 。
+O'Reilly Media已将本书上传至Safari Books Online。欲获得关于本书或者类似出版物的更多信息，请登录 http://my.safaribooksonline.com 。
 
 [[
 === How to Contact Us ===
