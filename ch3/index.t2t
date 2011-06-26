@@ -3,7 +3,7 @@
 %
 = Quick Start =[ch03]
 
-{ORGI}In this chapter, you will learn how to set up your environment for Android development. I’ll go beyond just telling you where to download the software from, but will also into some of the best practices in getting set up. I’ll look at development operating system choices as well as Android tools available. You will see the good, the bad, and the ugly of various choices of tools and platforms that you’re about to make (or someone else has already made for you).
+{ORGI}In this chapter, you will learn how to set up your environment for Android development. I’ll go beyond just telling you where to download the software from, but will also into some of the best practices in getting set up. [I’ll go beyond just listing where you can download the software, and will cover some of the best practices in getting set up.] I’ll look at development operating system choices as well as Android tools available. You will see the good, the bad, and the ugly of various choices of tools and platforms that you’re about to make (or someone else has already made for you).
 
 {TRAN}本章介绍Android 开发环境的搭建方法。这里列出了所需的各种软件的下载地址，也提供了构建开发环境的最佳实践。毕竟操作系统各有不同，开发工具也多种多样。面对诸多选择，对其长短优劣心里有数总是好的。
 
@@ -24,7 +24,7 @@
 % == Installing the Android SDK ==
 == 安装Android SDK ==
 
-{ORGI}Android Software Development Kit (SDK) is all you need to develop applications for Android. It comes with a set of tools as well as a platform to run it and see it all work. You can download Android SDK for your particular platform from [Android SDK Download http://developer.android.com/sdk/index.html]page.
+{ORGI}Android Software Development Kit (SDK) is all you need to develop applications for Android. It [The SDK] comes with a set of tools as well as a platform to run it and see it all work. You can download Android SDK for your particular platform from [Android SDK Download http://developer.android.com/sdk/index.html]page.
 
 {TRAN}Android软件开发包（SDK）是你开发Android应用所需的一切。除了一套开发的工具集，它也提供了一个用以测试的平台。你可以在[Android SDK的下载页面 http://developer.android.com/sdk/index.html]为你的目标平台下载到对应的Android SDK。
 
@@ -41,7 +41,7 @@
 
 
 {TIP}
-% For Windows users, I strongly recommend choosing directories without spaces in them. This is because we’ll be doing work on the command-line and spaces just complicate things. Because the Windows XP home directory is in C:\Documents and Settings, I would recommend putting android-sdk in a top-level directory that you create, such as C:\apps.
+% For Windows users, I strongly recommend choosing directories without spaces in them. This is because we’ll be doing work on the command-line [command line] and spaces just complicate things. Because the Windows XP home directory is in C:\Documents and Settings, I would recommend putting android-sdk in a top-level directory that you create, such as C:\apps.
 
 我强烈建议Windows用户避免选择带空格的目录名，因为我们会经常用到命令行，夹带空格的目录名只会增加无谓的复杂性。而Windows XP的个人目录又恰恰带着空格:``C:\Document and Settings``，因此我建议把android-sdk放在一个新建的顶级目录之下，比如C:\apps。
 
@@ -54,11 +54,11 @@
 % === Setting up PATH to Tools ===
 === 设置PATH环境变量 ===
 
-% Android SDK has a folder with all the major tools in it. Since we’re going to be using these tools from the command line, it is very helpful to add your ~/android-sdk/tools/ directory to your system PATH variable. This will allow you easier access to your tools without having to navigate to their specific location every single time.
+% Android SDK has a folder with all the major tools in it [that contains all its major tools]. Since we’re going to be using these tools from the command line, it is very helpful to add your ~/android-sdk/tools/ directory to your system PATH variable. This will allow you easier access to [This will make it easier to access] your tools without having to navigate to their specific location every single time.
 
 Android SDK里有个目录，主要的工具都在里面。我们将会频繁地用到这些工具，因此把你的~/android-sdk/tools/目录加入系统的环境变量PATH会是个好办法，这一来就不需要每次使用它们时都切换目录了。
 
-% Details for setting up PATH variable depend on the platform, and are documented at [Installing Android SDK http://developer.android.com/sdk/installing.html] page, Step 2.
+% Details for setting up PATH variable depend on the platform, and are documented at [Installing Android SDK http://developer.android.com/sdk/installing.html] page, Step 2 [; see step 2 of the document “Installing Android SDK”.].
 
 不同系统设置环境变量的方式各有不同，详见 [Installing Android SDK http://developer.android.com/sdk/installing.html] 页面中的第二步。
 
@@ -67,15 +67,15 @@ Android SDK里有个目录，主要的工具都在里面。我们将会频繁地
 %=== Installing Eclipse ===
 === 安装 Eclipse ===
 
-% Eclipse is an open-source collection of programming tools originally created by IBM for for Java. Nowadays, most developers in the Java community favor Eclipse as their Integrated Development Environment (IDE) of choice. Eclipse lives at Eclipse.org.
+% Eclipse is an open-source [open source] collection of programming tools originally created by IBM for Java. Nowadays, most developers in the Java community favor Eclipse as their Integrated Development Environment (IDE) of choice. Eclipse lives at Eclipse.org.
 
 Eclipse是一个开源的编程工具集，前身是IBM为Java开发的IDE，如今已成为Java社区大部分开发者的首选。Eclipse的首页在[http://eclipse.org/ Eclipse.org]。
 
-% Eclipse is very feature-rich and has a lot of time-saving features. I’ll be pointing them out as we keep on going. Keep in mind that, while powerful, Eclipse tends to be very resource-hungry and you may want to restart it once a day if it starts running very sluggishly.
+% Eclipse is very feature-rich and has a lot of time-saving features. I’ll be pointing them out as we keep on going. [Eclipse has a lot of time-saving features, which I’ll be pointing out as we continue.] Keep in mind that, while powerful [although powerful], Eclipse tends to be very resource-hungry [,] and you may want to restart it once a day if it starts running very sluggishly.
 
 Eclipse有着强大的功能与丰富的实用特性，我会在行进的途中将其一一带出。不过需要留心的一点是，Eclipse强大归强大，但同时也非常吃资源，有时你会巴不得一天重启一次。
 
-% While you can do Android development with any favorite text editor or IDE, most developers seem to be using Eclipse, and thus I’m basing this book on its use as well.
+% While [Although] you can do Android development with any favorite text editor or IDE [integrated development environment (IDE)], most developers seem to be using Eclipse, and thus I’m basing this book on its use as well [and thus that’s what I use in this book].
 
 Android开发并不限制开发者选择任何自己喜欢的编辑器或者IDE。不过Eclipse的使用者既占多数，本书也就选择了它。
 
@@ -85,14 +85,14 @@ Android开发并不限制开发者选择任何自己喜欢的编辑器或者IDE�
 如果你不想用Eclipse，可以参考 [Developing in Other IDEs http://developer.android.com/guide/developing/other-ide.html]。
 {/TIP}
 
-% Now, download Eclipse from http://www.eclipse.org/downloads/. I recommend Eclipse IDE for Java Developers (NOT the twice-as-large Eclipse for Java EE developers). You can install it in any directory you’d like.
+% Now, download Eclipse from [at] http://www.eclipse.org/downloads/. I recommend Eclipse IDE for Java Developers (NOT the twice-as-large Eclipse for Java EE developers). You can install it in any directory you’d like.
 
 好，去 http://www.eclipse.org/downloads/ 可以下载到Eclipse。建议选择Eclipse IDE for Java Developers（注意不是Eclipse for Java EE developers，这个要大两倍），安装至任何目录都可以。
 
 % === Eclipse Workspace ===
 === Eclipse Workspace ===
 
-% Eclipse organizes all your work by projects. Projects are placed in a workspace, which is a location you choose. So, where you put your workspace is significant. I recommend ~/workspace as a simple place for your code. On Windows however, I recommend storying your workspace in a directory that doesn’t have spaces it (they complicate anything you might do at the command-line). C:\workspace is a good choice for Windows users.
+% Eclipse organizes all your work by projects. Projects are placed in a workspace, which is a location you choose. So, where you put your workspace is significant. I recommend ~/workspace as a simple place for your code. On Windows however, I recommend storying your workspace in a directory that doesn’t have spaces [in]it (they complicate anything you might do at the command-line). C:\workspace is a good choice for Windows users.
 
 Eclipse以项目为单位管理用户的工作，项目又都位于workspace中。因此workspace的位置需要明确下来，我建议使用 ``~/workspace`` 这样相对简单的位置来存放自己的代码。Windows的话，仍建议避免在workspace目录中存在空格（使用命令行的时候会添麻烦）——``C:\workspace``该是个好地方。
 
@@ -152,12 +152,12 @@ Eclipse以项目为单位管理用户的工作，项目又都位于workspace中�
 进入New Project对话框，分别进行如下设置：
 
 % + "Project name" is an Eclipse construct. Eclipse organizes everything into projects. A project name should be one word. I like to use [CamelCase http://en.wikipedia.org/wiki/Camel_case_(programming)] naming convention here. Go ahead and type: HelloWorld.
-% + Next, you need to choose the build target. The build target tells the build tools which version of Android platform you are building for. You should see a list of available platforms and add-ons you have installed as part of your SDK in here. Go ahead, pick one of the newer ones, such as Android 2.2 (but don’t choose the targets named Google APIs).
+% + Next, you need to choose the build target. The build target tells the build tools which version of Android platform you are building for. You should see a list of available platforms and add-ons you have installed as part of your SDK in here. Go ahead, pick one of the newer ones, such as Android 2.2 (but don’t choose the targets named Google APIs). [增加 (but don’t choose the targets named Google APIs—those are Google’s proprietary extensions to the Android platform). For our purposes, we’ll stick to Android Open Source versions of the Android platform.]
 % + You need to fill out your project properties next. The application name is the plain English name of your application. Go ahead, write something like Hello, World!!!.
 % + The package name is a Java construct. In Java, all source code is organized into packages. Packages are important because, among other things, they specify the visibility of objects between the various Java classes in your project. In Android, packages are also important for application signing purposes. Your package name should be the reverse of your domain name with optional subdomains. I might use com.example.calculator if I were building a calculator app and my domain name was example.com. I’m going to be using com.marakana for my package name here.
 % + You can optionally specify an activity. I haven’t covered activities yet (you’ll learn about them in [Chapter 6, Android User Interface #ch6]), but think of them as corresponding to the various screens in your application. An activity is going to be represented by a Java class, so as such its name should adhere to Java class naming conversion: start with upper case and use CamelCase to separate words. So, type HelloWorld for your activity name.
 % + The minimum SDK version is the minimum version of Android—as represented by API level—that is required on the device in order to run this application. You want this number to be as low as possible so that your app can run on as many various devices out there as possible. I’m going to put 8 here to represent Android 2.2, which I know I have installed.
-% + Finally, click on Finish button and Eclipse will create your project. Let’s look at the various files that this process created:
+% + Finally, click on Finish button and Eclipse will create your project. Let’s look at the various files that this process created:[Let’s look at the various files that this process created in Figure 3.2, “HelloWorld new project window”.]
 
 + 填写"Project name"。这是个Eclipse概念：Eclipse把一切皆组织为项目(project)，而项目名只能是一个单词。在命名上，我个人比较喜欢[CamelCase http://en.wikipedia.org/wiki/Camel_case]风格。在此输入：``HelloWorld``。
 + 选择"build target"，它为构建工具指明目标平台的版本。其中罗列了所有可用的目标平台，以及你的SDK中附带的扩展。在这里可以选择一个较新的版本，比如Android 2.2（但不要选择Google APIs）。
@@ -200,7 +200,7 @@ Manifest文件是应用程序各部分之间的牵线人。它申明了程序中
 %=== Layout XML Code ===
 === Layout文件 ===
 
-% The layout file specifies the layout of your screen. In this case, we have only one screen and its loaded by the Java code, HelloWorld activity above.
+% The layout file specifies the layout of your screen. In this case, we have only one screen and its loaded by the Java code, HelloWorld activity above. [In this case, shown in Example 3.2, “res/layout/main.xml”, we have only one screen, and it’s loaded by the HelloWorld.java code seen in Example 3.5, “HelloWorld.java”.]
 
 Layout文件用于表示界面的布局。在这里我们只用到了一个界面，就是上面定义的Activity：``HelloWorld``。
 
@@ -218,7 +218,7 @@ Layout文件用于表示界面的布局。在这里我们只用到了一个界�
 % === Strings ===
 === Strings文件 ===
 
-% This is another XML file that contains all text that your application uses. For example, names of buttons, labels, default text and all such strings go into this file. This is the best practice of separating concerns of various files, even if they are XML files. In other words, layout XML is responsible for layout out widgets, but strings XML is responsible for their textual content.
+% This is another XML file that contains all text that your application uses. For example, names of buttons, labels, default text and all such strings go into this file. This is the best practice of separating concerns of various files, even if they are XML files. In other words, layout XML is responsible for layout out widgets, but strings XML is responsible for their textual content [增加 (see Example 3.3, “res/values/strings.xml”).].
 
 这也是个XML文件，内容是程序中出现的所有文本。比如按钮的名字、Label、默认的文本等等，都统一在这一文件之下。把问题分解，令不同文件各司其职，这是个很好的做法——哪怕是XML文件。由此，Layout文件负责Widget的布局，Strings文件负责文本内容。
 
@@ -234,7 +234,7 @@ Layout文件用于表示界面的布局。在这里我们只用到了一个界�
 % === The R File ===
 === R文件 ===
 
-% The R file is the glue between the world of Java and the world of resources. It is an automatically generated file and as such you never modify it. It is recreated every time you change anything in the res directory, for example add an image or XML file.
+% The R file is the glue between the world of Java and the world of resources [增加 (see Example 3.4, “gen/com/marakana/R.java”)]. It is an automatically generated file and as such you never modify it. It is recreated every time you change anything in the res directory, for example add an image or XML file.
 
 R文件负责Java与外部资源之间的关联。它在res目录中的内容发生变化时(比如添加一个图片或者xml文件)由SDK自动生成，不必也不应该手工修改。
 
@@ -274,7 +274,7 @@ public final class R {
 % === Java Source Code ===
 === Java源码文件 ===
 
-% The Java code is what drives everything. It is this code that ultimately gets converted to Dalvik executable and runs your application.
+% The Java code is what drives everything. It is this code that ultimately gets converted to Dalvik executable and runs your application [增加 (see Example 3.5, “HelloWorld.java”).].
 
 Java代码是整个程序的驱动者。它会被编译为可执行格式，在Dalvik之上执行。
 
@@ -319,7 +319,7 @@ public class HelloWorld extends Activity {
 	Figure 3.3. Android SDK and AVD Manager
 		[images/03-AndroidSDKandADVManager.png]
 
-% From within Android SDK and AVD Manager, you can choose New… and a Create New AVD dialog window will pop up. In this dialog, you specify the parameters for your new AVD. The name is any name you choose. Target is what you what to have installed as version of Android on this particular AVD. The list of possible targets is based on platforms and add-ons that you have installed into your SDK. If you don’t have any targets, go back to Android SDK and AVD Manager and choose Available packages tab to install at least one platform, such as Android 2.3 - API level 9, for example.
+% From within Android SDK and AVD Manager, you can choose New… and a Create New AVD dialog window will pop up. In this dialog, you specify the parameters for your new AVD. The name is any name you choose. Target is what you what to have installed as version of Android on this particular AVD. The list of possible targets is based on platforms and add-ons that you have installed into your SDK. If you don’t have any targets, go back to Android SDK and AVD Manager and choose Available packages tab to install at least one platform, such as Android 2.3 - API level 9, for example [for example, Android 2.3 - API level 9].
 
 进入Android SDK and AVD Manager，单击New…，出现Create New AVD对话框。你需要在这个对话框里对新的AVD做一些设置， 其中Name可以随便起一个，Target是目标平台的版本，其中的选项会因为SDK的平台及其安装的扩展而有所不同。如果里面没有列出任何选项，那就返回Android SDK and AVD Manager，在Available packages中选择安装一个目标平台，比如Android 2.3 - API level 9。
 
@@ -330,7 +330,7 @@ AVD中也有一个SD卡，你能以MB为单位指明它的大小。Skin表示虚
 	Figure 3.4. New AVD Dialog
 		[images/03-CreateNewAVD.png]
 
-% Once you are done with this dialog, you will have and AVD in your list. Go ahead and start it. An emulator will pop up.
+% Once you are done with this dialog, you will have and AVD in your list. Go ahead and start it. An emulator will pop up [增加 (see Figure 3.5, “Emulator”).].
 
 配置完毕，就可以在列表中见到一个新的AVD。好的，运行它仿真器就出来了。
 
@@ -347,7 +347,7 @@ AVD中也有一个SD卡，你能以MB为单位指明它的大小。Skin表示虚
 % == Summary ==
 == 总结 ==
 
-% Setting up Android development environment breaks down to setting up Android SDK and Eclipse. Once you have set you your development environment, a good test that everything is working is to use Eclipse to create a simple Hello World project and run it in the Emulator. If that runs fine, you are almost certain that your system is setup and ready for further development.
+% Setting up Android development environment breaks down to [basically involves ] setting up Android SDK and Eclipse. Once you have set you [set up] your development environment, a good test [way] that everything is working is to use Eclipse to create a simple Hello World project and run it in the Emulator. If that runs fine, you are almost certain that your system is setup and ready for further development.
 
 Android开发环境的搭建，几乎就是对付Android SDK和Eclipse了。 开发环境设置完毕，不妨动手搞个简单的Hello World实验一下。运行良好的话，也就证明环境已经搭建完毕，为往后正式的开发做好了准备。
 
