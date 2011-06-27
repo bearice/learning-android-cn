@@ -26,7 +26,7 @@
 
 {ORGI}Let’s say that we want to build a Twitter app. We know that the user should be able to post status updates. We also know the user should be able to see what her friends are up to. Those are basic features. Beyond that, the user should also be able to set her username and password in order to login to her Twitter account. So, now we know we should have these three screens.
 
-{TRAN}我们要做的是一个Twitter应用。用户的需求很清楚，也就是发新消息、查看朋友的新消息，这也正是它的基本功能。除此之外，我们还需要事先获知用户的用户名和密码才能登录Twitter。由此可知，我们需要三个界面。
+{TRAN}我们要做的是一个Twitter应用。用户的需求很清楚，那就是发新消息、查看朋友的新消息，这也正是它的基本功能。除此之外，我们还需要事先获知用户的用户名和密码才能登录Twitter。由此可知，我们需要三个界面。
 
 {ORGI}Next, we would like my app to work fast regardless of network connection, or lack of. To achieve that, the app has to pull the data from Twitter when it’s online, and cache it locally. That will require a service that runs in the background as well as a database.
 
@@ -34,7 +34,7 @@
 
 {ORGI}We also know that we’d like this background service to be started when the device is initially turned on, so by the user first uses the app, there’s already up-to-date information on her friends.
 
-{TRAN}我们也希望这个后台Service最好在设备开机时就能运行。这样用户只要打开应用，即可立即查看到朋友们的最新消息。
+{TRAN}我们也希望这个后台Service最好在设备开机时就能运行。这样用户只要打开应用，就能立即查看到朋友们的最新消息。
 
 {ORGI}So, these are some straightforward requirements. Android building blocks make it easy to break them down into conceptual units so that you can work on them independently, and can also easily put them together into a complete package.
 
@@ -47,54 +47,66 @@
 {ORGI}An activity is usually a single screen that the user sees on the device at one time. An application typically has multiple activities and the user flips back and forth among them. As such, activities are the most visible part of your application.
 {TRAN}Activity即设备在某一时刻所显示的界面。一个程序通常含有多个界面，用户可在其间切换。对用户而言，这就是程序的外观部分。
 
+%TALK: 在表示“程序的外观”时，我们将Activity译作“界面”；在表示构件或者某个类的时候，我们将保留原文。<-- 到时可以把这句写进译序里面。
+
 {ORGI}I usually use a website as an analogy for activities. Just like a website consists of multiple pages, so does an Android application consists of multiple activities. Just like a website has a "home page", an Android app has a "main" activity. It is usually the one that is shown first when you launch the application. And just like a website has to provide some sort of navigation among various pages, an Android app should do the same.
-{TRAN}我通常喜欢拿网页来类比Activity：就像一个网站含有多个网页，Android程序也含有多个界面(Activity)；网站有主页，Android程序有主界面(main Activity)——也就是启动程序时显示的第一个界面；页面多了方便用户跳转，网站会提供导航，Android程序也同样。
+{TRAN}我通常喜欢拿网页来类比Activity：就像一个网站含有多个网页，Android程序也含有多个界面(Activity)；网站有主页，Android程序有主界面(main Activity)——也就是启动程序时显示的第一个界面；为了方便用户在多个页面之间跳转，网站会提供导航功能，Android也一样。 
 
 {ORGI}On the web, you can jump from a page on one website to a page on another. Similarly, in Android, you could be looking at an activity of one application, but shortly after you could start another activity in a completely separate application. For example, if you are in your Contacts app, and you choose to text a friend, you’d be launching the activity to compose a text message in the Messaging application.
-{TRAN}在网站里，你可以从一个页面跳到另个网站的某个页面。类似地在Android中，你也可以在某个程序的界面里启动或访问其它程序的界面。比如在通讯录应用中，你可以选择某个朋友，直接进入短信应用的界面为他写消息。
+{TRAN}在网站里，你可以从某页面跳转到另一个网站的页面。类似地在Android中，你也可以在某程序的界面里启动或访问其它程序的界面。比如在通讯录应用中，你可以选择某个朋友，直接进入短信应用的界面为他写消息。
 
 %TALK: “通讯录应用”这一名词疑似不统一。 
 
 
 %=== Activity Lifecycle ===
 === Activity 生命周期 ===
+
 {ORGI}Launching an activity may be quite expensive. It may involve creating a new linux process, allocating memory for all the UI objects, inflating all the objects from XML layouts, and setting the whole screen up. Since we’re doing a lot of work to launch an activity, it’s be a waste to just toss it out once user leaves that screen. To avoid this waste, activity lifecycle is managed via Activity Manager.
-{TRAN}因为涉及到新建Linux进程、为UI对象申请内存、解析XML文件以及最终的图像渲染，初始化Activity的成本是比较高的。既然在初始化上面花了这么大功夫，每次离开Activity就将其销毁就未免太浪费了。在这方面，Android引入了Activity Manager机制，用以自动管理Activity的生命周期。
+{TRAN}因为涉及到新建Linux进程、为UI对象申请内存、解析XML文件以及最终的图像渲染，初始化Activity的成本是比较高的。既然在初始化上面花了这么大功夫，那么每次离开Activity就将其销毁就未免太浪费了。在这方面，Android引入了Activity Manager机制，用以自动管理Activity的生命周期。
 
 {ORGI}Activity Manager is responsible for creating, destroying, and overall managing activities. For example, when the user starts an application for the first time, the activity manager will create its activity and put it onto the screen. Later, when the user switches screens, the activity manger will move that previous activity to a holding place. This way, if the user wants to go back to an older activity, it can be started more quickly. Older activities that user hasn’t used in a while will be destroyed in order to free more space for the currently active one. This mechanism is designed to help improve the speed of user interface and thus improve the overall user experience.
 
-{TRAN}Activity的创建、销毁、管理皆由Activity Manager全权负责。比如用户第一次启动了某个程序，Activity Manager会负责它界面的初始化与显示；如果用户要切换界面，Activity Manager仅仅将原先的界面隐藏而不是销毁，这样可以加速下次访问；Activity Manager也负责销毁长时间未访问的Activity，为当前活跃的Activity腾出更多内存空间。引入Activity Manager机制的动机就是提升用户界面的速度，这对用户体验很重要。
+{TRAN}Activity的创建、销毁、管理皆由Activity Manager全权负责。如果用户首次启动了某程序，Activity Manager会负责程序界面的初始化与显示；如果用户要切换界面，Activity Manager将原先的界面隐藏而不是销毁，这样可以加速下次访问；Activity Manager也负责销毁长时间未访问的Activity，为当前活跃的Activity腾出更多内存空间。引入Activity Manager机制的动机就是提升用户界面的速度，这对用户体验很重要。
 
 %	Figure 4.1. Activity Lifecycle
 	Figure 4.1. Activity生命周期
 		[images/04-ActivityLifecycle.png]
 
 {ORGI}Programming for Android is conceptually different than programming for some other environments. In Android, you find yourself more responding to certain changes in the state of your application rather than driving that change yourself. It is a managed, container-based environment similar to programming for Java applets or servlets. So, when it comes to activity lifecycle, you don’t get to say what state the activity is in but you have plenty of opportunity to say what happens on transitions from state to state.
-{TRAN}Android的编程环境有些独特的地方，那就是在Android开发中，你会发现自己更多是对程序状态的迁移做出响应，而很少需要主动控制它的状态。在托管的环境中添加自己的业务逻辑，这点倒是与Java的applet与servlet有些神似。因此谈及Activity的生命周期，我们很少关心当前的状态，而对状态的迁移更感兴趣。
+{TRAN}Android的编程环境有些独特的地方，那就是在Android开发中，你会发现自己更多是对程序状态的迁移做出响应，而很少需要主动控制它的状态。在托管的环境中添加自己的业务逻辑，这点倒是与Java的applet与servlet有些相似。因此谈及Activity的生命周期，我们很少关心它的当前状态，而对它的状态迁移更感兴趣。
 
 
-=== Starting State ===
+% === Starting State ===
+=== Starting 状态 ===
 {ORGI}When an activity doesn’t exist in memory, it is in Starting State. While it’s starting up, the activity will go through a whole set of callback methods that you as a developer have an opportunity to fill out. Eventually, the activity will be in Running State.
-{TRAN}刚刚启动时Activity还未进入内存，这就是Starting状态。在这时，Activity会调用一些我们提供的回调函数，随后进入Running状态。
+{TRAN}Activity在刚刚启动时还未进入内存，这就是Starting状态。在这时，Activity会调用一些我们提供的回调函数，随后进入Running状态。
+
+%TALK: 这里的翻译确实有脑补的地方。Activity进入Starting State，肯定意味着Activity“已经存在”——但是还没有初始化。另外“启动”是一个过程而不是瞬间，在Starting 状态开始时，Activity“刚刚启动”，在Starting状态结束时，Activity就是“已经启动”进入Running状态了。而“刚刚启动时”就是意译一些了。 -fleuria
 
 {ORGI}Keep in mind that this transition from Starting State to Running State is one of the most expensive operations in terms of computing time needed. The computing time directly effects the battery life of the device as well. This is the exact reason why we don’t automatically destroy activities that are no longer shown. User may want to come back to them, so we keep them around for a while.
-{TRAN}留意，Starting状态到Running状态的切换是最为耗时的操作之一。耗时也就耗电，对电池的续航能力也有影响。因此不显示的Activity不会被轻易销毁，在用户下次访问时可以节省资源。
+{TRAN}留意，Starting状态到Running状态的切换是最为耗时的操作之一。耗时也就耗电，对电池的续航能力也有影响。因此不再显示的Activity也不会被轻易销毁，留它驻留在内存中，到用户下次访问的时候可以节省资源。
 
-=== Running State ===
+% === Running State ===
+=== Running 状态 ===
+
 {ORGI}Activity in a Running State is the one that is currently on the screen interacting with the user. We also say this activity is in focus, meaning that all user interactions, such as typing, touching screen, clicking buttons, are handled by this one activity. As such, there is only one running activity at any one time.
-{TRAN}Activity显示在屏幕上允许用户交互，这是Running状态。我们有时也称这一状态为“获得焦点”(in focus)，也就是在这时用户交互相关的操作比如打字、触摸屏幕、点击按钮等等，都由这个Activity处理。可知，同一时刻只能有一个Activity处于Running状态。
+{TRAN}Activity显示在屏幕上允许用户交互，这是Running状态。我们有时称这一状态的Activity为“获得焦点”(in focus)，也就是在这时用户交互的相关操作比如打字、触摸屏幕、点击按钮等等，都由这个Activity掌握。可知，同一时刻只能有一个Activity处于Running状态。
 
 {ORGI}The running activity is the one that has all the priorities in terms of getting memory and resources needed to run as fast as possible. This is because Android wants to make sure the running activity is zippy and responsive to user.
 {TRAN}处于Running状态的Activity可以优先获取内存或者其它资源，这样有助于提高用户界面的响应速度。
 
-=== Paused State ===
+% === Paused State ===
+=== Paused 状态 ===
+
 {ORGI}When an activity is not in focus (i.e. not interacting with the user) but still visible on the screen, we say it’s in Paused State. This is not a very typical scenario since the screen is usually small and an activity is either taking the whole screen or not at all. We often see this case with dialog boxes that come up in front an activity causing it to become Paused. Paused State is a state that all activities go through it enroute to being stopped.
-{TRAN}当Activity没有获得焦点(即没有和用户交互)但仍可以在屏幕上看到时，它就是Paused状态。这种状态出现不多，因为屏幕通常不大，而Activity要么占据整个屏幕，要么不显示。那么进入Paused状态，往往就是因为有对话框显示在前面了。另外，Activity会在停止前进入Paused状态。
+{TRAN}当Activity没有获得焦点(没有用户交互)但仍可以在屏幕上看到时，它就是Paused状态。这种状态出现不多，因为屏幕通常不大，而Activity都是要么占据整个屏幕，要么不显示。那么进入Paused状态，往往就是因为有对话框显示在前面了。另外，Activity会在停止前进入Paused状态。
 
 {ORGI}Paused activities still have high priority in terms of getting memory and other resources. This is because they are visible and cannot be removed from the screen without making it look very strange to the user.
-{TRAN}Paused状态的Activity依然拥有获取内存或者其它资源的优先权，因为它们依然显示在屏幕上，应该避免让用户感到违和。
+{TRAN}Paused状态的Activity依然拥有获取内存或者其它资源的优先权，因为它们依然显示在屏幕上，应该避免让用户感到不自然。
 
-=== Stopped State ===
+% === Stopped State ===
+=== Stopped 状态 ===
+
 {ORGI}When an activity is not visible, but still in memory, we say it’s in Stopped State. Stopped activity could be brought back to front to become a Running activity again. Or, it could be destroyed and removed from memory.
 {TRAN}当Activity不再显示却依然驻留在内存中的时候，就是Stopped状态。Stopped状态的Activity可能会被重复利用，重新进入Running状态。也有可能被销毁而从内存中移除。
 
@@ -104,7 +116,9 @@
 {ORGI}Stopped activities can also, an any point, be removed from memory.
 {TRAN}Stopped状态的Activity可能会在任意时刻从内存中移除。
 
-=== Destroyed State ===
+% === Destroyed State ===
+=== Destroyed 状态 ===
+
 {ORGI}A destroyed activity is no longer in memory. The Activity Manager decided that this activity is no longer needed, and as such has removed it. Before the activity is destroyed, you, the developer, have an opportunity to perform certain actions, such as save any unsaved information. However, there’s no guarantee that your activity will be Stopped prior to being Destroyed. It is possible that a Paused activity gets destroyed as well. For that reason, it is better to do important work, such as saving unsaved data, en route to being Paused rather than Destroyed.
 {TRAN}Destroyed状态的Activity就不再驻于内存了。当Activity Manager认为某个Activity已经不再需要的时候，就会销毁它，并把它视作Destroyed。在销毁之前，它会调用回调函数``onDestroy()``，允许开发者在这里执行一些清理工作。不过Destroyed状态之前不一定是Stopped状态，Paused状态的Activity也有被销毁的可能，因此最好将一些重要的工作(比如保存数据)置于``onPause()``而不是``onDestroy()``中。
 
@@ -120,15 +134,17 @@
 
 
 {ORGI}Intents are messages that are sent among major building blocks. They trigger an activity to start up, a service to start or stop, or are simply broadcasts. Intents are asynchronous, meaning the code that is sending them doesn’t have to wait for them to be completed.
-{TRAN}Intent为基本构件之间传递消息的一种机制。通过Intent可以显示一个Activity、启动或停止一个Service，也可以当作简单的广播。它是异步的，也就是说在发送时不需要阻塞等待它们响应完成。
+{TRAN}Intent是基本构件之间传递消息的一种机制。通过Intent可以显示一个Activity、启动或停止一个Service，也可以当作简单的广播。Intent是异步的，也就是说在发送时不需要阻塞等待它们响应完成。
 
 %TALK：Intent不是什么事件发生之后发送的提示，而是发送Intent主动的用来触发一些事件。相比被动的"事件"，更接近主动的"命令"的性质。
 
 {ORGI}An intent could be explicit or implicit. In an explicit intent the sender clearly spells out which specific component should be on the receiving end. In an implicit intent, the sender specifies the type of receiver. For example, your activity could send an intent saying it simply wants someone to open up a web page. In that case, any application that is capable of opening a web page could "compete" to complete this action.
-{TRAN}Intent分为显式（explicit）和隐式（implicit）两种。显式的Intent要求发送方明确给出接受方的组件；而隐式的Intent只要发送方指明接受方的类型。比如某Activity可以发送一个“我要打开网页”的Intent，这时能够“打开网页”的某个应用程序即可收到这个Intent。
+{TRAN}Intent分为显式（explicit）和隐式（implicit）两种。显式的Intent要求发送者明确地指出接收者是谁；而隐式的Intent只要求发送者指明接收者属于哪一类别。比如某Activity可以发送一个“我要打开网页”的Intent，这时能够“打开网页”的某个应用程序即可收到这个Intent。
+
+%TALK: type在这里并非“Java类型”的意思，留意。
 
 {ORGI}When you have competing applications, the system will ask you which one you’d like to use to complete a given action. You can also set an app as the default one. This mechanism works very similarly to your desktop environment, when you downloaded Firefox or Chrome to replace your default Internet Explorer or Safari web browsers.
-{TRAN}当多个应用程序对同一个Intent发生争抢的时候，系统会询问你来决定选择哪个程序。你也可以针对某Intent设置一个默认程序，就像你在桌面系统中下载了Firefox或者Chrome，即可选择把它设置为默认浏览器，从而替换掉原先的Internet Explorer或者Safari。
+{TRAN}当多个应用程序对同一个Intent发生争抢的时候，系统会询问用户来决定选择哪个程序。用户也可以针对某Intent设置一个默认程序，就像你在桌面系统中安装了Firefox或者Chrome，即可选择把它设置为默认浏览器，从而替换掉原先的Internet Explorer或者Safari一样。
 
 {ORGI}What this type of messaging allows for is to allow the user to replace any app on the system with a custom one. For example, you may want to download a different SMS application, or another browser to replace your existing ones.
 {TRAN}这样的消息机制允许用户自定义系统中的任何响应程序。比如你想换一个短信程序或者浏览器，只要把它们设成默认即可。
@@ -142,7 +158,7 @@
 {NOTE}
 {ORGI}	Don’t confuse Android Services that are part of an Android app with native linux services, servers or daemons that a much lower level component of the operating system.
 
-{TRAN}不要将Android的Service与Linux原生的Service相混淆。Linux Service、服务器进程或者守护进程都是操作系统的部件，要相对底层的多。
+{TRAN}不要将Android的Service与Linux的原生服务、服务器进程或者守护进程相混淆。它们都是操作系统的部件，要底层的多。
 
 {/NOTE}
 
@@ -156,7 +172,7 @@
 {NOTE}
 {ORGI}	The fact that a service runs in the background doesn’t mean it runs on a separate thread. If a service is doing some processing that takes a while to complete (such as perform network calls), you would typically run it on a separate thread. Otherwise, your user interface will run noticeably slower. In other words, Services and Activities run on the same main application thread, often called UI thread.
 
-{TRAN}虽说Service运行于后台，但这并不是说它默认执行于另一个独立的线程中。如果一个Service需要执行一段耗时的操作(比如网络调用)，依然需要手工将它放在单独的线程里处理。否则，你的用户界面将响应不灵。一言以蔽之，Service默认与Activity在同一个线程中执行，而这个线程也被称作UI线程。
+{TRAN}虽说Service运行于后台，但这并不是说它默认执行于另一个独立的线程中。如果一个Service需要执行一段耗时的操作(比如网络调用)，依然需要程序员将它放在单独的线程中处理。否则，你的用户界面将响应不灵。一言以蔽之，Service默认与Activity在同一个线程中执行，而这个线程也被称作UI线程。
 
 {/NOTE}
 
@@ -169,13 +185,13 @@
 
 {ORGI}Content Providers are interfaces for sharing data between applications. Android by default runs each application in its own sandbox so that all data that belongs to an application is totally isolated from other applications on the system. While small amounts of data can be passed between applications via Intents, Content Providers are much better suited for sharing persistent data between possibly large datasets. As such, Content Provider API nicely adheres to CRUD principle.
 
-{TRAN}Content Provider是应用程序之间共享数据的接口。Android默认使每个应用程序都运行在沙盒(sandbox)里面，自己的数据与外面的程序完全隔离，要传递数据则必须依赖一些特定的接口。少量数据通过Intent传递即可，大量的数据就需要Content Provider了。为此，Content Provider提供了一套很好的按照CRUD原则设计的接口。
+{TRAN}Content Provider是应用程序之间共享数据的接口。Android默认使每个应用程序都运行在沙盒(sandbox)里面，自己的数据与外面的程序完全隔离，要传递数据则必须依赖一些特定的接口。少量数据通过Intent传递即可，大量的数据就需要Content Provider了。为此，Content Provider提供了一套很好的按照[CRUD原则 http://en.wikipedia.org/wiki/Create,_read,_update_and_delete]设计的接口。
 
 {ORGI}Android system uses this mechanism all the time. For example, Contacts Provider is a content provider that exposes all users contacts data to various applications. Settings Provider exposes system settings to various applications including the built-in Settings application. Media Store is responsible for storing and sharing all various media, such as photos, and music across various applications.
 {TRAN}Android将这种机制应用到了方方面面。比如Contact Provider专为不同的应用程序提供联系人数据，Setting Provider专为不同的应用程序提供系统的配置信息，Media Store为不同的应用程序提供多媒体信息(比如图片、音乐)的存储与分享，等等。
 
 {ORGI}This separation of data storage and the actual user interface application offers greater flexibility to mash up various parts of the system. For example, a user could install an alternative Address Book application that uses the same data as the default Contacts app. Or, install widgets on the Home Screen that allow for easy changes in the System Settings, such as turning on or off the Wifi, Bluetooth or GPS features. Many phone manufactures take advantage of Content Providers to add their own applications on top of standard Android to improve overall user experience, such as HTC Sense.
-{TRAN}把数据的存储与用户界面分离开来，这使得系统中各个部分之间的联系更紧密，拆换起来也更灵活。比如用户可以安装一个新的通讯录应用替换掉原先的默认的联系人app，同时仍希望使用原先的数据；或在主屏幕上面安装一个小部件，方便做些开关WiFi/蓝牙/GPS之类的系统设置。也有许多手机制造商(比如 HTC Sense)基于Content Provider机制，通过设计一套自己的软件集来提升用户体验。
+{TRAN}把数据的存储与用户界面分离开来，这使得系统中各个部分之间的联系更加紧密，拆换起来也更加灵活。比如用户可以安装一个新的通讯录应用替换掉原先的默认的联系人app，同时仍希望使用原先的数据；或在主屏幕上面安装一个小部件，方便做些开关WiFi/蓝牙/GPS之类的系统设置。也有许多手机制造商(比如 [HTC Sense http://en.wikipedia.org/wiki/HTC_Sense])基于Content Provider机制，通过设计一套自己的软件集来提升用户体验。
 
 {ORGI}Content Providers are a relatively simple interface with the standard insert(), update(), delete() and query() methods. These methods look a lot like standard database methods, so it is relatively easy to implement a content provider as a proxy to the database. Having said that, you are much more likely to use content providers than write your own.
 {TRAN}Content Provider的接口很简单，那就是``insert()``、``update()``、``delete()``与``query()``。这与一个数据库的接口很相似，因此针对某数据库实现一个Content Provider当作代理也十分简单。话虽这么说，不过你该更喜欢使用现成的Content Provider，而不是自己造轮子。
@@ -202,7 +218,7 @@
 {TRAN}你也可以发送自己的广播。接收者可以是程序自身的其它部分，也可以是其它的程序。
 
 {ORGI}Broadcast receivers themselves do not have any visual representation nor are they actively running in memory. But when triggered, they get to execute some code, such as start an activity, a service, or something else.
-{TRAN}Broadcast Receriver并无任何可见的界面，也并非常驻于内存中执行。它只会在事件发生的时候执行一段代码，做些启动一个Activity/Service之类的操作。
+{TRAN}Broadcast Receriver并无任何可见的界面，也并非常驻于内存中执行。它只会在事件发生时执行一段代码，做些启动一个Activity/Service之类的操作。
 
 == Application Context ==
 
@@ -214,7 +230,7 @@
 
 {ORGI}Application Context gets created whenever the first component of this application is started up, regardless whether that component is an activity, service, or something else. Application context lives as long as your application is alive. As such, it is independent of the activities life cycle. You can easily obtain reference to the context by calling Context.getApplicationContext() or Activity.getApplication(). Keep in mind that activities and services are already subclasses of context, and as such inherit all its methods.
 
-{TRAN}不管应用程序中首先启动的是哪个组件(Activity，Service还是其它)，都会首先初始化Application Context。从此它的生存周期也就与整个应用程序保持一致，而与Activity无关。我们可以通过``Context.getApplicationContext()``或者``Activity.getApplication()``获得它的引用。留意Activity与Service都是Context的子类，因此也就继承了它所有的方法。
+{TRAN}不管应用程序中首先启动的是哪个构件(Activity，Service还是其它)，都会首先初始化Application Context。从此它的生存周期也就与整个应用程序保持一致，而与Activity或者某构件无关。我们可以通过``Context.getApplicationContext()``或者``Activity.getApplication()``获得它的引用。留意Activity与Service都是Context的子类，因此也就继承了它所有的方法。
 
 %== Summary ==
 == 总结 ==
