@@ -26,11 +26,11 @@
 
 {ORGI}Let’s say that we want to build a Twitter app. We know that the user should be able to post status updates. We also know the user should be able to see what her friends are up to. Those are basic features. Beyond that, the user should also be able to set her username and password in order to login to her Twitter account. So, now we know we should have these three screens.
 
-{TRAN}我们要做的是一个Twitter应用。用户的需求很清楚，也就是发新消息、查看朋友的新消息，这也正是它的基本功能。除此之外，我们还需要事先知道用户的用户名和密码才能登录Twitter。由此可知，我们需要三个界面。
+{TRAN}我们要做的是一个Twitter应用。用户的需求很清楚，也就是发新消息、查看朋友的新消息，这也正是它的基本功能。除此之外，我们还需要事先获知用户的用户名和密码才能登录Twitter。由此可知，我们需要三个界面。
 
 {ORGI}Next, we would like my app to work fast regardless of network connection, or lack of. To achieve that, the app has to pull the data from Twitter when it’s online, and cache it locally. That will require a service that runs in the background as well as a database.
 
-{TRAN}其次，我们希望我们的应用能够流畅地运行，而回避开网络连接情况的影响。应用应该只在设备联网时抓取Twitter消息，并缓存到本地。为此，需要用到一个后台运行的Service，也需要用到数据库。
+{TRAN}其次，我们希望应用程序能够流畅地运行，而回避开网络连接情况的影响。应用程序应该只在设备联网时抓取Twitter消息，并缓存到本地。为此，我们需要用到一个后台运行的Service，也需要用到数据库。
 
 {ORGI}We also know that we’d like this background service to be started when the device is initially turned on, so by the user first uses the app, there’s already up-to-date information on her friends.
 
@@ -59,11 +59,11 @@
 %=== Activity Lifecycle ===
 === Activity 生命周期 ===
 {ORGI}Launching an activity may be quite expensive. It may involve creating a new linux process, allocating memory for all the UI objects, inflating all the objects from XML layouts, and setting the whole screen up. Since we’re doing a lot of work to launch an activity, it’s be a waste to just toss it out once user leaves that screen. To avoid this waste, activity lifecycle is managed via Activity Manager.
-{TRAN}因为涉及到新建Linux进程、为UI对象申请内存、解析XML文件以及最终的图像渲染，初始化Activity的成本是比较高的。既然在初始化上面花了这么大功夫，每离开Activity就将其销毁就未免太浪费了。在这方面，Android引入了Activity Manager机制，用以自动管理Activity的生命周期。
+{TRAN}因为涉及到新建Linux进程、为UI对象申请内存、解析XML文件以及最终的图像渲染，初始化Activity的成本是比较高的。既然在初始化上面花了这么大功夫，每次离开Activity就将其销毁就未免太浪费了。在这方面，Android引入了Activity Manager机制，用以自动管理Activity的生命周期。
 
 {ORGI}Activity Manager is responsible for creating, destroying, and overall managing activities. For example, when the user starts an application for the first time, the activity manager will create its activity and put it onto the screen. Later, when the user switches screens, the activity manger will move that previous activity to a holding place. This way, if the user wants to go back to an older activity, it can be started more quickly. Older activities that user hasn’t used in a while will be destroyed in order to free more space for the currently active one. This mechanism is designed to help improve the speed of user interface and thus improve the overall user experience.
 
-{TRAN}Activity的创建、销毁、管理皆由Activity Manager全权负责。比如用户第一次启动了某个程序，Activity Manager会负责它界面的初始化与显示；如果用户要切换界面，Activity Manager仅仅将原先的界面隐藏而不是销毁，这样可以加速下次访问；也负责销毁长时间未访问的Activity，为当前活跃的Activity腾出更多内存空间。引入Activity Manager机制的动机就是提升用户界面的速度，这对用户体验很重要。
+{TRAN}Activity的创建、销毁、管理皆由Activity Manager全权负责。比如用户第一次启动了某个程序，Activity Manager会负责它界面的初始化与显示；如果用户要切换界面，Activity Manager仅仅将原先的界面隐藏而不是销毁，这样可以加速下次访问；Activity Manager也负责销毁长时间未访问的Activity，为当前活跃的Activity腾出更多内存空间。引入Activity Manager机制的动机就是提升用户界面的速度，这对用户体验很重要。
 
 %	Figure 4.1. Activity Lifecycle
 	Figure 4.1. Activity生命周期
@@ -115,7 +115,7 @@
 
 == Intents ==
 
-	Figure 4.2. Intents
+	图 4.2. Intents
 		[images/04-Intents.png]
 
 
@@ -125,7 +125,7 @@
 %TALK：Intent不是什么事件发生之后发送的提示，而是发送Intent主动的用来触发一些事件。相比被动的"事件"，更接近主动的"命令"的性质。
 
 {ORGI}An intent could be explicit or implicit. In an explicit intent the sender clearly spells out which specific component should be on the receiving end. In an implicit intent, the sender specifies the type of receiver. For example, your activity could send an intent saying it simply wants someone to open up a web page. In that case, any application that is capable of opening a web page could "compete" to complete this action.
-{TRAN}Intent分为显式（explicit）或者隐式（implicit）两种。显式的Intent要求发送方明确给出接受方的组件；而隐式的Intent只要发送方指明接受方的类型。比如某Activity可以发送一个“我要打开网页”的Intent，这时能够“打开网页”的某个应用程序即可收到这个Intent。
+{TRAN}Intent分为显式（explicit）和隐式（implicit）两种。显式的Intent要求发送方明确给出接受方的组件；而隐式的Intent只要发送方指明接受方的类型。比如某Activity可以发送一个“我要打开网页”的Intent，这时能够“打开网页”的某个应用程序即可收到这个Intent。
 
 {ORGI}When you have competing applications, the system will ask you which one you’d like to use to complete a given action. You can also set an app as the default one. This mechanism works very similarly to your desktop environment, when you downloaded Firefox or Chrome to replace your default Internet Explorer or Safari web browsers.
 {TRAN}当多个应用程序对同一个Intent发生争抢的时候，系统会询问你来决定选择哪个程序。你也可以针对某Intent设置一个默认程序，就像你在桌面系统中下载了Firefox或者Chrome，即可选择把它设置为默认浏览器，从而替换掉原先的Internet Explorer或者Safari。
@@ -136,7 +136,7 @@
 == Services ==
 
 {ORGI}Services run in the background and don’t have any user interface components. They can perform the same actions as Activities without any user interface. Services are useful for actions that we want to make sure performs for a while, regardless of what is on the screen. For example, you may want to have your music player play music even as you are flipping between other applications.
-{TRAN}Service运行于后台，没有任何用户界面。它们就像是没有界面的Activity，适合于那些需要执行一段时间、但是不需要考虑如何显示的操作。比如，我们希望音乐播放器在我们移出它的窗口之后，依然可以播放歌曲。
+{TRAN}Service运行于后台，没有任何用户界面。它们就像是没有界面的Activity，适合于那些需要执行一段时间、但是不需要考虑如何显示的操作。比如，我们希望在移出音乐播放器的窗口之后，播放器依然可以播放歌曲。
 
 
 {NOTE}
@@ -146,17 +146,17 @@
 
 {/NOTE}
 
-	Figure 4.3. Service Lifecycle
+	图 4.3. Service 的生命周期
 		[images/05-ServiceLifeCycle.png]
 
 {ORGI}Services have a much simpler lifecycle than activities. You start a service, or stop it. Also, the service lifecycle is more or less controlled by the developer, and not so much by the system. So, we as developers have to be mindful to run our services so that they don’t unnecessarily consume shared resources, such as CPU and battery.
 
-{TRAN} Service的生命周期要比Activity简单不少，要么启动，要么停止。同时，Service的生命周期受开发者影响较多，而受系统控制相对较少。因此身为开发者，我们需要小心Service不要浪费资源，比如CPU和电池。
+{TRAN} Service的生命周期要比Activity简单不少，要么启动，要么停止。同时，Service的生命周期受开发者影响较多，而受系统控制相对较少。因此身为开发者，我们需要小心对待Service，避免它无谓地浪费资源，比如CPU和电池。
 
 {NOTE}
 {ORGI}	The fact that a service runs in the background doesn’t mean it runs on a separate thread. If a service is doing some processing that takes a while to complete (such as perform network calls), you would typically run it on a separate thread. Otherwise, your user interface will run noticeably slower. In other words, Services and Activities run on the same main application thread, often called UI thread.
 
-{TRAN}虽说Service运行于后台，但这并不是说它是独立在另个线程里的。如果一个Service需要执行一段耗时的操作(比如网络调用)，依然需要将它放在单独的线程里处理。否则，你的用户界面将响应不灵。一言以蔽之，Service默认与Activity都是在同一个线程里执行，而这个线程也被称作UI线程。
+{TRAN}虽说Service运行于后台，但这并不是说它默认执行于另一个独立的线程中。如果一个Service需要执行一段耗时的操作(比如网络调用)，依然需要手工将它放在单独的线程里处理。否则，你的用户界面将响应不灵。一言以蔽之，Service默认与Activity在同一个线程中执行，而这个线程也被称作UI线程。
 
 {/NOTE}
 
@@ -178,7 +178,7 @@
 {TRAN}把数据的存储与用户界面分离开来，这使得系统中各个部分之间的联系更紧密，拆换起来也更灵活。比如用户可以安装一个新的通讯录应用替换掉原先的默认的联系人app，同时仍希望使用原先的数据；或在主屏幕上面安装一个小部件，方便做些开关WiFi/蓝牙/GPS之类的系统设置。也有许多手机制造商(比如 HTC Sense)基于Content Provider机制，通过设计一套自己的软件集来提升用户体验。
 
 {ORGI}Content Providers are a relatively simple interface with the standard insert(), update(), delete() and query() methods. These methods look a lot like standard database methods, so it is relatively easy to implement a content provider as a proxy to the database. Having said that, you are much more likely to use content providers than write your own.
-{TRAN}Content Provider的接口很简单，就是``insert()``、``update()``、``delete()``与``query()``。这与一个数据库的接口很相似，因此针对某数据库实现一个Content Provider当作代理也十分简单。话虽这么说，不过你该更喜欢使用现成的Content Provider，而不是自己造轮子。
+{TRAN}Content Provider的接口很简单，那就是``insert()``、``update()``、``delete()``与``query()``。这与一个数据库的接口很相似，因此针对某数据库实现一个Content Provider当作代理也十分简单。话虽这么说，不过你该更喜欢使用现成的Content Provider，而不是自己造轮子。
 
 %TALK: "Having said that"疑似俚语，意思是“nonetheless”或者"but"。
 
@@ -202,7 +202,7 @@
 {TRAN}你也可以发送自己的广播。接收者可以是程序自身的其它部分，也可以是其它的程序。
 
 {ORGI}Broadcast receivers themselves do not have any visual representation nor are they actively running in memory. But when triggered, they get to execute some code, such as start an activity, a service, or something else.
-{TRAN}Broadcast Receriver并无任何可见的界面，也并非常驻于内存中执行。只是在事件发生的时候执行一些代码，做些启动一个Activity/Service之类的操作。
+{TRAN}Broadcast Receriver并无任何可见的界面，也并非常驻于内存中执行。它只会在事件发生的时候执行一段代码，做些启动一个Activity/Service之类的操作。
 
 == Application Context ==
 
