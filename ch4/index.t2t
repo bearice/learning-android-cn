@@ -84,7 +84,7 @@
 %TALK: 这里的翻译确实有脑补的地方。Activity进入Starting State，肯定意味着Activity“已经存在”——但是还没有初始化。另外“启动”是一个过程而不是瞬间，在Starting 状态开始时，Activity“刚刚启动”，在Starting状态结束时，Activity就是“已经启动”进入Running状态了。而“刚刚启动时”就是意译一些了。 -fleuria
 
 {ORGI}Keep in mind that this transition from Starting State to Running State is one of the most expensive operations in terms of computing time needed. The computing time directly effects the battery life of the device as well. This is the exact reason why we don’t automatically destroy activities that are no longer shown. User may want to come back to them, so we keep them around for a while.
-{TRAN}留意，Starting状态到Running状态的切换是最为耗时的操作之一。耗时也就耗电，对电池的续航能力也有影响。因此不再显示的Activity也不会被轻易销毁，留它驻留在内存中，到用户下次访问的时候可以节省资源。
+{TRAN}留意，Starting状态到Running状态的切换是最为耗时的操作之一。耗时也就耗电，对电池的续航能力也有影响。因此不再显示的Activity不会被轻易销毁，留它驻留在内存中，到用户下次访问的时候可以节省资源。
 
 % === Running State ===
 === Running 状态 ===

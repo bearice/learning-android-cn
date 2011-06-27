@@ -187,7 +187,7 @@ Android版本号差不多就是标志了它大版本和小版本发布的轨迹�
 
 你一般希望自己的应用能够兼容尽可能多设备，因此应留意Android的版本在诸多现存设备上的分野，选择较低的API Level。图1.1“//截至2011年1月Android现存版本的分布//”展示了来自[Android Device Dashboard http://developer.android.com/resources/dashboard/platform-versions.html]的一段统计信息：
 
-//图1.1，“截至2011年1月Android现存版本的分布”//
+**图1.1，“截至2011年1月Android现存版本的分布”**
 
 [images/01-AndroidVersions.png]
 

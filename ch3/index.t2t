@@ -160,7 +160,7 @@ Eclipse以项目为单位管理用户的工作，项目又都位于workspace中�
 % + Finally, click on Finish button and Eclipse will create your project. Let’s look at the various files that this process created:[Let’s look at the various files that this process created in Figure 3.2, “HelloWorld new project window”.]
 
 + 填写"Project name"。这是个Eclipse概念：Eclipse把一切皆组织为项目(project)，而项目名只能是一个单词。在命名上，我个人比较喜欢[CamelCase http://en.wikipedia.org/wiki/Camel_case]风格。在此输入：``HelloWorld``。
-+ 选择"build target"，它为构建工具指明目标平台的版本。其中罗列了所有可用的目标平台，以及你的SDK中附带的扩展。在这里可以选择一个较新的版本，比如Android 2.2（但不要选择Google APIs）。
++ 选择"build target"，它为构建工具指明目标平台的版本。其中罗列了所有可用的目标平台，以及你的SDK中附带的扩展。在这里可以选择一个较新的版本，比如Android 2.2（但不要选择Google APIs，它们是Google针对Android平台的专有扩展）。
 + 接下来设置project属性。其中的application name也就是你应用的英文名字，随便写上就好，比如"Hello, World!!!"。
 + "package name"是个Java中的概念。在Java中，源码都是组织为一个个的package，用以表示Java对象在不同类中的可见性，是个很重要的概念。在Android开发中，package作为应用程序签名的基本单位，也是很重要的。它的命名规范为逆序的域名，后跟可选的子域名。比如我有个域名是example.com，要编写一个计算器（caculator）的应用，那么package的名字就可以是com.example.caculator。
 + "activity"一项是可选的。目前我们还没讲到Activity（参见[第六章，Android用户界面 #ch6]），姑且把它看作是程序的界面即可。Activity通过Java的类来表示，因此它的名字也同样遵循Java中类的命名规范：首字母大写，对多个单词使用CamelCase命名规范。在此输入``HelloWorld``作为Activity的名字。

@@ -5,7 +5,7 @@
 
 % Take your contacts, for example. You may have a large database of contacts on your device. You can view them via the Contacts app as well as via the Dialer app. On some devices, such as HTC Android models, there may be even multiple versions of Contacts and Dialer apps available. It would not make a lot of sense to have similar data live in multiple databases.
 
-比方说，你的设备里可能已经有了一个庞大的联系人数据库。Contacts程序可以查看它们，Dialer程序也可以，有些设备(比如HTC)还带着不同版本的Contacts与Dialer。既然都需要用到联系人数据，如果它们各自使用独立数据库的话，事情就会比较麻烦。
+比方说，你的设备里可能已经有了一个庞大的联系人数据库。Contacts应用可以查看它们，Dialer应用也可以，有些设备(比如HTC)还带着不同版本的Contacts与Dialer。既然都需要用到联系人数据，如果它们各自使用独立数据库的话，事情就会比较麻烦。
 
 % Content Providers provide a way to centralize content in one place and have many different applications access it as needed. In case of the Contacts on your phone, there is actually a ContactProvider application that contains a Content Provider. Other applications access the data via this interface. The interface itself is fairly simple: it is the same insert(), update(), delete(), and query() methods we saw in Chapter 9, Database.
 
