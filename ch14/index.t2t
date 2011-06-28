@@ -297,7 +297,7 @@ public class Message implements Parcelable { // #{1}
 % + The difference between this service and our UpdaterService is that this service is going to be remote to the client, so calling it by an explicit class name wouldn’t work well since the client may not have access to the same set of classes. So instead we provide the Intent filter and action to which this service is registered to respond.
 
 + 在这里给出Service的定义。
-+ 这个Service与UpdaterService的不同在于，它为远程客户端所调用，但是客户端那边并没有这个类，它不能通过类名直接调用，但是可以对Intent作出响应。为此，通过<intent-filter>与<action>设置相应Intent的过滤规则。
++ 这个Service与UpdaterService的不同在于，它为远程客户端所调用，但客户端那边并没有这个类，所以不能通过类名直接调用。客户端能做的是发送Intent，使之作出响应。为此，通过<intent-filter>与<action>设置相应的过滤规则。
 
 
 % At this point, our service is complete. We can now move on to the client implementation.
@@ -332,7 +332,7 @@ public class Message implements Parcelable { // #{1}
 
 
 % === Binding to the Remote Service ===
-=== 绑定到远程服务 ===
+=== 绑定到远程Service ===
 
 % Our client is going to be an activity so that we can graphically see it working. In this activity, we’re going to bind to the remote service and from that point on use it as if it was just like any other local class. Behind the scenes, the Android binder will marshal and unmarshal the calls to the service.
 

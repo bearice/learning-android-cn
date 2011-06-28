@@ -2,39 +2,38 @@
 % 
 % 
 % = Broadcast Receivers =
-= Broadcast Receivers =
+= Broadcast Receiver =
 
 
 % In this chapter, you will learn what Broadcast receivers are and when to use them. We’ll create couple of different receivers illustrating different usage scenarios. First, you’ll create a broadcast receiver that will start up your update service at boot time, so that users always have their latest friends' timelines the first time they check for them (assuming their preferences are set). Next, you will create a receiver that will update the timeline when it changes while the user is viewing it. This will illustrate the programmatic registration of receivers and get you introduced to broadcasting intents. We’ll implement a receiver that is trigged by changes in network availability. And finally, we’ll learn how to surround our app with some security by defining permissions.
 
-本章介绍Broadcast Receiver的相关知识，以及它在不同场景中的不同应用。在这里，我们将创建几个BroadcastReceiver作为实例，分别用以实现在开机时启动UpdaterService、即时更新Timeline、响应网络连接状态的变化。此外，我们还需要将它们注册到应用程序，也需要对广播的Intent有所理解。最后，我们将明确定义应用程序所拥有的相关权限，以保证安全。
+本章介绍Broadcast Receiver的相关知识，以及它在不同场景中的不同应用。在这里，我们将创建几个Broadcast Receiver作为实例，分别用以实现在开机时启动UpdaterService、即时更新Timeline、响应网络连接状态的变化。此外，我们还需要将它们注册到应用程序，也需要对广播的Intent有所理解。最后，我们将明确地为应用程序赋予相关的权限，以保证安全。
 
 % By the end of this chapter, your app has most of the functionality that a user would need. The app can send status updates, get friends' timelines, update itself, and start automatically. It works even when the user is not connected to the network (although of course it cannot send or receive new messages).
 
-到本章结束，我们即可完成应用程序的大部分功能，比如发送消息、获取Timeline、即时更新Timeline以及自动启动等等。而且，在网络断开的时候，它依然可以运行(但不能收发数据)。
+到本章结束，我们即可完成应用的大部分功能，比如发送消息、获取Timeline、即时更新Timeline以及自动启动等等。而且，在网络断开的时候，它依然可以运行(但不能收发数据)。
 
 % == About Broadcast Receivers ==
-== 关于Broadcast Receivers ==
-
+== 关于Broadcast Receiver ==
 
 % Broadcast receivers are Android’s implementation of the Publish/Subscribe messaging pattern, more precisely is an Observer pattern. Applications (known as publishers) can generate broadcasts to simply send events not knowing who, if anyone, will get them. Receivers (known as subscribers) that want the information subscribe to specific messages via filters. If the message matches a filter, the subscriber is activated (if it’s not already running) and notified of the message.
 
-Broadcast Receiver就是Android中对发布/订阅机制(又称作Observer模式)的一种实现。应用程序作为发布者，可以广播一系列的事件，而不管接收者是谁。Receiver作为订阅者，从发布者那里订阅事件，并过滤出自己感兴趣的事件。如果某事件符合过滤条件，那么订阅者就被激活，并得到通知。
+Broadcast Receiver是Android中发布/订阅机制(又称为Observer模式)的一种实现。应用程序作为发布者，可以广播一系列的事件，而不管接收者是谁。Receiver作为订阅者，从发布者那里订阅事件，并过滤出自己感兴趣的事件。如果某事件符合过滤规则，那么订阅者就被激活，并得到通知。
 
 % As you may recall from Chapter 4, Main Building Blocks, a BroadcastReceiver is a piece of code to which an app subscribes in order to get notified when an action happens. That action is in a form of an intent broadcast. When the right intent is fired, the receiver wakes up and executes. The "wakeup" happens in form of a onReceive() callback method.
 
-第四章曾提及，``Broadcast Receiver``是应用程序针对事件做出响应的相关机制，而事件就是广播发送的Intent。Receiver会在接到Intent时唤醒，并触发相关的代码，也就是``onReceive()``。
+我们曾在第四章提到过，``Broadcast Receiver``是应用程序针对事件做出响应的相关机制，而事件就是广播发送的Intent。Receiver会在接到Intent时唤醒，并触发相关的代码，也就是``onReceive()``。
 
 % == BootReceiver ==
 == BootReceiver ==
 
 % In our Yamba application, the UpdaterService is the one responsible for periodically updating the data from the online service. Currently, the user needs to manually start the service, which she does by first starting the application, then clicking on Start Service menu option.
 
-在Yamba中，UpdaterService负责在后台定期抓取数据，但是目前只有在打开应用之后，让用户在菜单中选择``Start Service``手工启动才会开始执行。
+在Yamba中，UpdaterService负责在后台定期抓取数据。但现在只能在打开应用之后，让用户在菜单中选择``Start Service``手工启动它才会开始执行。这样显然是不友好的。
 
 % It would be much cleaner and simpler if somehow UpdaterService was started automatically by the system when the device is powered up. To do this, we create BootReceiver, a broadcast receiver that will get launched by the system when the boot is complete, and in turn will launch our TimelineActivity activity. The following few lines sets up our broadcast receiver.
 
-这样显然是不友好的。如果UpdaterService能够随着系统启动而启动，那就可以省去用户的手工操作了。为此，我们将新建一个BroadcastReceiver也就是``BootReceiver``，用以响应系统启动的事件，由它负责启动UpdaterService。
+如果UpdaterService能够随着系统启动而启动，那就可以省去用户的手工操作了。为此，我们将新建一个Broadcast Receiver用以响应系统启动的事件，也就是``BootReceiver``，并由它负责启动UpdaterService。
 
 % TALK: 怀疑是原文错误： and in turn will launch our TimelineActivity activity. 根据下面的代码看应该是 UpdaterService
 % TALK: 支持楼上。
@@ -64,14 +63,14 @@ public class BootReceiver extends BroadcastReceiver { // #{1}
 % + The only method that we need to implement is onReceive(). This method gets called when an intent matches this receiver.
 % + We launch an intent to start our Updater service. The system passed us a Context object when it invoked our onReceive() method, and we are expected to pass it on to the Updater service. The service doesn’t happen to use the Context object for anything, but we’ll see an important use later for a context.
 
-+ ``BootReceiver``继承自``BroadcastReceiver`` ，它是所有BroadcastReceiver的基类。
-+ 我们只需实现一个方法，那就是``onReceive()``。它将在收到符合条件的Intent时触发。
-+ 通过Intent启动UpdaterService。``onReceive()``在触发时可以得到一个Context对象，我们将它原样传给UpdaterService。对现在的UpdaterService而言，这个Context对象并不是必需的，但稍后我们就会发现它的重要性。
++ ``BootReceiver``继承自``BroadcastReceiver`` ，它是所有Receiver的基类。
++ 我们只需实现一个方法，那就是``onReceive()``。它将在收到符合过滤规则的Intent时触发。
++ 通过Intent启动UpdaterService。``onReceive()``在触发时可以得到一个Context对象，我们将它原样传给UpdaterService。对现在的UpdaterService而言，这个Context对象并不是必需的，但稍后我们就能够发现它的重要性。
 
 
 % At this point, we have our boot receiver. But, in order for it to get called - in order for the activity to start at boot - we must register it with the system.
 
-现在，我们已经实现了BootReceiver，但它还不能响应系统的事件。为此，我们还需要将它注册到系统。
+到这里，我们已经实现了BootReceiver，但还没有将它注册到系统，因此仍无法响应来自系统的事件。
 
 % === Registering the BootReceiver with the AndroidManifest file ===
 === 将BootReceiver注册到Manifest文件===
@@ -82,7 +81,7 @@ public class BootReceiver extends BroadcastReceiver { // #{1}
 要将BootReceiver注册到系统，我们需要在Manifest文件中添加它的声明，还需要定义它的intent-filter，用以过滤出自己关心的事件。
 
 
-**Example 11.2. AndroidManifest.xml: <application> section**
+**Example 11.2. AndroidManifest.xml: 在<application>标签之下**
 {CODE}
 ...
 <receiver android:name=".BootReceiver">
@@ -96,9 +95,9 @@ public class BootReceiver extends BroadcastReceiver { // #{1}
 
 % In order to get notifications for this particular intent filter, we must also specify that we’re using a specific permission required by it, in this case android.permission.RECEIVE_BOOT_COMPLETED.
 
-对某一特定事件的intent-filter，需要赋予相应的权限。在这里，那就是``android.permission.RECEIVE_BOOT_COMPLETED``。
+针对某特定事件，在声明了它的intent-filter之后，还需要赋予应用程序以相应的权限。在这里就是``android.permission.RECEIVE_BOOT_COMPLETED``。
 
-**Example 11.3. AndroidManifest.xml: <manifest> section**
+**Example 11.3. AndroidManifest.xml: 在<manifest>标签之下**
 {CODE}
 ...
 <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -108,7 +107,8 @@ public class BootReceiver extends BroadcastReceiver { // #{1}
 
 {NOTE}
 % If we don’t specify the permission we require, we simply won’t get notified when this event occurs, and we won’t have the chance to run our start-up code. We won’t even know we aren’t getting notified, so this is potentially a hard bug to find.
-如果我们不声明需要的权限的话，在事件发生时就不会得到通知，因此也就无法在系统启动是运行代码。更重要的是在运行过程中我们甚至不会知道到底自己会不会受到通知，因此这有可能成为一个很难找到的 BUG 。
+
+如果不声明权限，那么在事件发生时应用程序就会得不到通知，也就无从执行响应的代码。不幸的是，程序根本无法察觉事件丢失的情况，也没有任何错误提示，出现bug的话将很难调试。
 {/NOTE}
 
 
@@ -116,31 +116,33 @@ public class BootReceiver extends BroadcastReceiver { // #{1}
 === 测试 BootReceiver ===
 
 % At this point, you can reboot your device. Once it comes back up, your UpdaterService should be up and running. You can verify that either by looking at the LogCat for our output, or by using System Settings and checking that the service is running.
-现在，重启你的设备。等它启动完成后，UpdaterService就应该在运行着了。你可以通过 LogCat的输出来验证这一点，或者使用系统设置来检查服务是否在运行。
+
+接下来重启设备。重启之后若一切正常，UpdaterService就应该处于运行状态了。你可以通过LogCat的输出来验证它是否启动成功，也可以通过System Settings查看它是否存在于当前正在运行的Service列表。
 
 % To verify via System Settings, at the Home screen, click on th Menu button and choose Settings→Applications→Running Services. You should see UpdaterService listed there. At this point, you know the BootReceiver did indeed get the broadcast and has started the UpdaterService.
-要使用系统设置来验证，在主屏幕上点击菜单按钮，选择“设置 -> 应用程序 -> 正在运行的服务”。你应该可以看到 UpdaterService 在这里被列出。如果一切正常，我们可以确定 BootReceiver 的确收到了系统的广播并且启动了服务。
+
+通过System Settings的话，可以回到主屏幕，点击菜单按钮，选择``Settings→Applications→Running Services``。如果正常，即可在列表中见到UpdaterService，表示BootReceiver已经收到了系统广播的事件，并成功地启动了Service。
 
 
 % == The TimelineReceiver ==
 == TimelineReceiver ==
 
 % Currently, if you view your Timeline activity while a new status update comes in, you wouldn’t know about it. That’s because the UpdaterService doesn’t have a way to notify TimelineActivity to refresh itself.
-现在的程序中，如果你在浏览时间线时程序在后台更新了数据，用户并不会得到通知。 这是因为 ``UpdaterService`` 没办法通知 ``TimelineActivity`` 刷新显示。
 
+目前，UpdaterService可以定期抓取最新的消息数据，但它无法通知``TimelineActivity``。因此Timeline界面仍不能做到及时更新。
 
 % To address this, we create another broadcast receiver, this time as an inner class of TimelineActivity.
-为了解决这个问题，我们需要创建另一个广播接收器，这次它是作为 ``TimelineActivity``的内部类出现的。
 
+为解决这一问题，我们将创建另一个BroadcastReceiver，使它作为``TimelineActivity``的内部类。
 
-**Example 11.4. TimelineActivity.java with TimelineReceiver inner class**
+**Example 11.4. TimelineActivity.java，内部类TimelineReceiver**
 {CODE}
 ...
-class TimelineReceiver extends BroadcastReceiver { //1
+class TimelineReceiver extends BroadcastReceiver { // #{1}
   @Override
-  public void onReceive(Context context, Intent intent) { //2
-    cursor.requery(); //3
-    adapter.notifyDataSetChanged(); //4
+  public void onReceive(Context context, Intent intent) { // #{2}
+    cursor.requery(); // #{3}
+    adapter.notifyDataSetChanged(); // #{4}
     Log.d("TimelineReceiver", "onReceived");
   }
 }
@@ -149,20 +151,23 @@ class TimelineReceiver extends BroadcastReceiver { //1
 
 
 % + As before, to create a broadcast receiver, we subclass BroadcastReceiver class.
-+ 广播接收器都是要继承 ``BroadcastReceiver`` 的，我们之前就讲过了。
 % + The only method we need to override is onReceive(). This is where we put the work we want done when this receiver is triggered.
-+ 接收器中唯一需要覆盖的方法是 ``onReceive()``。这里面的代码会在接收器被触发时执行。
 % + The work we want done is simply to tell the cursor object to refresh itself. We do this by invoking requery(), which executes the same query that was executed initially to obtain this cursor object.
-+ 在此需要做的是告诉cursor对象刷新他自己。我们只需要调用 ``requery()`` 方法来重新执行一次初始化时的数据查询就OK了。
 % + Notifies the adapter that underlying data has changed.
-+ 这里告诉 adapter 它内部的数据已经被更改过了。
+
++ 同前面一样，Broadcast Receiver都是以``BroadcastReceiver``作为基类。
++ 唯一需要实现的方法是``onReceive()``。其中的代码会在Receiver被触发时执行。
++ 通知``cursor``对象刷新自己。对此，只需调用``requery()``方法，重新执行它的上一次数据查询就可以了。
++ 通知adapter对象，它的内部数据已经被修改。
 
 
 % At this point, our receiver is ready but not registered. Unlike BootReceiver, where we registered our receiver with the system statically, via the manifest file, we’ll register TimelineReceiver programmatically. This is because TimelineReceiver makes sense only within TimelineActivity as it’s purpose is to refreshing the list when the user is looking at Timeline Activity.
-不过要让接收器正常工作，我们还需要注册它。不像刚才的 ``BootReceiver`` 那样使用 manifest 文件进行静态注册，这里我们需要动态添加接收器。这是因为 ``TimelineReceiver`` 仅仅在用户查看时间线时才有意义。
 
+要让Receiver正常工作，我们还需要将它注册。不过这里不像刚才的``BootReceiver``那样在Manifest文件中添加声明就好，我们需要动态地注册TimelineReceiver。因为``TimelineReceiver``仅在用户查看Timeline界面时才有意义，将它静态地注册到Manifest文件的话，会导致无谓地浪费资源。
 
-**Example 11.5. TimelineActivity.java with TimelineReceiver**
+%TALK: 上面翻译中加了一句。类似的情景可以在"系统服务"一章中见到，在Activity休眠时没必要注册系统服务，不然会浪费资源。
+
+**Example 11.5. TimelineActivity.java中的内部类TimelineReceiver**
 {CODE}
 ...
 @Override
@@ -179,7 +184,7 @@ protected void onResume() {
   listTimeline.setAdapter(adapter);
 
   // Register the receiver
-  registerReceiver(receiver, filter);   //1
+  registerReceiver(receiver, filter);   // #{1}
 }
 
 @Override
@@ -187,44 +192,47 @@ protected void onPause() {
   super.onPause();
 
   // UNregister the receiver
-  unregisterReceiver(receiver);  //2
+  unregisterReceiver(receiver);  // #{2}
 }
 ...
 {/CODE}
 
 
 % + We register the receiver in onResume() so that it’s registered whenever the TimelineActivity is running. Recall that all paths to the Running state go through the onResume() method, as described in the section called “Running State”.
-+ 在 ``onResume()`` 中注册接收器，也就是当 ``TimelineActivity`` 开始运行时。在 “Running State” 一节中我们曾经讲过，无论 Activity 是如何被启动或者唤醒的， ``onResume()`` 方法都会被调用。
 % + Similarly, we unregister the receiver on the way to the Stopped state (recall the section called “Stopped State”). onPause() is a good place to do that.
-+ 类似的，当 Activity 被置于 Stopped 状态时， ``onPause()`` 会被系统调用，所以我们在这里移除之前注册的接收器。
+
++ 在``TimelineActivity``进入Running状态时注册Receiver。前面在//"Running状态"//一节中曾提到，在Activity进入Running状态之前，肯定要经过``onResume()``。因此，这里是注册Receiver的好地方。
++ 与之相对，Activity在进入Stopped状态之前，肯定会经过``onPause()``。可以在这里注销Receiver。
 
 
 % What’s missing now is the explanation of what filter is. To specify what triggers the receiver, we need an instance of IntentFilter, which simply indicates which intent actions we want to be notified about. In this case, we make up an action string through which we filter intents.
-现在来解释一下 filter 是什么。为了制定触发接收器的条件，我们需要实例化一个 ``IntentFilter`` 对象。这个对象保存了我们希望接受的 intent 。在本例中，我们直接使用了一个字符串来初始化这个对象。
 
+前面还剩一个``filter``对象没解释：它是一个``IntentFilter``的实例，用以过滤出Receiver感兴趣的事件。在这里，我们通过一条表示Action事件的字符串来初始化它。
 
-**Example 11.6. TimelineActivity.java with update onCreate()**
+**Example 11.6. TimelineActivity.java，修改后的 onCreate()**
 {CODE}
 ...
-filter = new IntentFilter("com.marakana.yamba.NEW_STATUS"); //1
+filter = new IntentFilter("com.marakana.yamba.NEW_STATUS"); // #{1}
 ...
 {/CODE}
 
-
 % + Create a new instance of IntentFilter to filter for the com.marakana.yamba.NEW_STATUS intent action. Since this is a text constant, we’ll define it as such and refer to it as a constant later on. A good place to define it is the UpdaterService, because that’s the code that generates the events we’re waiting for.
-+ 创建一个允许 ``com.marakana.yamba.NEW_STATUS`` 的 ``IntentFilter``。 由于这里使用了一个文本常量，最好将它定义成一个常量变量以方便在别处应用它。一般来说在 ``UpdaterService`` 中定义它是个不错的想法，因为这个类是触发此类事件的源。
+
++ 创建IntentFilter的实例，以``com.marakana.yamba.NEW_STATUS``作为构造函数的参数，表示一条Action事件。在这里使用了一个字符串，以后可以将它定义成常量，方便在其它地方使用。
 
 
 % == Broadcasting Intents ==
-== 广播 Intents ==
+== 广播 Intent ==
 
 % Finally, to trigger the filter, we need to broadcast an intent that matches the action that the intent filter is listening for. In case of BootReceiver, earlier, we didn’t have to do this because the system was already broadcasting the appropriate intent. However, for TimelineReceiver, the broadcast is ours to do because the intent is specific to our application.
-最后，为了能够触发这个 filter ，我们需要向系统广播一个能够匹配 filter 的 intent。 在之前的 ``BootReceiver`` 中我们没有这么做是因为系统会自己广播合适的 intent。 但是对于 ``TimelineReceiver`` 来说，这个工作就需要我们自己来完成了。
+
+最后，为触发这个事件，我们需要广播一条能够匹配filter的Intent。前面的``BootReceiver``只管接收来自系统的广播，也就没必要负责发送Intent。但对``TimelineReceiver``来说，它接收的广播是来自应用程序本身，发送Intent也就需要我们自己负责了。
 
 % If you recall from Chapter 8, Services, our UpdaterService had an inner class called Updater. This was the separate thread that connected to the online service and pulled down the data. Becausee this is where we know whether or not there are any new statuses, this is a good place to send notifications from as well.
-在第八章“服务”中，我们为 ``UpdaterService`` 创建了一个叫 ``Updater`` 的内部类。它负责在独立的线程中连接服务器并抓取数据。所以在这个类中发送我们的通知是最合适的，因为能准确的知道什么时候会有新的数据可用。
 
-**Example 11.7. UpdaterService.java with Updater inner class**
+在第八章 Service 中，我们为``UpdaterService``创建了一个内部类``Updater``，负责在独立的线程中连接到服务端并抓取数据。第一手数据在它手里，因此由它负责发送通知是合理的。
+
+**Example 11.7. UpdaterService.java， 内部类Updater**
 {CODE}
 ...
 private class Updater extends Thread {
@@ -241,17 +249,17 @@ private class Updater extends Thread {
       Log.d(TAG, "Running background thread");
       try {
         YambaApplication yamba =
-            (YambaApplication) updaterService.getApplication(); //1
-        int newUpdates = yamba.fetchStatusUpdates();  //2
-        if (newUpdates > 0) { //3
+            (YambaApplication) updaterService.getApplication(); // #{1}
+        int newUpdates = yamba.fetchStatusUpdates();  // #{2}
+        if (newUpdates > 0) { // #{3}
           Log.d(TAG, "We have a new status");
-          intent = new Intent(NEW_STATUS_INTENT); //4
-          intent.putExtra(NEW_STATUS_EXTRA_COUNT, newUpdates); //5
-          updaterService.sendBroadcast(intent); //6
+          intent = new Intent(NEW_STATUS_INTENT); // #{4}
+          intent.putExtra(NEW_STATUS_EXTRA_COUNT, newUpdates); // #{5}
+          updaterService.sendBroadcast(intent); // #{6}
         }
-        Thread.sleep(60000); //7
+        Thread.sleep(60000); // #{7}
       } catch (InterruptedException e) {
-        updaterService.runFlag = false; //8
+        updaterService.runFlag = false; // #{8}
       }
     }
   }
@@ -261,46 +269,51 @@ private class Updater extends Thread {
 
 
 % + We get the application object to access our common application methods.
-+ 首先获取 application 对象，方便后面的调用。
 % + If you recall, our application provides fetchStatusUpdates() to get all the latest status updates and populate the database. This method returns the number of new statuses.
-+ application 对象定义了 ``fetchStatusUpdates()`` 方法来获取数据并写入数据库。这个方法会返回新获取的数据的数量。
 % + We check whether there are any new statutes at all.
-+ 检查是否有新数据到达。
 % + This is the intent we are about to broadcast. NEW_STATUS_INTENT is a constant that represents an arbitrary action. In our case, we define it as com.marakana.yamba.NEW_STATUS, but it could be any string without spaces. However, using something that resembles your package name is a good practice.
-+ 我们需要广播的 intent ，``NEW_STATUS_INTENT`` 是代表字符串 ``com.marakana.yamba.NEW_STATUS`` 的常量，这个常量的值可以为任何不包含空格的字符串。但是使用一个有意义的名称是个好习惯。
-% + There’s a way to add data to an Intent. In our case, it would be useful to communicate to others as part of this broadcast how many new statuses there arre. In this line, we use Intent’s putExtra() method to add the number of new statuses under a key NEW_STATUS_EXTRA_COUNT, which is just our arbitrary constant.
-+ 可以为 intent 提供附加数据，以方便不同模块间通信。在本例中，我们将其设置为新到达的数据的数量。在这里使用 Intent 的 ``putExtra()`` 方法将数据和对应的键值关联起来。
+% + There’s a way to add data to an Intent. In our case, it would be useful to communicate to others as part of this broadcast how many new statuses there are. In this line, we use Intent’s putExtra() method to add the number of new statuses under a key NEW_STATUS_EXTRA_COUNT, which is just our arbitrary constant.
 % + At this point, we know there’s at least one new status. sendBroadcast() is part of Context, which is a superclass of Service and therefore also a superclass of our UpdaterService. Since we’re inside the Updater inner class, we have to refer to the parent’s updaterService instance in order to call sendBroadcast(). This method simply takes the intent we just created.
-+ 刚才已经检查过至少有一条新数据到达。所以使用 Context 提供的 sendBroadcast() 方法将 intent 广播出去。UpdaterService 的父类 Service 实现了 Context 接口所以使用 updaterService 变量来调用 sendBroadcast()。 这个方法的参数就是刚刚创建的 Intent。
 % + We tell this thread to sleep for a minute, so that it doesn’t overload the device’s CPU while checking regularly for updates.
-+ 让线程休眠一分钟，这样就不会让设备的 CPU 过载。
 % + In case this thread is interrupted for whatever reason, we update this service’s runFlag so we know it’s not running any more.
-+ 如果线程被任何原因打断，runFlag 会被设置成 false 表示服务不再继续运行。
 
++ 获取Application对象的引用。
++ 前面我们曾在Application对象中实现了``fetchStatusUpdates()``方法，用以获取数据并写入数据库，并将获取数据的数量作为返回值返回。
++ 检查是否得到新数据。
++ 初始化Intent。``NEW_STATUS_INTENT``是一个常量，表示一项Action。在这里，它就是"com.marakana.yamba.NEW_STATUS"。Android并没有限制Action的名字，不过按照约定，一般都在它名字的前面加上package的名字。
++ 可以为Intent添加附加数据。在这里，通知他人新得到数据的数目是有意义的。因此通过``putExtra()``方法将一个数值加入Intent，并与一个键值(NEW_STATUS_EXTRA_COUNT)关联起来。
++ 我们已经确定得到了新数据，接下来就是将Intent广播出去。``sendBroadcast()``是个Context对象中的方法，而Service是Context的子类，因此也可以通过updaterService对象来调用``sendBroadcast()``。传入的参数就是刚刚创建的Intent。
++ 让线程休眠一分钟，避免CPU过载。
++ 如果线程被任何原因中断，则设置runFlag为false，表示Service已停止运行。
+
+%TALK: 一分钟的设定很坑爹. -fle
 
 
 {NOTE}
 % UpdaterService may be sending broadcasts even when the TimelineReceiver` is not registered. That is perfectly fine. Those broadcasts will simply be ignored.
-即便 ``TimelineReceiver`` 没有注册，``UpdaterService`` 仍然会广播 Intent。这很正常并且没用的广播会被系统简单的忽略掉。
+
+``UpdaterService``会持续广播着Intent，而不受``TimelineReceiver``影响。如果TimelineReceiver未被注册，则UpdaterService广播的Intent会被简单忽略。
 {/NOTE}
 
-
 % At this point, a new status received by UpdaterService causes an intent to be broadcast over to the TimelineActivity, where the message gets received by the TimelineReceiver, which in turn refreshes the ListView of statuses.
-现在，``UpdaterService`` 收到新的数据后就会发送一个 intent ，而 ``TimelineReceiver`` 能够接受到这个 intent 并且刷新相应的显示。
+
+到这里，``UpdaterService``会在每次收到新数据时广播一条Intent。``TimelineReceiver``则可以接收到这些Intent，并更新TimelineActivity所显示的内容。
 
 
 % == The Network Receiver ==
-== 网络接收器 ==
+== NetworkReceiver ==
 
 % With the current design, our service will start automatically at boot time and will attempt to connect to the cloud and retrieve latest updates approximately every minute. One of the problems with the current design is that the service will try to do so even when there’s no Internet connection available. This adds unnecessary attempts to wake up the radio and connect to the server, all of which is taxing the battery. Imagine how many wasteful attempts would be made while your phone is in Flight Mode on a cross-country flight. This highlights some of the inherit constraints for programming for mobile devices - we’re limited by the battery life and network connectivity.
-在现在的程序中， 我们编写的服务在系统启动后自动运行，并且每分钟尝试连接服务器并获取数据。这样的设计存在一个问题： 即使设备没有联网，程序仍然试图连接并获取数据，这样做会导致非必要的电池消耗。假如你的在一架跨国航班上启用手机的飞行模式，这样的程序会很快用光你的电池。所以我们需要为程序添加一些约束，来保证它能够适应移动设备的特点 -- 电池寿命和网络连接都是有限的。
 
+现在，我们的Service已经可以跟随系统启动，并每分钟定时尝试连接服务端以获取数据。但这样的设计存在一个问题，那就是即使设备没有联网，程序仍定时试图连接服务端抓取数据，这样只会无谓地浪费电能。假如你正在坐一趟国际航班，上面没有网络连接，几个小时下来不难想像这将多么浪费。电能与网络连接情况都不是永久的，我们应尽量减少无谓的操作。
 
 % A better approach would be to listen to network availability broadcasts and use that information to intelligently turn the service off when the Internet is unavailable and turn it back on when data connection comes back up. The system does send an intent whenever connection availability changes. Another system service allows us to find out what changed and act accordingly.
-一个好办法是监视网络是否可用，然后根据这个条件决定是否打开或者关闭后台服务。系统会在网络条件发生变化时发送一些 intent ，并且我们能通过一些系统服务获取当前的网络状态。
+
+一个解决方案是监听网络的连接情况，并由它来决定Service的启动关闭。系统会在网络连接情况发生变化时发送一条Intent，另外也有系统服务可用于查看当前的网络连接情况。
 
 % In this case, we’re creating another receiver, NetworkReceiver. Just as before, we need to create a Java class that subclasses BroadcastReceiver, and register it via the Android manifest file.
-在这里，我们创建一个新的接收器； ``NetworkReceiver``。 之前已经做过很多次了： 新建一个 Java 类并且继承 ``BroadcastReceiver``，然后在 manifest文件中注册它。
+
+接下来，我们创建一个新的Receiver：``NetworkReceiver``。步骤同前面一样，新建一个Java类，并继承``BroadcastReceiver``，然后在Manifest文件中注册它。
 
 
 **Example 11.8. NetworkReceiver.java**
@@ -313,21 +326,21 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.util.Log;
 
-public class NetworkReceiver extends BroadcastReceiver { //1
+public class NetworkReceiver extends BroadcastReceiver { // #{1}
   public static final String TAG = "NetworkReceiver";
 
   @Override
   public void onReceive(Context context, Intent intent) {
 
     boolean isNetworkDown = intent.getBooleanExtra(
-        ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);  //2
+        ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);  // #{2}
 
     if (isNetworkDown) {
       Log.d(TAG, "onReceive: NOT connected, stopping UpdaterService");
-      context.stopService(new Intent(context, UpdaterService.class)); //3
+      context.stopService(new Intent(context, UpdaterService.class)); // #{3}
     } else {
       Log.d(TAG, "onReceive: connected, starting UpdaterService");
-      context.startService(new Intent(context, UpdaterService.class)); //4
+      context.startService(new Intent(context, UpdaterService.class)); // #{4}
     }
   }
 
@@ -337,26 +350,28 @@ public class NetworkReceiver extends BroadcastReceiver { //1
 
 
 % + As we said before, when you create a new broadcast receiver, you typically start by subclassing Android’s own BroadcastReceiver class.
-+ 之前已经说过，接收器都是 ``BroadcastReceiver`` 的子类。
 % + When the system broadcasts the particular intent action that we are subscribed to get in this receiver, the intent will have an extra piece of information indicating if the network is up or down. In this case, the variable is a Boolean value keyed to the ConnectivityManager.EXTRA_NO_CONNECTIVITY constant. In the previous section we associated a value to a string of our own invention; here we’re on the other end of the message, extracting a value from a Boolean. A value of true indicates that the network is down.
-+ 当系统广播了能够触发这个接收器的 intent 时，intent 会附带一组额外的数据来表示网络是否可用。在这里我们只要获取 ```` 所对应的 Boolean 值。 在之前创建 intent 时我们给 intent 提供过附加数据，而现在我们在接收 intent 时做了相反的事情。这里获取到的 Boolean 代表了网络是否无效。
 % + If the network is down, we simply send an intent to our UpdaterService. We now have a use for the Context object that the system passed to this method. We call its stopService() method, passing the Intent.
-+ 如果网络失效，就告诉 UpdaterService 停止。 系统传递给我们一个 Context 对象所以可以使用它。
 % + If the flag was false, we know that the network has changed and is now available. So we start our UpdaterService, the inverse of our previous stop action.
-+ 如果网络没有失效，那么需要启动 UpdaterService。
+
++ 同前面一样，它也是``BroadcastReceiver``的子类。
++ 系统会在这条Intent中加入一组附加数据，表示网络的连接情况。也就是``ConnectivityManager.EXTRA_NO_CONNECTIVITY``所对应的布尔值。前面我们曾为自己的Intent加入附加数据，在这里相反，只管取出数据即可。若这个值为true，则表示网络断开。
++ 如果网络断开，则向UpdaterService发送一条Intent，令它停止。通过系统传入的Context对象。
++ 如果网络连接，则启动UpdaterService，与前面相反。
 
 
 {NOTE}
 % Inside an activity or a service, we simply used methods startActivity(), startService(), stopService() and so on. This is because activities and services are subclasses of Context and thus they inherited these methods. So, there’s an is-a relationship between them and Context. Broadcast Receivers on the other hand have Context object passed into it, thus having a has-a relationship with it.
-如果在 activity 或者 service 中，我们可以直接调用 startActivity(), startService(), stopService() 等方法。 这是因为 activity 或者 service 都继承了 Context 。所以他们本身就是一个 Context 。而广播接收器并没有继承 Context ，所以需要使用系统传递的 Context。
+
+在Activity或者Service中，我们可以直接调用``startActivity()``、``startService()``、``stopService()``等方法。这是因为Activity与Service都是Context的子类，它们自身就是一个Context对象。但BroadcastReceiver并不是Context的子类，因此发送Intent，仍需通过系统传递的Context对象。
 {/NOTE}
 
 
-
 % Now that we have created this new receiver, we need to register it with the manifest file:
-注意在新建了接收器以后我们还需要在manifest中注册它：
 
-**Example 11.9. AndroidManifest.xml: <application> section**
+新的Receiver已经编写完毕，接下来将它注册到Manifest文件。
+
+**Example 11.9. AndroidManifest.xml: 在<application>标签之下**
 {CODE}
 ...
 <receiver android:name=".NetworkReceiver">
@@ -367,13 +382,11 @@ public class NetworkReceiver extends BroadcastReceiver { //1
 ...
 {/CODE}
 
-
-
 % We also need to update the permissions that our application uses, because that particular action filter for a network change is protected and requires us to ask the user to grant us this particular permission.
-另外还需要为应用添加相应的权限，因为监听网络状态是需要用户许可才能进行的。
 
+我们还需要更新应用程序所需的权限。在系统中，网络连接状况是受保护的信息，要获取它，我们需要用户赋予应用程序以专门的权限。
 
-**Example 11.10. AndroidManifest.xml: <manifest> section**
+**Example 11.10. AndroidManifest.xml: 在<manifest>标签之下**
 {CODE}
 ...
 <uses-permission android:name="android.permission.INTERNET" /> <!-- 1 -->
@@ -384,11 +397,12 @@ public class NetworkReceiver extends BroadcastReceiver { //1
 
 
 % + Used by our Twitter object to connect to the Internet to get and post status updates. We saw this permission already in Chapter 6, Android User Interface. Not having this permission will cause our app to crash when it attempts to access the network (unless we catch and handle that network exception).
-+ Twitter 对象需要访问 Internet 并且收发数据。 我们在第六章就使用过这个权限了。如果应用没有这个权限，在访问网络时将会因为异常而崩溃（除非你处理了网络异常）。
 % + Required in order to receive broadcasts that the system has booted. As mentioned earlier, if we don’t have this permission, we will silently be ignored at boot time and our boot code won’t run.
-+ 需要接受系统启动消息时使用的权限。之前说过如果你没有这个权限，那么启动代码就不会运行并且没有任何错误提示。
 % + Needed in order to receive network state updates. Just as with the boot receiver, if we don’t have this permission, we will be silently passed by when the network state changes.
-+ 监视网络状态需要的权限。 类似启动消息的权限一样，如果缺少了，就不会得到通知并且没有提示。
+
++ 访问网络所需的权限。这是在第六章 //Android用户界面// 中定义的。如果没有这项权限，应用程序就无法连接到网络。
++ 监视系统启动所需的权限。如果没有这项权限，应用程序就无法捕获//系统启动//这一事件，而且没有任何错误提示。
++ 监视网络连接情况所需的权限。与上面相似，如果没有这项权限，应用程序就无法获知网络连接情况的变化，而且没有任何错误提示。
 
 
 % == Adding Custom Permissions to Send and Receive Broadcasts ==

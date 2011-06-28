@@ -458,7 +458,6 @@ public class WhereAmI extends Activity implements LocationListener { // #{1}
 这个app的Manifest文件也很普通。需要留意的一个地方是，要注册Location的侦听器(Listener)，必先获取相应的权限。GPS和网络是最常用的Location信息源，不过Android也预留了其它信息源的扩展接口——未来也可能有更好更精确的信息源出现。为此，Android将位置信息的权限分成了两级：精确位置(Fine Location)和近似位置(Coarse Location)。
 
 **Example 13.5. AndroidManifest.xml**
-
 {CODE}
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -1174,7 +1173,7 @@ public class UpdaterService extends IntentService {
 
 % + Finally, we tell the Notification manager to post this notification. In this case, we do not need the ID, so we specify zero. An ID can be used to refer to a notification later, usually in order to cancel it.
 
-+ 指向NotificationManager的局部引用，也就通过它来访问Notification系统服务。
++ 指向NotificationManager的私有类成员，也就通过它来访问Notification系统服务。
 + 创建一个Notification对象供类成员访问，每得到新消息需要发送通知时就更新它。
 + 调用``getSystemService()``获取Notification服务。
 + 创建Notification对象，在稍后使用。在这里先给它指明一个图标，至于通知的文本和timestamp则暂时留空。
@@ -1183,7 +1182,7 @@ public class UpdaterService extends IntentService {
 + 更新Notification对象的相关信息。这里是最新消息的timestamp。
 + 要求NotificationManager在用户点击时关闭这项通知，届时通知栏将不再显示这项通知。
 + 为Notification对象提供标题(title)与简介(summary)，都是取自``string.xml``中的字符串。留意``R.string.msgNotificationMessage``里面留了一个参数，表示新消息的数目，因此我们可以使用``String.format()``。
-+ 最后，要求NotificationManager发送这条通知。在这里，我们不需要通知的ID，因此留0。ID可以用来作为引用Notification对象的标志符，通常用来关闭一个通知。
++ 最后，要求NotificationManager发送这条通知。在这里，我们不需要通知的ID，因此留0。ID是引用Notification对象的标识符，通常用来关闭一个通知。
 
 
 % ==Summary==
