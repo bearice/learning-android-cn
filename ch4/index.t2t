@@ -72,7 +72,7 @@
 	Figure 4.1. Activity生命周期
 		[images/04-ActivityLifecycle.png]
 
-{ORGI}Programming for Android is conceptually different than programming for some other environments. In Android, you find yourself more responding to certain changes in the state of your application rather than driving that change yourself. It is a managed, container-based environment similar to programming for Java applets or servlets. So, when it comes to activity lifecycle, you don’t get to say what state the activity is in but you have plenty of opportunity to say what happens on transitions from state to state.
+{ORGI}Programming for Android is conceptually different than programming for some other environments. In Android, you find yourself more responding to certain changes in the state of your application rather than driving that change yourself. It is a managed, container-based environment similar to programming for Java applets or servlets. So, when it comes to activity lifecycle, you don’t get to say what state the activity is in but you have plenty of opportunity to say what happens on transitions from state to state. [增加 Figure 4.1, “Activity life cycle” shows the states that an activity can go through.]
 {TRAN}Android的编程环境有些独特的地方，那就是在Android开发中，你会发现自己更多是对程序状态的迁移做出响应，而很少需要主动控制它的状态。在托管的环境中添加自己的业务逻辑，这点倒是与Java的applet与servlet有些相似。因此谈及Activity的生命周期，我们很少关心它的当前状态，而对它的状态迁移更感兴趣。
 
 
@@ -146,7 +146,7 @@
 {ORGI}When you have competing applications, the system will ask you which one you’d like to use to complete a given action. You can also set an app as the default one. This mechanism works very similarly to your desktop environment, when you downloaded Firefox or Chrome to replace your default Internet Explorer or Safari web browsers.
 {TRAN}当多个应用程序对同一个Intent发生争抢的时候，系统会询问用户来决定选择哪个程序。用户也可以针对某Intent设置一个默认程序，就像你在桌面系统中安装了Firefox或者Chrome，即可选择把它设置为默认浏览器，从而替换掉原先的Internet Explorer或者Safari一样。
 
-{ORGI}What this type of messaging allows for is to allow the user to replace any app on the system with a custom one. For example, you may want to download a different SMS application, or another browser to replace your existing ones.
+{ORGI}What this type of messaging allows for is to allow the user to replace any app on the system with a custom one. For example, you may want to download a different SMS application, or another browser to replace your existing ones. [增加 Figure 4.2, “Intents” shows how intents may be used to “jump” between various activities, in the same application or in another app altogether.]
 {TRAN}这样的消息机制允许用户自定义系统中的任何响应程序。比如你想换一个短信程序或者浏览器，只要把它们设成默认即可。
 
 == Services ==
@@ -165,7 +165,7 @@
 	图 4.3. Service 的生命周期
 		[images/05-ServiceLifeCycle.png]
 
-{ORGI}Services have a much simpler lifecycle than activities. You start a service, or stop it. Also, the service lifecycle is more or less controlled by the developer, and not so much by the system. So, we as developers have to be mindful to run our services so that they don’t unnecessarily consume shared resources, such as CPU and battery.
+{ORGI}Services have a much simpler lifecycle than activities [增加 (see Figure 4.3, “Service life cycle”). ]. You start a service, or stop it. Also, the service lifecycle is more or less controlled by the developer, and not so much by the system. So, we as developers have to be mindful to run our services so that they don’t unnecessarily consume shared resources, such as CPU and battery.
 
 {TRAN} Service的生命周期要比Activity简单不少，要么启动，要么停止。同时，Service的生命周期受开发者影响较多，而受系统控制相对较少。因此身为开发者，我们需要小心对待Service，避免它无谓地浪费资源，比如CPU和电池。
 
@@ -183,11 +183,11 @@
 		[images/04-ContentProvider.png]
 
 
-{ORGI}Content Providers are interfaces for sharing data between applications. Android by default runs each application in its own sandbox so that all data that belongs to an application is totally isolated from other applications on the system. While small amounts of data can be passed between applications via Intents, Content Providers are much better suited for sharing persistent data between possibly large datasets. As such, Content Provider API nicely adheres to CRUD principle.
+{ORGI}Content Providers are interfaces for sharing data between applications. Android by default runs each application in its own sandbox so that all data that belongs to an application is totally isolated from other applications on the system. While small amounts of data can be passed between applications via Intents, Content Providers are much better suited for sharing persistent data between possibly large datasets. As such, Content Provider API nicely adheres to CRUD principle. [增加 Figure 4.4, “Content provider” illustrates how the content provider’s CRUD interface pierces the application boundaries and allows other apps to connect to it to share data.]
 
 {TRAN}Content Provider是应用程序之间共享数据的接口。Android默认使每个应用程序都运行在沙盒(sandbox)里面，自己的数据与外面的程序完全隔离，要传递数据则必须依赖一些特定的接口。少量数据通过Intent传递即可，大量的数据就需要Content Provider了。为此，Content Provider提供了一套很好的按照[CRUD原则 http://en.wikipedia.org/wiki/Create,_read,_update_and_delete]设计的接口。
 
-{ORGI}Android system uses this mechanism all the time. For example, Contacts Provider is a content provider that exposes all users contacts data to various applications. Settings Provider exposes system settings to various applications including the built-in Settings application. Media Store is responsible for storing and sharing all various media, such as photos, and music across various applications.
+{ORGI}Android system uses this mechanism all the time. For example, Contacts Provider is a content provider that exposes all users contacts data to various applications. Settings Provider exposes system settings to various applications including the built-in Settings application. Media Store is responsible for storing and sharing all various media, such as photos, and music across various applications. [增加 Figure 4.5, “Contacts application using Contacts Provider to get the data” illustrates how the Contacts app uses Contacts Provider, a totally separate application, to retrieve data about users’ contacts. The Contacts app itself doesn’t have any contacts data, and Contacts Provider doesn’t have any user interface.]
 {TRAN}Android将这种机制应用到了方方面面。比如Contact Provider专为不同的应用程序提供联系人数据，Setting Provider专为不同的应用程序提供系统的配置信息，Media Store为不同的应用程序提供多媒体信息(比如图片、音乐)的存储与分享，等等。
 
 {ORGI}This separation of data storage and the actual user interface application offers greater flexibility to mash up various parts of the system. For example, a user could install an alternative Address Book application that uses the same data as the default Contacts app. Or, install widgets on the Home Screen that allow for easy changes in the System Settings, such as turning on or off the Wifi, Bluetooth or GPS features. Many phone manufactures take advantage of Content Providers to add their own applications on top of standard Android to improve overall user experience, such as HTC Sense.
