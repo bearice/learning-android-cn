@@ -113,7 +113,7 @@ LinearLayout的一个重要属性是layout_orientation。可用的选项有Verti
 {TIP}
 % 	While Linear Layout is probably the simplest and most commonly used layout, it is not always the best choice. A good rule of thumb is that if you start to nest multiple Linear Layouts, you should probably be using another layout, such as Relative Layout. Too many nested layouts can have big consequences on the time to inflate the UI and overall CPU and battery consumption.
 
-虽说LinearLayout可能是最简单也最常用的Layout，但它并不总是最好的选择。一条经验是，一旦你想嵌套多个LinearLayout，那就换用别的Layout吧，比如RelativeLayout之类。Layout如果嵌套的太深，可能会浪费较多的CPU时间，电池的续航也会因此而受到影响。
+LinearLayout可能是最简单也最常用的Layout，但它并不总是最好的选择。一条经验是，一旦你想嵌套多个LinearLayout，那就换用别的Layout吧，比如RelativeLayout之类。Layout如果嵌套的太深，会浪费较多的CPU时间，电池的续航也会因此而受到影响。
 
 %NOTE: “a good rule of thumb”是个俚语， "经验之谈."的意思
 

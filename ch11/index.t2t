@@ -7,7 +7,7 @@
 
 % In this chapter, you will learn what Broadcast receivers are and when to use them. We’ll create couple of different receivers illustrating different usage scenarios. First, you’ll create a broadcast receiver that will start up your update service at boot time, so that users always have their latest friends' timelines the first time they check for them (assuming their preferences are set). Next, you will create a receiver that will update the timeline when it changes while the user is viewing it. This will illustrate the programmatic registration of receivers and get you introduced to broadcasting intents. We’ll implement a receiver that is trigged by changes in network availability. And finally, we’ll learn how to surround our app with some security by defining permissions.
 
-本章介绍Broadcast Receiver的相关知识，以及它在不同场景中的不同应用。在这里，我们将创建几个Broadcast Receiver作为实例，分别用以实现在开机时启动UpdaterService、即时更新Timeline、响应网络连接状态的变化。此外，我们还需要将它们注册到应用程序，也需要对广播的Intent有所理解。最后，我们将明确地为应用程序赋予相关的权限，以保证安全。
+本章介绍Broadcast Receiver的相关知识，以及它在不同场景中的不同应用。在这里，我们将创建几个Broadcast Receiver作为实例，分别用以实现在开机时启动UpdaterService、即时更新Timeline、响应网络连接状态的变化。此外，我们还需要将它们注册到应用程序，也需要对广播的Intent有所理解。最后，我们将明确地定义应用程序的相关权限，以保证安全。
 
 % By the end of this chapter, your app has most of the functionality that a user would need. The app can send status updates, get friends' timelines, update itself, and start automatically. It works even when the user is not connected to the network (although of course it cannot send or receive new messages).
 
@@ -33,7 +33,7 @@ Broadcast Receiver是Android中发布/订阅机制(又称为Observer模式)的�
 
 % It would be much cleaner and simpler if somehow UpdaterService was started automatically by the system when the device is powered up. To do this, we create BootReceiver, a broadcast receiver that will get launched by the system when the boot is complete, and in turn will launch our TimelineActivity activity. The following few lines sets up our broadcast receiver.
 
-如果UpdaterService能够随着系统启动而启动，那就可以省去用户的手工操作了。为此，我们将新建一个Broadcast Receiver用以响应系统启动的事件，也就是``BootReceiver``，并由它负责启动UpdaterService。
+如果能让UpdaterService随着系统启动而自动启动，那就可以省去用户的手工操作了。为此，我们将新建一个Broadcast Receiver用以响应系统启动的事件，即``BootReceiver``，并由它负责启动UpdaterService。
 
 % TALK: 怀疑是原文错误： and in turn will launch our TimelineActivity activity. 根据下面的代码看应该是 UpdaterService
 % TALK: 支持楼上。
@@ -95,7 +95,7 @@ public class BootReceiver extends BroadcastReceiver { // #{1}
 
 % In order to get notifications for this particular intent filter, we must also specify that we’re using a specific permission required by it, in this case android.permission.RECEIVE_BOOT_COMPLETED.
 
-针对某特定事件，在声明了它的intent-filter之后，还需要赋予应用程序以相应的权限。在这里就是``android.permission.RECEIVE_BOOT_COMPLETED``。
+针对某特定事件，在声明了它的intent-filter之后，还需要赋予应用程序以相应的权限。在这里那就是``android.permission.RECEIVE_BOOT_COMPLETED``。
 
 **Example 11.3. AndroidManifest.xml: 在<manifest>标签之下**
 {CODE}
@@ -117,7 +117,7 @@ public class BootReceiver extends BroadcastReceiver { // #{1}
 
 % At this point, you can reboot your device. Once it comes back up, your UpdaterService should be up and running. You can verify that either by looking at the LogCat for our output, or by using System Settings and checking that the service is running.
 
-接下来重启设备。重启之后若一切正常，UpdaterService就应该处于运行状态了。你可以通过LogCat的输出来验证它是否启动成功，也可以通过System Settings查看它是否存在于当前正在运行的Service列表。
+接下来重启设备。重启之后若一切正常，UpdaterService就应该处于运行状态了。你可以通过LogCat的输出来检查它是否启动成功，也可以通过System Settings查看它是否存在于当前正在运行的Service列表。
 
 % To verify via System Settings, at the Home screen, click on th Menu button and choose Settings→Applications→Running Services. You should see UpdaterService listed there. At this point, you know the BootReceiver did indeed get the broadcast and has started the UpdaterService.
 
@@ -129,7 +129,7 @@ public class BootReceiver extends BroadcastReceiver { // #{1}
 
 % Currently, if you view your Timeline activity while a new status update comes in, you wouldn’t know about it. That’s because the UpdaterService doesn’t have a way to notify TimelineActivity to refresh itself.
 
-目前，UpdaterService可以定期抓取最新的消息数据，但它无法通知``TimelineActivity``。因此Timeline界面仍不能做到及时更新。
+目前，UpdaterService可以定期抓取最新的消息数据，但它无法通知``TimelineActivity``。因此Timeline界面仍不能做到即时更新。
 
 % To address this, we create another broadcast receiver, this time as an inner class of TimelineActivity.
 
@@ -163,7 +163,7 @@ class TimelineReceiver extends BroadcastReceiver { // #{1}
 
 % At this point, our receiver is ready but not registered. Unlike BootReceiver, where we registered our receiver with the system statically, via the manifest file, we’ll register TimelineReceiver programmatically. This is because TimelineReceiver makes sense only within TimelineActivity as it’s purpose is to refreshing the list when the user is looking at Timeline Activity.
 
-要让Receiver正常工作，我们还需要将它注册。不过这里不像刚才的``BootReceiver``那样在Manifest文件中添加声明就好，我们需要动态地注册TimelineReceiver。因为``TimelineReceiver``仅在用户查看Timeline界面时才有意义，将它静态地注册到Manifest文件的话，会导致无谓地浪费资源。
+要让Receiver正常工作，我们还需要将它注册。不过这里不像刚才的``BootReceiver``那样在Manifest文件中添加声明就好，我们需要动态地注册TimelineReceiver。因为``TimelineReceiver``仅在用户查看Timeline界面时才有意义，将它静态地注册到Manifest文件的话，会无谓地浪费资源。
 
 %TALK: 上面翻译中加了一句。类似的情景可以在"系统服务"一章中见到，在Activity休眠时没必要注册系统服务，不然会浪费资源。
 
@@ -218,7 +218,7 @@ filter = new IntentFilter("com.marakana.yamba.NEW_STATUS"); // #{1}
 
 % + Create a new instance of IntentFilter to filter for the com.marakana.yamba.NEW_STATUS intent action. Since this is a text constant, we’ll define it as such and refer to it as a constant later on. A good place to define it is the UpdaterService, because that’s the code that generates the events we’re waiting for.
 
-+ 创建IntentFilter的实例，以``com.marakana.yamba.NEW_STATUS``作为构造函数的参数，表示一条Action事件。在这里使用了一个字符串，以后可以将它定义成常量，方便在其它地方使用。
++ 创建IntentFilter的实例，以``"com.marakana.yamba.NEW_STATUS"``作为构造函数的参数，表示一条Action事件。在这里使用了一个字符串，以后可以将它定义成常量，方便在其它地方使用。
 
 
 % == Broadcasting Intents ==
@@ -389,9 +389,9 @@ public class NetworkReceiver extends BroadcastReceiver { // #{1}
 **Example 11.10. AndroidManifest.xml: 在<manifest>标签之下**
 {CODE}
 ...
-<uses-permission android:name="android.permission.INTERNET" /> <!-- 1 -->
-<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- 2 -->
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 3 -->
+<uses-permission android:name="android.permission.INTERNET" /> <!-- #{1} -->
+<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- #{2} -->
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- #{3} -->
 ...
 {/CODE}
 
@@ -406,84 +406,86 @@ public class NetworkReceiver extends BroadcastReceiver { // #{1}
 
 
 % == Adding Custom Permissions to Send and Receive Broadcasts ==
-== 为广播消息添加自定义权限 ==
+== 添加自定义权限 ==
 
 % As discussed in the section called “Updating Manifest File for Internet Permission”, an application must be granted permissions to access certain restricted features of the system, such as connecting to Internet, sending SMS messages, making phone calls, reading the user’s contacts, taking photos, and so on. It is user who has to grant all or none of the permissions to the application at installation time, and it is the job of the application developer to list all the permissions the app needs to successfully run by adding the <uses-permission> element to the manifest file. So far, we’ve added permissions to Yamba in order to access the Internet, kick off our boot-time service, and learn about network changes.
-在前文中我们曾经讨论过，应用要访问某项系统功能必须显示的获取相应的权限，比如连接网络、发送短信、打电话、读取电话本、拍照等等。在安装软件时需要用户允许应用声明的全部权限，这些声明对应 manifest 文件中的 <uses-permission> 元素。目前我们为 Yamba 声明了网络权限、自动启动权限和监视网络条件的权限。
+
+前面我们曾讨论过，应用程序若要访问系统的某项功能(比如连接网络、发短信、打电话、读取通讯录、拍照等等)，那就必须获取相应的权限。比如Yamba，就需要连接网络、监视系统启动、监视网络连接情况这三项权限。它们都在Manifest文件中<user-permission>部分给出了声明，至于能否得到这些权限，则由用户在安装时决定。
 
 % But now that we have our Updater service sending a broadcast action to our Timeline receiver, we may want to restrict permission to send and receive that broadcast to our own app. Otherwise, it would be possible for another app, knowing what our action looks like, to send it and cause actions in our application that we didn’t intent.
-但是程序中的 UpdaterService 使用广播来通知 TimelineActivity，我们希望限制其他程序发生或者接受这样的广播。否则只要知道了相应的 action 名称，其他程序就能发生或者接受我们的广播，这可能会带来意料外的问题。
+
+现在UpdaterService可以广播Intent，但我们不一定希望所有程序都可以收发这条广播。不然，其它程序只要知道Action事件的名字，即可伪造我们的广播，更可以随意监听我们程序的动态，从而导致一些不可预料的问题。
 
 % To fill up this security hole, we define our own permission and ask the user to grant it to the Yamba application. Next, we’ll enforce both sending and receiving of the permissions.
-为了弥补这个安全漏洞，我们需要为 Yamba 定义需要用户许可的权限。然后为广播的发送和接受应用权限限制。
 
+为此，我们需要为 Yamba 定义自己的权限，对发布者与订阅者双方都做些限制，以修补这项安全漏洞。
 
 % === Declaring Permissions in the Manifest File ===
 === 在 Manifest 文件中定义权限 ===
 
 % The first step is to declare our permissions, explaining what they are, how they are to be used, and what protection level they are at.
-首先需要定义我们的权限，解释它们是什么、怎么使用、处于什么保护级别。
 
-**Example 11.11. Adding Permissions to Manifest File**
+首先是给出权限的定义。解释它们是什么、如何使用、处于何种保护级别。
+
+**Example 11.11. 在Manifest文件中定义权限**
 {CODE}
 <manifest>
 
   ...
 
-  <permission android:name="com.marakana.yamba.SEND_TIMELINE_NOTIFICATIONS" <!-- 1 -->
-    android:label="@string/send_timeline_notifications_permission_label" <!-- 2 -->
-    android:description="@string/send_timeline_notifications_permission_description" <!-- 3 -->
-    android:permissionGroup="android.permission-group.PERSONAL_INFO" <!-- 4 -->
-    android:protectionLevel="normal" /> <!-- 5 -->
+  <permission android:name="com.marakana.yamba.SEND_TIMELINE_NOTIFICATIONS" <!-- #{1} -->
+    android:label="@string/send_timeline_notifications_permission_label" <!-- #{2} -->
+    android:description="@string/send_timeline_notifications_permission_description" <!-- #{3} -->
+    android:permissionGroup="android.permission-group.PERSONAL_INFO" <!-- #{4} -->
+    android:protectionLevel="normal" /> <!-- #{5} -->
 
-  <!-- 6 -->
+  <!-- #{6} -->
   <permission android:name="com.marakana.yamba.RECEIVE_TIMELINE_NOTIFICATIONS"
     android:label="@string/receive_timeline_notifications_permission_label"
     android:description="@string/receive_timeline_notifications_permission_description"
     android:permissionGroup="android.permission-group.PERSONAL_INFO"
     android:protectionLevel="normal" />
 
-  <!-- 7 -->
+  <!-- #{7} -->
   <uses-permission android:name="com.marakana.yamba.SEND_TIMELINE_NOTIFICATIONS" />
   <uses-permission android:name="com.marakana.yamba.RECEIVE_TIMELINE_NOTIFICATIONS" />
 
 </manifest>
 {/CODE}
 
-
-
 % + This is the name of our permission, the handle we are going to use later to refer to it both when we request it and when we enforce it. In our app, we’ll be using the permission to securely send timeline notifications.
-+ 权限的名称，在后面使用这个名词来引用相应的权限。
 % + Label that will be displayed to the user when she is prompted to grant this permission to our app at the installation time. It should be relatively short. Note that we have defined this label in our strings.xml resource file.
-+ 当需要用户授权时显示的标签。这个标签应该比较短。我们在string.xml里定义了相应的资源。
 % + A description should be provided to offer information about why this permission is needed and how it’s going to be used.
-+ 描述权限的内容和使用目的。
 % + The permission group is optional, but helps the system to group your permission with other common permissions in one of the system-defined permission groups. You could also define your own group, but that is rarely done.
-+ 权限组是可选的，但是能够帮助系统吧它和其他权限分组。 你也可以自己定义新的分组，不过很少需要这么做。
 % + The permission level is a required value specifying the severity or risk posed by granting the permission. A level of ‘normal’ is the lowest and most basic of the four standard permission levels.
-+ 权限的保护等级定义了授权后可能面临的分析程度。 normal 是标准的四个等级中最低的等级
 % + We do the same to define the other permission, which allows us to receive the timeline notifications we are generating.
-+ 其他的权限定义和上面的类似，这个权限运行接收 Yamba 生成的时间线广播。
 % + Once we have our permissions defined, we need to ask the user to grant them to the application. We do that via the <uses-permission> element, just as we did it for the other system permissions we specified earlier.
-+ 我们定义过这些权限后，需要为程序申请这些权限。和系统权限一样使用  <uses-permission> 来定义。
 
++ 权限的名字，作为引用权限的标识符。在这里，我们通过它来保护Timeline更新事件的广播。
++ 权限的标签(Label)。它会在安装应用程序的授权步骤显示给用户，作为一个人类可读的权限名称，其内容应尽量做到言简意赅。留意，我们将它的值定义在了``string.xml``文件中。
++ 关于这项权限的描述，用以简介权限的含义与作用。
++ 权限组。此项可选，但很有用。通过它，可以将我们的权限归类到系统定义的权限组。也可以定义自己的权限组，但不常见。
++ 权限的安全等级，表示这项权限的危险程度，等级越高越危险。其中``'normal'``表示最低的安全等级。
++ 定义另一项权限，用于保护Timeline更新事件的接收。步骤与上相同。
++ 给出了这些定义之后，我们仍需为应用程序申请这些权限。这里就同申请系统权限一样了，通过<uses-permissions>标签。
 
 % At this point, we have defined our two custom permissions and have requested them for our application. Next, we need to make sure the sender and receiver both play by the rules.
-现在已经定义好了两个自定义权限并且为自己申请了授权。接下来需要保证广播的接受和发送都能符合相应的权限。
+
+到这里，我们添加了两项自定义的权限，也为应用程序申请了对这两项权限。接下来，我们需要保证广播的发布者与订阅者分别能够符合自己的权限。
 
 % === Updating the Services to Enforce Permissions ===
-=== 为服务应用自定义权限 ===
+=== 为UpdaterService应用权限机制 ===
 
 % It is our Updater service that broadcasts the intent to the rest of the system once there’s a new status update. Now, since we do not want everyone to receive this intent, we want to ensure that the receiver won’t be allowed to receive it unless the receiver defines the right permission.
-当新数据到达时，UpdaterService 负责向系统中广播 intent 。现在我们不想让别人接收这个广播，所以需要确保接收者拥有正确的权限。
 
+UpdaterService会在每次收到新数据时广播一条Intent，但我们不希望任何人都可以收到这条Intent，因此限制只有拥有授权的Receiver才可以收到这条Intent。
 
-**Example 11.12. Updater in UpdaterService**
+**Example 11.12. UpdaterService中的内部类Updater**
 {CODE}
   ...
   private class Updater extends Thread {
     static final String RECEIVE_TIMELINE_NOTIFICATIONS =
-        "com.marakana.yamba.RECEIVE_TIMELINE_NOTIFICATIONS"; //1
+        "com.marakana.yamba.RECEIVE_TIMELINE_NOTIFICATIONS"; // #{1}
     Intent intent;
 
     public Updater() {
@@ -503,7 +505,7 @@ public class NetworkReceiver extends BroadcastReceiver { // #{1}
             Log.d(TAG, "We have a new status");
             intent = new Intent(NEW_STATUS_INTENT);
             intent.putExtra(NEW_STATUS_EXTRA_COUNT, newUpdates);
-            updaterService.sendBroadcast(intent, RECEIVE_TIMELINE_NOTIFICATIONS); //2
+            updaterService.sendBroadcast(intent, RECEIVE_TIMELINE_NOTIFICATIONS); // #{2}
           }
           Thread.sleep(DELAY);
         } catch (InterruptedException e) {
@@ -518,28 +520,30 @@ public class NetworkReceiver extends BroadcastReceiver { // #{1}
 
 
 % + This is the name of the permission that we are requiring the receiver to have. It needs to be the same as the permission name in the manifest file that we specified previously.
-+ 我们要求接收者拥有的权限的名称。这个名称和 manifest 中定义的需要一样。
 % + To enforce the permission on the receiver, we simply add it to the sendBroadcast() call as the optional second parameter. If the receiver doesn’t have this particular permission granted to it by the user, the receiver won’t be notified and will never know that our message just got dropped.
-+ 要保证接收者拥有特定的权限，只需要在 sendBroadcast() 调用中添加第二个可选的参数即可。如果接收器没有相应的权限，那么将不会接受到该广播。
+
++ 要求Receiver拥有的权限的名字。它必须要与Manifest文件中的定义保持一致。
++ 将权限的名字作为``sendBroadcast()``调用的第二个参数。如果Receiver没有相应的权限，就不会收到这条广播。
 
 
 % To complete the security in the sending direction, we don’t have to do anything to TimelineReceiver. It will be able to receive the permission because the user granted it. But there is a corresponding responsibility on the TimelineReceiver side. It should check that the sender had permission to send the message it is receiving.
+
 要保证发送端的安全，我们不需要对 TimelineReceiver 做任何改动。因为用户已经赋予相应的权限，所以能够正确的获取通知。 但是对于接收端，同样应该确保发送者是我们认可的。
 
 
 % === Update Timeline Receiver to Enforce Permissions ===
-=== 为接收端应用权限 ===
+=== 为Receiver应用权限机制 ===
 
 % Now we will check on the receiver side that the broadcaster is allowed to talk to us. To do this, we add the broadcast permission that the sender should have to our receiver when we register it.
-现在我们需要在接收端检查消息是否是我们许可的代码发送的。要实现此功能，需要在注册接收器时添加权限。
 
+我们还需要检查Receiver得到的广播是否合法。为此，在注册Receiver时为它添加上相关的权限信息。
 
 **Example 11.13. TimelineReceiver in TimelineActivity.java**
 {CODE}
 ...
 public class TimelineActivity extends BaseActivity {
   static final String SEND_TIMELINE_NOTIFICATIONS =
-      "com.marakana.yamba.SEND_TIMELINE_NOTIFICATIONS"; //1
+      "com.marakana.yamba.SEND_TIMELINE_NOTIFICATIONS"; // #{1}
   ...
   @Override
   protected void onResume() {
@@ -547,7 +551,7 @@ public class TimelineActivity extends BaseActivity {
     ...
     // Register the receiver
     super.registerReceiver(receiver, filter,
-        SEND_TIMELINE_NOTIFICATIONS, null); //2
+        SEND_TIMELINE_NOTIFICATIONS, null); // #{2}
   }
   ...
 }
@@ -555,24 +559,28 @@ public class TimelineActivity extends BaseActivity {
 
 
 % + We define the permission name as a constant. This needs to be the same name as we declared for this permission in the manifest file.
-+ 我们将权限名称定义为一个常量。值和manifest文件中定义的一样。
 % + In the onResume() method where we register our TimelineReceiver, we now add a parameter specifying this permission as a requirement placed on anyone who wants to send us this type of broadcast.
-+ 在 onResume() 中注册 TimelineReceiver 时，定义发送者应该具有的权限。
+
++ 将权限名字定义为一个常量。它的值必须与Manifest文件中的定义保持一致。
++ 在``onResume()``中注册``TimelineReceiver``时，添加它所需的权限信息。限制只对拥有这项权限的发送者进行响应。
 
 
 % We now have a pair of custom permissions and we are enforcing them in both the sender and the receiver of the broadcast. This illustrates some of the capabilities of Android to fine-tune the permission system.
-现在我们在两端都添加了权限限制。这个过程也是对 Android 的权限系统的一个粗略介绍。
+
+现在，我们已为双方应用了权限机制。读者可以在这个过程中体会Android权限机制的精妙之处。
 
 % == Summary ==
 == 小结 ==
 
 % Yamba is now complete and ready for prime time. Our application can now send status updates to our online service, get the latest statuses from our friends, get started automatically on boot time, and be refreshed live when a new status is received.
-到目前为止， Yamba 已经接近于完成了。我们已经可以将消息发送到服务器，也能够从服务器上获取朋友们的消息，并且在系统启动时自动启动，还能在有新消息到达时自动刷新显示。
+
+到这里，Yamba已经接近完工，它已经可以发送消息、阅读Timeline、自动启动，以及即时更新Timeline的显示。
 
 % __Figure 11.1, “Yamba Completion”__ illustrates what we have done so far as part of the design outlined in __Figure 5.4, “Yamba Design Diagram”__.
-__Figure 11.1, "Yamba Completion"__ 展示了我们目前已完成的部分。完整图参见 __Figure 5.4, Yamba Design Diagram__
 
-	**Figure 11.1. Yamba Completion**
+//图 11.1// 展示了我们目前已完成的部分。完整图参见 //图 5.4//。
+
+	**Figure 11.1. Yamba完成图**
 		[images/11-YambaCompletion.png]
 
 
