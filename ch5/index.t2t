@@ -27,7 +27,7 @@
 {TRAN}我为这本书选择了一个类Twitter的应用程序作为实例，它的名字是Yamba，即 //Yet Another Micro Blogging App//。 使用Yamba，你可以连接到twitter之类的微博服务以跟踪朋友的消息，也可以更新自己的消息。
 
 {ORGI}Yamba covers most of the main Android building blocks in a natural way. As such, it’s a great sample application to illustrate how various components work individually as well as fit together. Services such as Twitter are more or less familiar to most people, so the features of the application do not require much explaining.
-{TRAN}Yamba作为一个实例，它应用了Android的所有构件(Building Blocks)，完整又不失简单。我们可以留意下它是如何将各个独立工作的部分合而为一的。至于Twitter这样的微博服务大家肯定不会陌生，因此有关程序的功能也就不多做解释了。
+{TRAN}Yamba作为一个实例，它应用了Android的所有构件(Building Blocks)，全面而不失简洁。我们可以留意下它是如何将各个独立工作的部分合而为一的。至于Twitter这样的微博服务大家肯定不会陌生，因此有关程序的功能也就不多做解释了。
 
 [增加 Figures 5.1 through 5.3 show what a finished product could look like.]
 
@@ -55,7 +55,7 @@
 {TRAN}== 设计原则 ==
 
 {ORGI}We’re going to adopt a certain design philosophy in tackling this project. This philosophy will help guide us in our development and serve as a north star when in doubt about what to do next. It should also help eliminate some confusion in the process we’re following.
-{TRAN}我们需要引入一个设计原则，作为指导项目行进的指南针，并贯彻项目的始终。在遇到问题时，它也可以给予我们一定的帮助。
+{TRAN}我们需要引入一个设计原则，作为指导项目行进的指南针，并贯彻于项目的始终。在遇到问题时，它也可以给予我们一定的帮助。
 
 {ORGI}**Small Increments**
 {TRAN}**渐进式开发**
@@ -143,7 +143,7 @@
 {TRAN}=== 文件系统 ===
 
 {ORGI}Finally, we’ll learn about the file system on a typical Android device. You will get a deeper understanding how the operating system is put together. You will also learn more about Android security.
-{TRAN}最后我们将学习典型 Android 设备上的文件系统。阅读本章，你将对操作系统的架构以及Android的安全机制有更深一层的理解。
+{TRAN}最后我们将学习典型 Android 设备上的文件系统。阅读本章之后，你将对操作系统的架构以及Android的安全机制有更深一层的理解。
 
 {ORGI}== Part 3: Android Services ==
 {TRAN}== 第三部分: Android Service ==
@@ -187,7 +187,7 @@
 {TRAN}== 第五部分: List与Adapter ==
 
 {ORGI}It may sound like we’re back in UI-mode, but Lists and Adapters are more organizational aids that user interface elements in Android. They form a very powerful components that allows our tiny UI to connect to potentially very large datasets in an efficient and scalable manner. In other words, users will be able to use Yamba in the real world without any performance hits in the long run.
-{TRAN}听名字像是回头复习UI了，但List与Adapter与众不同。作为控件，它们允许我们将大量的数据集与小屏幕上的显示绑定在一起，而不失高效与伸缩性。从用户的角度来看，得到的好处就是Yamba不会因为运行时间的增长而变慢。
+{TRAN}听名字像是回头复习UI了，但List与Adapter与众不同。作为控件，它们允许我们将大量的数据集与小屏幕上的显示绑定在一起，且不失高效性与伸缩性。从用户的角度来看，得到的好处就是Yamba不会因为运行时间的增长而变慢。
 
 {ORGI}Currently the data is all there in the database, but we have no way to view it. In this part,[增加 covered in Chapter 10, Lists and Adapters, ] the Yamba application will get the much-needed Timeline Activity and a way for the user to see what his or her friends are chatting about online.
 {TRAN}数据都已保存在了数据库中，但还没有办法显示出来。在此我们为 Yamba 设计一个显示Timeline的界面，方便用户查看朋友消息。
@@ -271,7 +271,7 @@
 {TRAN}=== Compass与Location ===
 
 {ORGI}This example will illustrate how system services work in general. You will walk away understanding some common patterns for using these services. We’ll illustrate building a compass app using sensors. Later, we’ll put this knowledge to use in order to let Yamba support the user’s location when posting status updates.
-{TRAN}本例用以演示系统服务的工作方式，足以管中窥豹。我们将利用传感器的有关特性，开发一个指南针应用，随后将类似的功能引入Yamba，为用户发送的消息附带上坐标信息。
+{TRAN}本例用以演示系统服务的工作方式。我们将利用传感器的有关特性，开发一个指南针应用，随后将类似的功能引入Yamba，为用户发送的消息附带上坐标信息。
 
 {ORGI}=== Intent Service, Alarms, Notifications ===
 {TRAN}=== Intent Service, Alarms, Notifications ===
