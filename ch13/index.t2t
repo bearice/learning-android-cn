@@ -69,7 +69,7 @@
 
 我们的指南针只关心第一个元素，也就是方位角。不同传感器的返回值的含义各有不同，对此需要查询相应的文档 http://d.android.com/reference/android/hardware/SensorManager.html。
 
-**Figure 13.1. Axis**
+**图 13.1. 坐标轴**
 
 [images/13-axis_globe_inverted.png]
 
@@ -487,7 +487,7 @@ public class WhereAmI extends Activity implements LocationListener { // #{1}
 
 到这里，WhereAmI程序就已经完工了。它演示了通过LocationManager获取位置信息，并通过Geocoder将它转换为地理地址的方法。成品图如下：
 
-**Figure 13.2. WhereAmI**
+**图 13.2. WhereAmI**
 
 [images/13-WhereAmI.png]
 

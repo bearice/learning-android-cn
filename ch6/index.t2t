@@ -417,7 +417,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class StatusActivity1 extends Activity implements OnClickListener { // {#1}
+public class StatusActivity1 extends Activity implements OnClickListener { // #{1}
   private static final String TAG = "StatusActivity";
   EditText editText;
   Button updateButton;
@@ -430,18 +430,18 @@ public class StatusActivity1 extends Activity implements OnClickListener { // {#
     setContentView(R.layout.status);
 
     // Find views
-    editText = (EditText) findViewById(R.id.editText); // {#2}
+    editText = (EditText) findViewById(R.id.editText); // #{2}
     updateButton = (Button) findViewById(R.id.buttonUpdate);
 
-    updateButton.setOnClickListener(this); // {#3}
+    updateButton.setOnClickListener(this); // #{3}
 
-    twitter = new Twitter("student", "password"); // {#4}
+    twitter = new Twitter("student", "password"); // #{4}
     twitter.setAPIRootUrl("http://yamba.marakana.com/api");
   }
 
-  // Called when button is clicked // {#5}
+  // Called when button is clicked // #{5}
   public void onClick(View v) {
-    twitter.setStatus(editText.getText().toString()); // {#6}
+    twitter.setStatus(editText.getText().toString()); // #{6}
     Log.d(TAG, "onClicked");
   }
 }
@@ -542,7 +542,7 @@ Java在classpath中搜索它所有的类。要让我们的代码可以访问这�
   </application>
   <uses-sdk android:minSdkVersion="4" />
 
-  <uses-permission android:name="android.permission.INTERNET" /><!-- {#1} -->
+  <uses-permission android:name="android.permission.INTERNET" /><!-- #{1} -->
 </manifest>
 {/CODE}
 
@@ -755,10 +755,10 @@ public class StatusActivity2 extends Activity implements OnClickListener {
   }
 
   // Asynchronously posts to twitter
-  class PostToTwitter extends AsyncTask<String, Integer, String> { // {#1}
+  class PostToTwitter extends AsyncTask<String, Integer, String> { // #{1}
     // Called to initiate the background activity
     @Override
-    protected String doInBackground(String... statuses) { // {#2}
+    protected String doInBackground(String... statuses) { // #{2}
       try {
         Twitter.Status status = twitter.updateStatus(statuses[0]);
         return status.text;
@@ -771,14 +771,14 @@ public class StatusActivity2 extends Activity implements OnClickListener {
 
     // Called when there's a status to be updated
     @Override
-    protected void onProgressUpdate(Integer... values) { // {#3}
+    protected void onProgressUpdate(Integer... values) { // #{3}
       super.onProgressUpdate(values);
       // Not used in this case
     }
 
     // Called once the background activity has completed
     @Override
-    protected void onPostExecute(String result) { // {#4}
+    protected void onPostExecute(String result) { // #{4}
       Toast.makeText(StatusActivity2.this, result, Toast.LENGTH_LONG).show();
     }
   }
@@ -786,7 +786,7 @@ public class StatusActivity2 extends Activity implements OnClickListener {
   // Called when button is clicked
   public void onClick(View v) {
     String status = editText.getText().toString();
-    new PostToTwitter().execute(status); // {#5}
+    new PostToTwitter().execute(status); // #{5}
     Log.d(TAG, "onClicked");
   }
 
@@ -847,7 +847,7 @@ Android为不同的事件(如触摸、点击等)提供了不同的侦听器。�
     android:text="@string/titleStatus" android:textSize="30sp"
     android:layout_margin="10dp" />
 
-  <!-- Text Counter TextView {#1} -->
+  <!-- Text Counter TextView #{1} -->
   <TextView android:layout_width="wrap_content"
     android:layout_height="wrap_content" android:layout_gravity="right"
     android:id="@+id/textCount" android:text="000"
@@ -897,12 +897,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class StatusActivity extends Activity implements OnClickListener,
-    TextWatcher { // {#1}
+    TextWatcher { // #{1}
   private static final String TAG = "StatusActivity";
   EditText editText;
   Button updateButton;
   Twitter twitter;
-  TextView textCount; // {#2}
+  TextView textCount; // #{2}
 
   /** Called when the activity is first created. */
   @Override
@@ -915,10 +915,10 @@ public class StatusActivity extends Activity implements OnClickListener,
     updateButton = (Button) findViewById(R.id.buttonUpdate);
     updateButton.setOnClickListener(this);
 
-    textCount = (TextView) findViewById(R.id.textCount); // {#3}
-    textCount.setText(Integer.toString(140)); // {#4}
-    textCount.setTextColor(Color.GREEN); // {#5}
-    editText.addTextChangedListener(this); // {#6}
+    textCount = (TextView) findViewById(R.id.textCount); // #{3}
+    textCount.setText(Integer.toString(140)); // #{4}
+    textCount.setTextColor(Color.GREEN); // #{5}
+    editText.addTextChangedListener(this); // #{6}
 
     twitter = new Twitter("student", "password");
     twitter.setAPIRootUrl("http://yamba.marakana.com/api");
@@ -961,10 +961,10 @@ public class StatusActivity extends Activity implements OnClickListener,
   }
 
   // TextWatcher methods
-  public void afterTextChanged(Editable statusText) { // {#7}
-    int count = 140 - statusText.length(); // {#8}
+  public void afterTextChanged(Editable statusText) { // #{7}
+    int count = 140 - statusText.length(); // #{8}
     textCount.setText(Integer.toString(count));
-    textCount.setTextColor(Color.GREEN); // {#9}
+    textCount.setTextColor(Color.GREEN); // #{9}
     if (count < 10)
       textCount.setTextColor(Color.YELLOW);
     if (count < 0)
@@ -1127,13 +1127,13 @@ Android使用标准的RGB颜色，加上可选的Alpha项，你可以使用RGB�
 <!-- Main Layout of Status Activity -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:orientation="vertical" android:layout_width="fill_parent"
-  android:layout_height="fill_parent" android:background="@drawable/background"><!-- {#1} -->
+  android:layout_height="fill_parent" android:background="@drawable/background"><!-- #{1} -->
 
   <!-- Title TextView-->
   <TextView android:layout_width="fill_parent"
     android:layout_height="wrap_content" android:gravity="center"
     android:text="@string/titleStatus" android:textSize="30sp"
-    android:layout_margin="10dp" android:textColor="@android:color/white" /><!-- {#2} -->
+    android:layout_margin="10dp" android:textColor="@android:color/white" /><!-- #{2} -->
 
   <!-- Text Counter TextView -->
   <TextView android:layout_width="wrap_content"
@@ -1145,7 +1145,7 @@ Android使用标准的RGB颜色，加上可选的Alpha项，你可以使用RGB�
   <EditText android:layout_width="fill_parent"
     android:layout_height="fill_parent" android:layout_weight="1"
     android:hint="@string/hintText" android:id="@+id/editText"
-    android:gravity="top|center_horizontal" android:background="#cfff" /><!-- {#3} -->
+    android:gravity="top|center_horizontal" android:background="#cfff" /><!-- #{3} -->
 
   <!-- Update Button -->
   <Button android:layout_width="fill_parent"

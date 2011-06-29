@@ -301,7 +301,7 @@ public class UpdaterService1 extends Service {
   private Updater updater;
   private YambaApplication yamba;
 
-  DbHelper1 dbHelper; //①
+  DbHelper1 dbHelper; //#{1}
   SQLiteDatabase db;
 
   @Override
@@ -315,7 +315,7 @@ public class UpdaterService1 extends Service {
     this.yamba = (YambaApplication) getApplication();
     this.updater = new Updater();
 
-    dbHelper = new DbHelper1(this); //②
+    dbHelper = new DbHelper1(this); //#{2}
 
     Log.d(TAG, "onCreated");
   }
@@ -362,25 +362,25 @@ public class UpdaterService1 extends Service {
         try {
           // Get the timeline from the cloud
           try {
-            timeline = yamba.getTwitter().getFriendsTimeline(); //③
+            timeline = yamba.getTwitter().getFriendsTimeline(); //#{3}
           } catch (TwitterException e) {
             Log.e(TAG, "Failed to connect to twitter service", e);
           }
 
           // Open the database for writing
-          db = dbHelper.getWritableDatabase(); //④
+          db = dbHelper.getWritableDatabase(); //#{4}
 
           // Loop over the timeline and print it out
-          ContentValues values = new ContentValues(); //⑤
-          for (Twitter.Status status : timeline) { //⑥
+          ContentValues values = new ContentValues(); //#{5}
+          for (Twitter.Status status : timeline) { //#{6}
             // Insert into database
-            values.clear(); //⑦
+            values.clear(); //#{7}
             values.put(DbHelper1.C_ID, status.id);
             values.put(DbHelper1.C_CREATED_AT, status.createdAt.getTime());
             values.put(DbHelper1.C_SOURCE, status.source);
             values.put(DbHelper1.C_TEXT, status.text);
             values.put(DbHelper1.C_USER, status.user.name);
-            db.insertOrThrow(DbHelper1.TABLE, null, values); //⑧
+            db.insertOrThrow(DbHelper1.TABLE, null, values); //#{8}
 
             Log.d(TAG, String.format("%s: %s", status.user.name, status.text));
           }

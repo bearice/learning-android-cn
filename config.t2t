@@ -23,4 +23,24 @@
 %% following line comments translations out. change to {ORGI} when releasing.
 %!preproc: '{TRAN}' ''
 %!preproc: '{ORGI}' '%'
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% numbers in comments.
+%!postproc: '#\{1\}' '<img src="images/1.png"></img>'
+%!postproc: '#\{2\}' '<img src="images/2.png"></img>'
+%!postproc: '#\{3\}' '<img src="images/3.png"></img>'
+%!postproc: '#\{4\}' '<img src="images/4.png"></img>'
+%!postproc: '#\{5\}' '<img src="images/5.png"></img>'
+%!postproc: '#\{6\}' '<img src="images/6.png"></img>'
+%!postproc: '#\{7\}' '<img src="images/7.png"></img>'
+%!postproc: '#\{8\}' '<img src="images/8.png"></img>'
+%!postproc: '#\{9\}' '<img src="images/9.png"></img>'
+%!postproc: '#\{10\}' '<img src="images/10.png"></img>'
+%!postproc: '#\{11\}' '<img src="images/11.png"></img>'
+%!postproc: '#\{12\}' '<img src="images/12.png"></img>'
+%!postproc: '#\{13\}' '<img src="images/13.png"></img>'
+%!postproc: '#\{14\}' '<img src="images/14.png"></img>'
+%!postproc: '#\{15\}' '<img src="images/15.png"></img>'
+
+
+
 

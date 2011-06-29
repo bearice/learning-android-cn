@@ -622,8 +622,8 @@ Example 12.3. res/xml/yamba_widget_info.xml
 
 % Figure 12.1, “Yamba Completion” illustrates what we have done so far as part of the design outlined in Figure 5.4, “Yamba Design Diagram”.
 
-图12.1展示了我们目前为止的完成部分。届此，图5.4中的设计我们已全部实现。
+//图12.1//展示了我们目前为止的完成部分。届此，//图5.4//中的设计我们已全部实现。
 
-		Figure 12.1. Yamba Completion
-	[images/12-Yamba-7.png]
+	**图 12.1. Yamba Completion**
+		[images/12-Yamba-7.png]
 
