@@ -129,10 +129,6 @@
 
 == Intents ==
 
-	图 4.2. Intents
-		[images/04-Intents.png]
-
-
 {ORGI}Intents are messages that are sent among major building blocks. They trigger an activity to start up, a service to start or stop, or are simply broadcasts. Intents are asynchronous, meaning the code that is sending them doesn’t have to wait for them to be completed.
 {TRAN}Intent是基本构件之间传递消息的一种机制。通过Intent可以显示一个Activity、启动或停止一个Service，也可以当作简单的广播。Intent是异步的，也就是说在发送时不需要阻塞等待它们响应完成。
 
@@ -149,6 +145,11 @@
 {ORGI}What this type of messaging allows for is to allow the user to replace any app on the system with a custom one. For example, you may want to download a different SMS application, or another browser to replace your existing ones. [增加 Figure 4.2, “Intents” shows how intents may be used to “jump” between various activities, in the same application or in another app altogether.]
 {TRAN}这样的消息机制允许用户自定义系统中的任何响应程序。比如你想换一个短信程序或者浏览器，只要把它们设成默认即可。
 
+{TRAN}下图展示了通过Intent实现"跳转"的原理。
+
+	**图 4.2 Intents**
+		[images/04-Intent.png]
+
 == Services ==
 
 {ORGI}Services run in the background and don’t have any user interface components. They can perform the same actions as Activities without any user interface. Services are useful for actions that we want to make sure performs for a while, regardless of what is on the screen. For example, you may want to have your music player play music even as you are flipping between other applications.
@@ -162,7 +163,7 @@
 
 {/NOTE}
 
-	图 4.3. Service 的生命周期
+	**图 4.3. Service 的生命周期**
 		[images/05-ServiceLifeCycle.png]
 
 {ORGI}Services have a much simpler lifecycle than activities [增加 (see Figure 4.3, “Service life cycle”). ]. You start a service, or stop it. Also, the service lifecycle is more or less controlled by the developer, and not so much by the system. So, we as developers have to be mindful to run our services so that they don’t unnecessarily consume shared resources, such as CPU and battery.
@@ -179,16 +180,18 @@
 
 == Content Providers ==
 
-	Figure 4.4. Content Provider
+	**图 4.4. Content Provider**
 		[images/04-ContentProvider.png]
-
 
 {ORGI}Content Providers are interfaces for sharing data between applications. Android by default runs each application in its own sandbox so that all data that belongs to an application is totally isolated from other applications on the system. While small amounts of data can be passed between applications via Intents, Content Providers are much better suited for sharing persistent data between possibly large datasets. As such, Content Provider API nicely adheres to CRUD principle. [增加 Figure 4.4, “Content provider” illustrates how the content provider’s CRUD interface pierces the application boundaries and allows other apps to connect to it to share data.]
 
-{TRAN}Content Provider是应用程序之间共享数据的接口。Android默认使每个应用程序都运行在沙盒(sandbox)里面，自己的数据与外面的程序完全隔离，要传递数据则必须依赖一些特定的接口。少量数据通过Intent传递即可，大量的数据就需要Content Provider了。为此，Content Provider提供了一套很好的按照[CRUD原则 http://en.wikipedia.org/wiki/Create,_read,_update_and_delete]设计的接口。
+{TRAN}Content Provider是应用程序之间共享数据的接口。Android默认使每个应用程序都运行在沙盒(sandbox)里面，自己的数据与外面的程序完全隔离，要传递数据则必须依赖一些特定的接口。少量数据通过Intent传递即可，大量的数据就需要Content Provider了。为此，Content Provider提供了一套很好的按照[CRUD原则 http://en.wikipedia.org/wiki/Create,_read,_update_and_delete]设计的接口，如//图4.4//。
 
 {ORGI}Android system uses this mechanism all the time. For example, Contacts Provider is a content provider that exposes all users contacts data to various applications. Settings Provider exposes system settings to various applications including the built-in Settings application. Media Store is responsible for storing and sharing all various media, such as photos, and music across various applications. [增加 Figure 4.5, “Contacts application using Contacts Provider to get the data” illustrates how the Contacts app uses Contacts Provider, a totally separate application, to retrieve data about users’ contacts. The Contacts app itself doesn’t have any contacts data, and Contacts Provider doesn’t have any user interface.]
 {TRAN}Android将这种机制应用到了方方面面。比如Contact Provider专为不同的应用程序提供联系人数据，Setting Provider专为不同的应用程序提供系统的配置信息，Media Store为不同的应用程序提供多媒体信息(比如图片、音乐)的存储与分享，等等。
+
+	**图4.5  Contacts Provider**
+		[images/04-Contacts-Provider.png]
 
 {ORGI}This separation of data storage and the actual user interface application offers greater flexibility to mash up various parts of the system. For example, a user could install an alternative Address Book application that uses the same data as the default Contacts app. Or, install widgets on the Home Screen that allow for easy changes in the System Settings, such as turning on or off the Wifi, Bluetooth or GPS features. Many phone manufactures take advantage of Content Providers to add their own applications on top of standard Android to improve overall user experience, such as HTC Sense.
 {TRAN}把数据的存储与用户界面分离开来，这使得系统中各个部分之间的联系更加紧密，拆换起来也更加灵活。比如用户可以安装一个新的通讯录应用替换掉原先的默认的联系人app，同时仍希望使用原先的数据；或在主屏幕上面安装一个小部件，方便做些开关WiFi/蓝牙/GPS之类的系统设置。也有许多手机制造商(比如 [HTC Sense http://en.wikipedia.org/wiki/HTC_Sense])基于Content Provider机制，通过设计一套自己的软件集来提升用户体验。
@@ -200,7 +203,7 @@
 
 == Broadcast Receivers ==
 
-	Figure 4.5. Broadcast Receiver
+	**图 4.6. Broadcast Receiver**
 		[images/04-BroadcastReceiver.png]
 
 

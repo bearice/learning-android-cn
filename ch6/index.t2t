@@ -73,9 +73,11 @@ Android提供了两种风格可供我们创建用户界面(UI)：一种是声明
 
 Android通过Layout与View机制组织UI中元素的显示。View就是屏幕上显示的所有控件——比如按钮、标签、文本框等等。而Layout用来安排View的排列，比如它可以将一组按钮或标签排成一行或者一列。
 
-[增加 If you have prior experience with Java AWT or Swing, layouts are similar to Java containers and views are similar to Java components. Views in Android are sometimes referred to as widgets.]
+% [增加 If you have prior experience with Java AWT or Swing, layouts are similar to Java containers and views are similar to Java components. Views in Android are sometimes referred to as widgets.]
 
-**Figure 6.1. Layouts and Views relationship**
+如果你有AWT或者Swing的编程经验，那就不难发现Layout对应Java的//容器(Container)//，View对应Java的//组件(Component)//，都是很相似的东西。另外，Android中的View有时也被称作//控件//。
+
+**图 6.1. Layout与View**
 	[images/06-LayoutsAndViews.png]
 
 {NOTE}
@@ -201,7 +203,7 @@ AbsoluteLayout可以为它的子元素设置一个屏幕上的绝对位置。这
 
 单击Finish。即可在Eclipse的Package Explorer里面见到一个新的项目，也就是Yamba。
 
-**Figure 6.2. New Project Dialog**
+**图 6.2. New Project对话框**
 	[images/06-NewProjectDialog.png]
 
 
@@ -237,7 +239,6 @@ Eclipse默认会在``res/layout``下创建一个``main.xml``文件。出于一�
 StatusActivity的源码大致如下：
 
 **Example 6.1. res/layout/status.xml**
-
 {CODE}
 <?xml version="1.0" encoding="utf-8"?>
 
@@ -270,7 +271,7 @@ StatusActivity的源码大致如下：
 
 以上代码由Eclipse Graphical Layout自动生成，它是作为Eclipse插件的Android Development Tools(ADT)的一部分，即编辑Android中XML文件的辅助工具。ADT可以辨认出这是在编辑用户界面的Layout，因此按照Graphical Layout模式打开status.xml，很方便就可以生成上述的代码。
 
-**Figure 6.3. Graphical Layout mode for status.xml**
+**图 6.3. status.xml的Graphical Layout**
 	[images/06-GraphicalLayout.png]
 
 % Although we discussed the basic meaning of these XML resources in a previous chapter, there are some details in the code that you should know more about, which we’ll examine in the following section.
@@ -474,9 +475,8 @@ public class StatusActivity1 extends Activity implements OnClickListener { // {#
 
 有代码中红色的x标志在，Java中的错误一般还比较容找到。只要将鼠标移向那个错误标志，Eclipse即可告诉你错误的类型、位置，以及可能的修复方法。Eclipse的这一功能堪比文字处理工具中的拼写检查，十分有用。
 
-**Figure 6.4. Tracing Java Errors**
-
-[images/06-TracingJavaErrors.png]
+	**图 6.4. 跟踪Java的错误**
+		[images/06-TracingJavaErrors.png]
 
 % === Adding jtwitter.jar Library ===
 ===添加库jtwitter.jar===
@@ -504,7 +504,7 @@ public class StatusActivity1 extends Activity implements OnClickListener { // {#
 
 Java在classpath中搜索它所有的类。要让我们的代码可以访问这个三方库，就需要将他的地址添加到classpath。右击你的项目，选择Properties打开Yamba的属性对话框。找到Java Build Path，选择Libraries页面。在这里单击Add JARs…，找到jtwitter.jar文件，加入即可。
 
-**Figure 6.5. Properties for Yamba project in Eclipse where we add the jtwitter.jar file.**
+**图 6.5. Yamba的属性**
 	[images/06-PropertiesForYamba.png]
 
 
@@ -598,14 +598,14 @@ Android系统中的日志都是输出到LogCat。它是一套标准的系统日�
 
 DDMS指Dalvik Debug Monitor Server，它可以将运行于设备上的应用程序与Eclipse这样的开发环境连接起来。
 
-**Figure 6.6. LogCat in Eclipse**
+**图 6.6. Eclipse的LogCat**
 	[images/06-logcat.png]
 
 % You can define filters for LogCat as well. Click on the little green plus button and LogCat Filter dialog will come up.[增加 (see Figure 6.7, “LogCat Filter”)] You can define a filter based on TAG, severity, or process id. This will create another window within LogCat showing you only the log entries that match your filter.
 
 可以在LogCat中设置过滤规则。单击绿色加号按钮，调出LogCat Filter对话框，然后就可以根据TAG、日志等级或进程id设置过滤规则了。过滤所得的结果显示在另一个窗口中。
 
-**Figure 6.7. LogCat Filter**
+**图 6.7. LogCat Filter**
 	[images/06-logcat-filter.png]
 
 {NOTE}
@@ -657,7 +657,7 @@ Android操作系统建基于Linux，这就获得了多线程的支持。作为�
 
 Android程序默认运行在单线程之下。单线程顺序执行所有的操作，这一操作完成之前，下一个操作绝不会执行。这一行为被称作“阻塞”(blocking)。
 
-**Figure 6.8. Single Threaded Execution**
+**图 6.8. 单线程执行**
 	[images/06-Threads-Single.png]
 
 % This single thread is also known as the UI (as in User Interface) thread since that’s the thread that processes all the user interface commands as well. The UI thread is responsible for drawing all the elements on the screen as well as processing all the user events, such as touches of the screen, clicks on the button, and so on. [增加  Figure 6.8, “Single-threaded execution” shows the execution of our code on a single UI thread.]
@@ -674,7 +674,7 @@ Android程序默认运行在单线程之下。单线程顺序执行所有的操�
 程序若长时间无响应(一般是五秒)，Android系统会自动弹出一个对话框，询问是否将该程序所在的进程杀死。这个对话框就是Application Not Responding，简称ANR。
 {/NOTE}
 
-**Figure 6.9. Application Not Responding**
+**图 6.9. Application Not Responding**
 	[images/06-ANR.png]
 
 % === Multithreaded Execution ===
@@ -684,7 +684,7 @@ Android程序默认运行在单线程之下。单线程顺序执行所有的操�
 
 与在单线程中阻塞相比，更好的做法是让程序运行在多个线程之中。有系统负责分配CPU时间，几个线程仿佛在同一时刻同时运行。这样可以避免某线程独占计算资源。
 
-**Figure 6.10. Multithreaded Execution**
+**图 6.10. 多线程执行**
 	[images/06-Threads-Multi.png]
 
 % In our example, we could put the actual network call of updating our status in the cloud in a separate thread. That way our main UI thread will not block while we’re waiting for the network and the application will appear much more responsive. We tend to talk of the main thread as running in the foreground and the additional threads as running in the background. They’re really all equal in status, alternating execution on the device’s CPU, but from the point of view of the user, the main thread is in the foreground because it deals with the UI. [增加 Figure 6.10, “Multithreaded execution” shows the execution of our code’s two threads—the main UI thread, as well as the auxiliary thread we use to perform potentially long-running network calls.]
@@ -811,7 +811,7 @@ public class StatusActivity2 extends Activity implements OnClickListener {
 到这里用户只要单击``Upate Status``按钮，Activity即可隐式地创建出一个独立的线程，在里面执行异步任务中的网络操作。到任务结束时，``AsyncTask``会弹出一个Toast显示任务的成功与否。这样可以避免应用程序长时间的阻塞，也可以避免用户见到讨厌的``Application Not Responding: Force Close or Wait``对话框。
 
 
-**Figure 6.11. StatusActivity, Part 1**
+**图 6.11. StatusActivity, 1**
 	[images/06-StatusActivity-1.png]
 
 %== Other UI Events ==
@@ -1006,7 +1006,7 @@ public class StatusActivity extends Activity implements OnClickListener,
 + 同上，我们不需要这个方法，因此留空。
 
 
-**Figure 6.12. StatusActivity, Part 1**
+**图 6.12. StatusActivity, 2**
 	[images/06-StatusActivity-2.png]
 
 
@@ -1068,7 +1068,7 @@ PNG官方的全称是``Portable Network Graphics``。它也常常被人称作``P
 
 我们想要修改的属性是background。你可以点击``…``按钮打开Reference Chooser对话框，然后选择``Drawable→background``。
 
-**Figure 6.13. Reference Chooser**
+**图 6.13. Reference Chooser**
 	[images/06-ReferenceChooser.png]
 
 % This will set the background of your top layout to @drawable/background. As you recall, this is the way that one XML resource refers to another resource. In this case, our status.xml layout is referring to the background.png drawable. Notice that we do not use extensions when referring to other file resources. Android figures out best file format automatically, in case there are files with same name but of different extension.
@@ -1077,7 +1077,7 @@ PNG官方的全称是``Portable Network Graphics``。它也常常被人称作``P
 
 设置顶层布局的``background``属性为``@drawable/background``。回想下，这正是在资源文件中引用其它资源文件的方式。放在这里，就是``status.xml``引用了drawable中的``background.png``文件。留意在引用其它文件的时候，我们不需要写扩展名。遇到名字相同但扩展名不同时，Android会自动检查出最合适的扩展名。
 
-**Figure 6.14. Eclipse Graphical Layout Editor**
+**图 6.14. Eclipse Graphical Layout Editor**
 	[images/06-LayoutWYSIWYGEditor.png]
 
 % === Updating Directly in XML Code ===
@@ -1195,7 +1195,7 @@ Android允许你提供多种资源文件。比如你可以提供不同版本的`
 
 通过这些标志符，你可以针对不同的语言、地域、屏幕尺寸与角度、设备交互模式(触摸屏、手写笔)、是否使用键盘等等情景，提供特定的资源文件。但是我们又怎么知道它们对应的命名规范呢？可以参照Eclipse的New Android XML File对话框，选择`` File→New…→Android XML File ``菜单即可。
 
-**Figure 6.15. Alternative Resources with New Android XML File Dialog**
+**图 6.15. New Android XML File 对话框**
 	[images/06-AlternativeResources.png]
 
 
@@ -1226,7 +1226,7 @@ Android SKD提供了一个非常有用的工具，那就是Hierarchy Viewer。�
 
 Hierarchy View可以用到任何Android设备、模拟器或者真机上。它能列出内存中的所有控件，展示它们之间的关系以及各自的属性，供你查看当前界面的结构。它对设备上运行的所有程序都有效，因此也是查看他人程序结构的好方法。
 
-**Figure 6.16. Hierarchy Viewer**
+**图 6.16. Hierarchy Viewer**
 	[images/06-HierarchyViewer.png]
 
 
@@ -1237,14 +1237,14 @@ Hierarchy View可以用到任何Android设备、模拟器或者真机上。它�
 
 到本章结束，你可以运行你的程序，效果如//图6.17//。它可以向twitter发布消息。测试的话，可以登录到对应的twitter账户上查看。
 
-**Figure 6.17. StatusActivity**
+**图 6.17. StatusActivity**
 	[images/06-StatusActivity-3.png]
 
 % The following [修改为 Figure 6.18, “Yamba completion”] illustrates what we have done so far as part of the design outlined in Figure 5.4, “Yamba Design Diagram”:
 
 下图展示了我们目前为止的完成部分，完整图参见//图5.4//。
 
-Figure 6.18. Yamba Completion
+**图 6.18. Yamba 完成图**
 	[images/06-Yamba-1.png]
 
 

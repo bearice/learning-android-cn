@@ -29,7 +29,7 @@
 {ORGI}Yamba covers most of the main Android building blocks in a natural way. As such, it’s a great sample application to illustrate how various components work individually as well as fit together. Services such as Twitter are more or less familiar to most people, so the features of the application do not require much explaining.
 {TRAN}Yamba作为一个实例，它应用了Android的所有构件(Building Blocks)，全面而不失简洁。我们可以留意下它是如何将各个独立工作的部分合而为一的。至于Twitter这样的微博服务大家肯定不会陌生，因此有关程序的功能也就不多做解释了。
 
-[增加 Figures 5.1 through 5.3 show what a finished product could look like.]
+% [增加 Figures 5.1 through 5.3 show what a finished product could look like.]
 
 {ORGI}Here’s what a finished product could look like:
 {TRAN}成品图大约如下：
@@ -49,7 +49,7 @@
 {TRAN}**Figure 5.3. 用户选项**
 		[images/05-PrefsActivity-final.png]
 
-[增加 Figure 5.1, “List of status messages from other people, called a timeline” shows how Yamba displays a list of status messages from your friends. Figure 5.2, “Screen where the user can enter a status message” shows the initial Yamba screen, and Figure 5.3, “User preferences” shows the user preferences.]
+% [增加 Figure 5.1, “List of status messages from other people, called a timeline” shows how Yamba displays a list of status messages from your friends. Figure 5.2, “Screen where the user can enter a status message” shows the initial Yamba screen, and Figure 5.3, “User preferences” shows the user preferences.]
 
 {ORGI}== Design Philosophy ==
 {TRAN}== 设计原则 ==
@@ -81,7 +81,7 @@
 {ORGI}If you remember from __Chapter 4, Main Building Blocks__, an Android application is a loose collection of Activities, Services, Content Providers, and Broadcast Receivers. These are the components from which we put together an application. __Figure 5.4, “Yamba Design Diagram”__ shows the design of the entire Yamba application, which incorporates most of the main Android building blocks.
 {TRAN}在[第4章 #ch4]中有提及，Android应用就是Activity、Service、Content Provider、Broadcast Receiver的松散组合。它们作为Android的基本构件(Building Block)，在开发中扮演着不可或缺的角色。 //图5.4// 给出了Yamba的设计架构，不妨留意其中基本构件与应用之间的关系。
 
-	**Figure 5.4. Yamba Design Diagram**
+	**图 5.4. Yamba Design Diagram**
 		[images/05-Yamba.png]
 
 
@@ -149,10 +149,10 @@
 {TRAN}== 第三部分: Android Service ==
 
 {ORGI}This part [增加 covered in Chapter 8, Services,] introduces background services. By the end of this section, your Yamba application will be able to periodically connect to the cloud and pull down your friends' status updates.
-{TRAN}这部分介绍Service(后台服务)的相关知识。 到本章结束，Yamba将能够定期访问服务端，即时更新朋友的消息。
+{TRAN}这部分对应第八章，介绍Service(后台服务)的相关知识。到本章结束，Yamba将能够定期访问服务端，即时更新朋友的消息。
 
 {ORGI}=== Android Services [修改为 Services] ===
-{TRAN}=== Android Service ===
+{TRAN}=== Service ===
 
 {ORGI}Android services are very useful building blocks. They allow a process to run in the background without the need for any user interface. This will be perfect for Yamba, as we’ll have an update process periodically connect to the cloud and pull the data. In this section, you will also learn about multithreading considerations as they apply to background services.
 {TRAN}Android 的 Service 是个很重要的构件。它允许进程在后台运行，而无需用户界面。 这对 Yamba 自然是再合适不过，我们可以凭借它实现定期与服务端交互。在本节，你将学到Service中多线程的使用方法。
@@ -198,14 +198,6 @@
 {ORGI}We’re going to develop this third and final activity in multiple stages. First, we’ll use existing knowledge of Android UI and put something together. It will work, sort of. Next, we’ll improve on that design. The app will look better, but it won’t be nearly as ready for the prime time since our design won’t be able to handle real-world usage. Finally, we’ll get it right by introducing Lists and Adapters to the mix. [Finally, we’ll get it right by introducing Lists and Adapters to the mix and use them to tie the data to our user interface.]
 {TRAN}接下来分步实现第三个也是最后一个界面。首先利用已知的Android UI知识组装出一个半成品，能基本工作就好；然后改进设计，它会看起来更漂亮些，但是依然不能满足现实世界的需求；最后我们引入List与Adapter，使之完善可用。
 
-[删去
-{ORGI}=== Lists and Adapters ===
-{TRAN}=== List 与 Adapter ===
-
-{ORGI}We’ll tie the data to our user interface using Lists and Adapters.
-{TRAN}我们使用List与Adapter将数据与用户界面绑定在一起。
-]
-
 {ORGI}=== More refactoring? ===
 {TRAN}=== 再重构一次？ ===
 
@@ -245,7 +237,7 @@
 {TRAN}== 第七部分: Content Provider ==
 
 {ORGI}In this part,[增加 covered in Chapter 12, Content Providers] we’ll revisit content providers and refactor our database code to use them. To demonstrate that it all works, we’ll throw in an Android App Widget.
-{TRAN}在这里，我们将再访Content Providers，重构数据库的代码来使用它们。为展示它们的工作方式，我们引入一个Android小部件。
+{TRAN}在这里，我们将再访Content Providers，重构数据库的代码来使用它们。为展示它们的工作方式，我们将引入一个Android小部件。
 
 %NOTE： demonstrate that it all works，原意为“展示它们工作良好”，在此意译。既然"可以观察它的工作方式"了，必然是“工作良好”的。
 
