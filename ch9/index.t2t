@@ -73,11 +73,12 @@ Android 内建了 SQLite 支持， 但这并不是说 SQLite 是数据持久化�
 数据库原型(schema)是对数据库结构的描述。 在Yamba的数据库中，我们希望储存从Twitter获取的数据的以下字段：
 
 **created_at**
-% 	The date when the tweet was sent
-	消息的发送时间
-**source**
+{ORGI}	The date when the tweet was sent
+[{TRAN}	消息的发送时间
+[删去 **source**
 % 	…
 	消息的来源
+]
 **txt**
 % 	The text of the tweet
 	文本内容
@@ -176,8 +177,8 @@ DbHelper类提供了自己的封装来简化SQL操作。经观察人们发现，
 % == First example ==
 == 第一个例子 ==
 
-% So we’re going to create our own helper class to help us open our Yamba database. We’ll call the class DbHelper. It will create the database file if one doesn’t already exist, or upgrade the user’s database if the schema has changed between versions.
-接下来我们将创建自己的辅助类``DbHelper``，用以操作数据库。当数据库不存在时，它负责创建数据库；当数据库原型变化时，它负责数据库的更新。
+{ORGI}So we’re going to create our own helper class to help us open our Yamba database [增加 (see Example 9.1, “DbHelper.java, version 1”). ]. We’ll call the class DbHelper. It will create the database file if one doesn’t already exist, or upgrade the user’s database if the schema has changed between versions.
+{TRAN}接下来我们将创建自己的辅助类``DbHelper``，用以操作数据库。当数据库不存在时，它负责创建数据库；当数据库原型变化时，它负责数据库的更新。
 
 % Like many other classes in Android, we usually start by subclassing a framework class, in this case SQLiteOpenHelper. We then need to implement the class’s constructor as well as onCreate() and onUpgrade() methods.
 
@@ -274,7 +275,7 @@ public class DbHelper1 extends SQLiteOpenHelper { //#{1}
 
 ``UpdaterService``是负责连接到服务端并抓取数据的Service，因此由它负责将数据写入数据库是合理的。
 
-% We can now update the UpdaterService to pull the data from the cloud and store it in the database.
+% [增加 In Example 9.2, “UpdaterService.java, version 1”, ] We can now update the UpdaterService to pull the data from the cloud and store it in the database.
 
 接下来重构``UpdaterService``，为它添加写入数据库的相关代码。
 
@@ -424,7 +425,7 @@ public class UpdaterService1 extends Service {
 % We are now ready to run our code and test it all works.
 一切就绪，准备测试。
 
-% === Testing It Works ===
+% === Testing It Works [修改 Testing the Service] ===
 === 测试 ===
 
 % At this point, we can test if the database got created properly and if the service has populated it with some data. We’re going to do this step by step.
@@ -565,7 +566,7 @@ try {
 
 前面我们重构了``UpdaterService``，使它能够访问数据库。但这对整个程序来讲仍不理想，因为程序的其它部分可能也需要访问数据库，比如``TimelineActivity``。因此好的做法是，将数据库的相关代码独立出来，供UpdaterService与TimelineActivity重用。
 
-% In order to do that, we’ll create a new Java class, StatusData and make it be the common container for database-related functionality. It will be hiding (encapsulating) SQLite in a higher-level class accessible to other parts of Yamba application. The rest of our app will then just ask for StatusData and not be concerned how that data is generated. This is a better design and will allows us later to improve even further on it using Content Providers as explained in [Chapter 12, Content Providers #ch12].
+% In order to do that, we’ll create a new Java class, StatusData and make it be the common container for database-related functionality [增加 (see Example 9.3, “StatusData.java”)]. It will be hiding (encapsulating) SQLite in a higher-level class accessible to other parts of Yamba application. The rest of our app will then just ask for StatusData and not be concerned how that data is generated. This is a better design and will allows us later to improve even further on it using Content Providers as explained in [Chapter 12, Content Providers #ch12].
 
 为实现代码的重用，我们将创建一个新类``StatusData``，用以处理数据库的相关操作。它将SQLite操作封装起来，并提供接口，供Yamba中的其它类调用。这一来Yamba中的构件若需要数据，那就访问StatusData即可，而不必纠结于数据库操作的细节。在[第十二章 #ch12]中，我们还将基于这一设计，提供ContentProvider的实现。
 
@@ -720,7 +721,7 @@ public class StatusData { //#{1}
 + ``getStatusTextById()`` 返回某一条消息数据的文本内容。
 
 
-% Now that we have a new common place to handle status data, we can have it hang off of our common Application object so that any part of the application can easily access it. So the UpdaterService and TimelineActivity classes are in a has-a relationship to StatusData via YambaApplication object.
+% Now that we have a new common place to handle status data, we can have it hang off of our common Application object so that any part of the application can easily access it [增加 (see Example 9.4, “YambaApplication.java”)]. So the UpdaterService and TimelineActivity classes are in a has-a relationship to StatusData via YambaApplication object.
 
 到这里，数据库的相关操作已都独立到了StatusData中。接下来把它放到``Application``对象里面，随后就可以让其它构件(比如``UpdaterService``与``TimelineActivity``)访问了。
 
@@ -782,7 +783,7 @@ public synchronized int fetchStatusUpdates() {  //#{3}
 + 这里的代码几乎都是来自原先的``UpdaterService``。它将运行在独立的线程中，连接到服务端抓取数据，并保存到数据库里面。
 
 
-% We can now simplify the ``UpdaterService`` to use the refactored code in the YambaApplication to get the latest data. Note that most of the Updater’s ``run()`` method has been moved to YambaApplication’s ``fetchStatusUpdates()`` method. In addition, the Updater doesn’t need any access to the ``StatusData`` object, which is totally hidden from it.
+% We can now simplify the ``UpdaterService`` to use the refactored code in the YambaApplication to get the latest data [增加 (see Example 9.5, “UpdaterService.java”)]. Note that most of the Updater’s ``run()`` method has been moved to YambaApplication’s ``fetchStatusUpdates()`` method. In addition, the Updater doesn’t need any access to the ``StatusData`` object, which is totally hidden from it.
 
 接下来可以利用新的``YambaApplication``，重构原先的``UpdaterService``。现在``run()``中的代码已都移到了``fetchStatusUpdates()``中，而且``UpdaterService``也不再需要内部的``StatusData``对象了。
 
@@ -834,7 +835,7 @@ private class Updater extends Thread {
 
 到这里，Yamba已经可以从服务端抓取数据，并储存到数据库中了。虽然仍不能将它们显示出来，但已经可以验证这些数据的可用性。
 
-% The following illustrates what we have done so far as part of the design outlined in __Figure 5.4, “Yamba Design Diagram”__:
+%The following [修改为 Figure 9.1, “Yamba completion”] illustrates what we have done so far as part of the design outlined in __Figure 5.4, “Yamba Design Diagram”__:
 
 下图展示了目前为止我们已经完成的部分。完整图参见 //图5.4//。
 

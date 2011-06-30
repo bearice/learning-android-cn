@@ -46,7 +46,7 @@
 
 ===资源文件===
 
-% We are going to start by creating the prefs.xml - a resource file that outlines what our preference screen will look like. The easiest way to create it would be to use New Android XML File tool in Eclipse. To start the New Android XML File dialog, go to File→New→Android XML File, or click on the little a+ icon in the top menu bar of Eclipse: [images/a-plus.png] 
+% We are going to start by creating the prefs.xml - a resource file that outlines what our preference screen will look like. The easiest way to create it would be to use New Android XML File tool in Eclipse [增加 , as shown in Figure 7.1, “New Android XML File”.]. To start the New Android XML File dialog, go to File→New→Android XML File, or click on the little a+ icon in the top menu bar of Eclipse: [images/a-plus.png] 
 
 首先创建一个资源文件``prefs.xml``——它用来声明首选项界面的内容。创建它的最简单方法就是使用Eclipse的New Android XML工具：可以选择File→New→Android XML File，也可以点击菜单栏上的[images/a-plus.png]按钮。
 
@@ -114,13 +114,15 @@
 
 如上即为创建``Username``选项条目的步骤。对//Password//及//API Root//两项同理。
 
-% To switch to the actual XML code by clicking on the tab on the bottom of this window:
+% To switch to the actual XML code by clicking on the tab on the bottom of this window: [增加  shown in Figure 7.2, “Prefs.xml in developer-friendly view”.]
 
 要查看实际的xml代码，可以单击窗口底下的标签。
 
 **Figure 7.2. Prefs.xml in Developer-friendly view**
 
 [images/07-prefs_xml.png]
+
+[增加 The raw XML for the preference resource looks like the code shown in Example 7.1, “res/xml/prefs.xml”.]
 
 它的内容大致如下：
 
@@ -165,7 +167,7 @@
 
 创建Activity对应的类。在Eclipse中进入你的package，右键选择New→Class。在出现的``New Java Class``窗口中设置名字为``PrefsActivity``，点击Finish即可在项目中新建一个PrefsActivity.java文件。
 
-% Our PrefsActivity class going to be a very simple Java file. This is because we inherit from PreferenceActivity, an Android framework provided class that knows how to handle preferences.
+% Our PrefsActivity class [增加 shown in Example 7.2, “PrefsActivity.java”] going to be a very simple Java file. This is because we inherit from PreferenceActivity, an Android framework provided class that knows how to handle preferences.
 
 为简化首选项界面的开发，Android框架提供了一个``PreferenceActivity``类。以它为基类，我们的类可以很简单。
 
@@ -223,7 +225,7 @@ public class PrefsActivity extends PreferenceActivity { // #{1}
 在Eclipse中编辑代码时，可以使用Ctrl+Space快捷键调出Eclipse的自动完成功能。Eclipse可以感知出当前输入代码的上下文，从而预测接下来可能输入的内容。这一来程序员即可省去牢记各种方法变量的名字，也可以减少输入错误，对解放生产力是大有好处的。
 {/TIP}
 
-% So after adding our manifest file now looks like this:
+% So after adding our manifest file now looks like this: [修改为 the code shown in Example 7.3, “AndroidManifest.xml”.]
 
 修改后的Manifest大致如下：
 
@@ -283,7 +285,7 @@ public class PrefsActivity extends PreferenceActivity { // #{1}
 % ===Menu Resource===
 ===菜单的资源文件===
 
-% We start by defining the menus in an XML resource for the options menu. Just like with other Android XML files, we can use the little a+ icon in the Eclipse toolbar or choose File→New…→Android XML to launch New Android XML File dialog. In this dialog, for File enter menu.xml and for Type select Menu. Click Finish button and Eclipse will create a new folder /res/menu with menu.xml file in it. It will also open this file in developer-friendly view.
+% We start by defining the menus in an XML resource for the options menu. Just like with other Android XML files, we can use the little a+ icon in the Eclipse toolbar or choose File→New…→Android XML to launch New Android XML File dialog. In this dialog, for File enter menu.xml and for Type select Menu. Click Finish button and Eclipse will create a new folder /res/menu with menu.xml file in it. It will also open this file in developer-friendly view. [增加 (see Figure 7.3, “Menu.xml in developer-friendly view”).]
 
 先为选项菜单新建一个XML资源文件。同新建其它XML文件的流程一样，单击Eclipse工具栏的``a+``按钮或者选择``File→New…→Android XML``，打开New Android File对话框，在File一栏输入``menu.xml``，选Type为``Menu``，然后点击Finish，Eclipse即可在``/res/menu``目录下创建出一个新文件``menu.xml``，同时打开一个图形化的编辑界面。
 
@@ -325,7 +327,7 @@ public class PrefsActivity extends PreferenceActivity { // #{1}
 
 [images/07-menu_xml.png]
 
-% The raw XML of menu.xml is shown here:
+% The raw XML of menu.xml is shown here: [修改为 in Example 7.4, “res/menu/menu.xml”.]
 
 ``menu.xml``的源码如下：
 
@@ -416,7 +418,7 @@ public boolean onOptionsItemSelected(MenuItem item) {
 % ===Strings Resource===
 ===字符串资源===
 
-% Our updated strings.xml now looks like this:
+% Our updated strings.xml now looks like this [修改为 the code shown in Example 7.5, “res/values/strings.xml”.]:
 
 更新后的``strings.xml``大致如下：
 
@@ -442,7 +444,7 @@ public boolean onOptionsItemSelected(MenuItem item) {
 </resources>
 {/CODE}
 
-% You should be able to run your application at this point and and see the new PrefsActivity by clicking on Menu→Prefs in StatusActivity. Try changing your username and password, then reboot your phone, restart the app, and verify that the information is still there.
+% You should be able to run your application at this point and and see the new PrefsActivity by clicking on Menu→Prefs in StatusActivity [增加 (see Figure 7.4, “PrefsActivity”)]. Try changing your username and password, then reboot your phone, restart the app, and verify that the information is still there.
 
 到这里，你已经可以查看新的选项界面了。打开程序，在消息界面中选择Menu→Prefs即可。不妨尝试更改用户名与密码的设置再重启应用程序，查看选项信息是否依然存在。
 
@@ -579,7 +581,7 @@ Eclipse中提供了一个File Explorer工具供我们访问文件系统。要打
 % ===File System Partitions===
 ===文件系统的分区===
 
-% There are three main parts of the file system on every Android device. They are:
+% There are three main parts of the file system on every Android device. [增加 As shown in Figure 7.5, “The filesystem as seen via File Explorer in Eclipse”,] They are:
 
 Android设备主要有三个分区，即：
 
