@@ -46,7 +46,7 @@
  
 % Chapter 7, Preferences, File System, Options Menu, and Intents, covers some of the operating system features that make an application developer’s life easier. 
 
-第七章，**首选项，文件系统，Option Menu及Intent**，介绍操作系统中的一些方便特性。
+第七章，**首选项，文件系统，Option Menu以及Intent**，介绍操作系统中的一些方便特性。
 
 % Chapter 8, Services, covers building an Android service to process background tasks. 
 
@@ -62,11 +62,11 @@
 
 % Chapter 11, Broadcast Receivers, explains how to use the publish-subscribe mechanism in Android to respond to various system and user defined [user-defined] messages.
 
-第十一章，**Broadcast Receivers**，介绍了如何应用Android中“发布-订阅”机制响应来自系统和用户的各种消息。
+第十一章，**Broadcast Receiver**，介绍了如何应用Android中“发布-订阅”机制响应来自系统和用户的各种消息。
 
 % Chapter 12, Content Providers, shows how to design a content provider to share data between applications, using the content provider to enable our app widget to display data on the home screen. [Shows how to design a content provider to share data between applications, in this case using it to enable our app widget to display data on the home screen]
 
-第十二章，**Content Providers**，介绍Content Provider的编写方法，为不同的应用程序提供数据。以及。
+第十二章，**Content Provider**，介绍Content Provider的编写方法，为不同的应用程序提供数据。以及。
 
 % Chapter 13, System Services, goes into various system services that an app developer can tap into. [Introduces various system services that an app developer can tap into]
 

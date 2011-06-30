@@ -20,6 +20,8 @@
 
 Broadcast Receiver是Android中发布/订阅机制(又称为Observer模式)的一种实现。应用程序作为发布者，可以广播一系列的事件，而不管接收者是谁。Receiver作为订阅者，从发布者那里订阅事件，并过滤出自己感兴趣的事件。如果某事件符合过滤规则，那么订阅者就被激活，并得到通知。
 
+(译者注：Receiver是Broadcast Receiver的简写，下同)
+
 % As you may recall from Chapter 4, Main Building Blocks, a BroadcastReceiver is a piece of code to which an app subscribes in order to get notified when an action happens. That action is in a form of an intent broadcast. When the right intent is fired, the receiver wakes up and executes. The "wakeup" happens in form of a onReceive() callback method.
 
 我们曾在第四章提到过，``Broadcast Receiver``是应用程序针对事件做出响应的相关机制，而事件就是广播发送的Intent。Receiver会在接到Intent时唤醒，并触发相关的代码，也就是``onReceive()``。

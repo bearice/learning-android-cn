@@ -165,39 +165,39 @@ public Uri insert(Uri uri, ContentValues values) {
 % ** The URI of the provider **
 % This may or may not contain an ID. If it does, the ID indicates the specific record that needs to be updated, and we can ignore the selection. If the ID is not specified, it means that we are updating many records and we need the selection to indicate which are to be changed.
 
-** ContentProvider的URI **
-其中的ID可选。如果提供，则更新ID对应的记录。如果省略，则表示更新多条记录，并需要提供一个选择条件。
+: **ContentProvider的URI**
+  其中的ID可选。如果提供，则更新ID对应的记录。如果省略，则表示更新多条记录，并需要提供一个选择条件。
 
 % ** The values to be updated **
 % The format of this parameter is a set of name/value pairs that represent column names and new values.
 
-** 更新的值 **
-这个参数的格式是一组键值对，表示待更新的列名与对应的值。
+: **更新的值**
+  这个参数的格式是一组键值对，表示待更新的列名与对应的值。
 
 % ** Any selection and arguments that go with it **
 % These together make up a WHERE clause in SQL, selecting the records that will change. The selection and its arguments are omitted when there is an ID, because that is enough to select the record that is being updated.
 
-**选择条件**
-这些条件组成了SQL语句的WHERE部分，选择出待更新的记录。如果URI中提供了ID，这些条件就会被省略。
+: **选择条件**
+  这些条件组成了SQL语句的WHERE部分，选择出待更新的记录。如果URI中提供了ID，这些条件就会被省略。
 
 % The code that handles both types of update—by ID and by selection—can be as follows.
 
-考虑到URI中是否提供ID的两种情况，代码如下：
+考虑到URI中是否存在ID的两种情况，代码如下：
 
 {CODE}
 @Override
 public int update(Uri uri, ContentValues values, String selection,
     String[] selectionArgs) {
-  long id = this.getId(uri); //{#1}
-  SQLiteDatabase db = statusData.dbHelper.getWritableDatabase(); //{#2}
+  long id = this.getId(uri); //#{1}
+  SQLiteDatabase db = statusData.dbHelper.getWritableDatabase(); //#{2}
   try {
     if (id < 0) {
-      return db.update(StatusData.TABLE, values, selection, selectionArgs); //{#3}
+      return db.update(StatusData.TABLE, values, selection, selectionArgs); //#{3}
     } else {
-      return db.update(StatusData.TABLE, values, StatusData.C_ID + "=" + id, null); //{#4}
+      return db.update(StatusData.TABLE, values, StatusData.C_ID + "=" + id, null); //#{4}
     }
   } finally {
-    db.close(); // {#5}
+    db.close(); // #{5}
   }
 }
 {/CODE}
@@ -228,17 +228,17 @@ public int update(Uri uri, ContentValues values, String selection,
 {CODE}
 @Override
 public int delete(Uri uri, String selection, String[] selectionArgs) {
-  long id = this.getId(uri); //{#1}
-  SQLiteDatabase db = statusData.dbHelper.getWritableDatabase(); //{#2}
+  long id = this.getId(uri); //#{1}
+  SQLiteDatabase db = statusData.dbHelper.getWritableDatabase(); //#{2}
   try {
     if (id < 0) {
-      return db.delete(StatusData.TABLE, selection, selectionArgs); // {#3}
+      return db.delete(StatusData.TABLE, selection, selectionArgs); // #{3}
     } else {
-      return db.delete(StatusData.TABLE, StatusData.C_ID + "=" + id, null); // {#4}
+      return db.delete(StatusData.TABLE, StatusData.C_ID + "=" + id, null); // #{4}
     }
 
   } finally {
-    db.close(); // {#5}
+    db.close(); // #{5}
   }
 }
 {/CODE}
@@ -267,14 +267,14 @@ public int delete(Uri uri, String selection, String[] selectionArgs) {
 @Override
 public Cursor query(Uri uri, String[] projection, String selection,
     String[] selectionArgs, String sortOrder) {
-  long id = this.getId(uri); // {#1}
-  SQLiteDatabase db = statusData.dbHelper.getReadableDatabase(); // {#2}
+  long id = this.getId(uri); // #{1}
+  SQLiteDatabase db = statusData.dbHelper.getReadableDatabase(); // #{2}
   if (id < 0) {
     return db.query(StatusData.TABLE, projection, selection, selectionArgs, null,
-        null, sortOrder); // {#3}
+        null, sortOrder); // #{3}
   } else {
     return db.query(StatusData.TABLE, projection, StatusData.C_ID + "=" + id, null, null, null,
-        null); // {#4}
+        null); // #{4}
   }
 }
 {/CODE}
@@ -301,7 +301,7 @@ public Cursor query(Uri uri, String[] projection, String selection,
 
 % A ContentProvider must return the MIME type of the data it is returning. The MIME type is either single item, or all the records for the given URI. Earlier in this chapter we defined the single-record MIME type is as vnd.android.cursor.item/vnd.marakana.yamba.status and the directory of all statuses as vnd.android.cursor.dir/vnd.marakana.yamba.status. The call we must define, to let others retrieve the MIME type, is called getType().
 
-ContentProvider必须给出数据的MIME类型。MIME类型是针对URI而言，URI可以表示单个条目也可以表示多个条目，它们的MIME类型就是不同的。在本章前面，我们曾定义过单个条目的MIME类型``vnd.android.cursor.item/vnd.marakana.yamba.status``，而多个条目的MIME类型是``vnd.android.cursor.dir/vnd.marakana.yamba.status``。为了让他人获取相应的MIME类型，我们需要在ContentProvider中实现一个``getType()``方法。
+ContentProvider必须给出数据的MIME类型。MIME类型是针对URI而言，表示单个条目和表示多个条目的URI的MIME类型就是不同的。在本章前面，我们曾定义了单个条目的MIME类型``vnd.android.cursor.item/vnd.marakana.yamba.status``，而多个条目的MIME类型是``vnd.android.cursor.dir/vnd.marakana.yamba.status``。便于他人获取相应的MIME类型，我们需要在ContentProvider中实现一个``getType()``方法。
 
 % The first part of the MIME type is either vnd.android.cursor.item or vnd.android.cursor.dir, depending on whether the type represents a specific item or all items we are referring to. The second part, vnd.marakana.yamba.status or vnd.marakana.yamba.mstatus for our app, is a combination of constant vnd followed by your company or app name and the actual content type.
 
@@ -319,19 +319,19 @@ MIME类型的第一部分可以是``vnd.android.cursor.item``或者``vnd.android
 @Override
 public String getType(Uri uri) {
   return this.getId(uri) < 0 ? MULTIPLE_RECORDS_MIME_TYPE
-      : SINGLE_RECORD_MIME_TYPE;  // {#1}
+      : SINGLE_RECORD_MIME_TYPE;  // #{1}
 }
 
 private long getId(Uri uri) {
-  String lastPathSegment = uri.getLastPathSegment();  // {#2}
+  String lastPathSegment = uri.getLastPathSegment();  // #{2}
   if (lastPathSegment != null) {
     try {
-      return Long.parseLong(lastPathSegment); // {#3}
-    } catch (NumberFormatException e) { // {#4}
+      return Long.parseLong(lastPathSegment); // #{3}
+    } catch (NumberFormatException e) { // #{4}
       // at least we tried
     }
   }
-  return -1;   // {#5}
+  return -1;   // #{5}
 }
 {/CODE}
 
@@ -417,33 +417,33 @@ import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-public class YambaWidget extends AppWidgetProvider { // {#1}
+public class YambaWidget extends AppWidgetProvider { // #{1}
   private static final String TAG = YambaWidget.class.getSimpleName();
 
   @Override
   public void onUpdate(Context context, AppWidgetManager appWidgetManager,
-      int[] appWidgetIds) { // {#2}
+      int[] appWidgetIds) { // #{2}
     Cursor c = context.getContentResolver().query(StatusProvider.CONTENT_URI,
-        null, null, null, null); // {#3}
+        null, null, null, null); // #{3}
     try {
       if (c.moveToFirst()) { {//#4}
-        CharSequence user = c.getString(c.getColumnIndex(StatusData.C_USER)); // {#5}
+        CharSequence user = c.getString(c.getColumnIndex(StatusData.C_USER)); // #{5}
         CharSequence createdAt = DateUtils.getRelativeTimeSpanString(context, c
             .getLong(c.getColumnIndex(StatusData.C_CREATED_AT)));
         CharSequence message = c.getString(c.getColumnIndex(StatusData.C_TEXT));
 
         // Loop through all instances of this widget
-        for (int appWidgetId : appWidgetIds) { // {#6}
+        for (int appWidgetId : appWidgetIds) { // #{6}
           Log.d(TAG, "Updating widget " + appWidgetId);
           RemoteViews views = new RemoteViews(context.getPackageName(),
-              R.layout.yamba_widget); // {#7}
-          views.setTextViewText(R.id.textUser, user); // {#8}
+              R.layout.yamba_widget); // #{7}
+          views.setTextViewText(R.id.textUser, user); // #{8}
           views.setTextViewText(R.id.textCreatedAt, createdAt);
           views.setTextViewText(R.id.textText, message);
           views.setOnClickPendingIntent(R.id.yamba_icon, PendingIntent
               .getActivity(context, 0, new Intent(context,
                   TimelineActivity.class), 0));
-          appWidgetManager.updateAppWidget(appWidgetId, views); // {#9}
+          appWidgetManager.updateAppWidget(appWidgetId, views); // #{9}
         }
       } else {
         Log.d(TAG, "No data to update");
@@ -488,7 +488,7 @@ public class YambaWidget extends AppWidgetProvider { // {#1}
 + 在这里，我们只关心服务端最新的消息更新。因此Cursor指向第一个的元素若存在，那它就是最新的消息。
 + 如下的几行代码读出Cursor对象中的数据，并储存到局部变量中。
 + 用户可以挂载多个Yamba小部件，因此需要遍历并更新所有小部件。``appWidgetId``是某个小部件的标识符，在这里我们是更新所有小部件，因此不必关心某个``appWidgetId``具体的值。
-+ 我们小部件所在的View位于另一个进程中，因此使用``RemoteViews``。RemoteViews是专门为小部件设计的某种共享内存机制。
++ 小部件所在的View位于另一个进程中，因此使用``RemoteViews``。RemoteViews是专门为小部件设计的某种共享内存机制。
 + 得到了另一个进程地址空间中View的引用，即可更新它们。
 + 更新过RemoteViews对象，然后调用AppWidgetManager的``updateAppWidget()``方法，将发送一条消息，通知系统更新所有的小部件。这是个异步操作，不过实际执行会在``onUpdate()``之后。
 + 不管得到新消息与否，都要记得释放从ContentProvider中得到的对象。这是个好习惯。
@@ -499,7 +499,7 @@ public class YambaWidget extends AppWidgetProvider { // {#1}
 
 % At this point, we have coded the Yamba Widget, and as a receiver, it will get notified periodically or when there are new updates, and it will loop through all instances of this widget on the Home screen and update them.
 
-到这里，我们已经编写YambaWidget完毕。作为一个BroadcastReceiver，它会在定期或在新状态更新时得到通知，然后遍历主屏幕上所有的Yamba小部件并更新它们。
+到这里，YambaWidget已经编写完毕。作为一个BroadcastReceiver，它可以定时更新，也可以在获取新消息时得到通知，然后遍历主屏幕上所有的Yamba小部件并更新它们。
 
 % Next, we need to set up the layout for our widget.
 

@@ -11,11 +11,11 @@ Android中的每个应用程序都运行于独立的进程中。出于安全考�
 
 % Every once in a while we need a more direct, synchronous access to another process. There are many ways to implement this across process boundaries, and collectively they are called Interprocess Communication, or IPC for short.
 
-不过有时我们需要更直接一些，同步地访问其它进程中的数据。这类通信机制就叫做跨进程通信(Interprocess Communication)，简称IPC。
+不过有时我们需要更直接一些，同步地访问其它进程中的数据。这类通信机制就叫做进程间通信(Interprocess Communication)，简称IPC。
 
 % To allow cross-application communication, Android provides its own version of an IPC protocol. One of the biggest challenges in IPC is passing data around, such as when passing parameters to method calls on the remote systems. IPC protocols tend to get complicated because they have to convert data from its in-memory format to a format that’s convenient for sending to another process. This is called marshaling, and the unpacking at the receiver is called unmarshaling.
 
-为实现跨进程通信，Android设计了自己的IPC协议。IPC机制的设计难点在于数据的分发，比如何时传递数据、何时接受数据、如何序列化、如何反序列化，都有许多细节需要考虑，因此这个机制难免趋于复杂。
+为实现进程间通信，Android设计了自己的IPC协议。IPC机制的设计难点在于数据的分发，比如何时传递数据、何时接受数据、如何序列化、如何反序列化，都有许多细节需要考虑，因此这个机制难免趋于复杂。
 
 % To help with this, Android provides the Android Interface Definition Language, or AIDL. It is a lightweight implementation of IPC using a syntax that is very familiar to Java developers, and a tool that automatically creates the hidden code required to connect a client and a remote service.
 
@@ -266,11 +266,11 @@ public class Message implements Parcelable { // #{1}
 
 % As always, whenever we provide one of the new main building blocks for applications, we must register it with the system. The most common way to do that is to define it in the Manifest file.
 
-只要新加入了一个构件，就得注册到Manifest文件，让系统知道。
+只要新加入了一个构件，就需要将它注册到系统。而注册到系统的最简单方法，就是注册到Manifest文件。
 
 % Just as we registered UpdaterService before, we provide a <service> element specifying our service. The difference this time around is that this service is going to be invoked remotely, so we should specify what Action this service responds to. To do that, we specify the action and the Intent Filter as part of this service registration.
 
-同前面注册UpdaterService一样，我们通过<service>标签表示Service。不同在于这里的Service将被远程调用，因此它负责响应的Action也有不同，这在<action>标签下的<intent-filter>标签中指明。
+同前面注册UpdaterService一样，这里也是通过<service>标签表示Service。不同在于这里的Service将被远程调用，因此它负责响应的Action也有不同，这在<action>标签下的<intent-filter>标签中指明。
 
 {CODE}
 <?xml version="1.0" encoding="utf-8"?>
@@ -499,4 +499,4 @@ app_42    613   33    132576 16552 ffffffff afd0eb08 S com.marakana.logclient
 
 % Android provides an interprocess communication mechanism. It is based on binder: a high-performance, shared-memory system. To create create a remote service, we define it using the Android Interface Definition Language (AIDL), similar to Java interfaces. We then implement the remote interface and connect to it via the IBinder object. This allows us to connect our client to a remote service in a different process altogether.
 
-Android提供了一套高性能的基于共享内存的进程间通信机制，这就是Bound Service。通过它可以创建出远程的Service：先在Android接口描述语言(AIDL)中给出定义，然后实现IBinder对象。这就允许将无关的进程相互连接了起来。
+Android提供了一套高性能的基于共享内存的进程间通信机制，这就是Bound Service。通过它可以创建出远程的Service：先在Android接口描述语言(AIDL)中给出定义，然后实现IBinder对象。这就允许将无关的进程相互连接起来。

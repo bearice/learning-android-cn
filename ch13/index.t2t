@@ -788,15 +788,15 @@ public class StatusActivity extends BaseActivity implements OnClickListener,
 
 % Now that we understand how system services work, we can use another service concept to substantially simplify our Updater service. If you recall, our Updater service is an always-on, always-running service that periodically goes to the cloud and pulls down the latest timeline updates. Since by default a service runs in the same thread as the User Interface (i.e., runs on the UI thread), we had to create a separate thread called Updater within the Updater service that is responsible for the actual network connection. We then started this thread in the service’s onCreate() and onStartCommand() methods. We ran it forever until onDestroy() got called. However, our Updater thread would sleep between the updates for some amount of time. All this worked well and we explained it all in Chapter 8, Services. But there’s a simpler way to accomplish this task.
 
-我们已对系统服务的工作方式有所了解，接下来可以利用系统服务的有关特性，简化UpdaterService的实现。回忆下前面的内容：UpdaterService会一直运行，定期从服务端抓取timeline的更新。由于Service默认与UI在同一个线程(或者说，都在UI线程中执行)中执行，为避免网络操作造成界面的响应不灵，我们需要新建一个Updater线程，并将UpdaterService放在里面独立执行。然后在Service的``onCreate()``与``onStartCommand()``中让线程开始，并一直执行下去，直到``onDestroy()``为止。另外，Updater会在两次更新之间休眠一段时间。这是第八章所讲的内容，但在这里，我们将介绍更简便的实现方法。
+我们已对系统服务的工作方式有所了解，接下来可以利用系统服务的有关特性，简化UpdaterService的实现。回忆下前面的内容：UpdaterService会一直运行，定期从服务端抓取Timeline的更新。由于Service默认与UI在同一个线程(或者说，都在UI线程中执行)中执行，为避免网络操作造成界面的响应不灵，我们需要新建一个Updater线程，并将UpdaterService放在里面独立执行。然后在Service的``onCreate()``与``onStartCommand()``中让线程开始，并一直执行下去，直到``onDestroy()``为止。另外，Updater会在两次更新之间休眠一段时间。这是第八章所讲的内容，但在这里，我们将介绍更简便的实现方法。
 
 % An IntentService is a subclass of Service and is also activated by a startService() intent. It differs from a regular service by running on its own worker thread, so it doesn’t block our precious UI thread. Also, once it’s done, it’s done. This means it runs only once, but we will use an Alarm later to run it periodically. Any call to the intent’s startService() will recreate it.
 
-IntentService是Service的一个子类，也是通过``startService()``发出的intent激活。与一般Service的不同在于，它独立在一个工人线程(worker thread)中执行，因此不会阻塞UI线程。另一点，它一旦执行完毕，生命周期也就结束了。它只能执行一次，不过只要接到``startService()``发出的Intent，它就会新建一个生命周期，从而实现重新执行。在此，我们可以利用Alarm实现定期执行。
+IntentService是Service的一个子类，也是通过``startService()``发出的intent激活。与一般Service的不同在于，它默认在一个独立的工人线程(Worker Thread)中执行，因此不会阻塞UI线程。另一点，它一旦执行完毕，生命周期也就结束了。不过只要接到``startService()``发出的Intent，它就会新建另一个生命周期，从而实现重新执行。在此，我们可以利用Alarm实现定期执行。
 
 % Unlike a regular service, we don’t override onCreate(), onStartCommand(), onDestroy(), and onBind(), but rather a new onHandleIntent() method. This method is where we want to put our code that goes online and handles the network updates. Also, unlike a regular Service, an IntentService has a default constructor that needs to be provided.
 
-同一般的Service不同，我们不需要重载``onCreate()``、``onStartCommand()``、``onDestroy()``及``onBind()``，而是重载一个``onHandleIntent()``方法。网络操作的相关代码就放在这里。另外IntentService需要我们重载一个构造函数，这也是与一般Service不同的地方。
+同一般的Service不同，我们不需要重载``onCreate()``、``onStartCommand()``、``onDestroy()``及``onBind()``，而是重载一个``onHandleIntent()``方法。网络操作的相关代码就放在这里。另外IntentService要求我们重载一个构造函数，这也是与一般Service不同的地方。
 
 % In short, instead of creating a separate thread and delaying network updates in regular Service, we can simplify our code by using an IntentService to run status updates on its worker thread. Now we just need something to periodically wake up our IntentService so it knows it needs to handle the updating job. For that, we’ll use the Alarm manager, another system service.
 
@@ -848,16 +848,16 @@ public class UpdaterService1 extends IntentService { // #{1}
 % + This is the key method. The work inside of it takes place on a separate worker thread and doesn’t interfere with the main UI thread.
 % + The rest of the code in this section broadcasts the change as described in the section called “Broadcasting Intents”.
 
-+ 将基类设为IntentService。
-+ 这里需要一个构造函数。可以在这里给Service一个命名，以便于在观测工具(比如TraceView)中，辨认相应的线程。
++ 继承自IntentService，而非Service。
++ 这里需要一个构造函数。在这里，可以给Service一个命名，以便于在观测工具(比如TraceView)中，辨认相应的线程。
 + 这是关键的方法。其中的代码会在独立的工人线程中执行，因此不会影响到主UI线程的响应。
-+ 下面将所做的变化广播出去，具体可见"Broadcasting Intents"一节。
++ 下面将所做的变化广播出去，具体可见 //第十一章// 中的 //"广播 Intent"// 一节。
 
 %TALK: "Broadcasting Intent"需改为中文。
 
 % At this point, our service is updated. An easy way to test it would be to change the Start/Stop Service menu item to a Refresh button. To do that, update your menu.xml file to have this new item, and change its handling in our BaseActivity class.
 
-如此，我们更新了原先的Service。要测试它，不妨先把Start/Stop Service的按钮改为Refresh按钮。为此需要修改``menu.xml``添加这个新条目，然后在BaseActivity类中修改它的处理方法。
+这样，我们重构了原先的Service。要测试它，不妨先把Start/Stop Service的按钮改为Refresh按钮。为此需要修改``menu.xml``添加这个新条目，然后在BaseActivity类中修改它的处理方法。
 
 **Example 13.10. res/xml/menu.xml**
 {CODE}
@@ -871,7 +871,7 @@ public class UpdaterService1 extends IntentService { // #{1}
 
 % I’ve replaced itemToggle with itemRefresh so that the names make more sense. We must also add the appropriate string to the strings.xml file.
 
-把``itemToggle``改为``itemRefresh``，这样更靠谱些。同时必须更新``string.xml``中对应的条目。
+把``itemToggle``改为``itemRefresh``，这样更合适一些。同时必须更新``string.xml``中对应的条目。
 
 % Now, we need to update our BaseActivity.java file to handle this new Refresh button. To do that, we change the appropriate case statement in onOptionsItemSelected(). Additionally, we can now remove onMenuOpened() altogether, since we no longer need to change the state of that toggle button—it doesn’t exist any more.
 
@@ -903,13 +903,11 @@ public class BaseActivity extends Activity {
 
 % So our options menu now has a Refresh button that will start a service and have it update the status data in the background. We can use this button to test whether this feature works well.
 
-这样选项菜单里就多了一个Refresh按钮，可以启动一个Service让它在后台更新消息。测试的话，点击这个按钮就好。
+这样选项菜单就多了一个Refresh按钮，可以启动一个Service让它在后台更新消息。测试的话，点击这个按钮就好。
 
 % Another way to accomplish the same same functionality would have been to use an AsyncTask. In fact, AsyncTask would probably have been slightly more appropriate in this case from a design point of view, to keep all the functionality at the UI level, but we’ve already discussed it in the section called “Threading in Android”. In this case, we wanted to demonstrate quickly how an IntentService is started, and as you can see, it works just like any other service.
 
-实现同样的功能还有一个选择，那就是AsyncTask，它使得相关功能放在UI层面(不需要线程)即可全部实现。在设计层面讲，使用AsyncTask甚至可能比IntentService更加合适。前面我们曾提到过一次AsyncTask，但当时讨论的重点在Android的线程机制；在这里，我们讨论的重点又在系统服务的用法。读者对此应有所了解。
-
-%TALK: 在此意译，感觉大体意思是“AsyncTask是个有用的东西，但是机缘不巧没来的及说它”。
+实现同样的功能还有一个选择，那就是AsyncTask。在设计角度讲，使用AsyncTask甚至可能比IntentService更加合适——它使得这些功能在UI层面即可全部实现，这在 //第六章// 中的 //Android的线程机制// 已有提及。不过在这里，我们更希望了解IntentService的工作方式，通过演示不难看出，它的功能并不弱于普通的Service。
 
 % Next we want to have our Updater service triggered periodically. To do that, we’ll use the Alarm manager.
 
