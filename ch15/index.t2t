@@ -3,88 +3,109 @@
 
 = Native Development Kit (NDK) =
 
-{ORGI}The Native Development Kit, or NDK, is an add-on to SDK that helps you integrate native code—code that uses platform-specific features, generally exposed through C or C++ language APIs—within your Android application. The NDK allows your Android application call some native code and even include some native libraries.
-{TRAN}Native Development Kit，简称 NDK ，是用来集成平台相关的本地代码的工具集。这些库通常使用 C 或者 C++ 编写。 NDK 使你的程序能调用本地代码和原生库。
+% The Native Development Kit, or NDK, is an add-on to SDK that helps you integrate native code—code that uses platform-specific features, generally exposed through C or C++ language APIs—within your Android application. The NDK allows your Android application call some native code and even include some native libraries.
 
-{ORGI}In Gingerbread release of Android, NDK takes support for native code even further with the introduction of NativeActivity class. You can now write your entire activity in C or C++. However, NativeActivity is not subject of this chapter. Here, we’ll look at integrating C native code within your Java Android application.
-{TRAN}在“姜饼”（即 Android 2.3 --译者注）中，NDK甚至允许通过 NativeActivity 来实现完全使用 C 或者 C++ 编写的应用。不过如何使用 NativeActivity 并不是本章的主题。 本章中我们主要介绍如何在你的 Java 应用中嵌入 C 代码。
+Native Development Kit(简称NDK) ，是Android与本地代码交互的工具集。通过NDK，你可以调用平台相关的本地代码或者一些本地库。而这些库一般都是由C或者C++编写的。
 
-{ORGI}== What Is and Isn’t NDK For? ==
-{TRAN}== NDK 是干嘛的？ ==
+% In Gingerbread release of Android, NDK takes support for native code even further with the introduction of NativeActivity class. You can now write your entire activity in C or C++. However, NativeActivity is not subject of this chapter. Here, we’ll look at integrating C native code within your Java Android application.
 
-{ORGI}The main motivation for developing parts of your app in native code is performance. As you can see, the NDK supports math and graphics libraries well, as well as some supporting system libraries. So graphically and computationally intensive application are the best candidates for NDK. One could argue that the recent boom in the popularity of mobile games is driving this development as well.
-{TRAN}使用本地代码的最主要目的是提升性能。 正如你所见， NDK 支持诸多数学和图像相关的库，还有某些系统库。 所以图像处理和密集运算型程序能从 NDK 中受益颇丰。 另外最近成爆炸性增长的游戏应用也催生了 NDK 的发展。
+在Android的Gingerbread版本中，NDK引入了NativeActivity，允许你使用纯C/C++来编写Activity。不过，NativeActivity 并不是本章的主题。在本章，我们将主要介绍如何在应用程序中集成原生的C代码。
 
-{ORGI}Note that any native code accessible from your app via JNI still runs inside your application’s Dalvik VM. So it’s subject to the same security sand-boxing rules that Android application lives by. Writing parts of your application in C or C++ just so you can do something that may not be possible to do in Java is usually not a good reason for NDK. Keep in mind that most of the low level hardware features are already elegantly exposed via the Android framework in Java and are usually what you want to use anyhow.
-{TRAN}不过值得注意的是，所有使用 JNI 调用的代码仍然在应用的 Dalvik VM 进程空间中运行。所以他们都共享了同样的安全沙盒环境。所以试图使用 NDK 来做一些在 Java 中无法完成的任务并不是 NDK 的设计初衷。而且绝大部分的硬件功能都已经被 Android 框架很好的抽象成了 Java 接口。
+(译者注：Gingerbread即Android 2.3)
 
-{ORGI}== Problems Solved by the NDK ==
-{TRAN}== NDK 的功能 ==
+% == What Is and Isn’t NDK For? ==
+== NDK是什么 ==
 
-{ORGI}The NDK addresses several of the major issues you’d have to deal with if you were doing native development directly.
-{TRAN}如果你使用 NDK 的话，它将能够帮你处理好开发本地代码时可能遇到的诸多琐事。
+% The main motivation for developing parts of your app in native code is performance. As you can see, the NDK supports math and graphics libraries well, as well as some supporting system libraries. So graphically and computationally intensive application are the best candidates for NDK. One could argue that the recent boom in the popularity of mobile games is driving this development as well.
 
-{ORGI}=== Tool Chain ===
-{TRAN}=== 工具链 ===
+调用本地代码的主要目的就是提升性能。如你所见，在一些底层的系统库之外，NDK更提供有许多数学与图像相关库的支持。在图像处理以及运算密集型的程序上，使用NDK可以显著提高性能。值得一提的是，最近手机游戏行业的快速发展，也大大地推进了NDK的应用。
 
-{ORGI}Java offers access to native code via the Java Native Interface (JNI). To make it work, you would typically have to compile everything on your host computer for the target architecture, requiring you to have the entire tool chain on your development machine. Setting up the proper cross-compiler and other tools is not easy.
-{TRAN}Java 通过 JNI (Java Native Interface) 访问本地代码。 为了使程序正常工作，你需要把代码编译成目标架构上可以运行的指令，这要求你拥有适合的编译器。但是准备合适的交叉编译环境绝非易事。
+% Note that any native code accessible from your app via JNI still runs inside your application’s Dalvik VM. So it’s subject to the same security sand-boxing rules that Android application lives by. Writing parts of your application in C or C++ just so you can do something that may not be possible to do in Java is usually not a good reason for NDK. Keep in mind that most of the low level hardware features are already elegantly exposed via the Android framework in Java and are usually what you want to use anyhow.
 
-{ORGI}NDK provides the complete toolchain you need to compile and build your native code so it can run on your target platform. The build system makes it really easy to set up your environment and integrate your native code into your project.
-{TRAN}NDK 提供了交叉编译代码所需要的完整的工具链。构建系统让你能够轻松的将本地代码集成到应用中去。
-
-{ORGI}=== Packaging Your Libs ===
-{TRAN}=== 打包库文件 ===
-
-{ORGI}If you had a native library and you wanted it available to your application to load, you’d have to make sure it is part of the library path where the system searches for libraries to load. This is typically ``LD_LIBRARY_PATH`` on Linux. On an Android device, only the ///system/lib// directory is part of this path. This is a problem because the entire ///system// partition is read-only and thus unavailable to an app developer to install libraries there.
-{TRAN}如果你的应用想要加载某个本地库，需要保证该库能够被系统找到才行。通常在 Linux 下，需要放在 ``LD_LIBRARY_PATH`` 中定义的路径中。而在 Android 中，这个变量只定义了 ///system/lib// 。由于平时整个 ///system// 分区都是只读的，所以几乎是没法手动安装的。
-
-{ORGI}NDK solves this problem by providing for a mechanism to ship your native library as part of your Application Package (APK) file. Basically, when the user installs an APK that contains a native library, the system creates a directory named ///data/data/your.package/lib///. If you recall from the section called __“File System, Explained”__, this partition is private just to your application and thus a safe place to keep your libraries for the user, while not letting other applications load and use your libraries. This packaging mechanism is a dramatic change to the rules for distributing applications on Android devices, and is a big deal because it brings the huge range of legacy and new native code into the game.
-{TRAN}NDK 通过将本地库放在 APK 中一同发行来解决此类问题。 基本上当用户安装含有本地库的 APK 时，系统会创建一个名为 ///data/data/your.package/lib/// 的目录。 在第七章的 __文件系统__ 一节中我们曾经讲过该分区是属于应用程序的。所以你可以把库写在这里而不用担心其他程序可能错误地加载和使用你的库。这个机制很好地改善了 Android 应用的发行过程，它使得不同应用中不同版本的本地库可以和平共处。
-
-{ORGI}=== Documentation and Standardized Headers ===
-{TRAN}=== 文档与标准化头文件 ===
-
-{ORGI}The NDK comes with helpful documentation and sample application explaining how to get things done in native code. It also standardizes on certain guaranteed C and C++ headers, such as:
-{TRAN}NDK 附带的若干实例程序来演示如何使用本地代码。另外还附带了标准的 C 和 C++ 头文件，例如：
-
-{ORGI}	 - libc (C library) headers
-{TRAN}	 - libc (C 运行时库) 头文件
-{ORGI}	 - libm (math library) headers
-{TRAN}	 - libm (数学运算库) 头文件
-{ORGI}	 - JNI interface headers
-{TRAN}	 - JNI 接口定义
-{ORGI}	 - libz (Zlib compression) headers
-{TRAN}	 - libz (zlib 压缩库) 头文件
-{ORGI}	 - liblog (Android logging) header
-{TRAN}	 - liblog (Android 日志系统) 头文件
-{ORGI}	 - OpenGL ES 1.1 and OpenGL ES 2.0 (3D graphics libraries) headers
-{TRAN}	 - OpenGL ES 1.1 和 OpenGL ES 2.0 (3D 图像渲染) 头文件
-{ORGI}	 - libjnigraphics (Pixel buffer access) header (for Android 2.2 and above).
-{TRAN}	 - libjnigraphics (访问像素缓存) 头文件 (仅在 Android 2.2 及以上中存在)
-{ORGI}	 - A minimal set of headers for C++ support
-{TRAN}	 - 最小化的 C++ 支持
-{ORGI}	 - OpenSL ES native audio libraries
-{TRAN}	 - OpenSL ES 本地音频支持
-{ORGI}	 - Android native application APIS
-{TRAN}	 - Android 本地程序 API
+通过JNI调用的本地代码也同样在Dalvik VM中执行，与Java代码共处于同一个沙盒。因此，试图通过C/C++来完成一些"Java无法做到的"破坏性工作是不被推荐的。Android已经提供了一套完整且优雅的API，底层的硬件也得到了很好的封装。身为应用开发者，一般并没有干涉底层的必要。
 
 
-{ORGI}Given this set of standard headers, you may have extrapolated what NDK is well suited for. We’ll examine that in the next section.
-{TRAN}通过 NDK 提供的这些头文件，我们大概能够了解 NDK 的适用范围。在下一节中我们会详细解释它们。
+% == Problems Solved by the NDK ==
+== NDK 的功能 ==
+
+% The NDK addresses several of the major issues you’d have to deal with if you were doing native development directly.
+
+在本地程序的开发中，开发者会遇到许多常见问题，而NDK正是针对这些问题设计的。
+
+% === Tool Chain ===
+
+=== 工具链 ===
+
+% Java offers access to native code via the Java Native Interface (JNI). To make it work, you would typically have to compile everything on your host computer for the target architecture, requiring you to have the entire tool chain on your development machine. Setting up the proper cross-compiler and other tools is not easy.
+
+Java通过JNI(Java Native Interface) 来访问本地代码。你需要将代码编译为目标架构的机器指令，这就需要在开发机上搭建一个合适的构建环境。不过可惜的是，搭建一套合适的交叉编译环境绝非易事。
+
+% NDK provides the complete toolchain you need to compile and build your native code so it can run on your target platform. The build system makes it really easy to set up your environment and integrate your native code into your project.
+
+NDK提供了交叉编译所需的完整工具链。通过它的构建系统，你可以很轻松地将本地代码集成到应用中。
+
+% === Packaging Your Libs ===
+=== 打包库文件 ===
+
+% If you had a native library and you wanted it available to your application to load, you’d have to make sure it is part of the library path where the system searches for libraries to load. This is typically ``LD_LIBRARY_PATH`` on Linux. On an Android device, only the ///system/lib// directory is part of this path. This is a problem because the entire ///system// partition is read-only and thus unavailable to an app developer to install libraries there.
+
+如果应用程序需要加载某个本地库，那就必须保证系统能够找到它。在Linux下，它们通常都是通过``LD_LIBRARY_PATH``中定义的路径找到。在Android中，这个环境变量中只包含一个路径，即``system/lib``。这里存在一个问题，那就是``/system``分区一般都是只读的，应用程序无法将自己的本地库安装到``/system/lib``。
+
+% NDK solves this problem by providing for a mechanism to ship your native library as part of your Application Package (APK) file. Basically, when the user installs an APK that contains a native library, the system creates a directory named ///data/data/your.package/lib///. If you recall from the section called __“File System, Explained”__, this partition is private just to your application and thus a safe place to keep your libraries for the user, while not letting other applications load and use your libraries. This packaging mechanism is a dramatic change to the rules for distributing applications on Android devices, and is a big deal because it brings the huge range of legacy and new native code into the game.
+
+为解决这一问题，NDK使用了这样的机制，那就是将本地库打包进APK文件，当用户安装含有本地库的APK文件时，系统将在/data/data///your_package///lib创建一个目录，用来存放应用程序的本地库，而不允许其它程序访问。这样的打包机制简化了Android的安装过程，也避免了本地库的版本冲突。此外，这也大大地扩展了Android的功能。
 
 
-{ORGI}== NDK Example - Fibonacci ==
-{TRAN}== NDK 实例 - Fibnoacci ==
+% === Documentation and Standardized Headers ===
+=== 文档与标准头文件 ===
 
-{ORGI}Because the NDK is well-suited for computationally intensive applications, I wanted to find an example where we can implement a relatively simple algorithm in both native code and Java to compare their relative speed.
-{TRAN}由于 NDK 非常适合运算性的程序使用，我们需要一个能够在 Java 和 C 中都能简单实现的算法，然后比较他们的运行速度。
+% The NDK comes with helpful documentation and sample application explaining how to get things done in native code. It also standardizes on certain guaranteed C and C++ headers, such as:
 
-{ORGI}So I picked a Fibonacci algorithm as the example. It’s a fairly simple algorithm that can be easily implemented in both C and Java. We can also implement it recursively as well as iteratively.
-{TRAN}于是我选择了 Fibonacci 算法作为例子。这是一个相当简单的算法，使用 C 或者 Java 实现都不困难。 我们可以通过递归和迭代两种方式实现它。
+NDK拥有完善的文档和充分的样例，也附带有标准的C/C++头文件，比如：
 
-{ORGI}As a quick refresher, the Fibonacci series is defined as:
-{TRAN}简单的将， Fibonacci 序列的定义如下：
+% - libc (C library) headers
+% - libm (math library) headers
+% - JNI interface headers
+% - libz (Zlib compression) headers
+% - liblog (Android logging) header
+% - OpenGL ES 1.1 and OpenGL ES 2.0 (3D graphics libraries) headers
+% - libjnigraphics (Pixel buffer access) header (for Android 2.2 and above).
+% - A minimal set of headers for C++ support
+% - OpenSL ES native audio libraries
+% - Android native application APIS
+
+- libc(C 运行时库)的头文件
+- libm(数学库)的头文件
+- JNI 接口的头文件
+- libz(zlib压缩库)的头文件
+- liblog(Android 日志系统)的头文件
+- OpenGL ES 1.1和 OpenGL ES 2.0(3D图像库)的头文件
+- libjnigraphics(图像库)的头文件(仅在Android 2.2及以上版本中可用)
+- 最小化的 C++ 头文件
+- OpenSL ES本地音频库的头文件
+- Android本地程序API
+
+
+% Given this set of standard headers, you may have extrapolated what NDK is well suited for. We’ll examine that in the next section.
+
+通过这些头文件，我们能够对NDK的适用范围有个大致了解。具体内容我们将在后面详细讨论。
+
+
+% == NDK Example - Fibonacci ==
+
+== NDK实例 - 计算Fibonacci数列 ==
+
+% Because the NDK is well-suited for computationally intensive applications, I wanted to find an example where we can implement a relatively simple algorithm in both native code and Java to compare their relative speed.
+
+前面提到，NDK适用于计算密集型的应用程序。我们不妨取一个简单的算法，分别在Java和C中实现，然后比较它们的运行速度。
+
+% So I picked a Fibonacci algorithm as the example. It’s a fairly simple algorithm that can be easily implemented in both C and Java. We can also implement it recursively as well as iteratively.
+
+于是，我选择了//Fibonacci数列//的算法作为实例。它足够简单，通过C和Java实现都不困难。另外在实现方式上，也有递归和迭代两种方式可供选择。
+
+% As a quick refresher, the Fibonacci series is defined as:
+
+在编写代码之前，先了解下//Fibonacci数列//的定义：
 
 {CODE}
 fib(0)=0
@@ -92,45 +113,49 @@ fib(1)=1
 fib(n)=fib(n-1)+fib(n-2)
 {/CODE}
 
+% So the Fibonacci sequence looks like this: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, and so on.
 
-{ORGI}So the Fibonacci sequence looks like this: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, and so on.
-{TRAN}Fibonacci 序列看起来像这样： 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, ...
+它看起来会像是这样： 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, ...
 
-{ORGI}In this example, we are going to:
-{TRAN}在本例中，我们将要：
+% In this example, we are going to:
 
-{ORGI}	 - Create the Java class representing the Fibonacci library.
-{TRAN}	 - 新建一个 Java 类来表示 Fibonacci 库。
-{ORGI}	 - Create the native code header file.
-{TRAN}	 - 生成本地代码的头文件。
-{ORGI}	 - Implement the native code by writing C code.
-{TRAN}	 - 使用 C 来实现算法。
-{ORGI}	 - Compile everything and build a shared library.
-{TRAN}	 - 编译并创建共享库。
-{ORGI}	 - Use this native code inside Android activity.
-{TRAN}	 - 在 Android 应用中调用这个库。
+在这个例子中，我们将要：
+
+% 	 - Create the Java class representing the Fibonacci library.
+% 	 - Create the native code header file.
+% 	 - Implement the native code by writing C code.
+% 	 - Compile everything and build a shared library.
+% 	 - Use this native code inside Android activity.
+
+- 新建一个 Java 类来表示Fibonacci库。
+- 生成本地代码的头文件。
+- 使用 C 来实现算法。
+- 编译并创建共享库。
+- 在 Android 应用中调用这个库。
 
 
 === FibLib ===
 
-{ORGI}FibLib is where we declare our algorithms for computing the Fibonacci sequence. We have a total of four versions of the Fibonacci algorithm:
-{TRAN}FibLib 里定义了 Fibonacci 算法，一共有4中算法：
+% FibLib is where we declare our algorithms for computing the Fibonacci sequence. We have a total of four versions of the Fibonacci algorithm:
 
-{ORGI}	 + Java recursive version
-{TRAN}	 + Java 递归版本
-{ORGI}	 + Java iterative version
-{TRAN}	 + Java 迭代版本
-{ORGI}	 + Native recursive version
-{TRAN}	 + C 递归版本
-{ORGI}	 + Native iterative version
-{TRAN}	 + C 迭代版本
+FibLib 中定义了//Fibonacci数列//的4种算法：
+
+% 	 + Java recursive version
+% 	 + Java iterative version
+% 	 + Native recursive version
+% 	 + Native iterative version
+
++ Java递归版本
++ Java迭代版本
++ 本地递归版本
++ 本地迭代版本
 
 
-{ORGI}We’ll write the Java implementation here and do the native ones in C later.
-{TRAN}在这里首先完成 Java 的版本，等下再实现 C 版本。
+% We’ll write the Java implementation here and do the native ones in C later.
 
-	**Example 15.1. FibLib.java**
+我们从简入手，先提供Java版本的实现，稍后再实现C的本地版本。
 
+**Example 15.1. FibLib.java**
 {CODE}
 package com.marakana;
 
@@ -170,68 +195,77 @@ public class FibLib {
 }
 {/CODE}
 
-{ORGI} + This is the Java recursive version of the Fibonacci recursive algorithm.
-{TRAN} + Java 递归版本的 Fibonacci 算法
-{ORGI} + The iterative version of the same Java recursive algorithm. Everything that can be implemented recursively can be reduced to an iterative algorithm as well.
-{TRAN} + Java 迭代版本的 Fibonacci 算法，与迭代相比省去了递归的步骤。
-{ORGI} + The native version will be implemented in a shared library. Here, we tell the Java virtual machine to load that library so that the function can be found when called.
-{TRAN} + 原生版本在共享库中实现，这里只是告诉 JVM 在需要时加载这个库。
-{ORGI} + We declare the native Fibonacci method, but don’t implement it. Notice the use of the ``native`` keyword here. It tells the Java VM that the implementation of this method is in a shared library. The library should be loaded prior to this method call.
-{TRAN} + 定义了对应的函数，但是并不实现他们。注意这里使用了 ``native`` 关键字。它告诉 JVM 该函数的代码在共享库中实现。在调用这个函数前应该加载对应的库。
-{ORGI} + The previous declaration is for the recursive native implementation. This one is for the iterative version.
-{TRAN} + 这是迭代的版本。
+%  + This is the Java recursive version of the Fibonacci recursive algorithm.
+%  + The iterative version of the same Java recursive algorithm. Everything that can be implemented recursively can be reduced to an iterative algorithm as well.
+%  + The native version will be implemented in a shared library. Here, we tell the Java virtual machine to load that library so that the function can be found when called.
+%  + We declare the native Fibonacci method, but don’t implement it. Notice the use of the ``native`` keyword here. It tells the Java VM that the implementation of this method is in a shared library. The library should be loaded prior to this method call.
+%  + The previous declaration is for the recursive native implementation. This one is for the iterative version.
+
++ Java 递归版本的 Fibonacci 算法
++ Java 迭代版本的 Fibonacci 算法，与迭代相比省去了递归的开销。
++ 本地版本将在共享库中实现，这里只是告诉 JVM 在需要时加载这个库。
++ 定义了对应的函数，但是并不实现他们。注意这里使用了 ``native`` 关键字。它告诉 JVM 该函数的代码在共享库中实现。在调用这个函数前应该加载对应的库。
++ 这是迭代的版本。
+
+% At this point, our FibLib is complete, but we still need to back the ``native`` methods with their C implementations. To do that, first we need to create the appropriate JNI header file.
+
+到这里，FibLib.java已经编写完毕，但上面的``native``方法还没有实现。接下来就是用C实现本地部分了。
 
 
-{ORGI}At this point, our FibLib is complete, but we still need to back the ``native`` methods with their C implementations. To do that, first we need to create the appropriate JNI header file.
-{TRAN}现在我们完成了 FibLib ，但是仍然需要用 C 实现对应的 ``native`` 函数。首先需要生成 JNI 头文件。
+% === JNI Header File ===
 
+=== JNI 头文件 ===
 
-{ORGI}=== JNI Header File ===
-{TRAN}=== JNI 头文件 ===
+% The next step is to create the C header file based on our FibLib Java file. To do that, we use Java’s standard javah tool. Note that you must have the Java Development Kit (JDK) installed in order to find this tool in the //JDK/bin// directory.
 
-{ORGI}The next step is to create the C header file based on our FibLib Java file. To do that, we use Java’s standard javah tool. Note that you must have the Java Development Kit (JDK) installed in order to find this tool in the //JDK/bin// directory.
-{TRAN}下一步是根据 FibLib 的 Java 代码生成 C 的头文件。 要完成这项工作，需要使用叫做 javah 的工具。 这个工具在 JDK 中附带，你可以在 //JDK/bin// 中找到它。
+接下来需要做的首先是，创建相应的JNI头文件。这需要用到一个Java的标准工具，也就是javah。它附带在JDK中，你可以在``JDK/bin``中找到它。
 
-{ORGI}Now, to create the C header, go to your project’s bin directory and execute:
-{TRAN}现在来生成 C 头文件，在项目的 bin 目录下执行：
+% Now, to create the C header, go to your project’s bin directory and execute:
+
+跳转到项目的``bin``目录，执行：
 
 {CODE}
 [Fibonacci/bin]> javah -jni com.marakana.FibLib
 {/CODE}
 
 
-{ORGI}``javah -jni`` takes a Java class as the parameter. Since not all the classes are in the Java classpath by default, it is easiest to just change directory to your project’s bin directory. Here, we assume that the current working directory is part of your Java classpath and thus that ``javah -jni com.marakana.FibLib`` at this location will work.
-{TRAN}``javah -jni`` 读取参数中指定的Java类。由于并不是所有类都在 Java 默认的类路径下，所以在项目的 bin 目录下执行这个命令会使过程相对简单些。现在假设当前目录在 Java 的类路径中，所以 ``javah -jni com.marakana.FibLib`` 能够正确加载对应的类。
+% ``javah -jni`` takes a Java class as the parameter. Since not all the classes are in the Java classpath by default, it is easiest to just change directory to your project’s bin directory. Here, we assume that the current working directory is part of your Java classpath and thus that ``javah -jni com.marakana.FibLib`` at this location will work.
 
-{ORGI}The result should be a new file named //com_marakana_FibLib.h//. This is the C header file that we need to implement next.
-{TRAN}上述命令会生成一个叫 //com_marakana_FibLib.h// 的文件，它就是待会儿我们要实现的 C 头文件。
+``javah -jni`` 取一个类名作为参数。需要注意，不是所有的类都默认处于Java的Classpath中，因此切换到项目的bin目录再执行这条命令是最简单的方法。在这里，我们假设当前目录已经在Classpath中，保证``javah -jni com.marakana.FibLib``能够正确地加载对应的类。
 
-{ORGI}Before implementing our native files, let’s organize our project a little bit. Although Eclipse did a lot to setup our Android application directories in a meaningful way thus far, it doesn’t yet offer that level or support and automation for NDK development. We are going to do a couple of steps manually here.
-{TRAN}在写本地代码前，我们先来整理一下项目。尽管 Eclipse 的确帮助我们完成了很多准备工作，但是它并没有提供有关 NDK 的支持。所以这些步骤需要手动完成。
+% The result should be a new file named //com_marakana_FibLib.h//. This is the C header file that we need to implement next.
 
-{ORGI}For one, create a directory named jni inside your Eclipse Fibonacci project. This will be the place where you’ll store all your native code and related files. You can create this directory from within Eclipse by selecting the Fibonacci project in Package Explorer, right-clicking on it, and choosing New→Folder.
-{TRAN}首先， 在项目目录下新建一个 jni 目录。这是存放所有本地代码和相关文件的地方。你可以通过在 eclipse 中选择 FibLib 项目，右键选择 新建->文件夹
+上述命令会生成一个文件``com_marakana_FibLib.h``，它就是供我们引用的头文件。
 
-{ORGI}Next, move this new header file into that folder:
-{TRAN}现在把生成好的头文件移动到这个文件夹里：
+% Before implementing our native files, let’s organize our project a little bit. Although Eclipse did a lot to setup our Android application directories in a meaningful way thus far, it doesn’t yet offer that level or support and automation for NDK development. We are going to do a couple of steps manually here.
+
+在编写本地代码之前，我们需要先整理一下项目目录。Eclipse可以帮助我们完成许多工作，但它还没有提供NDK的相关支持，因此这些步骤需要手工完成。
+
+% For one, create a directory named jni inside your Eclipse Fibonacci project. This will be the place where you’ll store all your native code and related files. You can create this directory from within Eclipse by selecting the Fibonacci project in Package Explorer, right-clicking on it, and choosing New→Folder.
+
+首先，在项目目录下新建一个目录``jni``，用来存放本地代码和相关的文件。你可以在Eclipse的Package Explorer中右击FibLib项目，选择 ``New→Folder``。
+
+% Next, move this new header file into that folder:
+
+然后把新生成的头文件移动到这个目录：
 
 {CODE}
 [Fibonacci/bin]> mv com_marakana_FibLib.h ../jni/
 {/CODE}
 
 
-{ORGI}You can look into this file:
-{TRAN}来看一下刚刚生成的文件：
+% You can look into this file:
 
+看一下刚刚生成的文件：
 
 {CODE}
 include::code/Fibonacci/jni/com_marakana_FibLib.h
 {/CODE}
 
 
-{ORGI}As you can see, this file is automatically generated and is not to be modified by the programmer directly. You may observe signatures for two of our native functions that we’re yet to implement:
-{TRAN}在文件的开始就可以见到警告说这个文件是自动生成的，不要去手工修改它。在下面我可以找到等下需要实现的函数的签名：
+% As you can see, this file is automatically generated and is not to be modified by the programmer directly. You may observe signatures for two of our native functions that we’re yet to implement:
 
+这个文件是自动生成的，我们不需要也不应手工修改它。你可以在里面见到待实现函数的签名：
 
 {CODE}
 ...
@@ -244,37 +278,38 @@ JNIEXPORT jlong JNICALL Java_com_marakana_FibLib_fibNI
 {/CODE}
 
 
-{ORGI}These are standard JNI signatures. They are generated by a naming convention indicating that the function contains code defined in ``Java`` as part of ``com.marakana.FibLib`` class for native methods ``fibN`` and ``fibNI``. You can also see that both methods return ``jlong``, a JNI-standardized integer value.
-{TRAN}这是 JNI 的标准签名。他们通过某种命名转换规则生成，这样 Java 才能把这些函数和匹配到 ``com.marakana.FibLib`` 的 ``native`` 方法 ``fibN`` 和 ``fibNI`` 上。另外返回类型 ``jlong`` 是 JNI 中整数数据类型。
+% These are standard JNI signatures. They are generated by a naming convention indicating that the function contains code defined in ``Java`` as part of ``com.marakana.FibLib`` class for native methods ``fibN`` and ``fibNI``. You can also see that both methods return ``jlong``, a JNI-standardized integer value.
 
-{ORGI}Their input parameters are also interesting: ``JNIEnv``, ``jclass`` and ``jint``. The first two are always part of a Java class created to interface with native code: the ``JNIEnv`` points back to the virtual machine environment, and the next parameter points back to the class or object where this method is from; the parameter is ``jclass`` for a class method or ``jobject`` for an instance method. The third parameter, ``jlong`` is just our input into the Fibonacci algorithm, our ``n``.
-{TRAN}参数的命名同样也有特殊的意义：``JNIEnv``, ``jclass`` and ``jint`` 。所有 JNI 函数都至少有前两个参数： ``JNIEnv`` 指向 Java 虚拟机的运行环境， 第二个参数则代表了该函数所在的对象或类。对于静态方法就是 ``jclass`` ，而实例方法是 ``jobject``。 接下来才是是Java 函数中声明的参数，比如在这里定义 Fibonacci 中用到的 ``n``。
+这便是JNI的标准签名。它有着某种命名规范，从而将这些函数和``com.marakana.FibLib``中的``native``方法关联起来。可以留意其中的返回值是``jlong``，这是JNI中标准的整数类型。
 
+% Their input parameters are also interesting: ``JNIEnv``, ``jclass`` and ``jlong``. The first two are always part of a Java class created to interface with native code: the ``JNIEnv`` points back to the virtual machine environment, and the next parameter points back to the class or object where this method is from; the parameter is ``jclass`` for a class method or ``jobject`` for an instance method. The third parameter, ``jlong`` is just our input into the Fibonacci algorithm, our ``n``.
 
-{ORGI}Now that we have this header file, it is time to provide its implementation in C.
-{TRAN}一旦生成了头文件，我们就可以开始实现 C 函数了。
+这些参数也同样有意思：``JNIEnv``、``jclass``、``jlong``。所有的JNI函数都至少有着前两个参数：第一个参数``JNIEnv``指向Java VM的运行环境，第二个参数则表示着函数属于的类或者实例。如果属于类，则类型为``jclass``，表示它是一个类方法；如果属于实例，则类型为``jobject``，表示它是一个实例方法。第三个参数``jlong``，则表示Fibonacci算法的输入，也就是参数``n``。
 
+% Now that we have this header file, it is time to provide its implementation in C.
 
-{ORGI}=== C Implementation ===
-{TRAN}=== C 函数实现 ===
+好，头文件已准备完毕，接下来就可以实现C函数了。
 
 
-{ORGI}We are going to create a C file that will implement our native algorithms. For simplicity sake, we’ll call it fib.c. Like the header file we looked at earlier, this file will reside in the jni folder. To create it, right-click on jni folder and choose New→File. Save it as fib.c.
-{TRAN}现在需要新建一个 C 文件来存放本地代码。为了简单起见我们把这个文件叫做 fib.c 。 和刚才生成的头文件一样，这个文件也应该放在 jni 文件夹中。 右键点击 jni 文件夹，然后选择 New→File 取名 fib.c 然后保存。
+% === C Implementation ===
+=== C 函数实现 ===
 
+% We are going to create a C file that will implement our native algorithms. For simplicity sake, we’ll call it fib.c. Like the header file we looked at earlier, this file will reside in the jni folder. To create it, right-click on jni folder and choose New→File. Save it as fib.c.
+
+我们需要新建一个C文件来存放本地代码。简单起见，我们将这个文件命名为``fib.c``，和刚才生成的头文件保持一致，同样放置在``jni``目录中。右击``jni``目录，选择``New→File``，并保存为``fib.c``。
 
 {NOTE}
-{ORGI}You’ll notice that when you open the C file, it may open up in another editor outside of Eclipse. That’s because Java version of Eclipse typically doesn’t have support for C development. You could extend your Eclipse with C development tools by going to Help→Install New Software inside of Eclipse. Alternatively, you can just open the file with standard Eclipse text editor by selecting it and choosing Open With→Text Editor.
-{TRAN}有时候你打开 C 文件时，Eclipse 会调用外部编辑器而不是在编辑窗格打开。 这是因为通常用于 Java 开发的 Eclipse 环境不支持 C 开发。你可以通过  Help→Install New Software 为 Eclipse 安装 C 开发工具支持。或者可以使用右键菜单： Open With→Text Editor 强制在 eclipse 中打开。
+% You’ll notice that when you open the C file, it may open up in another editor outside of Eclipse. That’s because Java version of Eclipse typically doesn’t have support for C development. You could extend your Eclipse with C development tools by going to Help→Install New Software inside of Eclipse. Alternatively, you can just open the file with standard Eclipse text editor by selecting it and choosing Open With→Text Editor.
+
+在你打开C文件时，Eclipse可能会调用外部编辑器而不是在自己的编辑窗口中打开。这是因为用于Java开发的Eclipse还没有安装C开发工具的支持。要解决这个问题，你可以通过``Help→Install New Software``为Eclipse安装C的开发工具支持，也可以通过右键菜单``Open With→Text Editor``强制在Eclipse中打开。
 {/NOTE}
 
 
-{ORGI}Next, we provide the implementation of the Fibonacci algorithm in C in this fib.c file. The C versions of our algorithms are almost identical to the Java versions:
-{TRAN}C 版本的 Fibonacci 算法和 Java 版本并没有很大差别。 下面就是 fib.c 中的代码。
+% Next, we provide the implementation of the Fibonacci algorithm in C in this fib.c file. The C versions of our algorithms are almost identical to the Java versions:
 
+C版本的Fibonacci算法与Java版本差异不大。下面就是``fib.c``中的代码：
 
- **Example 15.2. jni/fib.c**
-
+**Example 15.2. jni/fib.c**
 {CODE}
 #include "com_marakana_FibLib.h" /* #{1} */
 
@@ -312,31 +347,31 @@ JNIEXPORT jlong JNICALL Java_com_marakana_FibLib_fibNI
 {/CODE}
 
 
-{ORGI} + We import com_marakana_FibLib.h, the header file that was produced when we called ``javah -jni com.marakana.FibLib``.
-{TRAN} + 首先需要导入头文件 com_marakana_FibLib.h 。这个文件是通过 ``javah -jni com.marakana.FibLib`` 命令生成的。
-{ORGI} + The actual recursive Fibonacci algorithm. This is fairly similar to the Java version.
-{TRAN} + 通过递归实现 Fibonacci 算法，和 Java 中的版本很相似。
-{ORGI} + An iterative version of Fibonacci. Again, very similar to the Java version.
-{TRAN} + 迭代版本的 Fibonacci 算法。
-{ORGI} + JNI provides this function to us. Copy-paste the prototype from //com_marakana_FibLib.h//, add variable names, and call the appropriate C function to produce the result.
-{TRAN} + JNI 函数，从 //com_marakana_FibLib.h// 中复制函数头，然后加上变量名称就可以了。
-{ORGI} + Same for the iterative signature of the method.
-{TRAN} + 迭代版本的函数也是一样。
+%  + We import com_marakana_FibLib.h, the header file that was produced when we called ``javah -jni com.marakana.FibLib``.
+%  + The actual recursive Fibonacci algorithm. This is fairly similar to the Java version.
+%  + An iterative version of Fibonacci. Again, very similar to the Java version.
+%  + JNI provides this function to us. Copy-paste the prototype from //com_marakana_FibLib.h//, add variable names, and call the appropriate C function to produce the result.
+%  + Same for the iterative signature of the method.
+
++ 导入头文件``com_marakana_FibLib.h``。这个文件是前面通过 ``javah -jni com.marakana.FibLib`` 命令生成的。
++ Fibonacci 算法的递归实现，与 Java 中的版本很相似。
++ Fibonacci 算法的迭代实现。
++ JNI中定义的接口函数，与``com_marakana_FibLib.h``的函数签名相对应。在这里我们为它加上变量名，然后调用前面定义的C函数。
++ 同上。
 
 
-{ORGI}Now that we have implemented C versions of Fibonacci, we want to build the shared library. To that, we need an appropriate Makefile.
-{TRAN}完成了 C 版本的 Fibonacci 后，就可以编译共享库了。此时需要使用 Makefile。
+% Now that we have implemented C versions of Fibonacci, we want to build the shared library. To that, we need an appropriate Makefile.
 
+Fibonacci算法的C部分已经实现，接下来就是构建共享库了。为此，我们需要一个合适的Makefile。
 
-{ORGI}=== The Makefile ===
-{TRAN}=== Makefile ===
+% === The Makefile ===
+=== Makefile ===
 
+% To build the native library, the ``Android.mk`` Makefile must describe our pieces. The file looks like this:
 
-{ORGI}To build the native library, the ``Android.mk`` Makefile must describe our pieces. The file looks like this:
-{TRAN}为了编译本地库，比如在 ``Android.mk`` 中定义要编译的文件，就像这样：
+要编译本地库，那就需要在``Android.mk``中给出编译项目的描述。如下：
 
- **Example 15.3. jni/Android.mk**
-
+**Example 15.3. jni/Android.mk**
 {CODE}
 LOCAL_PATH := $(call my-dir)
 
@@ -349,38 +384,44 @@ include $(BUILD_SHARED_LIBRARY)
 {/CODE}
 
 
-{ORGI}It is a part of the standard Android make system. All we are adding here is our specific input (//fib.c//) and our specific output (the //fib// module). The name of the module we specify is important and will determine the name of the library based on operating system convention. For example, on ARM-based systems, the output will be ``libfib.so`` file.
-{TRAN}它是 Android 构建系统的一部分。我们需要做的至少是定义输入（//fib.c//）和输出（//fib//模块）。模块名字将会决定生成的库的文件名。例如在 arm 平台上输出文件名会是 ``libfib.so``。
+% It is a part of the standard Android make system. All we are adding here is our specific input (//fib.c//) and our specific output (the //fib// module). The name of the module we specify is important and will determine the name of the library based on operating system convention. For example, on ARM-based systems, the output will be ``libfib.so`` file.
 
-{ORGI}Once we have this make file, we’re ready to initiate the build.
-{TRAN}写好 Makefile 已经就可以开始编译了。
+它是Android构建系统的一部分。我们在这里给出了输入文件(``fib.c``)和输出(``fib``模块)的定义。其中模块名会根据系统平台的不同而采用不同的命名规范，比如在ARM平台上，输出的文件名就是``libfib.so``。
 
-{ORGI}=== Building Shared Library ===
-{TRAN}=== 构建共享库 ===
+% Once we have this make file, we’re ready to initiate the build.
 
-{ORGI}Assuming you have the NDK installed properly, you can now build the native shared library by running //ndk//``/ndk-build`` in your project directory. Here, ndk refers to the directory where your NDK is installed.
-{TRAN}假设你已经安装好了 NDK 。现在可以通过在项目目录下运行 //ndk//``/ndk-build`` 来构建共享库。 //ndk// 是你的 NDK 安装目录。
+这就写好了Makefile，随后构建即可。
 
-{ORGI}At this point, you should have a subdirectory named lib containing your shared library. When you deploy the Fibonacci application in the next section, this library is packaged as part of the APK.
-{TRAN}一旦完成构建，你可以在名为 lib 的子目录下找到刚刚生成的文件。当你部署 APK 时，这些文件将会自动打包进去。
+
+% === Building Shared Library ===
+=== 构建共享库 ===
+
+% Assuming you have the NDK installed properly, you can now build the native shared library by running //ndk//``/ndk-build`` in your project directory. Here, ndk refers to the directory where your NDK is installed.
+
+假定你已经安装好了NDK，解下来就可以构建共享库了：切换到项目目录，执行//ndk//``/ndk-build``即可。其中//ndk//表示你的NDK安装目录。
+
+% At this point, you should have a subdirectory named lib containing your shared library. When you deploy the Fibonacci application in the next section, this library is packaged as part of the APK.
+
+构建完成之后，你可以见到一个新的子目录``lib``，里面放有刚刚生成的共享库文件。
 
 {NOTE}
-{ORGI}The shared library is by default compiled to run on the emulator, so it’s based on ARM architecture.
-{TRAN}默认情况下，共享库是基于 ARM 平台构建的。这样就可以在模拟器上运行了。
+% The shared library is by default compiled to run on the emulator, so it’s based on ARM architecture.
+
+共享库默认是面向ARM平台构建，这样可以方便在仿真器上运行。
 {/NOTE}
 
+% Finally, we need an application to put this library to good use.
 
-{ORGI}Finally, we need an application to put this library to good use.
-{TRAN}最后，需要一个应用程序来调用我们的库。
+在下一节，我们将共享库打包进APK文件，供应用程序调用。
 
-{ORGI}=== Fibonacci Activity ===
-{TRAN}=== Fibonacci Activity ===
+% === Fibonacci Activity ===
+=== Fibonacci Activity ===
 
-{ORGI}The Fibonacci Activity asks the user to input a number. Then it runs the four algorithms to compute Fibonacci value of that number. It also times the results and prints them to the screen. This activity basically uses the ``FibLib`` class that in turn uses //libfib.so// for its native part.
-{TRAN}Fibonacci Activity 允许用户输入一个数字。然后分别运行四种算法来计算这个值的 Fibonacci 序列。另外会把不同算法所耗的时间打印在屏幕上。这个 activity 调用 ``FibLib`` 和 //linfib.so// 完成计算。
+% The Fibonacci Activity asks the user to input a number. Then it runs the four algorithms to compute Fibonacci value of that number. It also times the results and prints them to the screen. This activity basically uses the ``FibLib`` class that in turn uses //libfib.so// for its native part.
 
- **Example 15.4. FibActivity.java**
+FibonacciActivity允许用户输入一个数字，分别运行四种算法计算这个值对应的Fibonacci数，并将不同算法花费的时间输出，供我们比较。这个Activity需要调用到``FibLib``和``linfib.so``。
 
+**Example 15.4. FibActivity.java**
 {CODE}
 package com.marakana;
 
@@ -451,44 +492,49 @@ public class Fibonacci extends Activity implements OnClickListener {
 {/CODE}
 
 
-{ORGI} + We convert the string we get from the user into a number.
-{TRAN} + 转换字符串到数字。
-{ORGI} + Before we start the calculation, we take the current timestamp.
-{TRAN} + 在计算前，保存当前时间。
-{ORGI} + We perform the actual Fibonacci calculation by invoking the appropriate static method in ``FibLib``. In this case, it’s the Java recursive implementation.
-{TRAN} + 通过 ``FibLib`` 的函数计算 Fibonacci 数列，这里调用的是 Java 递归版本。
-{ORGI} + We take another timestamp and subtract the previous one. The delta is the length of the computation, in milliseconds.
-{TRAN} + 把当前时间减去刚才保存的时间，就可以得到计算所用的时间，单位毫秒。
-{ORGI} + We do the same for the iterative Java implementation of Fibonacci.
-{TRAN} + 继续使用 Java 迭代算法计算。
-{ORGI} + Here we use the native recursive algorithm.
-{TRAN} + 使用本地递归算法。
-{ORGI} + And finally we use the native iterative algorithm.
-{TRAN} + 最后是本地迭代算法。
-{ORGI} + We format the output and print out the results on the screen.
-{TRAN} + 格式化输出并且打印在屏幕上，
+%  + We convert the string we get from the user into a number.
+%  + Before we start the calculation, we take the current timestamp.
+%  + We perform the actual Fibonacci calculation by invoking the appropriate static method in ``FibLib``. In this case, it’s the Java recursive implementation.
+%  + We take another timestamp and subtract the previous one. The delta is the length of the computation, in milliseconds.
+%  + We do the same for the iterative Java implementation of Fibonacci.
+%  + Here we use the native recursive algorithm.
+%  + And finally we use the native iterative algorithm.
+%  + We format the output and print out the results on the screen.
+
++ 将字符串转换为数字。
++ 在计算前，记录当前时间。
++ 通过 ``FibLib`` 的方法计算 Fibonacci 数，这里调用的是 Java 递归版本。
++ 将当前时间减去先前记录的时间，即可得到算法花费的时间，以毫秒为单位。
++ 使用 Java 的迭代算法执行计算。
++ 使用本地的递归算法。
++ 最后是本地的迭代算法。
++ 格式化输出并且打印在屏幕上，
 
 
+% === Testing It All Works ===
+=== 测试 ===
 
-{ORGI}=== Testing It All Works ===
-{TRAN}=== 测试 ===
+% At this point, we can fire up the Fibonacci application and run some tests on it. Keep in mind that larger values for //n// take quite a bit longer to process, especially using the recursive algorithms. One suggestion would be to keep //n// in the 25-30 range. Also keep in mind that we are doing all this processing on Activity’s main UI thread, and blocking that thread for a long period of time will lead to the Application Not Responding (ANR) error we talked about in __Figure 6.9, “Application Not Responding”__ . As an exercise, you may want to move the actual calculation into an AsyncTask as described in the section called  __“AsyncTask”__ to prevent blocking the main thread.
 
-{ORGI}At this point, we can fire up the Fibonacci application and run some tests on it. Keep in mind that larger values for //n// take quite a bit longer to process, especially using the recursive algorithms. One suggestion would be to keep //n// in the 25-30 range. Also keep in mind that we are doing all this processing on Activity’s main UI thread, and blocking that thread for a long period of time will lead to the Application Not Responding (ANR) error we talked about in __Figure 6.9, “Application Not Responding”__ . As an exercise, you may want to move the actual calculation into an AsyncTask as described in the section called  __“AsyncTask”__ to prevent blocking the main thread.
-{TRAN}现在可以使用 Fibonacci 完成一些测试了。 不过记住如果 //n// 的值很大时，会耗费非常长的时间来完成运算，特别是使用递归算法时。所以我们建议保存 //n// 的值在 25-30 之间。 另外由于计算是在主线程完成的，这样会阻塞很长时间并且让应用停止响应。就像  __Figure 6.9, “Application Not Responding”__ 那样。 作为练习，你可以试着把实际运算移到  __“AsyncTask”__ 中去，来防止阻塞主线程。
+到这里就可以做些测试了。需要留意的是，如果``n``的值比较大，那可能会消耗很长的计算时间，尤其是递归算法。另外计算是在主线程中进行，期间会影响到界面的响应，如果没有响应的时间过长，就有可能出现 //图6.9// 那样的``Application Not Responding``，影响测试结果。因此我建议将``n``的值设在25~30之间。
 
-{ORGI}As you run some tests, you may notice that the native version of the algorithm runs about one [order of magnitude http://en.wikipedia.org/wiki/Order_of_magnitude] faster than the Java implementation (__Figure 15.1, “Fibonacci of 33”__).
-{TRAN}经过一些试验以后，你会发现本地版本的算法几乎比 Java 版本快了一个数量级(__Figure 15.1, “Fibonacci of 33”__)。
+% As you run some tests, you may notice that the native version of the algorithm runs about one [order of magnitude http://en.wikipedia.org/wiki/Order_of_magnitude] faster than the Java implementation (__Figure 15.1, “Fibonacci of 33”__).
 
-	**Figure 15.1. Fibonacci of 33**
+经过一些试验以后，你会发现本地版本的算法几乎比 Java 版本快了一个量级(//图 15.1, "33的Fibonacci数"//)。
+
+	**图 15.1. 33的Fibonacci数**
 		[images/15-Fibonacci.png]
 
+%TALK: 此图坑爹。
 
-{ORGI}These results in themselves should provide enough motivation to consider moving some of your computationally intensive code into native code. NDK makes the job of integrating native code into your app much simpler.
-{TRAN}这样的结果充分说明了使用本地代码进行计算性的逻辑的必要性。使用 NDK 能使这个过程变得相对简单。
+% These results in themselves should provide enough motivation to consider moving some of your computationally intensive code into native code. NDK makes the job of integrating native code into your app much simpler.
 
-{ORGI}== Summary ==
-{TRAN}== 总结 ==
+从测试结果可以看出，本地代码对计算密集型应用的性能提升是很诱人的。通过NDK，可以使得本地代码的编写变得更加简单。
 
-{ORGI}Starting with the Gingerbread version of Android, NDK also supports Native Activities, a way to create an entire activity in C and still have it adhere to Activity lifecycle rules as discussed in the section called __“Activity Lifecycle”__. This further makes game development in Android easier.
-{TRAN}在 Android 2.3 姜饼后的版本中， NDK 支持使用本地代码编写 Activitiy。这样就可以完成使用 C 语言并且仍然能使应用符合 __“Activity Lifecycle”__ 中介绍的应用生命周期规则。因此可以简化 Android 游戏开发的过程。
+% == Summary ==
+== 总结 ==
+
+% Starting with the Gingerbread version of Android, NDK also supports Native Activities, a way to create an entire activity in C and still have it adhere to Activity lifecycle rules as discussed in the section called __“Activity Lifecycle”__. This further makes game development in Android easier.
+
+在Android 2.3 Gingerbread版本中，NDK引入了对本地Activity的支持。这样即可通过C语言直接编写Activity，从而简化Android游戏的开发过程。
 

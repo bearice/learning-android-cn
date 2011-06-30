@@ -145,7 +145,7 @@ Eclipse以项目为单位管理用户的工作，项目又都位于workspace中�
 
 % In Eclipse, choose File→New→Android Project. Sometimes (especially the first time you run Eclipse) the Android tools may not be appear there right away. They should show up in the future after you’ve used them for the first time. If Android Project is not an option under File→New, choose Other and look for Android Project in there.
 
-进入Eclipse，选择 File→New→Android Project 。有时菜单里可能会没有Android Project一项（尤其是在第一次启动Eclipse的时候），这时选择Other找到Android Project即可。只要选择过一次，它就会一直显示在菜单里。
+进入Eclipse，选择 File→New→Android Project 。有时菜单里可能没有Android Project这一条目（尤其是在第一次启动Eclipse的时候），这时可以选择``Other``找到Android Project。只要选择过一次，它就会一直显示在菜单里。
 
 % In the new project dialog window, fill out the following:
 
