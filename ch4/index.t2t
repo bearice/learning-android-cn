@@ -69,7 +69,7 @@
 {TRAN}Activity的创建、销毁、管理皆由Activity Manager全权负责。如果用户首次启动了某程序，Activity Manager会负责程序界面的初始化与显示；如果用户要切换界面，Activity Manager将原先的界面隐藏而不是销毁，这样可以加速下次访问；Activity Manager也负责销毁长时间未访问的Activity，为当前活跃的Activity腾出更多内存空间。引入Activity Manager机制的动机就是提升用户界面的速度，这对用户体验很重要。
 
 %	Figure 4.1. Activity Lifecycle
-	Figure 4.1. Activity生命周期
+	图 4.1. Activity生命周期
 		[images/04-ActivityLifecycle.png]
 
 {ORGI}Programming for Android is conceptually different than programming for some other environments. In Android, you find yourself more responding to certain changes in the state of your application rather than driving that change yourself. It is a managed, container-based environment similar to programming for Java applets or servlets. So, when it comes to activity lifecycle, you don’t get to say what state the activity is in but you have plenty of opportunity to say what happens on transitions from state to state. [增加 Figure 4.1, “Activity life cycle” shows the states that an activity can go through.]

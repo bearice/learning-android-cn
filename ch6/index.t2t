@@ -1224,7 +1224,7 @@ Android SKD提供了一个非常有用的工具，那就是Hierarchy Viewer。�
 
 % Hierarchy Viewer allows you to attach to any Android device, emulator or physical phone. You can then introspect the structure of the current view. It shows you all the widgets currently loaded in memory, their relationship to each other, and all their properties. You can introspect not just your screens but screens of any application on your device. This is also a good way to see how some other applications are structured.
 
-Hierarchy View可以用到任何Android设备、模拟器或者真机上。它能列出内存中的所有控件，展示它们之间的关系以及各自的属性，供你查看当前界面的结构。它对设备上运行的所有程序都有效，因此也是查看他人程序结构的好方法。
+Hierarchy View可以用到任何Android设备、仿真器或者真机上。它能列出内存中的所有控件，展示它们之间的关系以及各自的属性，供你查看当前界面的结构。它对设备上运行的所有程序都有效，因此也是查看他人程序结构的好方法。
 
 **图 6.16. Hierarchy Viewer**
 	[images/06-HierarchyViewer.png]

@@ -839,6 +839,6 @@ private class Updater extends Thread {
 
 下图展示了目前为止我们已经完成的部分。完整图参见 //图5.4//。
 
-	**Figure 9.1. Yamba完成图**
+	**图 9.1. Yamba完成图**
 		[images/09-Yamba-4.png]
 

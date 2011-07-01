@@ -522,7 +522,7 @@ public class Fibonacci extends Activity implements OnClickListener {
 
 经过一些试验以后，你会发现本地版本的算法几乎比 Java 版本快了一个量级(//图 15.1, "33的Fibonacci数"//)。
 
-	**图 15.1. 33的Fibonacci数**
+	**图 15.1. Fibonacci算法：33**
 		[images/15-Fibonacci.png]
 
 %TALK: 此图坑爹。

@@ -167,7 +167,7 @@ Eclipse以项目为单位管理用户的工作，项目又都位于workspace中�
 + "minimum SDK version"是这一应用所支持目标平台的最低版本，以API Level为单位。若想要得到较高的兼容性，就选择一个较低的版本。在这里我们不需要考虑兼容性，因此选择8，对应Android 2.2。
 + 最后单击Finish按钮，Eclipse就会新建出一个项目。接下来，我们依次观察一下在这一环节中新建出来的文件。
 
-	Figure 3.2. HelloWorld New Project Window
+	**图 3.2. New Android Project窗口**
 		[images/03-NewProject.png]
 
 
@@ -316,7 +316,7 @@ public class HelloWorld extends Activity {
 
 打开Android SDK and AVD Manager：可以在Eclipse中单击[images/03-icon_android.png]，也可以在SDK的tools目录中执行``android``命令。
 
-	Figure 3.3. Android SDK and AVD Manager
+	**图 3.3. Android SDK与AVD Manager**
 		[images/03-AndroidSDKandADVManager.png]
 
 % From within Android SDK and AVD Manager, you can choose New… and a Create New AVD dialog window will pop up. In this dialog, you specify the parameters for your new AVD. The name is any name you choose. Target is what you what to have installed as version of Android on this particular AVD. The list of possible targets is based on platforms and add-ons that you have installed into your SDK. If you don’t have any targets, go back to Android SDK and AVD Manager and choose Available packages tab to install at least one platform, such as Android 2.3 - API level 9, for example [for example, Android 2.3 - API level 9].
@@ -327,14 +327,14 @@ public class HelloWorld extends Activity {
 
 AVD中也有一个SD卡，你能以MB为单位指明它的大小。Skin表示虚拟设备的观感。通过Hardware选项可以详细设置AVD的硬件参数，选择支持的特性。
 
-	Figure 3.4. New AVD Dialog
+	**图 3.4. 新建AVD的对话框**
 		[images/03-CreateNewAVD.png]
 
 % Once you are done with this dialog, you will have and AVD in your list. Go ahead and start it. An emulator will pop up [增加 (see Figure 3.5, “Emulator”).].
 
 配置完毕，就可以在列表中见到一个新的AVD。好的，运行它仿真器就出来了。
 
-	Figure 3.5. Emulator
+	**图 3.5. 仿真器**
 		[images/03-Emulator.png]
 
 % === An Emulator Versus a Physical Phone ===

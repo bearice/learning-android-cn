@@ -50,7 +50,7 @@
 
 首先创建一个资源文件``prefs.xml``——它用来声明首选项界面的内容。创建它的最简单方法就是使用Eclipse的New Android XML工具：可以选择File→New→Android XML File，也可以点击菜单栏上的[images/a-plus.png]按钮。
 
-**Figure 7.1. New Android XML File**
+**图 7.1. New Android XML File**
 
 [images/07-NewAndroidXMLFile.png]
 
@@ -118,16 +118,15 @@
 
 要查看实际的xml代码，可以单击窗口底下的标签。
 
-**Figure 7.2. Prefs.xml in Developer-friendly view**
+**图 7.2. Prefs.xml 的图形化编辑界面**
 
 [images/07-prefs_xml.png]
 
-[增加 The raw XML for the preference resource looks like the code shown in Example 7.1, “res/xml/prefs.xml”.]
+% [增加 The raw XML for the preference resource looks like the code shown in Example 7.1, “res/xml/prefs.xml”.]
 
 它的内容大致如下：
 
 **Example 7.1. res/xml/prefs.xml**
-
 {CODE}
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
@@ -323,7 +322,7 @@ public class PrefsActivity extends PreferenceActivity { // #{1}
 系统的资源文件都在SDK相应平台的目录之下。比如你使用Android 9 (Gingerbread)，那它的实际地址就在``android-sdk/platforms/android-9/data/res/``。
 {/TIP}
 
-**Figure 7.3. Menu.xml in Developer-friendly view**
+**图 7.3. Menu.xml的图形化编辑界面**
 
 [images/07-menu_xml.png]
 
@@ -448,7 +447,7 @@ public boolean onOptionsItemSelected(MenuItem item) {
 
 到这里，你已经可以查看新的选项界面了。打开程序，在消息界面中选择Menu→Prefs即可。不妨尝试更改用户名与密码的设置再重启应用程序，查看选项信息是否依然存在。
 
-**Figure 7.4. PrefsActivity**
+**图 7.4. PrefsActivity**
 
 [images/07-PrefsActivity-1.png]
 
@@ -593,7 +592,7 @@ Android设备主要有三个分区，即：
 - SDCard分区：/sdcard/
 - 用户数据分区：/data/
 
-**Figure 7.5. File System as seen via File Explorer in Eclipse**
+**图 7.5. 通过Eclipse的File Explorer查看文件系统**
 
 [images/07-FileSystem.png]
 
@@ -713,9 +712,9 @@ adb shell是adb的另一个重要命令，它允许你访问设备(真机或者�
 
 % Figure 7.6, “Yamba Completion” illustrates what we have done so far as part of the design outlined in Figure 5.4, “Yamba Design Diagram”:
 
-图7.6, //"Yamba Completion"//展示了目前为止我们已完成的部分。全图参见图5.4, //"Yamba Design Diagram"//。
+//图7.6// 展示了目前为止我们已完成的部分。完整图参见 //图5.4//。
 
-**Figure 7.6. Yamba Completion**
+**图 7.6. Yamba完成图**
 
 [images/07-Yamba-2.png]
 

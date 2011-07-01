@@ -22,7 +22,7 @@ Service 独立于 Activity 执行，无需理会 Activity 的状态如何。比�
 
 % A service can be bound or unbound. Bound services can provide more specific APIs to other applications via an interface called AIDL (Android Interface Definition Language)[增加 see Chapter 14, The Android Interface Definition Language)]. For now, we’ll focus on unbound services, where the lifecycle of a service is not tied to the lifecycle of the activities that started them. The only states for a bound services are started and stopped (destroyed).
 
-Service分为Bound Service和Unbound Service两种。Bound Service 提供了一组API，以允许其他应用通过 AIDL(Android Interface Definition Language) 与之进行交互。不过在本章中，我们主要关注的是 Unbound Service，它只有两种状态：执行( Started ) 或停止( Stopped 或 Destoyed )。而且它的生存周期与启动它的Activity无关。
+Service分为Bound Service和Unbound Service两种。Bound Service 提供了一组API，以允许其他应用通过 AIDL(Android Interface Definition Language，参见 //第十四章//) 与之进行交互。不过在本章中，我们主要关注的是 Unbound Service，它只有两种状态：执行( Started ) 或停止( Stopped 或 Destoyed )。而且它的生存周期与启动它的Activity无关。
 
 % In this chapter, you will create a service. The purpose of this service is to run in the background and update your app with latest timeline from the user’s Twitter account. Initially, the service will just print your friends' timeline to the log file. The service will create a separate thread, so you will learn about concurrency in this chapter as well. You will also learn about Toasts and get to understand the context in which services and 
 
@@ -78,7 +78,6 @@ Application 对象中保存着程序各部分所共享的状态。只要程序�
 %HINT: 原文"onTerimanate"系笔误。
 
 **Example 8.1. YambaApplication.java**
-
 {CODE}
 package com.marakana.yamba3;
 
@@ -454,11 +453,11 @@ public boolean onOptionsItemSelected(MenuItem item) {
 
 
 % ===Testing it all works [修改为 Testing the Service] ===
-=== 测试正常运行 ===
+=== 测试Service ===
 
 % At this point, you can restart your application. Note that you do not need to restart the emulator. When your application starts up, click on the menu and your new buttons should appear in the menu options. You can now freely click on start and stop service buttons.
 
-现在可以重启你的程序(留意模拟器是不需要重启的)。当你的程序启动时，单击菜单选项中新增的按钮，即可随意控制 Service 的启动与停止。
+现在可以重启你的程序(仿真器是不需要重启的)。当你的程序启动时，单击菜单选项中新增的按钮，即可随意控制 Service 的启动与停止。
 
 % To verify that your service is working, open up your Logcat and look for appropriate log messages that you generated in your service code. Remember from the section called “Logging in Android” that you can view the logcat both in Eclipse and via the command line.
 
@@ -466,9 +465,9 @@ public boolean onOptionsItemSelected(MenuItem item) {
 
 % Another way to verify that the service is running is to go to the Android Settings app and see it listed. To do that, go to Home screen, press Menu, and choose Settings. Then go to Applications→Running services. You should see your service listed, as shown in Figure 8.2, “Running Services”.
 
-检验Service正常执行的另一条途径是，进入//Android Settings//查看它是否列出在里面：回到主屏幕，点击``Menu``，选择``Setting``，然后进入``Applications``→``Running services``。正常的话，你的Service会在里边显示出来。如图8.2,//Running Services//。
+检验Service正常执行的另一条途径是，进入//Android Settings//查看它是否出现在里面：回到主屏幕，点击``Menu``，选择``Setting``，然后进入``Applications``→``Running services``。正常的话，你的Service就会显示在里面。如 //图8.2//。
 
-**Figure 8.2. Running Services**
+**图 8.2. Running Services**
 
 	[images/08-RunningServices.png]
 
@@ -796,7 +795,7 @@ public class UpdaterService extends Service {
 
 
 % ===Testing it all works [修改为 Testing the Service]===
-=== 测试运行正常 ===
+=== 测试Service ===
 
 % Now we can run our application, start the service, and see the list of our friends' statuses in the logcat:
 
@@ -819,9 +818,9 @@ D/UpdaterService(  310): Marko Gargenta: right!
 
 % Figure 8.3, “Yamba Completion” illustrates what we have done so far as part of the design outlined in Figure 5.4, “Yamba Design Diagram”:
 
-图8.3, //"Yamba Completion"//展示了目前为止我们已完成的部分。全图参见图5.4, //"Yamba Design Diagram"//。
+//图8.3//展示了目前为止我们已完成的部分。完整图参见 //图5.4//。
 
-**Figure 8.3. Yamba Completion**
+**图 8.3. Yamba完成图**
 
 	[images/08-Yamba-3.png]
 
