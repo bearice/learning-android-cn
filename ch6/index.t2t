@@ -1021,7 +1021,7 @@ public class StatusActivity extends Activity implements OnClickListener,
 
 % For starters, we want to add a background to our screen. This background is going to be some kind of graphics file. In Android, most images go to a resource folder called drawable. You may notice that you already have three folders with such name:
 
-先给界面加上背景图片。在Android中，多数图片都是放在一个名为``drawable``的资源文件夹中。可以留意，我们有三个这样的文件夹：
+先给界面加上背景图片。在Android中，多数图片都是放在一个名为``drawable``的资源目录中。可以留意，我们有三个这样的目录：
 
 % - /res/drawable-hdpi for devices with high density screens
 % - /res/drawable-mdpi for devices with medium density screens
@@ -1033,7 +1033,7 @@ public class StatusActivity extends Activity implements OnClickListener,
 
 % We are going to create another drawable folder called just /res/drawable. To do that, right-click on the res folder and choose New→Folder. For name, enter drawable. You can now put your graphics that are independent of screen density in this folder. We’re going to assume you found some cool background graphics and that you saved it in there under the name background.png. While Android supports many different file formats, PNG is preferred since to the once-controversial GIF standard because PNG is lossless and doesn’t require any patent licenses.
 
-我们新建另一个文件夹，名为``/res/drawable``。右键单击``res``文件夹，选择``New→Folder``，输入名称为``drawable``。然后把分辨率无关的图片都放在这里即可。假定你已经找到了不错的背景图，并保存为``background.png``。Android支持多种图片格式，但我们在这里优先选择PNG格式而非GIF，这是因为PNG是无损格式，而且不需要专利许可。
+我们新建另一个目录，名为``/res/drawable``。右键单击``res``目录，选择``New→Folder``，输入名称为``drawable``。然后把分辨率无关的图片都放在这里即可。假定你已经找到了不错的背景图，并保存为``background.png``。Android支持多种图片格式，但我们在这里优先选择PNG格式而非GIF，这是因为PNG是无损格式，而且不需要专利许可。
 
 {TIP}
 % 	While PNG officially stands for Portable Network Graphics, it is also commonly known as PNG’s Not Gif to reflect its departure from controversial GIF standard.
@@ -1183,7 +1183,7 @@ Android允许你提供多种资源文件。比如你可以提供不同版本的`
 
 % Android provides for all these cases in an elegant way. Basically, you simply need to create alternative folders for specific constraints. For example, our standard layout files go into /res/layout folder. Well, if we wanted to provide an alternative layout to be used specifically in landscape mode, we’d simply create a new file /res/layout-land/status.xml. And if you wanted to provide translated version of your strings.xml file to be used for users that are in French part of Canada, you’d put it in file called res/values-fr-rCA/strings.xml.
 
-针对以上的诸多情况，Android给出了一种优雅的解决方案：只需要把特定的资源文件放到另一个文件夹里即可。比如，我们默认的布局文件在``/res/layout``目录，如果为landscape模式提供单独布局，那就新建一个文件到``/res/layout-land/status.xml``。同样，如果我们想为加拿大的用户提供法语版本，那就新建一个文件到``res/values-fr-rCA/strings.xml``。
+针对以上的诸多情况，Android给出了一种优雅的解决方案：只需要把特定的资源文件放到另一个目录中即可。比如，我们默认的布局文件在``/res/layout``目录，如果为landscape模式提供单独布局，那就新建一个文件到``/res/layout-land/status.xml``。同样，如果我们想为加拿大的用户提供法语版本，那就新建一个文件到``res/values-fr-rCA/strings.xml``。
 
 % As you see from these couple of examples, the way alternative resources work is by specifying the qualifiers in the name of the resource folder. In case of French Canadian strings, Android knows that the first qualifier -fr refers to language and second qualifier -rCA specifies that the region is Canada. In both cases, we use Two-letter ISO codes to specify the country. So in this case, if the user is in Quebec for instance, and her device is configured to favor French language, Android will look for string resources in /res/values-fr-rCA/strings.xml file. If it doesn’t find a specific resource, it will fall back to default /res/values/strings.xml file. Also, if the user in France, Android in this case will use default resource since our French Canadian qualifiers do not match French for France.
 

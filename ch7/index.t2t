@@ -653,7 +653,7 @@ Android框架提供了许多相关的辅助函数，允许应用程序访问文�
 
 % When you create a new app, you assign your Java code to a specific package. Typically, this package follows the Java convention of reverse domain name plus app name. For example, Yamba app is in com.marakana.yamba package. So, once installed, Android creates a special folder just for this app under /data/data/com.marakana.yamba/. This folder is the cornerstone of our private secured file system dedicated to each app.
 
-新建应用程序的时候，你需要为Java代码指定一个package，按约定，它的名字一般都是逆序的域名，比如``com.marakana.yamba``。应用安装之后，Android会为应用单独创建一个文件夹``/data/data/com.marakana.yamba/``。其中的内容就是应用程序的私有数据。
+新建应用程序的时候，你需要为Java代码指定一个package，按约定，它的名字一般都是逆序的域名，比如``com.marakana.yamba``。应用安装之后，Android会为应用单独创建一个目录``/data/data/com.marakana.yamba/``。其中的内容就是应用程序的私有数据。
 
 %TALK: 查了下，这些数据还不是加密的，似乎把SD卡偷走就能读出来里面的数据...没搞懂这安全是什么来头。 -fleuria
 
