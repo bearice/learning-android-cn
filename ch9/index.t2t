@@ -145,7 +145,7 @@ DbHelper类提供了自己的封装来简化SQL操作。经观察人们发现，
 
 % Finally, the DbHelper methods are more robust and less likely to pass through the compiler with undetected errors. When you include SQL in a program, it’s easy to create errors that turn up only at run time.
 
-最后，使用 ``DbHelper`` 有助于提高程序的健壮性，许多编程错误可以在编译时发现。若是使用 SQL，这些错误一般得到运行时才能被发现。
+最后，使用 ``DbHelper`` 有助于提高程序的健壮性，使得许多编程错误可以在编译时发现。若是使用 SQL，这些错误一般得到运行时才能被发现。
 
 % With so-called [Data Definition Language http://en.wikipedia.org/wiki/Data_Definition_Language] part of SQL language, there isn’t as much support in Android framework for prepared statements. That’s why we did use execSQL() to run the code to CREATE TABLE.... That is okay since that code doesn’t depend on any user input and as such SQL injection is not possible. Additionally, that code runs very rarely to have to worry about the performance implications.
 
@@ -248,7 +248,7 @@ public class DbHelper1 extends SQLiteOpenHelper { //#{1}
 % + The following are some database constants specific to our application. It is handy to define these as constants to that we can refer to them from other classes.
 + 定义数据库相关的一些常量，方便在其它类中引用它们。
 % + We override the SQLiteOpenHelper by passing the constants to the super and retaining the local reference to the context
-+ 重载SQLiteOpenHelper的构造函数。将前面定义的几个常量传递给父类，并保留对``context``的引用。
++ 覆盖SQLiteOpenHelper的构造函数。将前面定义的几个常量传递给父类，并保留对``context``的引用。
 % + This is the actual SQL that we’ll pass on to the database in order to have it create the appropriate SQL schema that we need.
 + 拼接将要传递给数据库的SQL语句。
 % + Once we have our SQL to create the database by running execSQL() on the database object that was passed into onCreate().

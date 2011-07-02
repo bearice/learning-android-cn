@@ -273,8 +273,7 @@ class PostToTwitter extends AsyncTask<String, Integer, String> {
 
 % Next, we want to override some of the main lifecycle methods:
 
-接下来，我们需要重载几个状态相关的方法：
-%TALK: "main lifecycle methods"都是在状态迁移时调用，不知“状态相关的方法”是否合适。
+接下来，我们需要覆盖几个相关的方法：
 
 % + ``onCreate()`` Called when the service is created first time.
 % + ``onStartCommand()`` Called when the service is started.
@@ -287,11 +286,11 @@ class PostToTwitter extends AsyncTask<String, Integer, String> {
 
 % To do that, you can use Eclipse tool Source→Override/Implement Methods and select those three methods.
 
-Eclipse 提供了方便重载的工具。进入 Source→Override/Implement Methods ，选上这三个方法即可。
+这里可以使用Eclipse的辅助工具，进入 Source→Override/Implement Methods ，选上这三个方法即可。
 
 % At this point, in spirit of producing a minimally working app at each stage of learning, we’ll write just a little code that logs a note in each of the overridden methods. So the shell of our service looks like this [改为 the code in Example 8.3, “UpdaterService.java, version 1”.]:
 
-鉴于“最小可用”原则，我们在学习的时候也该从简入手。到这里，先只在每个重载的方法中记录些日志。我们Service的样子大致如下：
+鉴于“最小可用”原则，我们在学习的时候也该从简入手。到这里，先只在每个覆盖的方法中记录些日志。我们Service的样子大致如下：
 
 **Example 8.3. UpdaterService.java, version 1**
 

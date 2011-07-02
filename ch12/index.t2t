@@ -120,7 +120,7 @@ StatusData statusData;
 
 % To insert a record into a database via the Content Provider interface, we need to override the insert() method. The caller provides the URI of this Content Provider (without an ID) and the values to be inserted. A successful call to insert the new record returns the ID for that record. We end by returning a new URI concatenating the provider’s URI with the ID we just got back.
 
-要通过ContentProvider插入记录，我们需要重载``insert()``方法。调用者需要提供ContentProvider的URI(省略ID)和待插入的值，插入成功可以得到新记录的ID。为此，我们将新记录对应的URI作为返回值。
+要通过ContentProvider插入记录，我们需要覆盖``insert()``方法。调用者需要提供ContentProvider的URI(省略ID)和待插入的值，插入成功可以得到新记录的ID。为此，我们将新记录对应的URI作为返回值。
 
 {CODE}
 @Override
@@ -261,7 +261,7 @@ public int delete(Uri uri, String selection, String[] selectionArgs) {
 
 % To query the data via a Content Provider, we override the query() method. This method has a long list of paramaters, but usually we just forward most of them to the database call with the same name.
 
-通过ContentProvider查询数据，我们需要重载``query()``方法。这个方法的参数有很多，不过大多只是原样交给数据库即可，我们不需要多做修改。
+通过ContentProvider查询数据，我们需要覆盖``query()``方法。这个方法的参数有很多，不过大多只是原样交给数据库即可，我们不需要多做修改。
 
 {CODE}
 @Override
@@ -396,7 +396,7 @@ Yamba小部件不会太复杂，仅仅展示最近的消息更新即可。为创
 
 % YambaWidget is the main class for our widget. It is a subclass of AppWidgetProvider, a special system class that makes widgets. This class itself is a subclass of BroadcastReceiver, so our Yamba Widget is automatically a broadcast receiver. Basically, whenever our widget is updated, deleted, enabled, or disabled, we’ll get a broadcast intent with that information. So this class inherits the onUpdate(), onDeleted(), onEnabled(), onDisabled(), and onReceive() callbacks. We can override any of these, but typically we care mostly about the updates and general broadcasts we receive.
 
-YambaWidget就是这个小部件所对应的类，它以AppWidgetProvider为基类。后者是Android框架为创建小部件所专门提供的一个类，它本身是BroadcastReceiver的子类，因此YambaWidget自然也算是一个BroadcastReceiver。在小部件更新、删除、启动、关闭时，我们都会相应地收到一个BroadcastIndent。因此，这个类继承着``onUpdate()``、``onDeleted()``、``onEnabled()``、``onDisabled()``和``onReceive()``几个回调方法，我们可以重载它们。在这里，只重载``onUpdate()``和``onReceive()``即可。
+YambaWidget就是这个小部件所对应的类，它以AppWidgetProvider为基类。后者是Android框架为创建小部件所专门提供的一个类，它本身是BroadcastReceiver的子类，因此YambaWidget自然也算是一个BroadcastReceiver。在小部件更新、删除、启动、关闭时，我们都会相应地收到一个BroadcastIndent。因此，这个类继承着``onUpdate()``、``onDeleted()``、``onEnabled()``、``onDisabled()``和``onReceive()``几个回调方法，我们可以覆盖它们。在这里，只覆盖``onUpdate()``和``onReceive()``即可。
 
 % Now that we understand the overall design of the widget framework, here’s how we implement it.
 

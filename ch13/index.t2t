@@ -796,7 +796,7 @@ IntentService是Service的一个子类，也是通过``startService()``发出的
 
 % Unlike a regular service, we don’t override onCreate(), onStartCommand(), onDestroy(), and onBind(), but rather a new onHandleIntent() method. This method is where we want to put our code that goes online and handles the network updates. Also, unlike a regular Service, an IntentService has a default constructor that needs to be provided.
 
-同一般的Service不同，我们不需要重载``onCreate()``、``onStartCommand()``、``onDestroy()``及``onBind()``，而是重载一个``onHandleIntent()``方法。网络操作的相关代码就放在这里。另外IntentService要求我们重载一个构造函数，这也是与一般Service不同的地方。
+同一般的Service不同，我们不需要覆盖``onCreate()``、``onStartCommand()``、``onDestroy()``及``onBind()``，而是覆盖一个``onHandleIntent()``方法。网络操作的相关代码就放在这里。另外IntentService要求我们实现一个构造函数，这也是与一般Service不同的地方。
 
 % In short, instead of creating a separate thread and delaying network updates in regular Service, we can simplify our code by using an IntentService to run status updates on its worker thread. Now we just need something to periodically wake up our IntentService so it knows it needs to handle the updating job. For that, we’ll use the Alarm manager, another system service.
 

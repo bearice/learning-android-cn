@@ -11,7 +11,7 @@
 
 % By the end of this chapter, your app will be able to post new tweets, as well as pull them from Twitter, store them in local database, and let the user read the statuses in a nice and efficient UI. At that point, your app will have three activities and a service.
 
-前面我们已经实现了发送消息、从Twitter读取消息、缓存在本地数据库等功能，到本章结束，将再实现一个美观高效的UI允许用户阅读消息。到这里，你的程序已拥有三个Activity和一个Service。
+前面我们已经实现了发送消息、从Twitter读取消息、缓存入本地数据库等功能，在这里，我们再实现一个美观高效的UI允许用户阅读消息。到本章结束，Yamba将拥有三个Activity和一个Service。
 
 
 ==TimelineActivity==
@@ -49,7 +49,7 @@
 
 % A ScrollView can only contain one direct child. If you want to combine multiple views into a single view that scrolls, you need to first organize those views into another layout, like you did previously in the section called “StatusActivity Layout”, and than add that layout into ScrollView.
 
-ScrollView中只能存放单独的一个子元素。要让多个View一起滚动，就需要像前面``StatusActivity Layout``一节所做的那样，先把它们放在另一个Layout里，随后把整个Layout添加到ScrollView里。
+ScrollView中只能存放单独一个子元素。要让多个View一起滚动，就需要像前面``StatusActivity Layout``一节所做的那样，先把它们放在另一个Layout里，随后把整个Layout添加到ScrollView里。
 
 % Typically you will want ScrollView to take all the available space on the screen. Usually, therefore you will specify its layout width and height as fill_parent.
 
@@ -57,11 +57,11 @@ ScrollView中只能存放单独的一个子元素。要让多个View一起滚动
 
 % A ScrollView is usually not manipulated from Java, so it doesn’t require an id.
 
-ScrollView通常不需要使用Java代码控制其行为，因此无需id。
+一般很少通过Java代码控制ScrollView，因此它不需要id。
 
 % In this example, we wrap our TextView with a ScrollView so that if there’s a lot of text to display, ScrollView automatically adds scroll bars.
 
-在这个例子中，我们使用ScrollView把TextView包了起来。以后TextView中的内容变多体积变大，ScrollView就会自动为它加上滚动条。
+在这个例子中，我们使用ScrollView将TextView包了起来。以后TextView中的内容变多体积变大，ScrollView就会自动为它加上滚动条。
 
 **Example 10.1. res/layout/timeline_basic.xml**
 {CODE}
@@ -111,7 +111,7 @@ ScrollView通常不需要使用Java代码控制其行为，因此无需id。
 
 % The method we almost universally override in any activity is onCreate(). This is a great place for us to initialize the database. The flip side of the coin is onDestroy(), a good place to clean up anything that we create in onCreate(). In this case, we close the database in onDestroy(). Since we’d like to have the data as fresh as possible, we put the code for querying the database and outputting the data in onResume(), the method called every time this activity is brought up front. Here’s what our code looks like:
 
-我们通常会为每个Activity都重载一个``onCreate()``，这是初始化数据库的好地方。与之对应，我们在``onDestroy()``中清理``onCreate()``中创建的资源，也就是关闭数据库。我们希望显示的消息尽可能最新，因此把查询数据库的代码放在``onResume()``中，这样在界面每次显示时都会执行。代码如下：
+我们通常会为每个Activity都实现一个``onCreate()``，这是初始化数据库的好地方。与之对应，我们在``onDestroy()``中清理``onCreate()``中创建的资源，也就是关闭数据库。我们希望显示的消息尽可能最新，因此把查询数据库的代码放在``onResume()``中，这样在界面每次显示时都会执行。代码如下：
 
 {CODE}
 package com.marakana.yamba5;
@@ -186,9 +186,9 @@ public class TimelineActivity1 extends Activity { // #{1}
 + 通过dbHelper打开数据库文件之后，我们需要它的``getReadableDatabase()``或``getWritableDatabase()``才可以得到实际的数据库对象。在这里我们只需读取Timeline的相关数据，因此按只读方式打开数据库。
 + 我们得记着关闭数据库并释放资源。数据库是在``onCreate()``中打开，因此可以在``onDestroy()``中关闭。注意``onDestroy()``只有在系统清理资源时才被调用。
 + 调用``query()``方法从数据库中查询数据，返回一个Cursor对象作为迭代器。参数似乎多的过了头，不过几乎都是对应着SQL的SELECT语句的各个部分。在这里也就相当与``SELECT * FROM timeline ORDER BY created_at DESC``。这些``null``表示我们并没有使用SQL语句中相应的部分，比如``WHERE``, ``GROUPING``, 与 ``HAVING``等。
-+ ``startManagingCursor()``用于提示Activity自动管理Cursor的生命周期，使之同自己保持一致。“保持一致”的意思是，它能保证在Activity销毁时，同时释放掉Cursor关联的数据，这样有助于优化垃圾收集的性能。没有自动管理的话，就只能在各个重载函数中添加代码手工地管理Cursor了。
++ ``startManagingCursor()``用于提示Activity自动管理Cursor的生命周期，使之同自己保持一致。“保持一致”的意思是，它能保证在Activity销毁时，同时释放掉Cursor关联的数据，这样有助于优化垃圾收集的性能。如果没有自动管理，那就只能在各个方法中添加代码，手工地管理Cursor了。
 + cursor——回忆下``Cursors``一节的内容——即通过``query()``方法查询数据库所得的结果。按照表的形式，暂存多行多列的数据。每一行都是一条独立的记录——比如Timeline中的一条消息——而其中的列则都是预先定义的，比如``_id``, ``created_at``, ``user``以及``txt``。前面提到Cursor是个迭代器，我们可以通过它在每次迭代中读取一条记录，而在没有剩余数据时退出迭代。
-+ 对于cursor的当前记录，我们可以通过类型与列号来获取其中的值。由此，cursor.getString(3)返回一个字符串，表示消息的内容；cursor.getLong(1)返回一个数值，表示消息创建时的时间戳。但是，把列号硬编码在代码中不是个好习惯，因为数据库的原型一旦有变化，我们就不得不手工调整相关的代码，而且可读性也不好。更好的方法是，使用列名——回想下，在第九章[数据库 #ch9]我们曾定义过C_USER与C_TEXT等字符串——调用``cursor.getColumnIndex()``得到列号，然后再取其中的值。
++ 对于cursor的当前记录，我们可以通过类型与列号来获取其中的值。由此，cursor.getString(3)返回一个字符串，表示消息的内容；cursor.getLong(1)返回一个数值，表示消息创建时的时间戳。但是，把列号硬编码在代码中不是个好习惯，因为数据库的原型一旦有变化，我们就不得不手工调整相关的代码，而且可读性也不好。更好的方法是，使用列名——回想下，我们曾在 //第九章//中定义过C_USER与C_TEXT等字符串——调用``cursor.getColumnIndex()``得到列号，然后再取其中的值。
 + 使用``String.t()``对每行输出进行格式化。在这里我们选择使用TextView控件显示数据，因此只能显示文本，或者说有格式的文本。我们在以后的迭代中更新这里。
 + 最后把新的一行追加到textTimeline的文本中，用户就可以看到了。
 
@@ -254,13 +254,13 @@ ListActivity就是含有一个ListView的Activty，我们完全可以拿它作�
 
 % ListActivity is slightly easier to use in cases where there the builtin ListView is the only widget in the activity. ListActivity also makes it really easy to assign an existing array of elements to its list via the XML binding. However, since we are using a Cursor for data and not an array (because our data comes from the database), and since we do have an additional TextView for the scrollview’s title, the simplicity of ListActivity in this case is outweighed by customization we require.
 
-如果Activity里只有一个ListView，使用ListActivity可以稍稍简化下代码。有XML绑定，为ListActivity添加元素也轻而易举。不过在这里使用的数据源是Cursor而非数组(因为我们的数据来自数据库)，先前也添加过一个TextView作为ScrollView的标题，已经有了一定程度的自定义，换用ListActivity就前功尽弃了。
+如果Activity里只有一个ListView，使用ListActivity可以稍稍简化下代码。有XML绑定，为ListActivity添加元素也轻而易举。不过，在这里使用的数据源是Cursor而不是数组(因为我们的数据来自数据库)，先前也曾添加过一个TextView作为ScrollView的标题——已经有了一定程度的自定义，再换用ListActivity就前功尽弃了。
 
 %TALK: "ListActivity also makes it really easy to assign an existing array of elements to its list via the XML binding."有疑问，为它绑定一个数组，为什么是"via the XML binding"?
 
 
 % ===Creating a Row Layout===
-===为Row创建一个Layout===
+===为单行数据创建一个Layout===
 
 % There’s one more XML file to take care of. While timeline.xml describes the entire activity, we also need to specify what a single row of data looks like—tht is, a single line item on the screen that will show information such as who said what and when.
 
@@ -276,7 +276,7 @@ ListActivity就是含有一个ListView的Activty，我们完全可以拿它作�
 
 % The row of data in the ListView is represented by a custom layout defined in row.xml file.
 
-ListView中单行的Layout定义在文件``row.xml``。
+ListView中单行数据的Layout定义在文件``row.xml``中。
 
 
 % ===Creating an Adapter in TimelineActivity.java===
@@ -373,11 +373,11 @@ public class TimelineActivity2 extends Activity {
 
 % TimelineAdapter is our custom adapter. Although SimpleCursorAdapter did a straightforward mapping of data in the database to views on the screen, we had an issue with the timestamp. The job of TimelineAdapter is to inject some business logic to convert Unix timestamp to relative time. We can discover that the method in SimpleCursorAdapter`that creates a displayable view from input data is `bindView(), so we’ll override that method and ask it to massage the data before it is displayed.
 
-TimelineAdapter就是我们自定义的Adapter。虽说SimpleCursorAdapter映射起数据来倒也直白，但是我们在这里还有个时间戳（timestamp）需要特殊处理。这也属于TimelineAdapter的工作：加入业务逻辑，将Unix时间戳转换为相对时间。可知``SimpleCursorAdapter``是在``bindView()``里面处理View的显示，因此重载这个方法，在数据显示之前处理一下即可。
+TimelineAdapter就是我们自定义的Adapter。虽说SimpleCursorAdapter映射起数据来倒也直白，但是我们在这里还有个时间戳（timestamp）需要特殊处理。这也属于TimelineAdapter的工作：加入业务逻辑，将Unix时间戳转换为相对时间。可知``SimpleCursorAdapter``是在``bindView()``里面处理View的显示，因此覆盖这个方法，在数据显示之前处理一下即可。
 
 % Typically, if you are not sure what method to override, look at the online documentation for that particular system class that you are modifying. In this case, that’d be http://developer.android.com/reference/android/widget/SimpleCursorAdapter.html.
 
-一般来讲，若不清楚类里需要重载的函数是哪个，查阅相关的官方文档即可。在这里，可以参阅http://developer.android.com/reference/android/widget/SimpleCursorAdapter.html。
+一般来讲，若不清楚类里需要覆盖的函数是哪个，查阅相关的官方文档即可。在这里，可以参阅http://developer.android.com/reference/android/widget/SimpleCursorAdapter.html。
 
 **Example 10.6. TimelineAdapter.java**
 {CODE}
@@ -428,7 +428,7 @@ public class TimelineAdapter extends SimpleCursorAdapter { // #{1}
 + 跟上个例子一样，这个常量用以指明数据库中我们感兴趣的列。
 + 这个常量用以指明数据列对应View的ID。
 + 因为是新定义的类，因此需要一个构造函数。在这里仅仅通过super调用父类的构造函数即可。
-+ 这里只重载了一个方法，即``bindView()``。这个方法在映射每行数据到View时调用，Adapter的主要工作在这里进行了。要重用SimpleCursorAdapter原有的映射操作(数据到View)，记得先调用super.bindView()。
++ 这里只覆盖了一个方法，即``bindView()``。这个方法在映射每行数据到View时调用，Adapter的主要工作在这里进行了。要重用SimpleCursorAdapter原有的映射操作(数据到View)，记得先调用super.bindView()。
 + 覆盖默认针对timestamp的映射操作，需要先得到数据库中timestamp的值。
 + 然后找到对应的TextView，它的定义在``row.xml``。
 + 最后，依据timestamp的值设置``textCreatedAt``的值为相对时间。通过``DateUtils.getRelativeTimeSpanString()``。
@@ -506,7 +506,7 @@ public class TimelineActivity3 extends Activity {
 
 % Instead of creating a new TimelineAdapter that is a subclass of SimpleCursorAdapter and overriding its bindView() method, we could also attach the business logic directly to the existing SimpleCursorAdapter. This approach is more efficient because we are not replacing what bindView() already does and we do not require a separate custom adapter class.
 
-除去派生一个TimelineAdapter再重载``bindView()``之外，我们也可以直接为SimpleCursorAdapter添加业务逻辑。这样既能保留原先的``bindView()``所做的工作，又省去一个类，更加简便。
+除去派生一个TimelineAdapter并覆盖``bindView()``之外，我们也可以直接为SimpleCursorAdapter添加业务逻辑。这样既能保留原先的``bindView()``所做的工作，又省去一个类，更加简便。
 
 % To attach business logic to an existing SimpleCursorAdapter, use its setViewBinder() method. We will need to supply the method with an implementation of ViewBinder. ViewBinder is an interface that specifies setViewValue(), where the actual binding of a particular date element to particular view happens.
 
@@ -590,7 +590,7 @@ public class TimelineActivity3 extends Activity {
 
 % Now, in order to make TimelineActivity the main entry point into our application, we need to register it to respond to certain intents. Basically, when the user clicks to start your application, the system sends an intent. You have to define an activity to "listen" to this intent. The activity does that by filtering the intents using an IntentFilter. In XML, this is within the <intent-filter> element and it usually contains at least an <action> element representing the actual intent action we’re interested in.
 
-要把它设为程序的“主界面”，我们需要为它注册到特定的Intent。通常情况是，用户点击启动你的程序，系统就会发送一个Intent。你必须有个Activity“侦听”到这个Intent才行，因此Android提供了IntentFilter，使之可以过滤出各自感兴趣的Intent。在XML中，它通过``<intent-filter>``元素表示，其下至少含有一个``<action>``元素，以表示我们感兴趣的Intent。
+要把它设为程序的“主界面”，我们需要为它注册到特定的Intent。通常情况是，用户点击启动你的程序，系统就会发送一个Intent。你必须有个Activity能“侦听”到这个Intent才行，因此Android提供了IntentFilter，使之可以过滤出各自感兴趣的Intent。在XML中，它通过``<intent-filter>``元素表示，其下至少应含有一个``<action>``元素，以表示我们感兴趣的Intent。
 
 % You may have noticed that StatusActivity had some extra XML compared to PrefsActivity. The extra code is the intent filter block, along with the action that it’s filtering for.
 
@@ -705,9 +705,9 @@ protected void onCreate(Bundle savedInstanceState) {
 
 % First, we’ll update the menu.xml file to include our new toggle menu item. At the same time, we’ll remove the Start Service and Stop Service items because our toggle feature makes them obsolete.
 
-首先修改//munu.xml//文件，添加新的菜单项，也就是开关按钮。到这里原先启动/关闭Service的两个按钮已经没必要了，删除即可。
+首先修改//munu.xml//文件，添加新的菜单项也就是开关按钮。这时原先启动/关闭Service的两个按钮已经没必要了，删除即可。
 
-**Example 10.10. res/menu/menu.xml[]**
+**Example 10.10. res/menu/menu.xml**
 {CODE}
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
@@ -958,7 +958,7 @@ public class TimelineActivity extends BaseActivity { // #{1}
 
 % At this point, Yamba can post a new status as well as list statuses of our friends. Our application is complete and usable.
 
-到这里，Yamba除了可以发信息，也可以阅读朋友的消息了。我们的程序仍是完整可用的。
+到这里，Yamba在能够发消息之外，也能够阅读朋友的消息了。我们的程序仍是完整可用的。
 
 % Figure 10.4, “Yamba Completion” illustrates what we have done so far as part of the design outlined in Figure 5.4, “Yamba Design Diagram”.
 

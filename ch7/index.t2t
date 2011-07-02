@@ -160,7 +160,7 @@
 
 % Now that we have the preferences defined in their own XML resource file, we can create the activity to display these preferences. You may recall from <<Activities> that every screen in an Android app is an activity. So, to display the screen where user enters username and password for their online account, we’ll create an activity to handle that screen. This activity will be a special preference-aware activity.
 
-对应首选项的XML资源文件已定义完毕，接下来为它创建一个界面。回想下，我们在``Activity``一章曾提到，Android程序中的任何一个界面都是Activity。用户需要修改选项的界面，我们就必须专门新建一个Activity。
+对应首选项的XML资源文件已定义完毕，接下来为它创建一个界面。回想下，我们曾在 //第六章// 提到，Android程序中的任何界面都是Activity。用户需要修改选项的界面，我们就必须专门新建一个Activity。
 
 % To create an activity, we create a new Java class. To do so, in Eclipse, select your package under your src folder, right-click on the package and select New→Class. A New Java Class window will pop up. You just need to enter PrefsActivity for the Name and click Finish. This will create PrefsActivity.java file under your package in your source folder.
 
@@ -193,14 +193,14 @@ public class PrefsActivity extends PreferenceActivity { // #{1}
 % + Unlike regular activities that usually call setContentView(), preference activity will set its content from the prefs.xml file via a call to addPreferencesFromResource().
 
 + 与一般的Activity不同，PrefsActivity以``PreferenceActivity``为基类。
-+ 重载``onCreate()``方法做些初始化工作，这点同其它Activity一样。
++ 覆盖``onCreate()``方法，做些初始化工作，这点同其它Activity一样。
 + 与其它Activity通常会调用``setContentView()``不同，这里通过调用``addPreferencesFromResource()``装载``prefs.xml``中定义的内容。
 
 
 {TIP}
 % If you didn’t want to type the long signature of onCreate() and other methods that we often have to implement or override, you could use an Eclipse tool to help you with that. While in your PrefsActivity.java and after you have added ... extends PreferenceActivity..., you can choose Source→Override/Implement Methods…. This will bring up a dialog box with appropriate selection of methods you could override or implement given that you are subclassing PreferenceActivity class. In here, you can choose onCreate() and Eclipse will insert the stub for this method into your code.
 
-如果不想打字敲出``onCreate()``或其它重载方法那长长的声明，大可使用Eclipse的工具代劳。假如你在编辑``PrefsActivity.java``文件，并已加上了``extends PreferenceActivity``。可以选择`` Source→Override/Implement Methods…``，然后会出现一个对话框，在里面选出需要重载的方法(这里是``onCreate()``)即可。Eclipse会为你选择的方法生成代码。
+在覆盖方法时，如果不想打字敲出``onCreate()``或其它方法那长长的声明，大可使用Eclipse的工具代劳。假如你在编辑``PrefsActivity.java``文件，并已加上了``extends PreferenceActivity``。那就可以选择`` Source→Override/Implement Methods…``，然后会出现一个对话框，在里面选出需要覆盖的方法(这里是``onCreate()``)即可。Eclipse会为你选择的方法生成代码。
 {/TIP}
 
 % ===Update Manifest File===
@@ -208,7 +208,7 @@ public class PrefsActivity extends PreferenceActivity { // #{1}
 
 % Whenever we create one of these main building blocks (Activities, Services, Broadcast Receivers, Content Providers) we need to define them in AndroidManifest.xml file. In this case, we have a new PrefsActivity and we must add it to the manifest file.
 
-无论何时，只要新建了基本构件(Activity,Service,BroadcastReceiver,ContentProvider)就要修改Manifest文件添加相应的声明。在这里，我们需要将``PrefsActivity``注册到Manifest文件。
+无论何时，只要新建了基本构件(Activity,Service,BroadcastReceiver,ContentProvider)就要修改Manifest文件，添加相应的声明。在这里，我们需要将``PrefsActivity``注册到Manifest文件。
 
 % Just like with any Android XML file, opening AndroidManifest.xml in Eclipse will typically bring up the developer-friendly view of that file. In this file, you could choose Application tab, then under Application Nodes choose Add→Activity and for its Name type .PrefsActivity.
 
@@ -258,7 +258,7 @@ public class PrefsActivity extends PreferenceActivity { // #{1}
 
 % We now have a new preference activity, but no good way of getting to it yet. We need a way to launch this new activity. For that, we use options menu.
 
-现在我们已经有了首选项界面，但仍没有办法访问它。因此在下面引入选项菜单(Options Menu)。
+现在我们已经实现了首选项界面，但仍没有办法访问它。因此在下面引入选项菜单(Options Menu)。
 
 
 % ==Options Menu==
@@ -316,10 +316,11 @@ public class PrefsActivity extends PreferenceActivity { // #{1}
 % Just like your application can have its resources so can Android system as well. Like most other operating systems, Android comes with some preloaded images, graphics, sound clips, and other types of resources. Recall that our app resources are in /res/. To refer to Android system resources prefix them with with android: keyword in XML, for example @android:drawable/ic_menu_preferences. If you are referring to an Android system resource from Java, then you use android.R instead the usual R reference.
 
 我们的程序都有自己的资源，Android系统也同样。Android系统中内置了许多图标、图像、音频等等各种资源文件。回想下，应用程序的资源文件都在/res/目录之下，要在XML中引用它们，只需填上地址即可；而引用系统资源，则需要为地址加一个前缀``android:``，比如``@android:drawable/ic_menu_preferences``。在Java中引用的话，就用android.R替换掉原先的R。 
+
 {TIP}
 % The actual resource files are in your SDK, inside specific platform folder. For example, if you are using Android 9 (Gingerbread), the location of the resource folder would be android-sdk/platforms/android-9/data/res/.
 
-系统的资源文件都在SDK相应平台的目录之下。比如你使用Android 9 (Gingerbread)，那它的实际地址就在``android-sdk/platforms/android-9/data/res/``。
+系统的资源文件都位于SDK中，与平台相关。比如你使用Android 9 (Gingerbread)，那它的实际地址就在``android-sdk/platforms/android-9/data/res/``。
 {/TIP}
 
 **图 7.3. Menu.xml的图形化编辑界面**
@@ -349,7 +350,7 @@ public class PrefsActivity extends PreferenceActivity { // #{1}
 
 % Recall that the options menu is loaded by your activity when user clicks on the Menu button on the device. First time menu button is pressed, system will call activity’s onCreateOptionsMenu() method to inflate the menu from the menu.xml resource. This process is similar to inflating user interface from layout resources that we discussed in the section called “StatusActivity Java Class”. Basically, the inflater reads the XML code and for every element, it creates a corresponding Java object and for each attribute in XML is sets that object’s properties accordingly.
 
-前面提到，菜单是在用户按下设备的菜单按钮时打开。在第一次按下菜单按钮时，系统会触发Activity的``onCreateOptionsMenu()``方法，在这里装载``menu.xml``文件中表示的菜单。这与第六章``StatusActivity类``中为Activity装载布局文件的做法有些相似。都是读取XML文件，为其中的每个XML元素创建一个Java对象，并按照XML元素的属性初始化对象。
+前面提到，菜单是在用户按下设备的菜单按钮时打开。在用户第一次按下菜单按钮时，系统会触发Activity的``onCreateOptionsMenu()``方法，在这里装载``menu.xml``文件中表示的菜单。这与第六章``StatusActivity类``中为Activity装载布局文件的做法有些相似。都是读取XML文件，为其中的每个XML元素创建一个Java对象，并按照XML元素的属性初始化对象。
 
 % From that point on, the menu is in memory and onCreateOptionsMenu() doesn’t get called again until the activity is destroyed. Each time user selects a menu item though, onOptionsItemSelected() gets called to process that click. We’ll talk about this in the next section.
 
@@ -712,7 +713,7 @@ adb shell是adb的另一个重要命令，它允许你访问设备(真机或者�
 
 % Figure 7.6, “Yamba Completion” illustrates what we have done so far as part of the design outlined in Figure 5.4, “Yamba Design Diagram”:
 
-//图7.6// 展示了目前为止我们已完成的部分。完整图参见 //图5.4//。
+//图7.6// 展示了目前我们已完成的部分。完整图参见 //图5.4//。
 
 **图 7.6. Yamba完成图**
 
