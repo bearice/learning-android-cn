@@ -81,7 +81,7 @@
 {ORGI}If you remember from __Chapter 4, Main Building Blocks__, an Android application is a loose collection of Activities, Services, Content Providers, and Broadcast Receivers. These are the components from which we put together an application. __Figure 5.4, “Yamba Design Diagram”__ shows the design of the entire Yamba application, which incorporates most of the main Android building blocks.
 {TRAN}在[第4章 #ch4]中有提及，Android应用就是Activity、Service、Content Provider、Broadcast Receiver的松散组合。它们作为Android的基本构件(Building Block)，在开发中扮演着不可或缺的角色。 //图5.4// 给出了Yamba的设计架构，不妨留意其中基本构件与应用之间的关系。
 
-	**图 5.4. Yamba Design Diagram**
+	**图 5.4. Yamba设计图**
 		[images/05-Yamba.png]
 
 
@@ -137,7 +137,7 @@
 {TRAN}=== 菜单系统与 Intent ===
 
 {ORGI}Next, we’ll need a way to get to that screen. For that purpose, we’ll introduce menu system in Android and how it works. You will also learn about Intents and how to send intents to open up a specific activity.
-{TRAN}接下来我们需要一个切换界面的地方，因此在这里引入 Android 的菜单系统及 Intent 机制。学习如何通过发送一个 Intent 实现切换界面。
+{TRAN}我们还需要一个地方来切换界面，因此在这里引入 Android 的菜单系统及 Intent 机制，学习通过发送 Intent 实现切换界面的方法。
 
 {ORGI}=== File System ===
 {TRAN}=== 文件系统 ===
@@ -255,6 +255,8 @@
 
 {ORGI}== Part 8: System Services ==
 {TRAN}== 第八部分: 系统服务 ==
+
+(译者注："系统服务"与作为构件的"Android Service"是不同的东西。在翻译中，我们将所有构件的名字保留原文，而将System Service译为"系统服务"，以示区别。)
 
 {ORGI}The Android OS comes with many useful system services: processes you can easily access to ask for things like your location, sensor readings, WiFi hotspots, and much more. In this part, [增加 covered in Chapter 13, System Services, ] you will add some cool new features to Yamba, such as user’s current location.
 {TRAN}Android 操作系统内置了许多有用的系统服务供程序使用，比如当前位置、传感器数据、WiFi热点等等。在这部分，我们将为Yamba添加若干小功能，比如提交用户的当前位置。

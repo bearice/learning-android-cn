@@ -445,7 +445,7 @@ public class WhereAmI extends Activity implements LocationListener { // #{1}
 + 在离开Running状态之后也就是``onPause()``时注销。
 + ``onLocationChanged()``是LocationManager负责调用的一个回调方法，在位置信息发生变化时触发。
 + 得到了Location对象。它里面有不少有用的信息，我们格式化一下，使之容易阅读。
-+ 得到Location对象，就可以检索"geocode"了，它可以将经纬度转换为实际的地址。
++ 只要得到Location对象，就可以检索"geocode"了，它可以将经纬度转换为实际的地址。
 + 如果得到正确的地址，就输出到textOut。
 + LocationListener接口中还有许多其它的回调方法，这里没有用到这些功能，因此留空。
 

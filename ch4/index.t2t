@@ -9,6 +9,8 @@
 
 {TRAN}本章介绍Android应用的基本组成部分：构件(Building Blocks)。我们将在一个较高的层面上观察Activity是什么、Intent如何工作、Service酷在什么地方、怎样使用Broadcast Receiver与Content Provider使程序更易于扩展，以及更多相关内容。
 
+(译者注：本书在翻译中，对构件的名称一律保留原文，比如Activity、Intent、Service等等。)
+
 {ORGI}By the end of this chapter, you will understand the main Android components for building applications. You should conceptually know when you’d use what component. You will also see how these components relate to a real world application.
 
 {TRAN}到本章结束，你将对不同构件的应用场景、以及它们在实际应用中的关系有个概念性的认识。
@@ -19,7 +21,7 @@
 
 {ORGI}Main building blocks are components that you use as an application developer to build Android apps. They are the conceptual items that you put together to create a bigger whole. When you start thinking about your application, it is good to approach it top down. You design your application in terms of screens, features, and interactions between them. You start with conceptual drawing, something that you can represent in terms of "lines and circles". This approach to application development helps you see the big picture - how the components fit together and it all makes sense.
 
-{TRAN}构件(Building Blocks)即构建Android应用所需要用到的组件。就像砖块之于盖房子，有构件的堆叠组合才可以构建出完整的应用。刚开始设计时，不妨参照自顶向下的设计方法：先想想，你的应用的外观是什么样子，有什么功能，大体怎样实现。然后就可以打草稿了，画些线和圆表达你的思路。这对把握全局——怎样组合构件才能让它们正常工作——是大有好处的。
+{TRAN}构件(Building Blocks)即构建Android应用所需要用到的组件。就像砖块之于盖房子，有构件的堆叠组合才可以构建出完整的应用。刚开始设计时，不妨参照自顶向下的设计方法：先想想，你的应用的外观是什么样子，有什么功能，大体怎样实现。然后就可以打草稿了，画下设计图，记录下设计思路。这对把握全局——怎样组合构件才能让它们正常工作——是大有好处的。
 
 %== A Real World Example ==
 == 真实世界的例子==

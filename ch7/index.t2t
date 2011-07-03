@@ -221,7 +221,7 @@ public class PrefsActivity extends PreferenceActivity { // #{1}
 {TIP}
 % When editing code in Eclipse, you can use Ctrl+Space key shortcut to invoke type-ahead feature of Eclipse. This is every useful both for XML and Java code and is context-sensitive, meaning Eclipse is smart enough to know what could possibly be entered at that point in code. Using Ctrl+Space makes your life as programmer much easier as you don’t have to remember long method names and tags, plus it helps avoid typos.
 
-在Eclipse中编辑代码时，可以使用Ctrl+Space快捷键调出Eclipse的自动完成功能。Eclipse可以感知出当前输入代码的上下文，从而预测接下来可能输入的内容。这一来程序员即可省去牢记各种方法变量的名字，也可以减少输入错误，对解放生产力是大有好处的。
+在Eclipse中编辑代码时，可以使用Ctrl+Space快捷键调出Eclipse的自动完成功能。Eclipse可以感知出当前输入代码的上下文，从而预测接下来可能输入的内容。这一来程序员即可省去牢记各种方法变量的名字，也可以减少输入错误，对生产力的提高是大有好处的。
 {/TIP}
 
 % So after adding our manifest file now looks like this: [修改为 the code shown in Example 7.3, “AndroidManifest.xml”.]

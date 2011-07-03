@@ -26,7 +26,7 @@ Service分为Bound Service和Unbound Service两种。Bound Service 提供了一�
 
 % In this chapter, you will create a service. The purpose of this service is to run in the background and update your app with latest timeline from the user’s Twitter account. Initially, the service will just print your friends' timeline to the log file. The service will create a separate thread, so you will learn about concurrency in this chapter as well. You will also learn about Toasts and get to understand the context in which services and 
 
-在本章你将动手创建一个 Service 。它在后台执行，获取用户在 Twitter 上最新的 Timeline ，并输出到日志。这个 Service 会在一个独立的线程中执行，因此本章也会顺便讲解一些关于并行程序设计的相关知识。此外，本章还将提到通过 Toast  向用户提示信息的方法，以及为 Service 和 Activity 所共享的应用程序上下文的相关知识。
+在本章，我们将动手创建一个 Service 。它在后台执行，获取用户在 Twitter 上最新的 Timeline ，并输出到日志。这个 Service 会在一个独立的线程中执行，因此也会顺便讲解一些关于并行程序设计的相关知识。此外，本章还将提到通过 Toast  向用户提示信息的方法，以及为 Service 和 Activity 所共享的应用程序上下文的相关知识。
 
 % By the end of this chapter, you will have a working app that can both post to Twitter and periodically check what friends are up to. 
 
@@ -460,7 +460,7 @@ public boolean onOptionsItemSelected(MenuItem item) {
 
 % To verify that your service is working, open up your Logcat and look for appropriate log messages that you generated in your service code. Remember from the section called “Logging in Android” that you can view the logcat both in Eclipse and via the command line.
 
-检验 Service 是否正常执行的话，打开 Logcat 查看程序生成的日志信息。在 //"Logging in Android"// 一节中我们曾提到，查看 Log 既可以通过 Eclipse ，也可以通过命令行。
+检验 Service 是否正常执行的话，打开 Logcat 查看程序生成的日志信息。在 //"Android的日志机制"// 一节中我们曾提到，查看 Log 既可以通过 Eclipse ，也可以通过命令行。
 
 % Another way to verify that the service is running is to go to the Android Settings app and see it listed. To do that, go to Home screen, press Menu, and choose Settings. Then go to Applications→Running services. You should see your service listed, as shown in Figure 8.2, “Running Services”.
 

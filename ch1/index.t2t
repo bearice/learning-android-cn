@@ -94,7 +94,7 @@ Android是为移动设备而设计的系统。Android的开发团队在设计时
 
 % The history of Android is interesting in order to gain the perspective on what the future might hold. [The history of Android is interesting and offers some perspective on what the future might hold.]
 
-欲对Android的未来有所把握，就不能不了解它背后的历史。
+欲对Android的未来有所把握，就不能不对它背后的历史有所了解。
 
 % These are the key events of the past few years:
 
@@ -149,7 +149,7 @@ Android的背后不只是Google，更有开放手持设备联盟（Open Handset 
 %{/NOTE}
 
 {NOTE}
-	Android SDK的第一个版本发布的时候，市面上还不存在任何一款使用它的手机。从这里其实可以看出，搞Android开发并不一定需要一台Android手机。除去少数例外（如硬件传感器、通话功能等），你需要的大部分功能在Android SDK里就都有了。
+	Android SDK的第一个版本发布的时候，市面上还不存在任何一款手机使用它。从这里其实可以看出，搞Android开发并不一定需要一台Android手机。除去少数例外（如硬件传感器、通话功能等），你需要的大部分功能都可以在Android SDK中找到。
 {/NOTE}
 
 

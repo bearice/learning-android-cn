@@ -467,7 +467,7 @@ public class StatusActivity1 extends Activity implements OnClickListener { // #{
 
 % Once you make changes to your files, Java or XML, make sure you save them before moving on. Eclipse builds your project automagically every time you choose File→Save or press Ctrl-S. So, it is important to save files and make sure you do not move to another file until the current file is fine. You will know your file is fine if there are no little red x symbols in your code and the project builds successfully. Since Java depends on XML and vice versa, moving to another file while the current one is broken just makes it even more difficult to find errors.
 
-对文件做过更改，不管是Java文件还是XML文件，都得记着保存它们。在点击File->Save或按下Ctrl-S时，Eclipse都会自动重新构建项目。因此在保存一个文件并确保无误之前，最好不要修改其它文件，以免引入别的错误。若项目构建失败，代码中会出现红色的x标志，可以凭此判断这个文件中是否有错误存在。Java与XML相互依赖，修改起来若不顾顺序，同时修改又同时保存，一次正确还好，出现错误的话只会让错误更难寻找。
+对文件做过更改，不管是Java文件还是XML文件，都得记着保存它们。在点击File->Save或按下Ctrl-S时，Eclipse都会自动重新构建项目。因此在保存一个文件并确保无误之前，最好不要修改其它文件，以免引入别的错误。若项目构建失败，代码中会出现红色的x标志，可以凭此判断这个文件中是否有错误存在。Java与XML相互依赖，修改起来若不顾顺序，同时修改又同时保存，一次正确还好，出现错误的话只会让错误更加难以寻找。
 
 %TALK: "move to another file"意思很含糊。在这里不是指“移动文件到另个地方”，而是“转移注意力，编辑另个文件”。
 

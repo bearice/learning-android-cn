@@ -451,7 +451,7 @@ public class UpdaterService1 extends Service {
 ==== 使用 sqlite3 ====
 
 % Android ships with the command line tool sqlite3. This tool give you access to the database itself.
-Android 附带了一个命令行工具 ``sqlite3``，你可以通过它访问数据库。
+Android 附带了一个命令行工具 ``sqlite3``，供我们访问数据库。
 
 % To see if your database schema got created properly:
 要验证数据库原型是否正确，你需要：
@@ -833,7 +833,7 @@ private class Updater extends Thread {
 
 % At this point, Yamba can pull the statuses of our friends from the cloud and post them into the local database. We still don’t have a way to view this data, but can verify that the data is there in the database.
 
-到这里，Yamba已经可以从服务端抓取数据，并储存到数据库中了。虽然仍不能将它们显示出来，但已经可以验证这些数据的可用性。
+到这里，Yamba已经可以从服务端抓取数据，并储存到数据库中了。虽然仍不能将它们显示出来，但已经可以验证，这些数据是可用的。
 
 %The following [修改为 Figure 9.1, “Yamba completion”] illustrates what we have done so far as part of the design outlined in __Figure 5.4, “Yamba Design Diagram”__:
 
