@@ -73,12 +73,8 @@ Android 内建了 SQLite 支持， 但这并不是说 SQLite 是数据持久化�
 数据库原型(schema)是对数据库结构的描述。 在Yamba的数据库中，我们希望储存从Twitter获取的数据的以下字段：
 
 **created_at**
-{ORGI}	The date when the tweet was sent
-[{TRAN}	消息的发送时间
-[删去 **source**
-% 	…
-	消息的来源
-]
+%	The date when the tweet was sent
+	消息的发送时间
 **txt**
 % 	The text of the tweet
 	文本内容
