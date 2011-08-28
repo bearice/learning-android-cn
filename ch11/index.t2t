@@ -7,7 +7,7 @@
 
 % In this chapter, you will learn what Broadcast receivers are and when to use them. We’ll create couple of different receivers illustrating different usage scenarios. First, you’ll create a broadcast receiver that will start up your update service at boot time, so that users always have their latest friends' timelines the first time they check for them (assuming their preferences are set). Next, you will create a receiver that will update the timeline when it changes while the user is viewing it. This will illustrate the programmatic registration of receivers and get you introduced to broadcasting intents. We’ll implement a receiver that is trigged by changes in network availability. And finally, we’ll learn how to surround our app with some security by defining permissions.
 
-本章介绍Broadcast Receiver的相关知识，以及它在不同场景中的不同应用。在这里，我们将创建几个Broadcast Receiver作为实例，分别用以实现在开机时启动UpdaterService、即时更新Timeline、响应网络连接状态的变化。此外，我们还需要将它们注册到应用程序，也需要对广播的Intent有所理解。最后，我们将明确地定义应用程序的相关权限，以保证安全。
+本章介绍Broadcast Receiver(//广播接收者//)的相关知识，以及它在不同场景中的不同应用。在这里，我们将创建几个Broadcast Receiver作为实例，分别用以实现在开机时启动UpdaterService、即时更新Timeline、响应网络连接状态的变化。此外，我们还需要将它们注册到应用程序，也需要对广播的Intent有所理解。最后，我们将明确地定义应用程序的相关权限，以保证安全。
 
 % By the end of this chapter, your app has most of the functionality that a user would need. The app can send status updates, get friends' timelines, update itself, and start automatically. It works even when the user is not connected to the network (although of course it cannot send or receive new messages).
 
@@ -18,7 +18,7 @@
 
 % Broadcast receivers are Android’s implementation of the Publish/Subscribe messaging pattern, more precisely is an Observer pattern. Applications (known as publishers) can generate broadcasts to simply send events not knowing who, if anyone, will get them. Receivers (known as subscribers) that want the information subscribe to specific messages via filters. If the message matches a filter, the subscriber is activated (if it’s not already running) and notified of the message.
 
-Broadcast Receiver是Android中发布/订阅机制(又称为Observer模式)的一种实现。应用程序作为发布者，可以广播一系列的事件，而不管接收者是谁。Receiver作为订阅者，从发布者那里订阅事件，并过滤出自己感兴趣的事件。如果某事件符合过滤规则，那么订阅者就被激活，并得到通知。
+Broadcast Receiver是Android中发布/订阅机制(又称为//Observer模式//)的一种实现。应用程序作为发布者，可以广播一系列的事件，而不管接收者是谁。Receiver作为订阅者，从发布者那里订阅事件，并过滤出自己感兴趣的事件。如果某事件符合过滤规则，那么订阅者就被激活，并得到通知。
 
 (译者注：Receiver是Broadcast Receiver的简写，下同)
 

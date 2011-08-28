@@ -7,7 +7,7 @@
 
 % In this chapter, you will learn how to build user interface in Android. You will create your first Activity. You will learn how to create an XML layout for it, and how to connect it to Java. You will learn about Views (a.k.a. widgets) and Layouts. You will learn how to handle events in Java, such as a button click. Additionally, you’ll add the support for twitter-like API into your project as an external jar so your app can make web service calls to the cloud.  
 
-本章介绍Android中用户界面的构建方法。我们将在这里创建第一个Activity作为实例，体验如何使用XML描述界面布局，以及在Java中引用它的方法。随后介绍View(又称Widget，控件)和Layout的概念，以及如何在Java中捕获事件(比如单击按钮)。另外，还需要在这里导入一个三方的jar文件，从而获得访问微博服务的API。
+本章介绍Android中用户界面的构建方法。我们将在这里创建第一个Activity作为实例，体验如何使用XML描述界面布局，以及在Java中引用它的方法。随后介绍View(又称Widget，控件)和Layout(布局)的概念，以及如何在Java中捕获事件(比如单击按钮)。另外，还需要在这里导入一个三方的jar文件，从而获得访问微博服务的API。
 
 %TALK: Widget能否翻译成“控件”？若与"App Widget"同时保留原文，容易让读者混淆。感觉后者可以翻译成“小部件”。 -fleuria
 
@@ -50,7 +50,7 @@ Android提供了两种风格可供我们创建用户界面(UI)：一种是声明
 
 % Everything you can do declaratively, you can also do programmatically. But additionally, Java also allows you to specify what happens when that button is actually clicked. This is the main advantage of programmatic approach to user interface.
 
-理论上讲，声明式风格能做到的，编程风格也都能做到。但是通过Java代码，你能够为按钮的点击事件作出响应——这才是编程风格的主要优点。
+理论上讲，声明式风格能做到的，编程风格也都能做到。但是通过Java代码，你更可以为按钮的点击事件作出响应——这也正是应用编程风格的主要场景。
 
 % === The Best of Both Worlds ===
 === 各取所长 ===
@@ -75,7 +75,7 @@ Android通过Layout与View机制组织UI中元素的显示。View就是屏幕上
 
 % [增加 If you have prior experience with Java AWT or Swing, layouts are similar to Java containers and views are similar to Java components. Views in Android are sometimes referred to as widgets.]
 
-如果你有AWT或者Swing的编程经验，那就不难发现Layout对应Java的//容器(Container)//，View对应Java的//组件(Component)//，都是很相似的东西。另外，Android中的View有时也被称作//控件//。
+如果你有AWT或者Swing的编程经验，那就不难发现Layout对应Java的//容器(Container)//，View对应Java的//组件(Component)//，都是很相似的东西。另外，Android中的View有时也被称作//控件(widget)//。
 
 **图 6.1. Layout与View**
 	[images/06-LayoutsAndViews.png]
@@ -88,11 +88,11 @@ Android通过Layout与View机制组织UI中元素的显示。View就是屏幕上
 
 % So, a layout can contain other children. Those children can furthermore be layouts themselves allowing for complex user interface structure.
 
-可以把Layout看作是容纳一些子元素的容器。这些子元素可以是View，也可以是Layout本身，这样可以方便组合出复杂的用户界面。
+可以把Layout看作是容纳一些子元素的容器。这些子元素可以是View，也可以是Layout，这样可以方便组合出复杂的用户界面。
 
 % A layout is responsible for allocating space for each child. Different layouts use different approach to laying out their child widgets. [增加 as shown in Figure 6.1, “Layouts and Views relationship”.]
 
-Layout为每个子元素安排位置，不同的Layout提供不同的安置方法。
+Layout负责为子元素安排位置，不同的Layout提供不同的安置方法。
 
 %NOTE: 当心，这个allocating space不是“申请内存”，而是老老实实的“申请(放置的)空间”。 -fleuria
 
@@ -104,7 +104,7 @@ Android框架中内置的Layout各种各样，不过常用的大约也就这几�
 
 % LinearLayout is one of the simplest and most common layouts. It simply lays out its children next to each other, either horizontally or vertically. The order of children matters. As LinearLayout asks its children for how much space they need, it allocates desired space to each child in the order they are added. So, if an "older" child comes along and asks for all the space on the screen, there won’t be much left for the subsequent widgets in this layout.
 
-LinearLayout是最简单的Layout之一，只是简单地纵向或者横向排列它的子元素。它会按顺序计算每个子元素需要的空间，如果一个“较早加入的”元素占据了整个屏幕大小，后面的元素就显示不出来了。因此子元素的顺序很重要。
+LinearLayout(线性布局)是最简单的Layout之一，只是简单地纵向或者横向排列它的子元素。它会按顺序计算每个子元素需要的空间，如果一个“较早加入的”元素占据了整个屏幕大小，后面的元素就显示不出来了。因此子元素的顺序很重要。
 
 % An important property for LinearLayout are layout_orientation and valid options are vertical or horizontal.
 
@@ -123,7 +123,7 @@ LinearLayout可能是最简单也最常用的Layout，但它并不总是最好�
 
 % TableLayout lays out its children in a table. TableLayout consists of only other TableRow widgets. TableRow represents a row in a table and can contain other UI widgets. TableRow widgets are laid out next to each other horizontally, sort of like LinearLayout with horizontal orientation.
 
-TableLayout将其子元素布局在一个表格之中。TableLayout只接纳TableRow作为自己的子元素，表示表格中的一行，下面可以容纳其它子元素。TableRow水平地排列它的子元素，这同水平排列的LinearLayout很像。
+TableLayout(表格布局)将其子元素布局在一个表格之中。TableLayout只接纳TableRow作为自己的子元素，表示表格中的一行，下面可以容纳其它子元素。TableRow水平地排列它的子元素，这同水平排列的LinearLayout很像。
 
 % For those familiar with HTML, Table Layout is similar to <table> element, while Table Row is similar to the <tr> element. Where as in HTML we also have <td> to represent each cell in the table, in Android the columns are determined dynamically based on the number of views we add to a table row.
 
@@ -137,19 +137,19 @@ TableLayout的一个重要属性是stretch_columns，可以用它来展开列号
 
 % FrameLayout places its children on top of each other so that latest child is covering the previous, like a deck of cards. This layout policy is useful for tabs, for example. FrameLayout is also used as placeholder for other widgets to be added to it programmatically at some later point in time.
 
-FrameLayout将其下的子元素相互覆盖起来，就像一副扑克牌，只留一个显示在外面。它可以用于标签的实现，也可以作为以后要用的控件的临时存放地。
+FrameLayout(帧布局)将其下的子元素相互覆盖起来，就像一副扑克牌，只留一个显示在外面。它可以用于标签的实现，也可以作为以后要用的控件的临时存放地。
 
 === RelativeLayout ===
 
 % RelativeLayout lays out its children relative to each other. As such, it is very powerful as it doesn’t require you to nest unnecessary layouts in order to achieve certain look. At the same time, using RelativeLayout can minimize total number of widgets that need to be drawn thus improving the overall performance of you application. Having said that, RelativeLayout requires each of its child views to have an ID set so that we can position it relatively to other children.
 
-RelativeLayout实现子元素的相对布局。它十分强大，不需要嵌套就可以实现复杂的布局，同时还可以减少使用的控件的数量，从而提高程序的整体性能。RelativeLayout需要我们为它的每个子元素提供一个ID，你可以单独设置它们的相对位置。
+RelativeLayout(相对布局)用于指明子元素之间的相对位置。它十分强大，不需要嵌套就可以实现复杂的布局，同时还可以减少使用的控件的数量，从而提高程序的整体性能。RelativeLayout需要我们为它的每个子元素提供一个ID，你可以单独设置它们的相对位置。
 
 === AbsoluteLayout ===
 
 % AbsoluteLayout positions its children at absolute coordinates on the screen. It is the favorite layout for WYSIWYG tools that automatically generate your UI. While very simple, it is not very flexible. Your user interface would look good on one particular screen but as soon as the screen size, orientation, or density changes, AbsoluteLayout would not be able to adjust.
 
-AbsoluteLayout可以为它的子元素设置一个屏幕上的绝对位置。这个Layout简单易懂，对所见及所得工具来说是再好用不过。缺点就是不那么灵活，在某个屏幕上显示很好的界面，换个不同大小、宽高、分辨率的屏幕可能就不能正常显示了。
+AbsoluteLayout(绝对布局)可以为它的子元素设置一个屏幕上的绝对位置。这个Layout简单易懂，对所见及所得工具来说是再好用不过。缺点就是不那么灵活，在某个屏幕上显示很好的界面，换个不同大小、宽高、分辨率的屏幕可能就不能正常显示了。
 
 %== Starting Yamba Project ==
 == 启动Yamba项目 ==
@@ -209,7 +209,7 @@ AbsoluteLayout可以为它的子元素设置一个屏幕上的绝对位置。这
 
 
 %== StatusActivity Layout ==
-== StatusActivity Layout ==
+== StatusActivity的Layout ==
 
 % Let’s start by designing the user interface for our screen where we’ll enter the new status and click a button to update it.
 接下来开始设计一个用户界面，用户可以在里面输入新消息并发布。
@@ -285,7 +285,8 @@ StatusActivity的源码大致如下：
 
 一般来讲，这就是最常用的几个属性：
 
-**layout_height and layout_width**
+% **layout_height and layout_width**
+**layout_height和layout_width**
 
 % Defines how much space this widget is asking from its parent layout to display itself. While you could enter a value in pixels, inches, or similar, that is not a good practice. Since your application could run on many different devices with various screen sizes, you want to use relative size for your components, not absolute. So, best practice would be to use either fill_parent or wrap_content for the value. fill_parent means that your widget wants all the available space from its parent. wrap_content means that it only requires as much space as it needs to display its own content. Note that in API Level 8 and higher, fill_parent has been renamed to match_parent.
 
@@ -714,7 +715,7 @@ Android程序默认运行在单线程之下。单线程顺序执行所有的操�
 
 % We’ll extend our earlier example with an asynchronous posting to the cloud. The first part of the example [修改 Example 6.5, “StatusActivity.java, version 2”] is very similar to the code in Example 6.3, “StatusActivity.java, version 1” but it hands off the posting to the asynchronous thread. A new AsyncTask does the posting in the background.
 
-例6.5是使用AsyncTask修改过的代码，实现异步发布到服务端。它的开头部分与例6.3相似，不同在于它是使用了异步任务，而非阻塞在网络操作上。
+例6.5是使用AsyncTask修改过的代码，实现异步发布到服务端。它的开头部分与例6.3相似，不同在于它是使用了异步任务，不会阻塞在网络操作上。
 
 **Example 6.5. StatusActivity.java, version 2**
 

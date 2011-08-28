@@ -16,7 +16,8 @@
 
 另外，我们会重构Yamba的代码来获得Intent服务的支持，继而引出Alarm服务，并凭借它们优化Updater的实现。
 
-==Compass Demo==
+% ==Compass Demo==
+==实例：Compass==
 
 % To start with system services, we are going to look at a simple, self-contained example of a compass application. This application uses the Sensor service to get updates from the orientation sensor and use its information to rotate a Rose, our custom UI component. The Sensor service is very typical of system services and a relatively easy one to understand.
 
@@ -282,13 +283,15 @@ public class Rose extends ImageView { //#{1}
 
 //"使用系统服务的一般步骤"//一节曾提到，使用GPS服务或者其它位置操作都是非常费电的。为尽量地节约电能，我们只在Running状态中使用Location服务。因此利用Activity生命周期的设定，将它限制在``onResume()``与``onPause()``之间。
 
-===Where Am I? Demo===
+% ===Where Am I? Demo===
+===实例: Where Am I?===
 
 % This example illustrates how to use location-based services in Android. First, we use LocationManager to figure out our current location based on the resources in the environment available to the device, such as GPS or a wireless network. Secondly, we use Geocoder to convert this location to an address.
 
 使用这个例子展示Android中位置服务的用法。首先通过LocationManager利用可用的信息源(GPS或者无线网)获取当前的位置信息，然后使用Geocoder将它转换为人类可读的地理地址。
 
-====The Layout====
+% ====The Layout====
+====Layout====
 
 % The layout for this example is trivial. Our resource file provides a TextView widget for the title and another TextView widget for the output. Since the output could be longer than the screen size, we wrap the output in a ScrollView widget.
 
@@ -536,7 +539,7 @@ WhereAmI程序只是用来演示Location服务使用方法的小样例。接下�
 
 已经有了选项的名与值，接下来修改``prefs.xml``。
 
-**Example 13.6. Updated res/xml/prefs.xml**
+**Example 13.6. 修改过的 res/xml/prefs.xml**
 
 {CODE}
 <?xml version="1.0" encoding="utf-8"?>
@@ -806,7 +809,8 @@ IntentService是Service的一个子类，也是通过``startService()``发出的
 
 以上的原理就在于，IntentService的``onHandleIntent()``会在独立的线程中执行。
 
-**Example 13.9. UpdaterService.java based on IntentService**
+% **Example 13.9. UpdaterService.java based on IntentService**
+**Example 13.9. UpdaterService.java，基于IntentService**
 {CODE}
 package com.marakana.yamba8;
 
@@ -877,7 +881,8 @@ public class UpdaterService1 extends IntentService { // #{1}
 
 接下来修改``BaseActivity.java``文件，添加这个按钮的处理方法，也就是修改``onOptionsItemSelected()``中对应的case语句。同时``onMenuOpened()``已经没有用处了，删掉即可。
 
-**Example 13.11. BaseActivity.java with support for Refresh button**
+% **Example 13.11. BaseActivity.java with support for Refresh button**
+**Example 13.11. BaseActivity.java，添加Refresh按钮之后**
 {CODE}
 public class BaseActivity extends Activity {
   ...
@@ -940,7 +945,8 @@ PendingIntent是Intent与某操作的组合。一般是把它交给他人，由�
 % ===Adding Interval to Preferences===
 ===添加Interval选项===
 
-**Example 13.12. strings.xml with arrays for interval options**
+% **Example 13.12. strings.xml with arrays for interval options**
+**Example 13.12. strings.xml，添加Interval选项相关的string-array**
 {CODE}
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
@@ -979,7 +985,8 @@ PendingIntent是Intent与某操作的组合。一般是把它交给他人，由�
 
 有了这两列数组，接下来修改prefs.xml添加Interval(时间间隔)选项。
 
-**Example 13.13. prefs.xml with support for interval preference setting**
+% **Example 13.13. prefs.xml with support for interval preference setting**
+**Example 13.13. prefs.xml，添加Interval选项**
 
 {CODE}
 <?xml version="1.0" encoding="utf-8"?>
@@ -1014,7 +1021,8 @@ PendingIntent是Intent与某操作的组合。一般是把它交给他人，由�
 
 适用的是，使用Alarm服务定时发送Intent启动UpdaterService。为此，我们需要得到AlarmManager的引用，创建一个PendingIntent负责启动UpdaterService，并设置一个时间间隔。要PendingIntent启动Service，就调用PendingIntent.getService()。
 
-**Example 13.14. BootReceiver.java updated with Alarm service calls to periodically start Updater service**
+% **Example 13.14. BootReceiver.java updated with Alarm service calls to periodically start Updater service**
+**Example 13.14. BootReceiver.java，通过Alarm服务定时启动UpdaterService**
 {CODE}
 package com.marakana.yamba8;
 
@@ -1085,8 +1093,8 @@ public class BootReceiver extends BroadcastReceiver {
 
 收到新消息，由UpdaterService首先得知，因此我们把通知的功能加入到UpdaterService里面：先获取Notification服务的引用，创建一个Notification对象，然后将收到消息的相关信息作为通知交给它。而Notification对象本身带有一个PendingIntent，当用户点击通知的时候，可以将界面转到TimelineActivity。
 
-**Example 13.15. UpdaterService.java with Notifications**
-
+% **Example 13.15. UpdaterService.java with Notifications**
+**Example 13.15. UpdaterService.java，利用Notification服务**
 {CODE}
 package com.marakana.yamba8;
 

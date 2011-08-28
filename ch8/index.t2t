@@ -8,7 +8,7 @@
 
 % Services are among the main building blocks in Android. Unlike an activity, a service doesn’t have any user interface. It is simply a piece of code that runs in the background of your application.
 
-Service 与 Activity 一样，同为 Android 的基本构件。其不同在于 Service 只是应用在后台执行的一段代码，而不需要提供用户界面。
+Service 与 Activity 一样，同为 Android 的基本构件。其不同在于 Service 只是应用程序在后台执行的一段代码，而不需要提供用户界面。
 
 % Services are used for processes that should be running independently of activities, which may come and go. Our Yamba application, for example needs to create a service to periodically connect to the cloud and check if the user has new statuses from her friends. This service will be always on, always running regardless of whether the user ever started the activity.
 
@@ -22,7 +22,7 @@ Service 独立于 Activity 执行，无需理会 Activity 的状态如何。比�
 
 % A service can be bound or unbound. Bound services can provide more specific APIs to other applications via an interface called AIDL (Android Interface Definition Language)[增加 see Chapter 14, The Android Interface Definition Language)]. For now, we’ll focus on unbound services, where the lifecycle of a service is not tied to the lifecycle of the activities that started them. The only states for a bound services are started and stopped (destroyed).
 
-Service分为Bound Service和Unbound Service两种。Bound Service 提供了一组API，以允许其他应用通过 AIDL(Android Interface Definition Language，参见 //第十四章//) 与之进行交互。不过在本章中，我们主要关注的是 Unbound Service，它只有两种状态：执行( Started ) 或停止( Stopped 或 Destoyed )。而且它的生存周期与启动它的Activity无关。
+Service分为Bound Service和Unbound Service两种。Bound Service 提供了一组API，以允许其他应用通过 AIDL(Android Interface Definition Language，//Andorid接口描述语言//，参见 //第十四章//) 与之进行交互。不过在本章中，我们主要关注的是 Unbound Service，它只有两种状态：执行( Started ) 或停止( Stopped 或 Destoyed )。而且它的生存周期与启动它的Activity无关。
 
 % In this chapter, you will create a service. The purpose of this service is to run in the background and update your app with latest timeline from the user’s Twitter account. Initially, the service will just print your friends' timeline to the log file. The service will create a separate thread, so you will learn about concurrency in this chapter as well. You will also learn about Toasts and get to understand the context in which services and 
 
@@ -56,7 +56,7 @@ Application 对象中保存着程序各部分所共享的状态。只要程序�
 % - Create the Java class representing YambaApplication.
 % - Register the new Application with the AndroidManifest.xml file.
 
-- 创建一个表示 ``YambaApplication`` 的 Java 类。
+- 创建一个 Java 类 ``YambaApplication``。
 - 在 ``AndroidManifest.xml`` 文件中注册新的 Application 对象。
 
 
@@ -337,7 +337,7 @@ public class UpdaterService1 extends Service {
 % + onStartCommand() is called each time service receives a startService() intent to get started. A service that is already stated could get multiple requests to start again, and each will cause onStartCommand() to execute.
 % + onDestroy() is called just before the service is destroyed by stopService() request. This is a good place to clean up things that might have been initialized in onCreate().
 
-+ 因为会频繁地使用Log.d()，我会在所有主要的类中声明一个TAG常量。
++ 因为频繁地使用Log.d()，我会在所有主要的类中声明一个TAG常量。
 + ``onBind()`` 在Bound Service中使用，它会返回一个Binder的具体实现。在这里还没有用到Bound Service，因此返回null。
 + ``onCreate()`` 调用于Service初次创建时，而不一定是startService()的结果。可以在这里做些一次性的初始化工作。
 + ``onStartCommand()`` 调用于Service收到一个startService()的Intent而启动时。对已经启动的Service而言，依然可以再次收到启动的请求，这时就会调用``onStartCommand()``。

@@ -74,13 +74,13 @@ NDK拥有完善的文档和充分的样例，也附带有标准的C/C++头文件
 % - OpenSL ES native audio libraries
 % - Android native application APIS
 
-- libc(C 运行时库)的头文件
-- libm(数学库)的头文件
+- libc(//C 运行时库//)的头文件
+- libm(//数学库//)的头文件
 - JNI 接口的头文件
-- libz(zlib压缩库)的头文件
-- liblog(Android 日志系统)的头文件
-- OpenGL ES 1.1和 OpenGL ES 2.0(3D图像库)的头文件
-- libjnigraphics(图像库)的头文件(仅在Android 2.2及以上版本中可用)
+- libz(//zlib压缩库//)的头文件
+- liblog(//Android 日志系统//)的头文件
+- OpenGL ES 1.1和 OpenGL ES 2.0(//3D图像库//)的头文件
+- libjnigraphics(//图像库//)的头文件(仅在Android 2.2及以上版本中可用)
 - 最小化的 C++ 头文件
 - OpenSL ES本地音频库的头文件
 - Android本地程序API
@@ -93,7 +93,7 @@ NDK拥有完善的文档和充分的样例，也附带有标准的C/C++头文件
 
 % == NDK Example - Fibonacci ==
 
-== NDK实例 - 计算Fibonacci数列 ==
+== NDK实例： 计算Fibonacci数列 ==
 
 % Because the NDK is well-suited for computationally intensive applications, I wanted to find an example where we can implement a relatively simple algorithm in both native code and Java to compare their relative speed.
 
@@ -415,11 +415,11 @@ include $(BUILD_SHARED_LIBRARY)
 在下一节，我们将共享库打包进APK文件，供应用程序调用。
 
 % === Fibonacci Activity ===
-=== Fibonacci Activity ===
+=== FibActivity ===
 
 % The Fibonacci Activity asks the user to input a number. Then it runs the four algorithms to compute Fibonacci value of that number. It also times the results and prints them to the screen. This activity basically uses the ``FibLib`` class that in turn uses //libfib.so// for its native part.
 
-FibonacciActivity允许用户输入一个数字，分别运行四种算法计算这个值对应的Fibonacci数，并将不同算法花费的时间输出，供我们比较。这个Activity需要调用到``FibLib``和``linfib.so``。
+FibActivity允许用户输入一个数字，分别运行四种算法计算这个值对应的Fibonacci数，并将不同算法花费的时间输出，供我们比较。这个Activity需要调用到``FibLib``和``linfib.so``。
 
 **Example 15.4. FibActivity.java**
 {CODE}
@@ -520,9 +520,9 @@ public class Fibonacci extends Activity implements OnClickListener {
 
 % As you run some tests, you may notice that the native version of the algorithm runs about one [order of magnitude http://en.wikipedia.org/wiki/Order_of_magnitude] faster than the Java implementation (__Figure 15.1, “Fibonacci of 33”__).
 
-经过一些试验以后，你会发现本地版本的算法几乎比 Java 版本快了一个量级(//图 15.1, "33的Fibonacci数"//)。
+经过一些试验以后，你会发现本地版本的算法几乎比 Java 版本快了一个量级(//图 15.1//)。
 
-	**图 15.1. Fibonacci算法：33**
+	**图 15.1. 33的Fibonacci数**
 		[images/15-Fibonacci.png]
 
 %TALK: 此图坑爹。

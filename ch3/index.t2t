@@ -1,7 +1,8 @@
 %
 %
 %
-= Quick Start =[ch03]
+% = Quick Start =[ch03]
+=快速入门=[ch03]
 
 {ORGI}In this chapter, you will learn how to set up your environment for Android development. I’ll go beyond just telling you where to download the software from, but will also into some of the best practices in getting set up. [I’ll go beyond just listing where you can download the software, and will cover some of the best practices in getting set up.] I’ll look at development operating system choices as well as Android tools available. You will see the good, the bad, and the ugly of various choices of tools and platforms that you’re about to make (or someone else has already made for you).
 
@@ -14,11 +15,11 @@
 {NOTE}
 {ORGI}I’m going to be using ~ to refer to your home directory. On Mac OS X, that’s typically something like /Users/marko. On Linux, it would be /home/marko and on Windows Vista and 7, C:\Users\marko (in Windows XP, it would be C:\Documents and Settings\marko). Also, I’m going to be using Unix-style forward slashes and not Windows back slashes to denote file path separators.
 
-{TRAN}下文将会使用 ``~`` 符号表示你的个人目录。对于 Mac OS X ，``~``一般代表 ``/Users/marko/`` 这样的目录，对 Linux ，``~``是 ``/home/marko`` ，在 Windows Vista 和 Windows 7 中是``C:\Users\marko``，而在Windows XP中是`` C:\Documents and Settings\marko``。同样，我将选择 Unix 风格的正斜线(/)而非 Windows 风格的反斜线(\)作为路径分隔符。
+{TRAN}下文将会使用 ``~`` 符号表示你的个人目录。对于 Mac OS X ，``~``一般代表 ``/Users/marko/`` 这样的目录，对 Linux ，``~``是 ``/home/marko`` ，在 Windows Vista 和 Windows 7 中是``C:\Users\marko``，在Windows XP中则是``C:\Documents and Settings\marko``。同样，我将选择 Unix 风格的正斜线(/)而非 Windows 风格的反斜线(\)作为路径分隔符。
 
 {ORGI}So, if you’re on Windows, just change ~ to C:\Users\YourUserName and / to \. Other than that, everything should be pretty much the same no matter whether you are on Mac, Linux, or Windows.
 
-{TRAN}因此如果你使用 Windows 的话，只需要把 ``~`` 替换成 ``C:\Users\YourUserName`` ，并把 ``/`` 换成 ``\`` 。除此以外，在 Mac 、 Linux 或者 Windows 上都是相同的。
+{TRAN}因此，如果你是 Windows 用户，只需要把 ``~`` 替换成 ``C:\Users\YourUserName`` ，并把 ``/`` 换成 ``\`` 。除此，Mac 、 Linux 和 Windows 也就大同小异了。
 {/NOTE}
 
 % == Installing the Android SDK ==
@@ -160,7 +161,7 @@ Eclipse以项目为单位管理用户的工作，项目又都位于workspace中�
 % + Finally, click on Finish button and Eclipse will create your project. Let’s look at the various files that this process created:[Let’s look at the various files that this process created in Figure 3.2, “HelloWorld new project window”.]
 
 + 填写"Project name"。这是个Eclipse概念：Eclipse把一切皆组织为项目(project)，而项目名只能是一个单词。在命名上，我个人比较喜欢[CamelCase http://en.wikipedia.org/wiki/Camel_case]风格。在此输入：``HelloWorld``。
-+ 选择"build target"，它为构建工具指明目标平台的版本。其中罗列了所有可用的目标平台，以及你的SDK中附带的扩展。在这里可以选择一个较新的版本，比如Android 2.2（但不要选择Google APIs，它们是Google针对Android平台的专有扩展）。
++ 选择"build target"，它为构建工具指明目标平台的版本。其中罗列了所有可用的目标平台，以及SDK中附带的扩展。在这里可以选择一个较新的版本，比如Android 2.2（留意不要选择Google APIs，它们是Google在Android平台的专有扩展）。
 + 接下来设置project属性。其中的application name也就是你应用的英文名字，随便写上就好，比如"Hello, World!!!"。
 + "package name"是个Java中的概念。在Java中，源码都是组织为一个个的package，用以表示Java对象在不同类中的可见性，是个很重要的概念。在Android开发中，package作为应用程序签名的基本单位，也是很重要的。它的命名规范为逆序的域名，后跟可选的子域名。比如我有个域名是example.com，要编写一个计算器（caculator）的应用，那么package的名字就可以是com.example.caculator。
 + "activity"一项是可选的。目前我们还没讲到Activity（参见[第六章，Android用户界面 #ch6]），姑且把它看作是程序的界面即可。Activity通过Java的类来表示，因此它的名字也同样遵循Java中类的命名规范：首字母大写，对多个单词使用CamelCase命名规范。在此输入``HelloWorld``作为Activity的名字。
@@ -176,7 +177,7 @@ Eclipse以项目为单位管理用户的工作，项目又都位于workspace中�
 
 % Manifest file glues everything together. It is this file that explains what the application consists of, what all its main building blocks are, what permissions it requires, and so on.
 
-Manifest文件是应用程序各部分之间的牵线人。它申明了程序中包含的构件(Building Blocks)及其所需权限等信息。
+Manifest文件是应用程序各部分之间的牵线人。它申明了程序中包含的构件(Building Blocks)以及相应的权限等信息。
 
 **Example 3.1. AndroidManifest.xml**
 {CODE}
@@ -321,7 +322,7 @@ public class HelloWorld extends Activity {
 
 % From within Android SDK and AVD Manager, you can choose New… and a Create New AVD dialog window will pop up. In this dialog, you specify the parameters for your new AVD. The name is any name you choose. Target is what you what to have installed as version of Android on this particular AVD. The list of possible targets is based on platforms and add-ons that you have installed into your SDK. If you don’t have any targets, go back to Android SDK and AVD Manager and choose Available packages tab to install at least one platform, such as Android 2.3 - API level 9, for example [for example, Android 2.3 - API level 9].
 
-进入Android SDK and AVD Manager，单击New…，出现Create New AVD对话框。你需要在这个对话框里对新的AVD做一些设置， 其中Name可以随便起一个，Target是目标平台的版本，其中的选项会因为SDK的平台及其安装的扩展而有所不同。如果里面没有列出任何选项，那就返回Android SDK and AVD Manager，在Available packages中选择安装一个目标平台，比如Android 2.3 - API level 9。
+进入Android SDK and AVD Manager，单击New…，出现Create New AVD对话框。你需要在这个对话框里对新的AVD做一些设置， 其中Name可以随便起一个，Target是目标平台的版本，其中的选项会因为SDK的平台以及扩展的不同而有所不同。如果里面没有列出任何选项，那就返回Android SDK and AVD Manager，在Available packages中选择安装一个目标平台，比如Android 2.3 - API level 9。
 
 % Each AVD can have an SD Card. You can just specify a number here for your built-in card, in megabytes. Skin is the look and feel of your device as well as its form factor. Hardware option lets you fine tune what this AVD does or doesn’t support.
 

@@ -126,13 +126,13 @@
 
 {NOTE}
 {ORGI}	The fact that an activity is in Running State doesn’t mean it’s doing much. It could be just sitting there and waiting for user input. Similarly, an activity in Stopped State is not necessarily doing nothing. The state names mostly refer to how active the activity is with respect to user input. In other words, weather an activity is in visible, in focus, or not visible at all.
-{TRAN}实际上，Activity在Running状态并不一定意味着它的运算量大，它也有可能在干等着用户输入；同样，在Stopped状态也并不一定意味着它的运算量小。状态的设定多是针对用户输入的响应(比如是否显示、是否拥有焦点)而言，而与它所做的工作无关。
+{TRAN}实际上，Activity在Running状态并不一定意味着它的运算量大，它也有可能在干等着用户输入；同样，在Stopped状态也并不一定意味着它的运算量小。状态多是针对用户输入的响应(比如是否显示、是否拥有焦点)而言，而并不能代表它所做的工作内容。
 {/NOTE}
 
 == Intents ==
 
 {ORGI}Intents are messages that are sent among major building blocks. They trigger an activity to start up, a service to start or stop, or are simply broadcasts. Intents are asynchronous, meaning the code that is sending them doesn’t have to wait for them to be completed.
-{TRAN}Intent是基本构件之间传递消息的一种机制。通过Intent可以显示一个Activity、启动或停止一个Service，也可以当作简单的广播。Intent是异步的，也就是说在发送时不需要阻塞等待它们响应完成。
+{TRAN}Intent是构件之间传递消息的一种机制。通过Intent可以显示一个Activity、启动或停止一个Service，也可以当作简单的广播。Intent是异步的，也就是说在发送时不需要阻塞等待它们响应完成。
 
 %TALK：Intent不是什么事件发生之后发送的提示，而是发送Intent主动的用来触发一些事件。相比被动的"事件"，更接近主动的"命令"的性质。
 
@@ -170,7 +170,7 @@
 
 {ORGI}Services have a much simpler lifecycle than activities [增加 (see Figure 4.3, “Service life cycle”). ]. You start a service, or stop it. Also, the service lifecycle is more or less controlled by the developer, and not so much by the system. So, we as developers have to be mindful to run our services so that they don’t unnecessarily consume shared resources, such as CPU and battery.
 
-{TRAN} Service的生命周期要比Activity简单不少，要么启动，要么停止。同时，Service的生命周期受开发者影响较多，而受系统控制相对较少。因此身为开发者，我们需要小心对待Service，避免它无谓地浪费资源，比如CPU和电池。
+{TRAN} Service的生命周期要比Activity简单不少，要么启动，要么停止。同时，Service的生命周期受开发者影响较多，而受系统控制相对较少。因此身为开发者，我们需要小心对待Service，避免它无谓地浪费资源(比如CPU和电池)。
 
 {NOTE}
 {ORGI}	The fact that a service runs in the background doesn’t mean it runs on a separate thread. If a service is doing some processing that takes a while to complete (such as perform network calls), you would typically run it on a separate thread. Otherwise, your user interface will run noticeably slower. In other words, Services and Activities run on the same main application thread, often called UI thread.
@@ -196,7 +196,7 @@
 		[images/04-Contacts-Provider.png]
 
 {ORGI}This separation of data storage and the actual user interface application offers greater flexibility to mash up various parts of the system. For example, a user could install an alternative Address Book application that uses the same data as the default Contacts app. Or, install widgets on the Home Screen that allow for easy changes in the System Settings, such as turning on or off the Wifi, Bluetooth or GPS features. Many phone manufactures take advantage of Content Providers to add their own applications on top of standard Android to improve overall user experience, such as HTC Sense.
-{TRAN}把数据的存储与用户界面分离开来，这使得系统中各个部分之间的联系更加紧密，拆换起来也更加灵活。比如用户可以安装一个新的通讯录应用替换掉原先的默认的联系人app，同时仍希望使用原先的数据；或在主屏幕上面安装一个小部件，方便做些开关WiFi/蓝牙/GPS之类的系统设置。也有许多手机制造商(比如 [HTC Sense http://en.wikipedia.org/wiki/HTC_Sense])基于Content Provider机制，通过设计一套自己的软件集来提升用户体验。
+{TRAN}把数据的存储与用户界面分离开来，这使得系统中各个部分之间的联系更加紧密，拆换起来也更加灵活。比如用户可以安装一个新的通讯录应用替换掉原先的默认的联系人app，同时仍希望使用原先的数据；或在主屏幕上面安装一个小部件，方便做些开关WiFi/蓝牙/GPS之类的系统设置。也有许多手机制造商(比如 [HTC Sense http://en.wikipedia.org/wiki/HTC_Sense])基于Content Provider机制，设计一套自己的软件集来提升用户体验。
 
 {ORGI}Content Providers are a relatively simple interface with the standard insert(), update(), delete() and query() methods. These methods look a lot like standard database methods, so it is relatively easy to implement a content provider as a proxy to the database. Having said that, you are much more likely to use content providers than write your own.
 {TRAN}Content Provider的接口很简单，那就是``insert()``、``update()``、``delete()``与``query()``。这与一个数据库的接口很相似，因此针对某数据库实现一个Content Provider当作代理也十分简单。话虽这么说，不过你该更喜欢使用现成的Content Provider，而不是自己造轮子。

@@ -79,7 +79,7 @@
 {TRAN}== 项目设计 ==
 
 {ORGI}If you remember from __Chapter 4, Main Building Blocks__, an Android application is a loose collection of Activities, Services, Content Providers, and Broadcast Receivers. These are the components from which we put together an application. __Figure 5.4, “Yamba Design Diagram”__ shows the design of the entire Yamba application, which incorporates most of the main Android building blocks.
-{TRAN}在[第4章 #ch4]中有提及，Android应用就是Activity、Service、Content Provider、Broadcast Receiver的松散组合。它们作为Android的基本构件(Building Block)，在开发中扮演着不可或缺的角色。 //图5.4// 给出了Yamba的设计架构，不妨留意其中基本构件与应用之间的关系。
+{TRAN}在[第4章 #ch4]中有提及，Android应用就是Activity、Service、Content Provider、Broadcast Receiver的松散组合。它们作为Android的基本构件(main Building Blocks)，在开发中扮演着不可或缺的角色。 //图5.4// 给出了Yamba的设计架构，不妨留意其中基本构件与应用之间的关系。
 
 	**图 5.4. Yamba设计图**
 		[images/05-Yamba.png]
@@ -117,7 +117,7 @@
 {TRAN}=== Android 程序的调试 ===
 
 {ORGI}A few things are going to go wrong in this section. This is by design. Debugging is a normal part of application development. We’ll show you how to use the Android SDK tools to quickly find and fix problems. Debugging will become second nature to you.
-{TRAN}哦，糟糕，我们的程序不能正常工作了。不过别担心，这是必须的。调试是正式开发中不可回避的一部分。我们将在本章讲解 Android SDK中提供的调试工具的使用方法，学会如何快速地定位问题并解决问题。调试会成为你的第二本能的！
+{TRAN}哦，糟糕，我们的程序不能正常工作了。不过别担心，这是必须的。调试是正式开发中不可回避的一部分。我们将在本章讲解 Android SDK中提供的调试工具的使用方法，学会如何快速地定位并解决问题。调试会成为你的第二本能的！
 
 {ORGI}== Part 2: Preferences, File System, Options Menu, and Intents ==
 {TRAN}== 第二部分: 首选项，文件系统，选项菜单以及Intent ==
@@ -217,7 +217,7 @@
 %TALK: 几个Building Blocks都尽量保留原文吧
 
 {ORGI}For example, we want to start our updates when the device is powered up. We also want to stop pulling the data from the cloud when the network is not available, only to start it again once we’re back online. This goal will introduce us to one type of Broadcast Receivers.
-{TRAN}假如我们希望在设备开机时就开始更新消息，也希望在网络离线时暂停更新，并在网络正常时恢复更新。要实现上述功能，我们需要引入Broadcast Receiver机制。
+{TRAN}假如我们希望在设备开机时就开始更新消息，也希望在网络离线时暂停更新，并在网络正常时恢复更新。要实现上述功能，就需要通过不同的Broadcast Receiver来完成。
 
 {ORGI}=== Timeline Receiver ===
 {TRAN}=== Timeline Reciever ===
@@ -230,7 +230,7 @@
 {TRAN}=== 权限 ===
 
 {ORGI}So far you knew how to ask for system permissions, such as access to the Internet or file system. In this section we’ll learn how to define our own permissions and how to enforce them. After all, Yamba components may not want to respond to anyone else for some Yamba-specific actions.
-{TRAN}在访问网络或者文件系统时，你已经对系统内置的权限机制有所了解。在这里，我们将尝试定义我们自己的权限机制，并应用它们。毕竟我们不希望他人可以随便访问Yamba的内部操作。
+{TRAN}在访问网络或者文件系统时，你已经对系统内置的权限机制有所了解。在这里，我们将尝试定义我们自己的权限机制，并应用它们。毕竟我们不希望他人来随便访问Yamba的内部操作。
 
 
 {ORGI}== Part 7: Content Providers ==
@@ -245,7 +245,7 @@
 {TRAN}=== 消息数据 ===
 
 {ORGI}Our status data is okay the way it is if nobody else cares about it. But what if we want to expose some of this data to the rest of the system? After all, other applications may leverage our friends' timeline in a new and creative way. To do that, we’ll create a Content Provider and expose our status data.
-{TRAN}其它程序不能干涉我们的消息数据，这样很好。但我们想让其它程序访问这些数据又该怎么办？毕竟其它程序也可能会希望利用我们的数据，通过它们独特的表现手法做另一番展示。为此，我们需要创建一个Content Provider为外部提供数据。
+{TRAN}其它程序不能干涉我们的消息数据，这样很好。但我们想让其它程序访问这些数据又该怎么办？毕竟其它程序也可能想善意地利用我们的数据，通过它们独特的表现手法做另一番展示。为此，我们需要创建一个Content Provider为外部提供数据。
 
 {ORGI}=== Android Widgets ===
 {TRAN}=== Android Widgets ===
@@ -259,7 +259,7 @@
 (译者注："系统服务"与作为构件的"Android Service"是不同的东西。在翻译中，我们将所有构件的名字保留原文，而将System Service译为"系统服务"，以示区别。)
 
 {ORGI}The Android OS comes with many useful system services: processes you can easily access to ask for things like your location, sensor readings, WiFi hotspots, and much more. In this part, [增加 covered in Chapter 13, System Services, ] you will add some cool new features to Yamba, such as user’s current location.
-{TRAN}Android 操作系统内置了许多有用的系统服务供程序使用，比如当前位置、传感器数据、WiFi热点等等。在这部分，我们将为Yamba添加若干小功能，比如提交用户的当前位置。
+{TRAN}Android 操作系统内置了许多实用的系统服务供程序使用，比如当前位置、传感器数据、WiFi热点等等。在这部分，我们将为Yamba添加若干小功能，比如提交用户的当前位置。
 
 {ORGI}=== Compass & Location ===
 {TRAN}=== Compass与Location ===
@@ -271,7 +271,7 @@
 {TRAN}=== Intent Service, Alarms, Notifications ===
 
 {ORGI}It turns out that some of the cool features Android services provide can make our Updater service much simpler. So we’ll refactor our code, yet again. This time, we’ll introduce Intent Services that respond to Intents. But we’re going to need something to fire off these intents on regular basis, and for that we’ll use the Alarm service. Additionally, we’ll add a feature to notify the user of new updates by putting a notification in the notification bar. For that, we’ll use the Notification service. All this will prove to be a substantially more elegant solution to our Updater service need.
-{TRAN}可以看到，Android内置了一些很酷的Service，用好可以简化UpdaterService的实现。所以再次重构代码吧。在这里我们引入IntentService来响应Intent请求，另外还需要有人来触发Intent请求，因此引入Alarm Service。我们还将使用到Notification Service，在系统托盘(Notification Area)显示提示信息。经过重构，我们将得到一个更为优雅的UpdaterService实现。
+{TRAN}可以看到，Android内置了一些很酷的Service，用好可以简化UpdaterService的实现。所以再次重构代码吧。在这里我们引入IntentService来响应Intent请求，另外还需要引入Alarm Service，来定期触发Intent请求。我们还将使用到Notification Service，在系统托盘(Notification Area)显示提示信息。经过重构，我们将得到一个更为优雅的UpdaterService实现。
 
 {ORGI}== Summary ==
 {TRAN}== 总结 ==

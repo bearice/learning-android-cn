@@ -21,7 +21,7 @@
 
 % Our micro-blogging applications needs to connect to specific server in the cloud using specific user account information. For that, Yamba needs to know username and password for that account as well as the URL of the server it’s connecting to. This URL is also knowns as API root. So, in our case, we’ll have three fields where user can enter and edit username, password and API root. This data will be stored as strings.
 
-我们的微博应用需要连接到服务端，因此用户的用户名与密码自是必须，除此还需要知道服务端的URL(或者叫API root)。可知我们在这里需要提供三个选项条目，而且都是作为字符串存储。
+我们的微博应用需要连接到服务端，因此用户的用户名与密码自是必须，除此还需要知道服务端的URL(又称API root)。可知我们在这里需要提供三个选项条目，而且都是作为字符串存储。
 
 % To enable our app to handle user-specific preferences, we’d have to build a screen to enter the information, a Java code to validate and process that information, and some kind of storage mechanism to store this information.
 
@@ -160,7 +160,7 @@
 
 % Now that we have the preferences defined in their own XML resource file, we can create the activity to display these preferences. You may recall from <<Activities> that every screen in an Android app is an activity. So, to display the screen where user enters username and password for their online account, we’ll create an activity to handle that screen. This activity will be a special preference-aware activity.
 
-对应首选项的XML资源文件已定义完毕，接下来为它创建一个界面。回想下，我们曾在 //第六章// 提到，Android程序中的任何界面都是Activity。用户需要修改选项的界面，我们就必须专门新建一个Activity。
+对应首选项的XML资源文件已定义完毕，接下来为它创建一个界面。回想下，我们曾在 //第六章// 提到，Android程序中的任何界面都是Activity。要为用户提供修改选项的界面，我们就该专门新建一个Activity。
 
 % To create an activity, we create a new Java class. To do so, in Eclipse, select your package under your src folder, right-click on the package and select New→Class. A New Java Class window will pop up. You just need to enter PrefsActivity for the Name and click Finish. This will create PrefsActivity.java file under your package in your source folder.
 
@@ -200,7 +200,7 @@ public class PrefsActivity extends PreferenceActivity { // #{1}
 {TIP}
 % If you didn’t want to type the long signature of onCreate() and other methods that we often have to implement or override, you could use an Eclipse tool to help you with that. While in your PrefsActivity.java and after you have added ... extends PreferenceActivity..., you can choose Source→Override/Implement Methods…. This will bring up a dialog box with appropriate selection of methods you could override or implement given that you are subclassing PreferenceActivity class. In here, you can choose onCreate() and Eclipse will insert the stub for this method into your code.
 
-在覆盖方法时，如果不想打字敲出``onCreate()``或其它方法那长长的声明，大可使用Eclipse的工具代劳。假如你在编辑``PrefsActivity.java``文件，并已加上了``extends PreferenceActivity``。那就可以选择`` Source→Override/Implement Methods…``，然后会出现一个对话框，在里面选出需要覆盖的方法(这里是``onCreate()``)即可。Eclipse会为你选择的方法生成代码。
+在覆盖方法时，如果不想打字敲出``onCreate()``或其它方法那长长的声明，大可使用Eclipse的工具代劳。假如你在编辑``PrefsActivity.java``文件，并已加上了``extends PreferenceActivity``。那就可以选择``Source→Override/Implement Methods…``，然后会出现一个对话框，在里面选出需要覆盖的方法(这里是``onCreate()``)，Eclipse即可为这些方法生成代码。
 {/TIP}
 
 % ===Update Manifest File===
@@ -607,7 +607,7 @@ Android设备主要有三个分区，即：
 
 % System partition is mounted read-only, meaning you as developer have very little influence over it. As such, this partition is of limited interest to us.
 
-系统分区是以只读模式挂载的，应用开发者针对它的发挥空间不大，因此我们不多做关注。
+系统分区是以只读模式挂载的，应用开发者针对它的发挥空间不大，在此我们不多做关注。
 
 % The system partition in the Emulator corresponds to system.img file in your platform images directory, located in android-sdk/platforms/android-8/images/ folder.
 
